@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NPC — Need Pamong Context</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="game-container">
+
+        <h1>🎮 NPC</h1>
+
+        <p>👤 Need Pamong Context</p>
+
+        <section id="login-screen">
+
+            <h2>🔐 Enter Access Code</h2>
+
+            <p>
+                Masukkan access code untuk memulai permainan.
+            </p>
+
+            <input
+                type="password"
+                id="access-code"
+                placeholder="Access Code"
+            >
+
+            <button id="start-button">
+                🚀 Start Game
+            </button>
+
+            <p id="error-message"></p>
+
+        </section>
+
+        <section id="game-screen" class="hidden">
+
+            <h2>🧑‍🤝‍🧑 Meet Your Pamong</h2>
+
+            <div id="pengasuh-container"></div>
+
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
