@@ -17,491 +17,6 @@
         href="style.css"
     >
 
-    <style>
-
-        /* =====================================================
-           OPENING SCREEN
-        ===================================================== */
-
-        #intro-screen {
-
-            position: fixed;
-
-            inset: 0;
-
-            width: 100vw;
-            height: 100vh;
-
-            overflow: hidden;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            background:
-                radial-gradient(
-                    ellipse at center,
-                    #fffdf5 0%,
-                    #f8efdd 45%,
-                    #ead9b8 100%
-                );
-
-            z-index: 99999;
-
-        }
-
-
-        /* =====================================================
-           PARCHMENT TEXTURE
-        ===================================================== */
-
-        #intro-screen::before {
-
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            pointer-events: none;
-
-            opacity: 0.30;
-
-            background:
-
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(100, 75, 40, 0.025) 0px,
-                    rgba(100, 75, 40, 0.025) 1px,
-                    transparent 1px,
-                    transparent 5px
-                ),
-
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(100, 75, 40, 0.018) 0px,
-                    rgba(100, 75, 40, 0.018) 1px,
-                    transparent 1px,
-                    transparent 7px
-                );
-
-            z-index: 1;
-
-        }
-
-
-        /* =====================================================
-           MAP BACKGROUND
-        ===================================================== */
-
-        .map-decoration {
-
-            position: absolute;
-
-            inset: 0;
-
-            width: 100%;
-            height: 100%;
-
-            pointer-events: none;
-
-            z-index: 2;
-
-            opacity: 0.14;
-
-        }
-
-
-        .map-decoration svg {
-
-            width: 100%;
-            height: 100%;
-
-        }
-
-
-        /* =====================================================
-           PARCHMENT BORDER
-        ===================================================== */
-
-        #intro-screen::after {
-
-            content: "";
-
-            position: absolute;
-
-            inset: 28px;
-
-            border:
-                2px solid
-                rgba(116, 91, 54, 0.13);
-
-            border-radius: 18px;
-
-            pointer-events: none;
-
-            z-index: 3;
-
-        }
-
-
-        /* =====================================================
-           INTRO CONTENT
-        ===================================================== */
-
-        .intro-content {
-
-            position: relative;
-
-            z-index: 10;
-
-            width: min(82vw, 680px);
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            justify-content: center;
-
-        }
-
-
-        /* =====================================================
-           MASCOT
-        ===================================================== */
-
-        .intro-mascot {
-
-            display: block;
-
-            width: 100%;
-
-            max-width: 680px;
-
-            height: auto;
-
-            margin: 0;
-
-            user-select: none;
-
-            -webkit-user-drag: none;
-
-            filter:
-                drop-shadow(
-                    0 22px 20px
-                    rgba(64, 43, 20, 0.23)
-                );
-
-            animation:
-                mascotFloat
-                4s
-                ease-in-out
-                infinite;
-
-        }
-
-
-        /* =====================================================
-           MASCOT FLOATING
-        ===================================================== */
-
-        @keyframes mascotFloat {
-
-            0% {
-
-                transform:
-                    translateY(0);
-
-            }
-
-            50% {
-
-                transform:
-                    translateY(-10px);
-
-            }
-
-            100% {
-
-                transform:
-                    translateY(0);
-
-            }
-
-        }
-
-
-        /* =====================================================
-           CLICK HERE BUTTON
-           
-           Style 4:
-           Rustic medieval wood + gold
-        ===================================================== */
-
-        .intro-enter-button {
-
-            position: relative;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            width: 300px;
-
-            min-height: 58px;
-
-            /*
-             * DEKAT DENGAN MASCOT
-             */
-            margin-top: -18px;
-
-            padding: 0 28px;
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #68482d 0%,
-                    #4c301d 50%,
-                    #382216 100%
-                );
-
-            border:
-                3px solid
-                #b88a42;
-
-            box-shadow:
-
-                inset
-                0 0 0 2px
-                rgba(231, 188, 99, 0.22),
-
-                inset
-                0 5px 8px
-                rgba(255, 220, 130, 0.08),
-
-                0 6px 0
-                #281810,
-
-                0 12px 22px
-                rgba(70, 43, 19, 0.22);
-
-            color:
-                #fff1ce;
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
-
-            font-size:
-                18px;
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                1.5px;
-
-            cursor:
-                pointer;
-
-            animation:
-                buttonPulse
-                2.8s
-                ease-in-out
-                infinite;
-
-            transition:
-                filter 0.18s ease,
-                box-shadow 0.18s ease;
-
-        }
-
-
-        /* =====================================================
-           DECORATIVE CORNERS
-        ===================================================== */
-
-        .intro-enter-button::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 7px;
-            left: 8px;
-
-            width: 7px;
-            height: 7px;
-
-            border-top:
-                2px solid
-                #d9ae5c;
-
-            border-left:
-                2px solid
-                #d9ae5c;
-
-            opacity:
-                0.85;
-
-        }
-
-
-        .intro-enter-button::after {
-
-            content: "";
-
-            position: absolute;
-
-            right: 8px;
-            bottom: 7px;
-
-            width: 7px;
-            height: 7px;
-
-            border-right:
-                2px solid
-                #d9ae5c;
-
-            border-bottom:
-                2px solid
-                #d9ae5c;
-
-            opacity:
-                0.85;
-
-        }
-
-
-        /* =====================================================
-           BUTTON PULSE
-        ===================================================== */
-
-        @keyframes buttonPulse {
-
-            0%,
-            100% {
-
-                transform:
-                    scale(1);
-
-                filter:
-                    brightness(1);
-
-            }
-
-            50% {
-
-                transform:
-                    scale(1.025);
-
-                filter:
-                    brightness(1.07);
-
-            }
-
-        }
-
-
-        /* =====================================================
-           HOVER
-        ===================================================== */
-
-        .intro-enter-button:hover {
-
-            filter:
-                brightness(1.10);
-
-            box-shadow:
-
-                inset
-                0 0 0 2px
-                rgba(231, 188, 99, 0.35),
-
-                0 8px 0
-                #281810,
-
-                0 16px 28px
-                rgba(70, 43, 19, 0.28);
-
-        }
-
-
-        /* =====================================================
-           ACTIVE / CLICK
-        ===================================================== */
-
-        .intro-enter-button:active {
-
-            transform:
-                translateY(5px)
-                scale(0.99);
-
-            box-shadow:
-
-                inset
-                0 0 0 2px
-                rgba(231, 188, 99, 0.25),
-
-                0 2px 0
-                #281810,
-
-                0 5px 10px
-                rgba(70, 43, 19, 0.18);
-
-        }
-
-
-        /* =====================================================
-           MAIN GAME
-        ===================================================== */
-
-        #main-game {
-
-            position: relative;
-
-            z-index: 100;
-
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
-        @media (max-width: 700px) {
-
-            .intro-content {
-
-                width: 94vw;
-
-            }
-
-
-            .intro-enter-button {
-
-                width: 245px;
-
-                min-height: 55px;
-
-                margin-top: -14px;
-
-                font-size: 16px;
-
-            }
-
-        }
-
-    </style>
-
 </head>
 
 
@@ -509,15 +24,13 @@
 
 
 <!-- =====================================================
-     OPENING SCREEN
+     OPENING / MASCOT SCREEN
 ===================================================== -->
 
 <div id="intro-screen">
 
 
-    <!-- =================================================
-         MAP BACKGROUND
-    ================================================== -->
+    <!-- MAP BACKGROUND -->
 
     <div class="map-decoration">
 
@@ -550,7 +63,7 @@
             />
 
 
-            <!-- LEFT RIVER -->
+            <!-- RIVERS -->
 
             <path
                 d="
@@ -564,8 +77,6 @@
                 stroke-width="7"
             />
 
-
-            <!-- RIGHT RIVER -->
 
             <path
                 d="
@@ -659,56 +170,6 @@
             </g>
 
 
-            <!-- CASTLES -->
-
-            <g
-                fill="none"
-                stroke="#78613d"
-                stroke-width="4"
-            >
-
-                <path
-                    d="
-                    M100 450
-                    L100 390
-                    L135 355
-                    L170 390
-                    L170 450
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M95 390
-                    L135 335
-                    L175 390
-                    "
-                />
-
-
-                <path
-                    d="
-                    M1230 450
-                    L1230 390
-                    L1265 355
-                    L1300 390
-                    L1300 450
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M1225 390
-                    L1265 335
-                    L1305 390
-                    "
-                />
-
-            </g>
-
-
             <!-- COMPASS -->
 
             <g
@@ -747,64 +208,15 @@
             </g>
 
 
-            <!-- MAP LABELS -->
-
-            <g
-                fill="#725b3c"
-                font-family="Georgia, serif"
-                font-size="22"
-                letter-spacing="4"
-            >
-
-                <text
-                    x="100"
-                    y="90"
-                >
-                    WESTERN WOODS
-                </text>
-
-                <text
-                    x="1050"
-                    y="90"
-                >
-                    NORTHERN PEAKS
-                </text>
-
-                <text
-                    x="580"
-                    y="70"
-                >
-                    SANAPATI LAND
-                </text>
-
-                <text
-                    x="100"
-                    y="820"
-                >
-                    WESTERN COAST
-                </text>
-
-                <text
-                    x="1080"
-                    y="820"
-                >
-                    EASTERN KINGDOM
-                </text>
-
-            </g>
-
         </svg>
 
     </div>
 
 
 
-    <!-- =================================================
-         MASCOT + BUTTON
-    ================================================== -->
+    <!-- MASCOT -->
 
     <div class="intro-content">
-
 
         <img
             src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
@@ -812,10 +224,6 @@
             alt="NPC Mascot"
         >
 
-
-        <!-- =================================================
-             ENTER BUTTON
-        ================================================== -->
 
         <button
             id="intro-start-button"
@@ -827,9 +235,7 @@
 
         </button>
 
-
     </div>
-
 
 </div>
 
@@ -845,70 +251,281 @@
 >
 
 
-    <!-- HEADER -->
-
-    <header
-        class="game-header"
-    >
-
-        <h1>
-            🎮 NPC
-        </h1>
-
-        <p>
-            👤 Need Pamong Context
-        </p>
-
-    </header>
-
-
-
-    <!-- ACCESS CODE -->
+    <!-- =================================================
+         ACCESS / GATE
+    ================================================== -->
 
     <section
         id="login-screen"
+        class="gate-screen"
     >
 
-        <h2>
-            🔐 Enter Access Code
-        </h2>
 
-        <p>
-            Masukkan access code untuk memulai permainan.
-        </p>
+        <!-- DECORATIVE MAP -->
 
+        <div class="gate-map-lines">
 
-        <div
-            class="form-group"
-        >
-
-            <input
-                type="password"
-                id="access-code"
-                placeholder="Access Code"
-                autocomplete="off"
+            <svg
+                viewBox="0 0 1400 900"
+                preserveAspectRatio="xMidYMid slice"
+                xmlns="http://www.w3.org/2000/svg"
             >
 
+                <!-- LEFT MOUNTAINS -->
 
-            <button
-                id="start-button"
-            >
-                🚀 Start Game
-            </button>
+                <g
+                    fill="none"
+                    stroke="#796746"
+                    stroke-width="4"
+                >
+
+                    <path
+                        d="
+                        M70 310
+                        L170 140
+                        L270 310
+                        "
+                    />
+
+                    <path
+                        d="
+                        M180 330
+                        L270 180
+                        L360 330
+                        "
+                    />
+
+                    <path
+                        d="
+                        M280 340
+                        L350 220
+                        L420 340
+                        "
+                    />
+
+
+                    <!-- RIGHT -->
+
+                    <path
+                        d="
+                        M980 330
+                        L1080 150
+                        L1180 330
+                        "
+                    />
+
+                    <path
+                        d="
+                        M1080 330
+                        L1190 170
+                        L1300 330
+                        "
+                    />
+
+                    <path
+                        d="
+                        M1190 340
+                        L1270 220
+                        L1350 340
+                        "
+                    />
+
+                </g>
+
+
+                <!-- ROADS -->
+
+                <g
+                    fill="none"
+                    stroke="#8b744e"
+                    stroke-width="3"
+                    stroke-dasharray="10 12"
+                >
+
+                    <path
+                        d="
+                        M80 700
+                        C300 580
+                        430 680
+                        600 560
+                        C760 450
+                        900 570
+                        1050 630
+                        C1170 680
+                        1260 600
+                        1350 690
+                        "
+                    />
+
+                </g>
+
+
+                <!-- SMALL CASTLES -->
+
+                <g
+                    fill="none"
+                    stroke="#796746"
+                    stroke-width="4"
+                >
+
+                    <path
+                        d="
+                        M120 470
+                        L120 400
+                        L155 360
+                        L190 400
+                        L190 470
+                        Z
+                        "
+                    />
+
+                    <path
+                        d="
+                        M115 400
+                        L155 340
+                        L195 400
+                        "
+                    />
+
+
+                    <path
+                        d="
+                        M1210 470
+                        L1210 400
+                        L1245 360
+                        L1280 400
+                        L1280 470
+                        Z
+                        "
+                    />
+
+                    <path
+                        d="
+                        M1205 400
+                        L1245 340
+                        L1285 400
+                        "
+                    />
+
+                </g>
+
+            </svg>
 
         </div>
 
 
-        <p
-            id="error-message"
-            class="error"
-        ></p>
+
+        <!-- CENTRAL GATE -->
+
+        <div class="gate-arch">
+
+            <div class="gate-arch-top"></div>
+
+            <div class="gate-door">
+
+                <div class="gate-door-left"></div>
+
+                <div class="gate-door-right"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="gate-content">
+
+
+            <div class="gate-ornament">
+
+                <span></span>
+
+                <div>
+                    ✦
+                </div>
+
+                <span></span>
+
+            </div>
+
+
+            <h1 class="gate-title">
+
+                THE GATE AWAITS
+
+            </h1>
+
+
+            <p class="gate-subtitle">
+
+                A sealed passage awaits those
+                who know the way.
+
+            </p>
+
+
+            <div class="seal-label">
+
+                <span class="seal-line"></span>
+
+                <span>
+                    ENTER YOUR SEAL
+                </span>
+
+                <span class="seal-line"></span>
+
+            </div>
+
+
+            <div class="gate-form">
+
+
+                <input
+                    type="password"
+                    id="access-code"
+                    placeholder="Enter your seal..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    id="start-button"
+                    type="button"
+                >
+
+                    UNLOCK GATE
+
+                </button>
+
+
+            </div>
+
+
+            <p
+                id="error-message"
+                class="error"
+            ></p>
+
+
+            <p class="gate-footer">
+
+                The realm beyond is waiting.
+
+            </p>
+
+
+        </div>
+
 
     </section>
 
 
 
-    <!-- USERNAME -->
+    <!-- =================================================
+         USERNAME
+    ================================================== -->
 
     <section
         id="username-screen"
@@ -923,10 +540,7 @@
             Buat username untuk menyimpan progress permainanmu.
         </p>
 
-
-        <div
-            class="form-group"
-        >
+        <div class="form-group">
 
             <input
                 type="text"
@@ -936,7 +550,6 @@
                 autocomplete="off"
             >
 
-
             <button
                 id="username-button"
             >
@@ -944,7 +557,6 @@
             </button>
 
         </div>
-
 
         <p
             id="username-error"
@@ -955,7 +567,9 @@
 
 
 
-    <!-- CREATE PIN -->
+    <!-- =================================================
+         CREATE PIN
+    ================================================== -->
 
     <section
         id="pin-setup-screen"
@@ -971,10 +585,7 @@
             progressmu.
         </p>
 
-
-        <div
-            class="form-group"
-        >
+        <div class="form-group">
 
             <input
                 type="password"
@@ -985,7 +596,6 @@
                 autocomplete="new-password"
             >
 
-
             <input
                 type="password"
                 id="pin-confirm-input"
@@ -995,7 +605,6 @@
                 autocomplete="new-password"
             >
 
-
             <button
                 id="pin-button"
             >
@@ -1003,7 +612,6 @@
             </button>
 
         </div>
-
 
         <p
             id="pin-error"
@@ -1014,7 +622,9 @@
 
 
 
-    <!-- ENTER PIN -->
+    <!-- =================================================
+         ENTER PIN
+    ================================================== -->
 
     <section
         id="pin-login-screen"
@@ -1025,16 +635,11 @@
             🔑 Welcome Back
         </h2>
 
-        <p
-            id="pin-login-message"
-        >
+        <p id="pin-login-message">
             Masukkan PIN untuk melanjutkan progressmu.
         </p>
 
-
-        <div
-            class="form-group"
-        >
+        <div class="form-group">
 
             <input
                 type="password"
@@ -1045,7 +650,6 @@
                 autocomplete="current-password"
             >
 
-
             <button
                 id="pin-login-button"
             >
@@ -1053,7 +657,6 @@
             </button>
 
         </div>
-
 
         <p
             id="pin-login-error"
@@ -1064,7 +667,9 @@
 
 
 
-    <!-- WELCOME BACK -->
+    <!-- =================================================
+         WELCOME BACK
+    ================================================== -->
 
     <section
         id="welcome-screen"
@@ -1079,10 +684,7 @@
             id="welcome-message"
         ></p>
 
-
-        <div
-            class="button-group"
-        >
+        <div class="button-group">
 
             <button
                 id="continue-button"
@@ -1096,7 +698,9 @@
 
 
 
-    <!-- LORE -->
+    <!-- =================================================
+         LORE
+    ================================================== -->
 
     <section
         id="lore-screen"
@@ -1107,10 +711,7 @@
             📖 Before We Begin
         </h2>
 
-
-        <div
-            class="lore-text"
-        >
+        <div class="lore-text">
 
             <p>
                 You’ve probably seen them before.
@@ -1137,7 +738,6 @@
 
         </div>
 
-
         <button
             id="lore-button"
         >
@@ -1148,16 +748,16 @@
 
 
 
-    <!-- GAME -->
+    <!-- =================================================
+         GAME
+    ================================================== -->
 
     <section
         id="game-screen"
         class="hidden"
     >
 
-        <div
-            class="game-status"
-        >
+        <div class="game-status">
 
             <span>
 
@@ -1171,25 +771,19 @@
 
             </span>
 
-
             <span
                 id="player-label"
             ></span>
 
         </div>
 
-
         <h2>
             🧑‍🤝‍🧑 Meet Your Pamong
         </h2>
 
-
-        <p
-            class="game-description"
-        >
+        <p class="game-description">
             Kenali wajah, nama, dan konteks Pamong-mu.
         </p>
-
 
         <div
             id="pengasuh-container"
@@ -1201,13 +795,6 @@
 </main>
 
 
-
-<!-- =====================================================
-     APP.JS
-     
-     SATU SCRIPT SAJA.
-     Jangan tambahkan listener opening lain.
-===================================================== -->
 
 <script
     src="app.js"
