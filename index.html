@@ -1,15 +1,854 @@
-<div class="intro-content">
+<!DOCTYPE html>
+<html lang="id">
 
-    <img
-        src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
-        class="intro-mascot"
-        alt="NPC Mascot"
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     >
 
-    <button
-        id="intro-start-button"
-        type="button"
-        aria-label="Enter the game"
-    ></button>
+    <title>NPC — Need Pamong Context</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     OPENING / MASCOT SCREEN
+===================================================== -->
+
+<div id="intro-screen">
+
+    <div class="map-decoration">
+
+        <svg
+            viewBox="0 0 1400 900"
+            preserveAspectRatio="xMidYMid slice"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <!-- MAP BORDER -->
+
+            <path
+                d="
+                M80 120
+                C220 40 330 100 450 70
+                C600 25 700 90 830 65
+                C1000 35 1100 100 1270 80
+                C1370 160 1320 260 1350 370
+                C1380 500 1300 610 1330 730
+                C1180 820 1060 770 920 820
+                C760 850 620 790 480 830
+                C330 850 210 780 90 720
+                C30 580 90 470 55 350
+                C30 250 40 170 80 120
+                Z
+                "
+                fill="none"
+                stroke="#78613d"
+                stroke-width="4"
+            />
+
+
+            <!-- RIVERS -->
+
+            <path
+                d="
+                M180 0
+                C260 130 210 220 300 330
+                C370 410 310 500 400 590
+                C460 660 420 760 500 900
+                "
+                fill="none"
+                stroke="#688f8b"
+                stroke-width="7"
+            />
+
+
+            <path
+                d="
+                M1220 0
+                C1130 130 1190 230 1090 330
+                C1010 420 1080 500 980 610
+                C920 690 960 790 900 900
+                "
+                fill="none"
+                stroke="#688f8b"
+                stroke-width="6"
+            />
+
+
+            <!-- MOUNTAINS -->
+
+            <g
+                fill="none"
+                stroke="#766044"
+                stroke-width="4"
+            >
+
+                <path d="M70 330 L140 210 L210 330 Z"/>
+                <path d="M150 330 L230 180 L310 330 Z"/>
+                <path d="M250 340 L330 220 L410 340 Z"/>
+
+                <path d="M1000 330 L1080 190 L1160 330 Z"/>
+                <path d="M1100 330 L1190 160 L1280 330 Z"/>
+                <path d="M1200 340 L1270 220 L1340 340 Z"/>
+
+            </g>
+
+
+            <!-- FORESTS -->
+
+            <g
+                fill="none"
+                stroke="#647250"
+                stroke-width="3"
+            >
+
+                <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M1100 620 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1160 650 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1220 625 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1280 655 l30 -50 l30 50 l-30 -12 Z"/>
+
+            </g>
+
+
+            <!-- ROADS -->
+
+            <g
+                fill="none"
+                stroke="#806943"
+                stroke-width="3"
+                stroke-dasharray="12 12"
+            >
+
+                <path
+                    d="
+                    M80 700
+                    C280 600 400 660 560 570
+                    C700 490 820 560 980 620
+                    C1100 660 1230 600 1340 700
+                    "
+                />
+
+                <path
+                    d="
+                    M140 180
+                    C300 260 420 330 600 350
+                    C800 380 980 300 1240 180
+                    "
+                />
+
+            </g>
+
+
+            <!-- CASTLES -->
+
+            <g
+                fill="none"
+                stroke="#78613d"
+                stroke-width="4"
+            >
+
+                <path
+                    d="
+                    M100 450
+                    L100 390
+                    L135 355
+                    L170 390
+                    L170 450
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M95 390
+                    L135 335
+                    L175 390
+                    "
+                />
+
+
+                <path
+                    d="
+                    M1230 450
+                    L1230 390
+                    L1265 355
+                    L1300 390
+                    L1300 450
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M1225 390
+                    L1265 335
+                    L1305 390
+                    "
+                />
+
+            </g>
+
+
+            <!-- COMPASS -->
+
+            <g
+                transform="translate(700 450)"
+                fill="none"
+                stroke="#806943"
+                stroke-width="3"
+            >
+
+                <circle r="150"/>
+                <circle r="125"/>
+
+                <path
+                    d="
+                    M0 -150
+                    L20 0
+                    L0 150
+                    L-20 0
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M-150 0
+                    L0 20
+                    L150 0
+                    L0 -20
+                    Z
+                    "
+                />
+
+                <circle r="15"/>
+
+            </g>
+
+
+            <!-- MAP LABELS -->
+
+            <g
+                fill="#725b3c"
+                font-family="Georgia, serif"
+                font-size="22"
+                letter-spacing="4"
+            >
+
+                <text x="100" y="90">
+                    WESTERN WOODS
+                </text>
+
+                <text x="1050" y="90">
+                    NORTHERN PEAKS
+                </text>
+
+                <text x="580" y="70">
+                    SANAPATI LAND
+                </text>
+
+                <text x="100" y="820">
+                    WESTERN COAST
+                </text>
+
+                <text x="1080" y="820">
+                    EASTERN KINGDOM
+                </text>
+
+            </g>
+
+        </svg>
+
+    </div>
+
+
+    <!-- MASCOT -->
+
+    <div class="intro-content">
+
+        <img
+            src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
+            class="intro-mascot"
+            alt="NPC Mascot"
+        >
+
+
+        <!-- NO EXTRA ICON -->
+
+        <button
+            id="intro-start-button"
+            class="intro-enter-button"
+            type="button"
+        >
+            CLICK HERE
+        </button>
+
+    </div>
 
 </div>
+
+
+
+<!-- =====================================================
+     MAIN GAME
+===================================================== -->
+
+<main
+    id="main-game"
+    class="game-container"
+>
+
+
+    <!-- =================================================
+         ACCESS / GATE
+    ================================================== -->
+
+    <section
+        id="login-screen"
+        class="gate-screen"
+    >
+
+
+        <!-- BACKGROUND MAP -->
+
+        <div class="gate-map">
+
+            <svg
+                viewBox="0 0 1400 900"
+                preserveAspectRatio="xMidYMid slice"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+
+                <!-- MAP BORDER -->
+
+                <path
+                    d="
+                    M70 120
+                    C250 50 370 100 520 65
+                    C700 25 850 85 1010 65
+                    C1160 50 1280 90 1330 160
+                    C1380 300 1320 430 1350 570
+                    C1380 720 1270 800 1110 820
+                    C930 845 800 790 620 830
+                    C430 850 250 810 100 730
+                    C40 600 80 470 55 350
+                    C30 250 40 170 70 120
+                    Z
+                    "
+                    fill="none"
+                    stroke="#806a47"
+                    stroke-width="4"
+                />
+
+
+                <!-- LEFT RIVER -->
+
+                <path
+                    d="
+                    M140 0
+                    C240 150 180 250 280 350
+                    C350 420 270 540 370 650
+                    C430 720 390 810 450 900
+                    "
+                    fill="none"
+                    stroke="#6f9691"
+                    stroke-width="7"
+                />
+
+
+                <!-- RIGHT RIVER -->
+
+                <path
+                    d="
+                    M1260 0
+                    C1160 150 1220 250 1120 350
+                    C1050 420 1130 540 1030 650
+                    C970 720 1010 810 950 900
+                    "
+                    fill="none"
+                    stroke="#6f9691"
+                    stroke-width="7"
+                />
+
+
+                <!-- MOUNTAINS -->
+
+                <g
+                    fill="none"
+                    stroke="#806a47"
+                    stroke-width="4"
+                >
+
+                    <path d="M50 330 L140 170 L230 330 Z"/>
+                    <path d="M170 340 L250 200 L330 340 Z"/>
+                    <path d="M270 350 L350 230 L430 350 Z"/>
+
+                    <path d="M970 340 L1060 180 L1150 340 Z"/>
+                    <path d="M1080 350 L1170 190 L1260 350 Z"/>
+                    <path d="M1190 350 L1270 230 L1350 350 Z"/>
+
+                </g>
+
+
+                <!-- ROADS -->
+
+                <g
+                    fill="none"
+                    stroke="#8a734c"
+                    stroke-width="3"
+                    stroke-dasharray="12 12"
+                >
+
+                    <path
+                        d="
+                        M70 700
+                        C280 610 430 690 580 580
+                        C730 470 870 570 1010 630
+                        C1160 690 1260 600 1350 690
+                        "
+                    />
+
+                    <path
+                        d="
+                        M120 190
+                        C310 280 430 340 600 350
+                        C800 365 990 280 1270 180
+                        "
+                    />
+
+                </g>
+
+
+                <!-- SMALL CASTLES -->
+
+                <g
+                    fill="none"
+                    stroke="#806a47"
+                    stroke-width="4"
+                >
+
+                    <path
+                        d="
+                        M105 480
+                        L105 410
+                        L140 370
+                        L175 410
+                        L175 480
+                        Z
+                        "
+                    />
+
+                    <path
+                        d="
+                        M100 410
+                        L140 350
+                        L180 410
+                        "
+                    />
+
+
+                    <path
+                        d="
+                        M1225 480
+                        L1225 410
+                        L1260 370
+                        L1295 410
+                        L1295 480
+                        Z
+                        "
+                    />
+
+                    <path
+                        d="
+                        M1220 410
+                        L1260 350
+                        L1300 410
+                        "
+                    />
+
+                </g>
+
+            </svg>
+
+        </div>
+
+
+        <!-- SUBTLE CENTRAL GATE -->
+
+        <div class="gate-ghost">
+
+            <div class="ghost-arch"></div>
+
+            <div class="ghost-door"></div>
+
+        </div>
+
+
+        <!-- GATE CONTENT -->
+
+        <div class="gate-content">
+
+
+            <div class="gate-ornament">
+
+                <span></span>
+
+                <b>✦</b>
+
+                <span></span>
+
+            </div>
+
+
+            <h1 class="gate-title">
+                THE GATE AWAITS
+            </h1>
+
+
+            <p class="gate-subtitle">
+                A sealed passage awaits those
+                who know the way.
+            </p>
+
+
+            <div class="seal-label">
+
+                <span></span>
+
+                ENTER YOUR SEAL
+
+                <span></span>
+
+            </div>
+
+
+            <div class="gate-form">
+
+                <input
+                    type="password"
+                    id="access-code"
+                    placeholder="Enter your seal..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    id="start-button"
+                    type="button"
+                >
+                    UNLOCK GATE
+                </button>
+
+            </div>
+
+
+            <p
+                id="error-message"
+                class="error"
+            ></p>
+
+
+            <p class="gate-footer">
+                The realm beyond is waiting.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         USERNAME
+    ================================================== -->
+
+    <section
+        id="username-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👤 Who Are You?
+        </h2>
+
+        <p>
+            Buat username untuk menyimpan progress permainanmu.
+        </p>
+
+        <div class="form-group">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+            <button
+                id="username-button"
+                type="button"
+            >
+                ✨ Continue
+            </button>
+
+        </div>
+
+        <p
+            id="username-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CREATE PIN
+    ================================================== -->
+
+    <section
+        id="pin-setup-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔐 Create Your PIN
+        </h2>
+
+        <p>
+            Buat PIN 4 angka untuk menyimpan dan melanjutkan
+            progressmu.
+        </p>
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+            <input
+                type="password"
+                id="pin-confirm-input"
+                placeholder="Confirm PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+            <button
+                id="pin-button"
+                type="button"
+            >
+                🔐 Save PIN
+            </button>
+
+        </div>
+
+        <p
+            id="pin-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PIN LOGIN
+    ================================================== -->
+
+    <section
+        id="pin-login-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔑 Welcome Back
+        </h2>
+
+        <p id="pin-login-message">
+            Masukkan PIN untuk melanjutkan progressmu.
+        </p>
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="login-pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="current-password"
+            >
+
+            <button
+                id="pin-login-button"
+                type="button"
+            >
+                ▶️ Continue
+            </button>
+
+        </div>
+
+        <p
+            id="pin-login-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
+
+    <section
+        id="welcome-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👋 Welcome Back
+        </h2>
+
+        <p id="welcome-message"></p>
+
+        <div class="button-group">
+
+            <button
+                id="continue-button"
+                type="button"
+            >
+                ▶️ Continue
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         LORE
+    ================================================== -->
+
+    <section
+        id="lore-screen"
+        class="hidden"
+    >
+
+        <h2>
+            📖 Before We Begin
+        </h2>
+
+        <div class="lore-text">
+
+            <p>
+                You’ve probably seen them before.
+            </p>
+
+            <p>
+                You know the faces.
+                Maybe even the names.
+            </p>
+
+            <p>
+                But when you actually need to call them...
+            </p>
+
+            <p>
+                <strong>
+                    “Wait... who are they again?”
+                </strong>
+            </p>
+
+            <p>
+                NPC — Need Pamong Context is here to fix that.
+            </p>
+
+        </div>
+
+        <button
+            id="lore-button"
+            type="button"
+        >
+            🎮 Let's Go
+        </button>
+
+    </section>
+
+
+
+    <!-- =================================================
+         GAME
+    ================================================== -->
+
+    <section
+        id="game-screen"
+        class="hidden"
+    >
+
+        <div class="game-status">
+
+            <span>
+
+                🟢
+
+                <strong id="milestone-label">
+                    MILESTONE 1
+                </strong>
+
+            </span>
+
+            <span id="player-label"></span>
+
+        </div>
+
+        <h2>
+            🧑‍🤝‍🧑 Meet Your Pamong
+        </h2>
+
+        <p class="game-description">
+            Kenali wajah, nama, dan konteks Pamong-mu.
+        </p>
+
+        <div
+            id="pengasuh-container"
+        ></div>
+
+    </section>
+
+
+</main>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
