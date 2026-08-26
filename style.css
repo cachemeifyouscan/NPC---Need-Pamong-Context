@@ -1,6 +1,6 @@
 /* =========================================================
    NPC — NEED PAMONG CONTEXT
-   MEDIEVAL PARCHMENT / SANAPATI MAP
+   MEDIEVAL MAP / PARCHMENT
 ========================================================= */
 
 
@@ -14,11 +14,12 @@
 
 html,
 body {
+
     margin: 0;
     padding: 0;
 
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 
     font-family:
         Georgia,
@@ -55,18 +56,24 @@ body {
     align-items: center;
     justify-content: center;
 
-    background:
-        #eadfc7;
+    /*
+       Parchment base
+    */
 
-    transition:
-        opacity 0.45s ease,
-        visibility 0.45s ease;
+    background:
+
+        radial-gradient(
+            ellipse at center,
+            #fffaf0 0%,
+            #f4e9d2 55%,
+            #e7d7b7 100%
+        );
 }
 
 
 /* =========================================================
    MEDIEVAL MAP
-   SVG MAP DARI INDEX.HTML
+   MAP SVG SUDAH ADA DI INDEX.HTML
 ========================================================= */
 
 .map-decoration {
@@ -80,12 +87,15 @@ body {
 
     z-index: 0;
 
-    pointer-events: none;
-
     overflow: hidden;
 
-    opacity: 0.30;
+    pointer-events: none;
 
+    /*
+       INI YANG MEMBUAT MAP TERLIHAT
+    */
+
+    opacity: 0.42;
 }
 
 
@@ -98,13 +108,18 @@ body {
     width: 100%;
     height: 100%;
 
+    /*
+       SVG memenuhi seluruh layar
+    */
+
     object-fit: cover;
 
 }
 
 
 /* =========================================================
-   SOFT PARCHMENT LIGHT
+   PARCHMENT WASH
+   Menjaga map tidak terlalu rame
 ========================================================= */
 
 #intro-screen::after {
@@ -123,12 +138,11 @@ body {
 
         radial-gradient(
             ellipse at center,
-            rgba(255, 250, 237, 0.94) 0%,
-            rgba(255, 250, 237, 0.70) 32%,
-            rgba(255, 250, 237, 0.32) 62%,
-            rgba(255, 250, 237, 0.05) 100%
+            rgba(255, 250, 238, 0.82) 0%,
+            rgba(255, 250, 238, 0.48) 38%,
+            rgba(255, 250, 238, 0.15) 70%,
+            rgba(255, 250, 238, 0.02) 100%
         );
-
 }
 
 
@@ -144,16 +158,15 @@ body {
 
     inset: 34px;
 
-    z-index: 4;
+    z-index: 5;
 
     border:
         1px solid
-        rgba(112, 82, 43, 0.20);
+        rgba(112, 82, 43, 0.22);
 
     border-radius: 18px;
 
     pointer-events: none;
-
 }
 
 
@@ -182,7 +195,6 @@ body {
 
     transform:
         translateY(-2vh);
-
 }
 
 
@@ -197,24 +209,28 @@ body {
     width:
         min(52vw, 470px);
 
+    height: auto;
+
     max-height:
         64vh;
 
-    height: auto;
+    object-fit:
+        contain;
 
-    object-fit: contain;
+    flex-shrink:
+        0;
 
-    flex-shrink: 0;
+    user-select:
+        none;
 
-    user-select: none;
-
-    -webkit-user-drag: none;
+    -webkit-user-drag:
+        none;
 
     filter:
 
         drop-shadow(
-            0 15px 20px
-            rgba(67, 43, 24, 0.18)
+            0 16px 20px
+            rgba(67, 43, 24, 0.20)
         );
 
     animation:
@@ -222,7 +238,6 @@ body {
         4.5s
         ease-in-out
         infinite;
-
 }
 
 
@@ -246,36 +261,42 @@ body {
         transform:
             translateY(0);
     }
-
 }
 
 
 /* =========================================================
-   CLICK HERE BUTTON
+   CLICK HERE
 ========================================================= */
 
 .intro-enter-button {
 
     position: relative;
 
+    z-index: 20;
+
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    width: 300px;
+    width:
+        300px;
 
-    height: 60px;
+    height:
+        60px;
 
-    margin-top: -4px;
+    margin-top:
+        -4px;
 
-    padding: 0 30px;
+    padding:
+        0 30px;
 
     border:
         2px solid
         #b9893e;
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
     background:
 
@@ -294,15 +315,20 @@ body {
         "Times New Roman",
         serif;
 
-    font-size: 18px;
+    font-size:
+        18px;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    letter-spacing: 1.5px;
+    letter-spacing:
+        1.5px;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    outline: none;
+    outline:
+        none;
 
     box-shadow:
 
@@ -326,7 +352,6 @@ body {
         filter 0.18s ease,
         transform 0.18s ease,
         box-shadow 0.18s ease;
-
 }
 
 
@@ -353,7 +378,6 @@ body {
 
         0 13px 25px
         rgba(67, 43, 24, 0.22);
-
 }
 
 
@@ -377,12 +401,11 @@ body {
 
         0 5px 12px
         rgba(67, 43, 24, 0.15);
-
 }
 
 
 /* =========================================================
-   SUBTLE PULSE
+   BUTTON PULSE
 ========================================================= */
 
 @keyframes buttonPulse {
@@ -397,215 +420,348 @@ body {
         transform:
             scale(1.018);
     }
-
 }
 
 
 /* =========================================================
-   HIDE OLD INTRO HINT
+   OLD INTRO HINT
 ========================================================= */
 
 .intro-hint {
-    display: none !important;
+
+    display:
+        none !important;
 }
 
 
 /* =========================================================
    MAIN GAME
+   WAJIB HIDDEN SAAT OPENING
 ========================================================= */
 
 #main-game {
 
-    display: none !important;
+    display:
+        none !important;
 
-    position: relative;
+    position:
+        relative;
 
-    width: 100vw;
-    height: 100vh;
+    width:
+        100vw;
 
-    overflow: hidden;
+    height:
+        100vh;
 
+    overflow:
+        hidden;
 }
 
 
 /* =========================================================
-   MAIN GAME VISIBLE AFTER CLICK
+   MAIN GAME AFTER CLICK
 ========================================================= */
 
 #main-game.game-visible {
 
-    display: block !important;
-
+    display:
+        block !important;
 }
 
 
 /* =========================================================
-   HIDDEN SCREENS
+   HIDDEN
 ========================================================= */
 
 .hidden {
 
-    display: none !important;
-
+    display:
+        none !important;
 }
 
 
 /* =========================================================
-   INTRO HIDDEN
+   OPENING DISAPPEAR
 ========================================================= */
 
 #intro-screen.intro-hidden {
 
-    opacity: 0;
+    opacity:
+        0;
 
-    visibility: hidden;
+    visibility:
+        hidden;
 
-    pointer-events: none;
-
+    pointer-events:
+        none;
 }
 
 
 /* =========================================================
-   ACCESS CODE SCREEN
+   GATE SCREEN
 ========================================================= */
 
 #login-screen {
 
-    position: relative;
-
-    width: 100vw;
-    height: 100vh;
-
-    overflow: hidden;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-
-        radial-gradient(
-            ellipse at center,
-            #fffaf0 0%,
-            #f2e5cb 70%,
-            #e7d7b7 100%
-        );
-
-}
-
-
-/* =========================================================
-   GATE CARD
-========================================================= */
-
-#login-screen .screen-card {
-
-    position: relative;
+    position:
+        relative;
 
     width:
-        min(760px, 90vw);
+        100vw;
 
-    padding:
-        50px 55px;
+    height:
+        100vh;
 
-    text-align: center;
+    overflow:
+        hidden;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
 
     background:
-        rgba(255, 249, 235, 0.96);
-
-    border:
-        1px solid
-        rgba(123, 87, 43, 0.30);
-
-    border-radius:
-        18px;
-
-    box-shadow:
-
-        0 18px 45px
-        rgba(68, 46, 25, 0.15),
-
-        inset
-        0 0 35px
-        rgba(154, 115, 58, 0.07);
-
+        #efe2c7;
 }
 
 
 /* =========================================================
-   SCREEN DECORATION
+   GATE MAP
+   Kita juga styling map kedua yang sudah ada di HTML
 ========================================================= */
 
-.screen-decoration {
+.gate-map {
 
-    color:
-        #9a7037;
+    position:
+        absolute;
 
-    font-size:
-        22px;
+    inset:
+        0;
 
-    margin-bottom:
-        8px;
-
-}
-
-
-/* =========================================================
-   HEADINGS
-========================================================= */
-
-.screen-card h2 {
-
-    margin:
-        0 0 18px;
-
-    color:
-        #4a2d1b;
-
-    font-size:
-        clamp(32px, 4vw, 48px);
-
-    letter-spacing:
-        0.5px;
-
-}
-
-
-.screen-subtitle {
-
-    margin:
-        0 auto 32px;
-
-    max-width:
-        650px;
-
-    color:
-        #70553a;
-
-    font-size:
-        clamp(16px, 2vw, 20px);
-
-    line-height:
-        1.6;
-
-}
-
-
-/* =========================================================
-   FORM GROUP
-========================================================= */
-
-.form-group {
+    z-index:
+        0;
 
     width:
         100%;
 
-    max-width:
-        620px;
+    height:
+        100%;
+
+    overflow:
+        hidden;
+
+    pointer-events:
+        none;
+
+    opacity:
+        0.18;
+}
+
+
+.gate-map svg {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    display:
+        block;
+}
+
+
+/* =========================================================
+   GATE GHOST
+========================================================= */
+
+.gate-ghost {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    bottom:
+        -50px;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        500px;
+
+    height:
+        600px;
+
+    opacity:
+        0.08;
+
+    pointer-events:
+        none;
+
+    z-index:
+        1;
+}
+
+
+.ghost-arch {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    top:
+        0;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        340px;
+
+    height:
+        460px;
+
+    border:
+        7px solid
+        #765d3b;
+
+    border-bottom:
+        none;
+
+    border-radius:
+        180px 180px 0 0;
+}
+
+
+.ghost-door {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    bottom:
+        0;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        270px;
+
+    height:
+        330px;
+
+    border:
+        5px solid
+        #765d3b;
+
+    border-bottom:
+        none;
+
+    border-radius:
+        140px 140px 0 0;
+}
+
+
+/* =========================================================
+   GATE CONTENT
+========================================================= */
+
+.gate-content {
+
+    position:
+        relative;
+
+    z-index:
+        10;
+
+    width:
+        min(720px, 90vw);
+
+    text-align:
+        center;
+
+    padding:
+        40px 30px;
+}
+
+
+.gate-ornament {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        15px;
+
+    color:
+        #a27a3d;
+}
+
+
+.gate-ornament span {
+
+    width:
+        70px;
+
+    height:
+        1px;
+
+    background:
+        rgba(120, 88, 43, 0.45);
+}
+
+
+.gate-title {
 
     margin:
-        0 auto;
+        10px 0 18px;
+
+    color:
+        #4c301d;
+
+    font-size:
+        clamp(36px, 5vw, 58px);
+
+    letter-spacing:
+        1px;
+}
+
+
+.gate-subtitle {
+
+    margin:
+        0 auto 30px;
+
+    color:
+        #765a3c;
+
+    font-size:
+        19px;
+
+    line-height:
+        1.6;
+}
+
+
+.seal-label {
 
     display:
         flex;
@@ -619,17 +775,60 @@ body {
     gap:
         12px;
 
+    margin-bottom:
+        10px;
+
+    color:
+        #65482c;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        2px;
+}
+
+
+.seal-label span {
+
+    width:
+        55px;
+
+    height:
+        1px;
+
+    background:
+        rgba(120, 88, 43, 0.4);
 }
 
 
 /* =========================================================
-   INPUT
+   GATE FORM
 ========================================================= */
 
-.form-group input {
+.gate-form {
 
-    flex:
-        1;
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        stretch;
+
+    gap:
+        10px;
+}
+
+
+.gate-form input {
+
+    width:
+        min(430px, 60vw);
 
     height:
         58px;
@@ -639,19 +838,16 @@ body {
 
     border:
         1px solid
-        #c7ad82;
+        #c4a77b;
 
     border-radius:
-        11px;
-
-    outline:
-        none;
+        10px;
 
     background:
         #fffaf0;
 
     color:
-        #422d1d;
+        #4a301d;
 
     font-family:
         Georgia,
@@ -661,69 +857,46 @@ body {
     font-size:
         18px;
 
-    box-shadow:
-
-        inset
-        0 2px 5px
-        rgba(70, 40, 15, 0.05);
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-
+    outline:
+        none;
 }
 
 
-.form-group input:focus {
+.gate-form input:focus {
 
     border-color:
-        #9b6c2e;
+        #98703a;
 
     box-shadow:
-
         0 0 0 3px
-        rgba(155, 108, 46, 0.12);
-
+        rgba(152,112,58,0.12);
 }
 
 
-.form-group input::placeholder {
-
-    color:
-        #a18c73;
-
-}
-
-
-/* =========================================================
-   FORM BUTTON
-========================================================= */
-
-.form-group button {
+.gate-form button {
 
     height:
         58px;
 
     padding:
-        0 28px;
+        0 25px;
 
     border:
-        1px solid
-        #a87935;
+        2px solid
+        #b9893e;
 
     border-radius:
-        11px;
+        10px;
 
     background:
-
         linear-gradient(
             180deg,
             #68482d,
-            #432817
+            #402717
         );
 
     color:
-        #fff3d4;
+        #fff0ce;
 
     font-family:
         Georgia,
@@ -731,45 +904,38 @@ body {
         serif;
 
     font-size:
-        17px;
+        16px;
 
     font-weight:
         700;
+
+    letter-spacing:
+        1px;
 
     cursor:
         pointer;
 
     box-shadow:
         0 4px 0
-        #2b1a10;
-
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
-
+        #29180e;
 }
 
 
-.form-group button:hover {
+.gate-form button:hover {
 
     filter:
         brightness(1.08);
-
-    transform:
-        translateY(-2px);
-
 }
 
 
-.form-group button:active {
+.gate-form button:active {
 
     transform:
         translateY(2px);
 
     box-shadow:
         0 2px 0
-        #2b1a10;
-
+        #29180e;
 }
 
 
@@ -786,11 +952,27 @@ body {
         14px 0 0;
 
     color:
-        #9b3026;
+        #a2382d;
 
     font-size:
         15px;
+}
 
+
+/* =========================================================
+   GATE FOOTER
+========================================================= */
+
+.gate-footer {
+
+    margin-top:
+        28px;
+
+    color:
+        #806849;
+
+    font-style:
+        italic;
 }
 
 
@@ -802,7 +984,8 @@ body {
 #pin-setup-screen,
 #pin-login-screen,
 #welcome-screen,
-#lore-screen {
+#lore-screen,
+#game-screen {
 
     width:
         100vw;
@@ -833,24 +1016,23 @@ body {
             #f2e5cb 72%,
             #e7d7b7 100%
         );
-
 }
 
 
 /* =========================================================
-   GAME SCREEN
+   FORM GROUP
 ========================================================= */
 
-#game-screen {
+.form-group {
 
     width:
-        100vw;
+        100%;
 
-    height:
-        100vh;
+    max-width:
+        620px;
 
-    overflow:
-        hidden;
+    margin:
+        0 auto;
 
     display:
         flex;
@@ -861,12 +1043,101 @@ body {
     justify-content:
         center;
 
+    gap:
+        10px;
+}
+
+
+.form-group input {
+
+    flex:
+        1;
+
+    height:
+        58px;
+
     padding:
-        30px;
+        0 18px;
+
+    border:
+        1px solid
+        #c4a77b;
+
+    border-radius:
+        10px;
 
     background:
-        #eee2c8;
+        #fffaf0;
 
+    color:
+        #422d1d;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        17px;
+
+    outline:
+        none;
+}
+
+
+.form-group input:focus {
+
+    border-color:
+        #98703a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(152,112,58,0.12);
+}
+
+
+.form-group button {
+
+    height:
+        58px;
+
+    padding:
+        0 25px;
+
+    border:
+        1px solid
+        #a87935;
+
+    border-radius:
+        10px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #68482d,
+            #432817
+        );
+
+    color:
+        #fff1d0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        16px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 4px 0
+        #29180e;
 }
 
 
@@ -890,7 +1161,6 @@ body {
 
     line-height:
         1.75;
-
 }
 
 
@@ -898,96 +1168,6 @@ body {
 
     margin:
         0 0 14px;
-
-}
-
-
-/* =========================================================
-   LARGE BUTTON
-========================================================= */
-
-.large-game-button {
-
-    min-width:
-        280px;
-
-    height:
-        58px;
-
-    padding:
-        0 28px;
-
-    border:
-        1px solid
-        #a87935;
-
-    border-radius:
-        11px;
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #68482d,
-            #432817
-        );
-
-    color:
-        #fff3d4;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size:
-        17px;
-
-    font-weight:
-        700;
-
-    cursor:
-        pointer;
-
-    box-shadow:
-        0 4px 0
-        #2b1a10;
-
-}
-
-
-/* =========================================================
-   GAME PANEL
-========================================================= */
-
-.game-panel {
-
-    width:
-        min(1000px, 94vw);
-
-    height:
-        min(760px, 90vh);
-
-    overflow-y:
-        auto;
-
-    padding:
-        35px;
-
-    background:
-        rgba(250, 244, 230, 0.96);
-
-    border:
-        1px solid
-        rgba(126, 91, 46, 0.30);
-
-    border-radius:
-        18px;
-
-    box-shadow:
-        0 18px 45px
-        rgba(68, 46, 25, 0.15);
-
 }
 
 
@@ -1006,40 +1186,11 @@ body {
     align-items:
         center;
 
-    padding-bottom:
-        15px;
-
-    border-bottom:
-        1px solid
-        rgba(126, 91, 46, 0.18);
+    padding:
+        20px;
 
     color:
         #76542e;
-
-    font-size:
-        15px;
-
-}
-
-
-/* =========================================================
-   GAME TITLE
-========================================================= */
-
-.game-panel h2 {
-
-    margin:
-        28px 0 10px;
-
-    text-align:
-        center;
-
-    color:
-        #4a2d1b;
-
-    font-size:
-        clamp(28px, 4vw, 42px);
-
 }
 
 
@@ -1053,10 +1204,6 @@ body {
 
     font-size:
         17px;
-
-    margin-bottom:
-        30px;
-
 }
 
 
@@ -1070,7 +1217,6 @@ body {
 
         inset:
             18px;
-
     }
 
 
@@ -1078,7 +1224,6 @@ body {
 
         transform:
             translateY(-1vh);
-
     }
 
 
@@ -1089,7 +1234,6 @@ body {
 
         max-height:
             57vh;
-
     }
 
 
@@ -1103,26 +1247,27 @@ body {
 
         font-size:
             15px;
-
     }
 
 
-    .screen-card {
+    .gate-form {
+
+        flex-direction:
+            column;
+    }
+
+
+    .gate-form input {
 
         width:
-            92vw;
-
-        padding:
-            35px 22px;
-
+            100%;
     }
 
 
-    .screen-card h2 {
+    .gate-form button {
 
-        font-size:
-            30px;
-
+        width:
+            100%;
     }
 
 
@@ -1130,7 +1275,6 @@ body {
 
         flex-direction:
             column;
-
     }
 
 
@@ -1139,7 +1283,6 @@ body {
 
         width:
             100%;
-
     }
 
 }
