@@ -29,9 +29,6 @@
 
 <div id="intro-screen">
 
-
-    <!-- MAP BACKGROUND -->
-
     <div class="map-decoration">
 
         <svg
@@ -40,7 +37,7 @@
             xmlns="http://www.w3.org/2000/svg"
         >
 
-            <!-- OUTER MAP -->
+            <!-- MAP BORDER -->
 
             <path
                 d="
@@ -100,15 +97,11 @@
             >
 
                 <path d="M70 330 L140 210 L210 330 Z"/>
-
                 <path d="M150 330 L230 180 L310 330 Z"/>
-
                 <path d="M250 340 L330 220 L410 340 Z"/>
 
                 <path d="M1000 330 L1080 190 L1160 330 Z"/>
-
                 <path d="M1100 330 L1190 160 L1280 330 Z"/>
-
                 <path d="M1200 340 L1270 220 L1340 340 Z"/>
 
             </g>
@@ -123,19 +116,13 @@
             >
 
                 <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
-
                 <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
-
                 <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
-
                 <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
 
                 <path d="M1100 620 l30 -50 l30 50 l-30 -12 Z"/>
-
                 <path d="M1160 650 l30 -50 l30 50 l-30 -12 Z"/>
-
                 <path d="M1220 625 l30 -50 l30 50 l-30 -12 Z"/>
-
                 <path d="M1280 655 l30 -50 l30 50 l-30 -12 Z"/>
 
             </g>
@@ -170,6 +157,56 @@
             </g>
 
 
+            <!-- CASTLES -->
+
+            <g
+                fill="none"
+                stroke="#78613d"
+                stroke-width="4"
+            >
+
+                <path
+                    d="
+                    M100 450
+                    L100 390
+                    L135 355
+                    L170 390
+                    L170 450
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M95 390
+                    L135 335
+                    L175 390
+                    "
+                />
+
+
+                <path
+                    d="
+                    M1230 450
+                    L1230 390
+                    L1265 355
+                    L1300 390
+                    L1300 450
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M1225 390
+                    L1265 335
+                    L1305 390
+                    "
+                />
+
+            </g>
+
+
             <!-- COMPASS -->
 
             <g
@@ -180,7 +217,6 @@
             >
 
                 <circle r="150"/>
-
                 <circle r="125"/>
 
                 <path
@@ -208,10 +244,40 @@
             </g>
 
 
+            <!-- MAP LABELS -->
+
+            <g
+                fill="#725b3c"
+                font-family="Georgia, serif"
+                font-size="22"
+                letter-spacing="4"
+            >
+
+                <text x="100" y="90">
+                    WESTERN WOODS
+                </text>
+
+                <text x="1050" y="90">
+                    NORTHERN PEAKS
+                </text>
+
+                <text x="580" y="70">
+                    SANAPATI LAND
+                </text>
+
+                <text x="100" y="820">
+                    WESTERN COAST
+                </text>
+
+                <text x="1080" y="820">
+                    EASTERN KINGDOM
+                </text>
+
+            </g>
+
         </svg>
 
     </div>
-
 
 
     <!-- MASCOT -->
@@ -225,14 +291,14 @@
         >
 
 
+        <!-- NO EXTRA ICON -->
+
         <button
             id="intro-start-button"
             class="intro-enter-button"
             type="button"
         >
-
             CLICK HERE
-
         </button>
 
     </div>
@@ -261,9 +327,9 @@
     >
 
 
-        <!-- DECORATIVE MAP -->
+        <!-- BACKGROUND MAP -->
 
-        <div class="gate-map-lines">
+        <div class="gate-map">
 
             <svg
                 viewBox="0 0 1400 900"
@@ -271,64 +337,73 @@
                 xmlns="http://www.w3.org/2000/svg"
             >
 
-                <!-- LEFT MOUNTAINS -->
+                <!-- MAP BORDER -->
+
+                <path
+                    d="
+                    M70 120
+                    C250 50 370 100 520 65
+                    C700 25 850 85 1010 65
+                    C1160 50 1280 90 1330 160
+                    C1380 300 1320 430 1350 570
+                    C1380 720 1270 800 1110 820
+                    C930 845 800 790 620 830
+                    C430 850 250 810 100 730
+                    C40 600 80 470 55 350
+                    C30 250 40 170 70 120
+                    Z
+                    "
+                    fill="none"
+                    stroke="#806a47"
+                    stroke-width="4"
+                />
+
+
+                <!-- LEFT RIVER -->
+
+                <path
+                    d="
+                    M140 0
+                    C240 150 180 250 280 350
+                    C350 420 270 540 370 650
+                    C430 720 390 810 450 900
+                    "
+                    fill="none"
+                    stroke="#6f9691"
+                    stroke-width="7"
+                />
+
+
+                <!-- RIGHT RIVER -->
+
+                <path
+                    d="
+                    M1260 0
+                    C1160 150 1220 250 1120 350
+                    C1050 420 1130 540 1030 650
+                    C970 720 1010 810 950 900
+                    "
+                    fill="none"
+                    stroke="#6f9691"
+                    stroke-width="7"
+                />
+
+
+                <!-- MOUNTAINS -->
 
                 <g
                     fill="none"
-                    stroke="#796746"
+                    stroke="#806a47"
                     stroke-width="4"
                 >
 
-                    <path
-                        d="
-                        M70 310
-                        L170 140
-                        L270 310
-                        "
-                    />
+                    <path d="M50 330 L140 170 L230 330 Z"/>
+                    <path d="M170 340 L250 200 L330 340 Z"/>
+                    <path d="M270 350 L350 230 L430 350 Z"/>
 
-                    <path
-                        d="
-                        M180 330
-                        L270 180
-                        L360 330
-                        "
-                    />
-
-                    <path
-                        d="
-                        M280 340
-                        L350 220
-                        L420 340
-                        "
-                    />
-
-
-                    <!-- RIGHT -->
-
-                    <path
-                        d="
-                        M980 330
-                        L1080 150
-                        L1180 330
-                        "
-                    />
-
-                    <path
-                        d="
-                        M1080 330
-                        L1190 170
-                        L1300 330
-                        "
-                    />
-
-                    <path
-                        d="
-                        M1190 340
-                        L1270 220
-                        L1350 340
-                        "
-                    />
+                    <path d="M970 340 L1060 180 L1150 340 Z"/>
+                    <path d="M1080 350 L1170 190 L1260 350 Z"/>
+                    <path d="M1190 350 L1270 230 L1350 350 Z"/>
 
                 </g>
 
@@ -337,23 +412,25 @@
 
                 <g
                     fill="none"
-                    stroke="#8b744e"
+                    stroke="#8a734c"
                     stroke-width="3"
-                    stroke-dasharray="10 12"
+                    stroke-dasharray="12 12"
                 >
 
                     <path
                         d="
-                        M80 700
-                        C300 580
-                        430 680
-                        600 560
-                        C760 450
-                        900 570
-                        1050 630
-                        C1170 680
-                        1260 600
-                        1350 690
+                        M70 700
+                        C280 610 430 690 580 580
+                        C730 470 870 570 1010 630
+                        C1160 690 1260 600 1350 690
+                        "
+                    />
+
+                    <path
+                        d="
+                        M120 190
+                        C310 280 430 340 600 350
+                        C800 365 990 280 1270 180
                         "
                     />
 
@@ -364,46 +441,46 @@
 
                 <g
                     fill="none"
-                    stroke="#796746"
+                    stroke="#806a47"
                     stroke-width="4"
                 >
 
                     <path
                         d="
-                        M120 470
-                        L120 400
-                        L155 360
-                        L190 400
-                        L190 470
+                        M105 480
+                        L105 410
+                        L140 370
+                        L175 410
+                        L175 480
                         Z
                         "
                     />
 
                     <path
                         d="
-                        M115 400
-                        L155 340
-                        L195 400
+                        M100 410
+                        L140 350
+                        L180 410
                         "
                     />
 
 
                     <path
                         d="
-                        M1210 470
-                        L1210 400
-                        L1245 360
-                        L1280 400
-                        L1280 470
+                        M1225 480
+                        L1225 410
+                        L1260 370
+                        L1295 410
+                        L1295 480
                         Z
                         "
                     />
 
                     <path
                         d="
-                        M1205 400
-                        L1245 340
-                        L1285 400
+                        M1220 410
+                        L1260 350
+                        L1300 410
                         "
                     />
 
@@ -414,26 +491,18 @@
         </div>
 
 
+        <!-- SUBTLE CENTRAL GATE -->
 
-        <!-- CENTRAL GATE -->
+        <div class="gate-ghost">
 
-        <div class="gate-arch">
+            <div class="ghost-arch"></div>
 
-            <div class="gate-arch-top"></div>
-
-            <div class="gate-door">
-
-                <div class="gate-door-left"></div>
-
-                <div class="gate-door-right"></div>
-
-            </div>
+            <div class="ghost-door"></div>
 
         </div>
 
 
-
-        <!-- CONTENT -->
+        <!-- GATE CONTENT -->
 
         <div class="gate-content">
 
@@ -442,9 +511,7 @@
 
                 <span></span>
 
-                <div>
-                    ✦
-                </div>
+                <b>✦</b>
 
                 <span></span>
 
@@ -452,35 +519,28 @@
 
 
             <h1 class="gate-title">
-
                 THE GATE AWAITS
-
             </h1>
 
 
             <p class="gate-subtitle">
-
                 A sealed passage awaits those
                 who know the way.
-
             </p>
 
 
             <div class="seal-label">
 
-                <span class="seal-line"></span>
+                <span></span>
 
-                <span>
-                    ENTER YOUR SEAL
-                </span>
+                ENTER YOUR SEAL
 
-                <span class="seal-line"></span>
+                <span></span>
 
             </div>
 
 
             <div class="gate-form">
-
 
                 <input
                     type="password"
@@ -494,11 +554,8 @@
                     id="start-button"
                     type="button"
                 >
-
                     UNLOCK GATE
-
                 </button>
-
 
             </div>
 
@@ -510,14 +567,10 @@
 
 
             <p class="gate-footer">
-
                 The realm beyond is waiting.
-
             </p>
 
-
         </div>
-
 
     </section>
 
@@ -552,6 +605,7 @@
 
             <button
                 id="username-button"
+                type="button"
             >
                 ✨ Continue
             </button>
@@ -607,6 +661,7 @@
 
             <button
                 id="pin-button"
+                type="button"
             >
                 🔐 Save PIN
             </button>
@@ -623,7 +678,7 @@
 
 
     <!-- =================================================
-         ENTER PIN
+         PIN LOGIN
     ================================================== -->
 
     <section
@@ -652,6 +707,7 @@
 
             <button
                 id="pin-login-button"
+                type="button"
             >
                 ▶️ Continue
             </button>
@@ -668,7 +724,7 @@
 
 
     <!-- =================================================
-         WELCOME BACK
+         WELCOME
     ================================================== -->
 
     <section
@@ -680,14 +736,13 @@
             👋 Welcome Back
         </h2>
 
-        <p
-            id="welcome-message"
-        ></p>
+        <p id="welcome-message"></p>
 
         <div class="button-group">
 
             <button
                 id="continue-button"
+                type="button"
             >
                 ▶️ Continue
             </button>
@@ -740,6 +795,7 @@
 
         <button
             id="lore-button"
+            type="button"
         >
             🎮 Let's Go
         </button>
@@ -763,17 +819,13 @@
 
                 🟢
 
-                <strong
-                    id="milestone-label"
-                >
+                <strong id="milestone-label">
                     MILESTONE 1
                 </strong>
 
             </span>
 
-            <span
-                id="player-label"
-            ></span>
+            <span id="player-label"></span>
 
         </div>
 
@@ -795,11 +847,7 @@
 </main>
 
 
-
-<script
-    src="app.js"
-></script>
-
+<script src="app.js"></script>
 
 </body>
 
