@@ -1,5 +1,50 @@
 /* =====================================================
-   INTRO SCREEN
+   NPC — NEED PAMONG CONTEXT
+   MAIN STYLESHEET
+===================================================== */
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+
+}
+
+
+body {
+
+    overflow-x: hidden;
+
+}
+
+
+/* =====================================================
+   HIDDEN
+===================================================== */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =====================================================
+   OPENING SCREEN
 ===================================================== */
 
 #intro-screen {
@@ -19,14 +64,80 @@
     justify-content: center;
 
     background:
+
         radial-gradient(
-            circle at center,
+            ellipse at center,
             #fffaf0 0%,
-            #f5ead3 60%,
-            #e5d2ad 100%
+            #f6ead2 55%,
+            #e4d0a8 100%
         );
 
     z-index: 99999;
+
+}
+
+
+/* =====================================================
+   PARCHMENT TEXTURE
+===================================================== */
+
+#intro-screen::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+
+        repeating-linear-gradient(
+            0deg,
+            rgba(100, 75, 40, 0.025) 0px,
+            rgba(100, 75, 40, 0.025) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(100, 75, 40, 0.018) 0px,
+            rgba(100, 75, 40, 0.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
+
+    opacity: 0.7;
+
+    z-index: 1;
+
+}
+
+
+/* =====================================================
+   PARCHMENT BORDER
+===================================================== */
+
+#intro-screen::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 35px;
+
+    border:
+        2px solid
+        rgba(116, 91, 54, 0.14);
+
+    border-radius: 18px;
+
+    pointer-events: none;
+
+    z-index: 2;
+
 }
 
 
@@ -45,18 +156,20 @@
 
     pointer-events: none;
 
-    z-index: 1;
+    z-index: 3;
 
-    opacity: 0.27;
+    opacity: 0.30;
+
 }
 
 
 .map-decoration svg {
 
+    display: block;
+
     width: 100%;
     height: 100%;
 
-    display: block;
 }
 
 
@@ -73,11 +186,12 @@
         "Times New Roman",
         serif;
 
-    font-size: 22px;
+    font-size: 21px;
 
     font-weight: 600;
 
     letter-spacing: 2px;
+
 }
 
 
@@ -85,9 +199,10 @@
 
     font-size: 30px;
 
+    font-weight: 700;
+
     letter-spacing: 5px;
 
-    font-weight: 700;
 }
 
 
@@ -105,11 +220,12 @@
     font-weight: 600;
 
     letter-spacing: 2px;
+
 }
 
 
 /* =====================================================
-   MAP DETAILS
+   RIVER
 ===================================================== */
 
 .map-river {
@@ -121,8 +237,13 @@
     stroke-width: 8;
 
     stroke-linecap: round;
+
 }
 
+
+/* =====================================================
+   ROAD
+===================================================== */
 
 .map-road {
 
@@ -134,9 +255,12 @@
 
     stroke-dasharray: 10 12;
 
-    opacity: 0.8;
 }
 
+
+/* =====================================================
+   MOUNTAINS
+===================================================== */
 
 .map-mountains {
 
@@ -146,9 +270,12 @@
 
     stroke-width: 4;
 
-    opacity: 0.8;
 }
 
+
+/* =====================================================
+   FOREST
+===================================================== */
 
 .map-forest {
 
@@ -158,9 +285,12 @@
 
     stroke-width: 3;
 
-    opacity: 0.8;
 }
 
+
+/* =====================================================
+   CASTLE
+===================================================== */
 
 .map-castle {
 
@@ -170,9 +300,12 @@
 
     stroke-width: 4;
 
-    opacity: 0.8;
 }
 
+
+/* =====================================================
+   COMPASS
+===================================================== */
 
 .map-compass {
 
@@ -182,13 +315,14 @@
 
     stroke-width: 3;
 
-    opacity: 0.8;
 }
 
 
 .map-compass text {
 
     fill: #705a39;
+
+    stroke: none;
 
     font-family:
         Georgia,
@@ -198,7 +332,6 @@
 
     font-weight: 700;
 
-    stroke: none;
 }
 
 
@@ -210,9 +343,10 @@
 
     position: relative;
 
-    z-index: 10;
+    z-index: 100;
 
-    width: min(88vw, 560px);
+    width:
+        min(88vw, 560px);
 
     display: flex;
 
@@ -221,6 +355,10 @@
     align-items: center;
 
     justify-content: center;
+
+    transform:
+        translateY(-1vh);
+
 }
 
 
@@ -232,142 +370,519 @@
 
     display: block;
 
-    width: min(58vw, 500px);
+    width:
+        min(48vw, 430px);
 
-    max-height: 65vh;
+    max-width: 430px;
+
+    max-height: 62vh;
 
     height: auto;
 
     object-fit: contain;
 
+    margin: 0;
+
     user-select: none;
 
     -webkit-user-drag: none;
 
+    pointer-events: none;
+
     filter:
+
         drop-shadow(
             0 18px 20px
             rgba(70, 48, 22, 0.20)
         );
 
     animation:
+
         mascotFloat
         4.5s
         ease-in-out
         infinite;
+
 }
 
 
 @keyframes mascotFloat {
 
     0% {
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
+
     }
 
     50% {
-        transform: translateY(-8px);
+
+        transform:
+            translateY(-8px);
+
     }
 
     100% {
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
+
     }
+
 }
 
 
 /* =====================================================
-   CLICK HERE BUTTON
+   CLICK HERE
+   TRANSPARENT HITBOX
 ===================================================== */
 
 #intro-start-button {
 
-    width: 300px;
+    position: absolute;
 
-    height: 62px;
+    left: 27%;
 
-    margin-top: -5px;
+    bottom: 2%;
+
+    width: 46%;
+
+    height: 14%;
+
+    padding: 0;
+
+    margin: 0;
+
+    background:
+        transparent !important;
 
     border:
+        none !important;
 
-        2px solid
+    box-shadow:
+        none !important;
 
-        #b8893f;
+    outline:
+        none !important;
 
-    border-radius: 13px;
+    cursor:
+        pointer;
+
+    z-index:
+        200;
+
+}
+
+
+/* NEVER SHOW A SECOND BUTTON */
+
+#intro-start-button:hover,
+#intro-start-button:focus,
+#intro-start-button:active {
+
+    background:
+        transparent !important;
+
+    border:
+        none !important;
+
+    box-shadow:
+        none !important;
+
+    outline:
+        none !important;
+
+}
+
+
+/* =====================================================
+   MAIN GAME
+===================================================== */
+
+#main-game {
+
+    display: none;
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding:
+        50px 20px;
 
     background:
 
-        linear-gradient(
-            180deg,
-            #704a2c 0%,
-            #57351f 55%,
-            #3d2517 100%
+        radial-gradient(
+            circle at center,
+            #fffaf0 0%,
+            #f5ead3 60%,
+            #e6d4b1 100%
         );
 
-    color: #fff0cc;
+    color:
+        #3f2b1d;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size: 19px;
+}
 
-    font-weight: 700;
 
-    letter-spacing: 2px;
+/* =====================================================
+   HEADER
+===================================================== */
 
-    cursor: pointer;
+.game-header {
+
+    width:
+        min(900px, 92vw);
+
+    margin:
+        0 auto 40px;
+
+    text-align:
+        center;
+
+}
+
+
+.game-header h1 {
+
+    margin:
+        0 0 8px;
+
+    font-size:
+        42px;
+
+    color:
+        #4b301d;
+
+}
+
+
+.game-header p {
+
+    margin:
+        0;
+
+    font-size:
+        20px;
+
+    color:
+        #745337;
+
+}
+
+
+/* =====================================================
+   SCREEN CARDS
+===================================================== */
+
+#login-screen,
+#username-screen,
+#pin-setup-screen,
+#pin-login-screen,
+#welcome-screen,
+#lore-screen,
+#game-screen {
+
+    width:
+        min(900px, 92vw);
+
+    margin:
+        30px auto;
+
+    padding:
+        45px;
+
+    background:
+        rgba(255, 249, 235, 0.94);
+
+    border:
+        1px solid
+        rgba(130, 96, 53, 0.28);
+
+    border-radius:
+        18px;
 
     box-shadow:
+        0 12px 30px
+        rgba(78, 52, 27, 0.12);
 
-        0 4px 0 #29180e,
-
-        0 10px 22px
-        rgba(67, 43, 24, 0.20);
-
-    animation:
-        buttonPulse
-        3.2s
-        ease-in-out
-        infinite;
-}
-
-
-#intro-start-button:hover {
-
-    filter: brightness(1.12);
+    text-align:
+        center;
 
 }
 
 
-#intro-start-button:active {
+/* =====================================================
+   HEADINGS
+===================================================== */
 
-    transform: translateY(3px);
+#main-game h2 {
+
+    margin-top:
+        0;
+
+    margin-bottom:
+        18px;
+
+    color:
+        #4b301d;
+
+    font-size:
+        34px;
+
+}
+
+
+#main-game p {
+
+    color:
+        #63482f;
+
+    font-size:
+        18px;
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-group {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        12px;
+
+    margin-top:
+        30px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+.form-group input {
+
+    width:
+        320px;
+
+    height:
+        56px;
+
+    padding:
+        0 18px;
+
+    border:
+        2px solid
+        #b99a68;
+
+    border-radius:
+        10px;
+
+    background:
+        #fffdf7;
+
+    color:
+        #3d2919;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        18px;
+
+    outline:
+        none;
+
+}
+
+
+.form-group input:focus {
+
+    border-color:
+        #80603a;
 
     box-shadow:
-
-        0 1px 0 #29180e,
-
-        0 5px 12px
-        rgba(67, 43, 24, 0.18);
+        0 0 0 3px
+        rgba(128, 96, 58, 0.12);
 
 }
 
 
-@keyframes buttonPulse {
+/* =====================================================
+   GAME BUTTONS
+===================================================== */
 
-    0%,
-    100% {
+#main-game button {
 
-        transform: scale(1);
+    height:
+        56px;
 
-    }
+    padding:
+        0 26px;
 
-    50% {
+    border:
+        2px solid
+        #a77938;
 
-        transform: scale(1.018);
+    border-radius:
+        10px;
 
-    }
+    background:
+
+        linear-gradient(
+            180deg,
+            #704a2c 0%,
+            #57351f 100%
+        );
+
+    color:
+        #fff1d0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        17px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 4px 0 #342013;
+
+}
+
+
+#main-game button:hover {
+
+    filter:
+        brightness(1.12);
+
+}
+
+
+#main-game button:active {
+
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        0 1px 0 #342013;
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error {
+
+    color:
+        #a52b22 !important;
+
+    font-weight:
+        600;
+
+    min-height:
+        24px;
+
+}
+
+
+/* =====================================================
+   LORE
+===================================================== */
+
+.lore-text {
+
+    max-width:
+        650px;
+
+    margin:
+        30px auto;
+
+    text-align:
+        center;
+
+}
+
+
+.lore-text p {
+
+    margin:
+        20px 0;
+
+}
+
+
+.lore-text strong {
+
+    color:
+        #704a2c;
+
+}
+
+
+/* =====================================================
+   GAME STATUS
+===================================================== */
+
+.game-status {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    max-width:
+        700px;
+
+    margin:
+        0 auto 30px;
+
+    padding:
+        12px 20px;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(112, 74, 44, 0.08);
+
+    border:
+        1px solid
+        rgba(112, 74, 44, 0.18);
 
 }
 
@@ -378,43 +893,103 @@
 
 @media (max-width: 700px) {
 
+    #intro-screen::after {
+
+        inset:
+            15px;
+
+    }
+
+
     .intro-content {
 
-        width: 92vw;
+        width:
+            92vw;
 
     }
 
 
     .intro-mascot {
 
-        width: min(78vw, 420px);
+        width:
+            min(70vw, 380px);
 
-        max-height: 58vh;
+        max-height:
+            56vh;
 
     }
 
 
     #intro-start-button {
 
-        width: 260px;
+        left:
+            25%;
 
-        height: 56px;
+        width:
+            50%;
 
-        font-size: 17px;
+        bottom:
+            2%;
+
+        height:
+            15%;
 
     }
 
 
-    .map-label {
+    #main-game {
 
-        font-size: 16px;
+        padding:
+            30px 12px;
 
     }
 
 
-    .main-label {
+    #login-screen,
+    #username-screen,
+    #pin-setup-screen,
+    #pin-login-screen,
+    #welcome-screen,
+    #lore-screen,
+    #game-screen {
 
-        font-size: 22px;
+        padding:
+            28px 18px;
+
+    }
+
+
+    #main-game h2 {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .form-group input {
+
+        width:
+            100%;
+
+    }
+
+
+    .form-group button {
+
+        width:
+            100%;
+
+    }
+
+
+    .game-status {
+
+        flex-direction:
+            column;
+
+        gap:
+            10px;
 
     }
 
