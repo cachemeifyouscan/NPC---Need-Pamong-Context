@@ -1,1069 +1,316 @@
-<!DOCTYPE html>
-<html lang="id">
+<style>
 
-<head>
+/* =====================================================
+   OPENING SCREEN
+===================================================== */
 
-    <meta charset="UTF-8">
+#intro-screen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    overflow: hidden;
 
-    <title>NPC — Need Pamong Context</title>
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    z-index: 99999;
 
-    <style>
+    background:
 
-        /* =====================================================
-           RESET KHUSUS OPENING
-        ===================================================== */
+        /* soft parchment center */
+        radial-gradient(
+            ellipse at center,
+            rgba(255, 252, 240, 0.98) 0%,
+            rgba(247, 238, 218, 0.96) 48%,
+            rgba(225, 207, 174, 0.98) 100%
+        );
 
-        html,
-        body {
+}
 
-            margin: 0;
-            padding: 0;
 
-        }
+/* =====================================================
+   PARchMENT TEXTURE
+===================================================== */
 
+#intro-screen::before {
 
-        /* =====================================================
-           OPENING SCREEN
-        ===================================================== */
+    content: "";
 
-        #intro-screen {
+    position: absolute;
 
-            position: fixed;
+    inset: 0;
 
-            inset: 0;
+    pointer-events: none;
 
-            width: 100vw;
-            height: 100vh;
+    opacity: 0.35;
 
-            overflow: hidden;
+    background:
 
-            display: flex;
+        repeating-linear-gradient(
+            0deg,
+            rgba(100, 75, 40, 0.025) 0px,
+            rgba(100, 75, 40, 0.025) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
 
-            justify-content: center;
-            align-items: center;
+        repeating-linear-gradient(
+            90deg,
+            rgba(100, 75, 40, 0.018) 0px,
+            rgba(100, 75, 40, 0.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
 
-            background:
-                #ead9b8;
+    z-index: 1;
 
-            z-index: 99999;
+}
 
-        }
 
+/* =====================================================
+   MAP DECORATION
+===================================================== */
 
-        /* =====================================================
-           ANCIENT MAP BACKGROUND
-        ===================================================== */
+#intro-screen::after {
 
-        .map-background {
+    content: "";
 
-            position: absolute;
+    position: absolute;
 
-            inset: 0;
+    inset: 35px;
 
-            width: 100%;
-            height: 100%;
+    border: 2px solid rgba(116, 91, 54, 0.14);
 
-            pointer-events: none;
+    border-radius: 18px;
 
-            z-index: 0;
+    pointer-events: none;
 
-            opacity: 0.22;
+    z-index: 2;
 
-        }
+}
 
 
-        .map-background svg {
+/* =====================================================
+   FAINT MAP LINES
+===================================================== */
 
-            width: 100%;
-            height: 100%;
+.map-decoration {
 
-        }
+    position: absolute;
 
+    inset: 0;
 
-        /* =====================================================
-           PARchMENT OVERLAY
-        ===================================================== */
+    pointer-events: none;
 
-        .map-overlay {
+    z-index: 3;
 
-            position: absolute;
+    opacity: 0.16;
 
-            inset: 0;
+}
 
-            z-index: 1;
 
-            pointer-events: none;
+/* =====================================================
+   MAP SVG
+===================================================== */
 
-            background:
+.map-decoration svg {
 
-                radial-gradient(
-                    ellipse at center,
-                    rgba(255, 250, 235, 0.25) 0%,
-                    rgba(239, 218, 181, 0.10) 50%,
-                    rgba(120, 85, 40, 0.18) 100%
-                );
+    width: 100%;
+    height: 100%;
 
-        }
+}
 
 
-        /* =====================================================
-           INTRO CONTENT
-        ===================================================== */
+/* =====================================================
+   INTRO CONTENT
+===================================================== */
 
-        .intro-content {
+.intro-content {
 
-            position: relative;
+    position: relative;
 
-            z-index: 5;
+    z-index: 10;
 
-            width: min(92vw, 650px);
+    width: min(88vw, 720px);
 
-            display: flex;
+    display: flex;
 
-            justify-content: center;
-            align-items: center;
+    align-items: center;
 
-        }
+    justify-content: center;
 
+}
 
-        /* =====================================================
-           MASCOT
-        ===================================================== */
 
-        .intro-mascot {
+/* =====================================================
+   MASCOT
+===================================================== */
 
-            display: block;
+.intro-mascot {
 
-            width: 100%;
+    display: block;
 
-            height: auto;
+    width: 100%;
 
-            user-select: none;
+    height: auto;
 
-            -webkit-user-drag: none;
+    margin: 0;
 
-            filter:
-                drop-shadow(
-                    0 22px 20px rgba(72, 48, 20, 0.28)
-                );
+    user-select: none;
 
-            animation:
-                mascotFloat 3.5s ease-in-out infinite;
+    -webkit-user-drag: none;
 
-        }
+    filter:
 
+        drop-shadow(
+            0 22px 20px rgba(70, 48, 22, 0.22)
+        );
 
-        /* =====================================================
-           FLOATING EFFECT
-        ===================================================== */
+    animation:
 
-        @keyframes mascotFloat {
+        mascotFloat
+        4s
+        ease-in-out
+        infinite;
 
-            0% {
+}
 
-                transform: translateY(0px);
 
-            }
+/* =====================================================
+   FLOATING
+===================================================== */
 
-            50% {
+@keyframes mascotFloat {
 
-                transform: translateY(-12px);
+    0% {
 
-            }
+        transform:
+            translateY(0px);
 
-            100% {
+    }
 
-                transform: translateY(0px);
+    50% {
 
-            }
+        transform:
+            translateY(-10px);
 
-        }
+    }
 
+    100% {
 
-        /* =====================================================
-           CLICK AREA
-           
-           Tombol ini TRANSPARAN.
+        transform:
+            translateY(0px);
 
-           Jadi tombol "MULAI PETUALANGAN"
-           tetap berasal dari gambar mascot2.png.
+    }
 
-           User tinggal klik tombol yang terlihat
-           di dalam gambar.
-        ===================================================== */
+}
 
-        #intro-start-button {
 
-            position: absolute;
+/* =====================================================
+   INVISIBLE CLICK AREA
+===================================================== */
 
-            /*
-             * Posisi tombol pada gambar.
-             */
+#intro-start-button {
 
-            left: 28%;
+    position: absolute;
 
-            bottom: 2%;
+    /*
+       Tombol di dalam mascot2.png
+    */
 
-            width: 44%;
+    left: 27%;
 
-            height: 15%;
+    bottom: 2%;
 
-            padding: 0;
-            margin: 0;
+    width: 46%;
 
-            background: transparent;
+    height: 14%;
 
-            border: none;
 
-            box-shadow: none;
+    padding: 0;
+    margin: 0;
 
-            cursor: pointer;
 
-            z-index: 20;
+    /*
+       BENAR-BENAR TRANSPARAN
+    */
 
-            appearance: none;
+    background: transparent !important;
 
-        }
+    border: none !important;
 
+    box-shadow: none !important;
 
-        #intro-start-button:hover {
+    outline: none !important;
 
-            background: transparent;
 
-            border: none;
+    cursor: pointer;
 
-            box-shadow: none;
+    z-index: 50;
 
-        }
+}
 
 
-        #intro-start-button:focus {
+/* =====================================================
+   REMOVE ALL BUTTON VISUALS
+===================================================== */
 
-            outline: none;
+#intro-start-button:hover,
+#intro-start-button:focus,
+#intro-start-button:active {
 
-        }
+    background: transparent !important;
 
+    border: none !important;
 
-        #intro-start-button:active {
+    box-shadow: none !important;
 
-            background: transparent;
+    outline: none !important;
 
-            border: none;
+}
 
-            box-shadow: none;
 
-        }
+/* =====================================================
+   MAIN GAME
+===================================================== */
 
+#main-game {
 
-        /* =====================================================
-           MAIN GAME
-        ===================================================== */
+    display: none;
 
-        #main-game {
+    min-height: 100vh;
 
-            display: none;
+}
 
-            min-height: 100vh;
 
-            position: relative;
+/* =====================================================
+   MOBILE
+===================================================== */
 
-            z-index: 100;
+@media (max-width: 700px) {
 
-        }
+    .intro-content {
 
+        width: 94vw;
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
+    }
 
-        @media (max-width: 700px) {
 
-            .intro-content {
+    #intro-start-button {
 
-                width: 96vw;
+        left: 25%;
 
-            }
+        width: 50%;
 
+        bottom: 2%;
 
-            #intro-start-button {
+        height: 15%;
 
-                left: 26%;
+    }
 
-                width: 48%;
+}
 
-                bottom: 2%;
-
-                height: 15%;
-
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
-<!-- =====================================================
-     OPENING SCREEN
-===================================================== -->
-
-<div id="intro-screen">
-
-
-    <!-- =================================================
-         ANCIENT FANTASY MAP
-    ================================================== -->
-
-    <div class="map-background">
-
-        <svg
-            viewBox="0 0 1200 800"
-            preserveAspectRatio="xMidYMid slice"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-
-            <!-- OUTER MAP -->
-
-            <path
-                d="
-                M80 120
-                C180 50 300 90 390 70
-                C500 40 580 100 690 70
-                C800 40 900 100 1010 80
-                C1110 70 1160 150 1140 240
-                C1180 330 1110 390 1140 490
-                C1160 590 1060 650 970 620
-                C870 680 800 700 700 660
-                C600 710 500 670 410 690
-                C300 720 220 640 140 610
-                C50 570 80 470 60 390
-                C30 300 40 190 80 120
-                Z
-                "
-
-                fill="none"
-
-                stroke="#806b46"
-
-                stroke-width="4"
-            />
-
-
-            <!-- INNER MAP -->
-
-            <path
-                d="
-                M130 170
-                C230 100 340 140 430 115
-                C530 80 620 140 710 115
-                C820 80 910 145 1010 130
-                C1080 120 1100 190 1080 250
-                C1110 340 1040 400 1070 480
-                C1080 550 1000 590 920 570
-                C820 620 740 640 650 610
-                C560 650 480 620 390 640
-                C300 650 250 580 170 560
-                C100 520 120 430 100 360
-                C80 280 90 220 130 170
-                Z
-                "
-
-                fill="none"
-
-                stroke="#8d7850"
-
-                stroke-width="2"
-            />
-
-
-            <!-- RIVER LEFT -->
-
-            <path
-                d="
-                M170 80
-                C230 170 190 230 260 300
-                C320 360 280 430 350 500
-                C400 550 370 640 430 760
-                "
-
-                fill="none"
-
-                stroke="#6e9690"
-
-                stroke-width="8"
-
-                stroke-linecap="round"
-            />
-
-
-            <!-- RIVER RIGHT -->
-
-            <path
-                d="
-                M1030 50
-                C960 150 1010 220 930 300
-                C870 360 910 430 830 500
-                C770 560 810 650 740 750
-                "
-
-                fill="none"
-
-                stroke="#6e9690"
-
-                stroke-width="7"
-
-                stroke-linecap="round"
-            />
-
-
-            <!-- MOUNTAINS LEFT -->
-
-            <g
-                fill="none"
-                stroke="#786848"
-                stroke-width="3"
-            >
-
-                <path d="M70 320 L120 230 L170 320 Z"/>
-
-                <path d="M120 320 L180 210 L240 320 Z"/>
-
-                <path d="M180 330 L240 240 L300 330 Z"/>
-
-            </g>
-
-
-            <!-- MOUNTAINS RIGHT -->
-
-            <g
-                fill="none"
-                stroke="#786848"
-                stroke-width="3"
-            >
-
-                <path d="M900 300 L950 210 L1000 300 Z"/>
-
-                <path d="M950 310 L1010 180 L1070 310 Z"/>
-
-                <path d="M1010 320 L1060 230 L1110 320 Z"/>
-
-            </g>
-
-
-            <!-- FOREST LEFT -->
-
-            <g
-                fill="none"
-                stroke="#687553"
-                stroke-width="3"
-            >
-
-                <path d="M80 500 l20 -35 l20 35 l-20 -8 Z"/>
-
-                <path d="M125 530 l20 -35 l20 35 l-20 -8 Z"/>
-
-                <path d="M170 510 l20 -35 l20 35 l-20 -8 Z"/>
-
-                <path d="M215 540 l20 -35 l20 35 l-20 -8 Z"/>
-
-            </g>
-
-
-            <!-- FOREST RIGHT -->
-
-            <g
-                fill="none"
-                stroke="#687553"
-                stroke-width="3"
-            >
-
-                <path d="M940 500 l20 -35 l20 35 l-20 -8 Z"/>
-
-                <path d="M985 530 l20 -35 l20 35 l-20 -8 Z"/>
-
-                <path d="M1030 510 l20 -35 l20 35 l-20 -8 Z"/>
-
-                <path d="M1075 540 l20 -35 l20 35 l-20 -8 Z"/>
-
-            </g>
-
-
-            <!-- ROADS -->
-
-            <g
-                fill="none"
-                stroke="#947b51"
-                stroke-width="3"
-                stroke-dasharray="9 10"
-            >
-
-                <path
-                    d="
-                    M100 600
-                    C250 540 330 570 450 510
-                    C560 450 650 490 760 530
-                    C880 570 970 540 1100 600
-                    "
-                />
-
-                <path
-                    d="
-                    M180 180
-                    C300 240 370 300 500 320
-                    C650 350 780 300 1000 190
-                    "
-                />
-
-            </g>
-
-
-            <!-- CASTLES -->
-
-            <g
-                fill="none"
-                stroke="#806b46"
-                stroke-width="3"
-            >
-
-                <path
-                    d="
-                    M100 420
-                    L100 375
-                    L125 350
-                    L150 375
-                    L150 420
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M95 375
-                    L125 330
-                    L155 375
-                    "
-                />
-
-
-                <path
-                    d="
-                    M1040 420
-                    L1040 375
-                    L1065 350
-                    L1090 375
-                    L1090 420
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M1035 375
-                    L1065 330
-                    L1095 375
-                    "
-                />
-
-            </g>
-
-
-            <!-- COMPASS -->
-
-            <g
-                transform="translate(600 400)"
-                fill="none"
-                stroke="#806b46"
-                stroke-width="3"
-            >
-
-                <circle r="125"/>
-
-                <circle r="105"/>
-
-                <path
-                    d="
-                    M0 -130
-                    L18 0
-                    L0 130
-                    L-18 0
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M-130 0
-                    L0 18
-                    L130 0
-                    L0 -18
-                    Z
-                    "
-                />
-
-                <circle r="14"/>
-
-            </g>
-
-
-            <!-- MAP LABELS -->
-
-            <g
-                fill="#806b46"
-                font-family="Georgia, serif"
-                font-size="18"
-                letter-spacing="3"
-            >
-
-                <text
-                    x="80"
-                    y="110"
-                >
-                    WESTERN WOODS
-                </text>
-
-
-                <text
-                    x="870"
-                    y="110"
-                >
-                    NORTHERN PEAKS
-                </text>
-
-
-                <text
-                    x="80"
-                    y="710"
-                >
-                    WESTERN COAST
-                </text>
-
-
-                <text
-                    x="900"
-                    y="710"
-                >
-                    EASTERN KINGDOM
-                </text>
-
-
-                <text
-                    x="520"
-                    y="85"
-                >
-                    SANAPATI LAND
-                </text>
-
-            </g>
-
-        </svg>
-
-    </div>
-
-
-    <div class="map-overlay"></div>
-
-
-    <!-- =================================================
-         MASCOT
-    ================================================== -->
-
-    <div class="intro-content">
-
-
-        <img
-            src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
-            class="intro-mascot"
-            alt="NPC Mascot"
-        >
-
-
-        <!--
-            TRANSPARENT BUTTON
-
-            TIDAK ADA TOMBOL HTML YANG TERLIHAT.
-
-            Area ini hanya menangkap klik pada
-            tombol "MULAI PETUALANGAN" yang ada
-            DI DALAM GAMBAR.
-        -->
-
-        <button
-            id="intro-start-button"
-            type="button"
-            aria-label="Mulai Petualangan"
-        ></button>
-
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     MAIN GAME
-===================================================== -->
-
-<main
-    id="main-game"
-    class="game-container"
->
-
-
-    <header class="game-header">
-
-        <h1>
-            🎮 NPC
-        </h1>
-
-        <p>
-            👤 Need Pamong Context
-        </p>
-
-    </header>
-
-
-    <section id="login-screen">
-
-        <h2>
-            🔐 Enter Access Code
-        </h2>
-
-        <p>
-            Masukkan access code untuk memulai permainan.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="access-code"
-                placeholder="Access Code"
-                autocomplete="off"
-            >
-
-
-            <button id="start-button">
-                🚀 Start Game
-            </button>
-
-        </div>
-
-
-        <p
-            id="error-message"
-            class="error"
-        ></p>
-
-    </section>
-
-
-    <section
-        id="username-screen"
-        class="hidden"
-    >
-
-        <h2>
-            👤 Who Are You?
-        </h2>
-
-        <p>
-            Buat username untuk menyimpan progress permainanmu.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="text"
-                id="username"
-                placeholder="Enter your username"
-                maxlength="20"
-                autocomplete="off"
-            >
-
-
-            <button id="username-button">
-                ✨ Continue
-            </button>
-
-        </div>
-
-
-        <p
-            id="username-error"
-            class="error"
-        ></p>
-
-    </section>
-
-
-    <section
-        id="pin-setup-screen"
-        class="hidden"
-    >
-
-        <h2>
-            🔐 Create Your PIN
-        </h2>
-
-        <p>
-            Buat PIN 4 angka untuk menyimpan dan melanjutkan
-            progressmu.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="new-password"
-            >
-
-
-            <input
-                type="password"
-                id="pin-confirm-input"
-                placeholder="Confirm PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="new-password"
-            >
-
-
-            <button id="pin-button">
-                🔐 Save PIN
-            </button>
-
-        </div>
-
-
-        <p
-            id="pin-error"
-            class="error"
-        ></p>
-
-    </section>
-
-
-    <section
-        id="pin-login-screen"
-        class="hidden"
-    >
-
-        <h2>
-            🔑 Welcome Back
-        </h2>
-
-        <p id="pin-login-message">
-            Masukkan PIN untuk melanjutkan progressmu.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="login-pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="current-password"
-            >
-
-
-            <button id="pin-login-button">
-                ▶️ Continue
-            </button>
-
-        </div>
-
-
-        <p
-            id="pin-login-error"
-            class="error"
-        ></p>
-
-    </section>
-
-
-    <section
-        id="welcome-screen"
-        class="hidden"
-    >
-
-        <h2>
-            👋 Welcome Back
-        </h2>
-
-        <p id="welcome-message"></p>
-
-
-        <div class="button-group">
-
-            <button id="continue-button">
-                ▶️ Continue
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <section
-        id="lore-screen"
-        class="hidden"
-    >
-
-        <h2>
-            📖 Before We Begin
-        </h2>
-
-
-        <div class="lore-text">
-
-            <p>
-                You’ve probably seen them before.
-            </p>
-
-
-            <p>
-                You know the faces.
-                Maybe even the names.
-            </p>
-
-
-            <p>
-                But when you actually need to call them...
-            </p>
-
-
-            <p>
-                <strong>
-                    “Wait... who are they again?”
-                </strong>
-            </p>
-
-
-            <p>
-                NPC — Need Pamong Context is here to fix that.
-            </p>
-
-        </div>
-
-
-        <button id="lore-button">
-            🎮 Let's Go
-        </button>
-
-    </section>
-
-
-    <section
-        id="game-screen"
-        class="hidden"
-    >
-
-        <div class="game-status">
-
-            <span>
-
-                🟢
-
-                <strong id="milestone-label">
-                    MILESTONE 1
-                </strong>
-
-            </span>
-
-
-            <span id="player-label"></span>
-
-        </div>
-
-
-        <h2>
-            🧑‍🤝‍🧑 Meet Your Pamong
-        </h2>
-
-
-        <p class="game-description">
-            Kenali wajah, nama, dan konteks Pamong-mu.
-        </p>
-
-
-        <div id="pengasuh-container"></div>
-
-    </section>
-
-
-</main>
-
-
-
-<script src="app.js"></script>
-
-
-<!-- =====================================================
-     INTRO → MAIN GAME
-===================================================== -->
-
-<script>
-
-    const introScreen =
-        document.getElementById("intro-screen");
-
-
-    const introStartButton =
-        document.getElementById("intro-start-button");
-
-
-    const mainGame =
-        document.getElementById("main-game");
-
-
-    introStartButton.addEventListener(
-        "click",
-        function () {
-
-            introScreen.style.display = "none";
-
-            mainGame.style.display = "block";
-
-            const accessCode =
-                document.getElementById("access-code");
-
-            if (accessCode) {
-
-                accessCode.focus();
-
-            }
-
-        }
-    );
-
-</script>
-
-
-</body>
-
-</html>
+</style>
