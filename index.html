@@ -17,6 +17,11 @@
 
         <p>👤 Need Pamong Context</p>
 
+
+        <!-- =========================
+             ACCESS CODE
+        ========================== -->
+
         <section id="login-screen">
 
             <h2>🔐 Enter Access Code</h2>
@@ -39,6 +44,99 @@
 
         </section>
 
+
+        <!-- =========================
+             USERNAME
+        ========================== -->
+
+        <section id="username-screen" class="hidden">
+
+            <h2>👤 Who Are You?</h2>
+
+            <p>
+                Buat username untuk menyimpan progress permainanmu.
+            </p>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+            <button id="username-button">
+                ✨ Continue
+            </button>
+
+            <p id="username-error"></p>
+
+        </section>
+
+
+        <!-- =========================
+             WELCOME BACK
+        ========================== -->
+
+        <section id="welcome-screen" class="hidden">
+
+            <h2>👋 Welcome Back</h2>
+
+            <p id="welcome-message"></p>
+
+            <button id="continue-button">
+                ▶️ Continue
+            </button>
+
+            <button id="new-game-button">
+                🔄 Start Over
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             LORE
+        ========================== -->
+
+        <section id="lore-screen" class="hidden">
+
+            <h2>📖 Before We Begin</h2>
+
+            <p>
+                You’ve probably seen them before.
+            </p>
+
+            <p>
+                You know the faces.
+                Maybe even the names.
+            </p>
+
+            <p>
+                But when you actually need to call them...
+            </p>
+
+            <p>
+                <strong>
+                    “Wait... who are they again?”
+                </strong>
+            </p>
+
+            <p>
+                NPC — Need Pamong Context is here to fix that.
+            </p>
+
+            <button id="lore-button">
+                🎮 Let's Go
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             GAME
+        ========================== -->
+
         <section id="game-screen" class="hidden">
 
             <h2>🧑‍🤝‍🧑 Meet Your Pamong</h2>
@@ -48,6 +146,7 @@
         </section>
 
     </main>
+
 
     <script src="app.js"></script>
 
