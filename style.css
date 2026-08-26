@@ -1,11 +1,11 @@
 #intro-start-button {
     position: absolute;
 
-    left: 29%;
-    bottom: 6%;
+    left: 30%;
+    bottom: 1.5%;
 
-    width: 42%;
-    height: 9%;
+    width: 40%;
+    height: 8%;
 
     padding: 0;
     margin: 0;
@@ -13,20 +13,19 @@
     cursor: pointer;
     z-index: 100;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     border: 2px solid #a98243;
 
-    background:
-        linear-gradient(
-            to bottom,
-            #704525,
-            #4c2b18
-        );
+    background: linear-gradient(
+        to bottom,
+        #704525,
+        #4c2b18
+    );
 
     box-shadow:
         0 3px 0 #2d1a10,
-        0 5px 12px rgba(55,35,15,.20);
+        0 5px 10px rgba(55,35,15,.18);
 
     color: #f9eed4;
 
@@ -35,7 +34,7 @@
         "Times New Roman",
         serif;
 
-    font-size: clamp(14px, 1.5vw, 20px);
+    font-size: clamp(13px, 1.4vw, 18px);
 
     font-weight: 600;
 
