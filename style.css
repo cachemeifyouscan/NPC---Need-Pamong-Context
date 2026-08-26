@@ -2,85 +2,452 @@
     box-sizing: border-box;
 }
 
+
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
+
+    font-family:
+        Arial,
+        sans-serif;
+
     background: #f5f5f5;
+
     color: #222;
 }
 
+
 .game-container {
-    max-width: 900px;
+    max-width: 1100px;
+
     margin: 0 auto;
-    padding: 50px 20px;
+
+    padding:
+        45px 20px 70px;
+
     text-align: center;
 }
 
+
+/* =========================
+   HEADER
+========================= */
+
+.game-header h1,
 h1 {
     font-size: 48px;
-    margin-bottom: 5px;
+
+    margin:
+        0 0 5px;
+
+    font-weight: 700;
 }
+
+
+.game-header p {
+    margin:
+        0 0 25px;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+section {
+    margin-top: 35px;
+}
+
 
 h2 {
     margin-top: 30px;
+
+    font-size: 30px;
 }
+
+
+section > p {
+    font-size: 18px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   FORMS
+========================= */
+
+.form-group {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
 
 input {
-    width: 250px;
-    padding: 12px 15px;
-    margin: 15px 5px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
+    width: 310px;
+
+    padding:
+        14px 16px;
+
+    margin: 5px;
+
+    border:
+        1px solid #ccc;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+
+    background: white;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
 }
 
-button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
+
+input:focus {
+    border-color: #777;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 0, 0, 0.06);
 }
+
+
+button {
+    padding:
+        13px 21px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    background: #eee;
+
+    color: #222;
+
+    transition:
+        transform 0.15s,
+        opacity 0.15s;
+}
+
 
 button:hover {
     opacity: 0.85;
+
+    transform:
+        translateY(-1px);
 }
+
+
+button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error {
+    min-height: 24px;
+
+    margin-top: 10px;
+
+    color: #d33;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   HIDDEN
+========================= */
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-#error-message {
-    color: #d33;
-    min-height: 20px;
+
+/* =========================
+   LORE
+========================= */
+
+.lore-text {
+    max-width: 650px;
+
+    margin:
+        30px auto;
+
+    font-size: 19px;
+
+    line-height: 1.8;
 }
+
+
+.lore-text strong {
+    font-size: 21px;
+}
+
+
+/* =========================
+   WELCOME
+========================= */
+
+#welcome-message {
+    margin:
+        25px auto;
+
+    font-size: 20px;
+}
+
+
+.button-group {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+}
+
+
+/* =========================
+   GAME STATUS
+========================= */
+
+.game-status {
+    max-width: 900px;
+
+    margin:
+        20px auto;
+
+    padding:
+        12px 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: white;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(0, 0, 0, 0.06);
+
+    font-size: 16px;
+}
+
+
+#milestone-label {
+    font-weight: 700;
+}
+
+
+#player-label {
+    color: #555;
+}
+
+
+.game-description {
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   PENGASUH GRID
+========================= */
 
 #pengasuh-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(200px, 1fr)
+        );
+
+    gap: 22px;
+
     margin-top: 30px;
 }
 
+
+/* =========================
+   CARD
+========================= */
+
 .card {
     background: white;
+
     padding: 20px;
+
     border-radius: 15px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 3px 12px
+        rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
+
+
+.card:hover {
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.11);
+}
+
 
 .card img {
     width: 150px;
+
     height: 180px;
+
     object-fit: cover;
+
     border-radius: 10px;
 }
 
+
 .card h3 {
-    margin-bottom: 5px;
+    margin:
+        15px 0 5px;
+
+    font-size: 21px;
 }
 
+
 .card p {
-    margin: 5px 0;
+    margin:
+        5px 0;
+
+    line-height: 1.4;
+}
+
+
+.card .team-label {
+    margin-top: 12px;
+
+    font-weight: 700;
+}
+
+
+.no-photo {
+    width: 150px;
+
+    height: 180px;
+
+    margin:
+        0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #eee;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .game-container {
+        padding:
+            30px 15px 50px;
+    }
+
+
+    h1,
+    .game-header h1 {
+        font-size: 40px;
+    }
+
+
+    h2 {
+        font-size: 26px;
+    }
+
+
+    input {
+        width: 100%;
+
+        max-width: 330px;
+    }
+
+
+    button {
+        width: auto;
+    }
+
+
+    .game-status {
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+
+    #pengasuh-container {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 12px;
+    }
+
+
+    .card {
+        padding: 12px;
+    }
+
+
+    .card img,
+    .no-photo {
+        width: 100%;
+
+        height: 170px;
+    }
+
 }
