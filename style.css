@@ -1,4 +1,44 @@
 /* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    margin: 0;
+
+    padding: 0;
+
+    width: 100%;
+
+    min-height: 100%;
+
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        #f8f3e8;
+
+    color:
+        #222;
+
+}
+
+
+
+/* =========================================================
    OPENING SCREEN
 ========================================================= */
 
@@ -9,6 +49,7 @@
     inset: 0;
 
     width: 100%;
+
     height: 100vh;
 
     z-index: 99999;
@@ -16,13 +57,14 @@
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     background:
         linear-gradient(
             135deg,
-            #fffdf7 0%,
-            #f7f1e5 100%
+            #fffdf8,
+            #f5eee1
         );
 
     opacity: 1;
@@ -32,10 +74,14 @@
     transition:
         opacity 0.7s ease,
         visibility 0.7s ease;
+
 }
 
 
-/* Setelah tombol MULAI PETUALANGAN diklik */
+/*
+   INI SATU-SATUNYA CARA OPENING HILANG:
+   user klik tombol.
+*/
 
 #intro-screen.intro-hidden {
 
@@ -44,7 +90,9 @@
     visibility: hidden;
 
     pointer-events: none;
+
 }
+
 
 
 /* =========================================================
@@ -53,7 +101,14 @@
 
 .intro-content {
 
-    width: min(90vw, 720px);
+    width: 100%;
+
+    max-width: 850px;
+
+    height: 100vh;
+
+    padding:
+        25px 20px 35px;
 
     display: flex;
 
@@ -64,7 +119,9 @@
     justify-content: center;
 
     text-align: center;
+
 }
+
 
 
 /* =========================================================
@@ -75,9 +132,10 @@
 
     display: block;
 
-    width: min(75vw, 650px);
-
-    max-width: 650px;
+    width: min(
+        75vw,
+        680px
+    );
 
     max-height: 72vh;
 
@@ -91,55 +149,109 @@
 
     filter:
         drop-shadow(
-            0 18px 30px
-            rgba(65, 45, 20, 0.18)
+            0 15px 25px
+            rgba(60, 40, 15, 0.16)
         );
 
+    /*
+       Floating effect.
+       BUKAN timer.
+       Ini cuma animasi naik-turun.
+    */
+
     animation:
-        mascotFloat 3s ease-in-out infinite;
+        mascot-float
+        3s
+        ease-in-out
+        infinite;
+
 }
 
 
+
 /* =========================================================
-   INTRO BUTTON
+   MASCOT FLOAT
+========================================================= */
+
+@keyframes mascot-float {
+
+    0% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-8px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+
+/* =========================================================
+   START BUTTON
 ========================================================= */
 
 .intro-start-button {
 
-    min-width: 320px;
+    min-width: 330px;
 
-    margin-top: -20px;
+    margin-top: -5px;
 
-    padding: 17px 35px;
+    padding:
+        16px
+        35px;
 
-    border: 3px solid #8b5a18;
+    border:
+        3px solid
+        #815718;
 
-    border-radius: 14px;
+    border-radius:
+        14px;
 
     background:
         linear-gradient(
-            180deg,
-            #65c94f 0%,
-            #399b3c 100%
+            to bottom,
+            #68c957,
+            #3ca342
         );
 
-    color: white;
+    color:
+        white;
 
-    font-size: 22px;
+    font-size:
+        21px;
 
-    font-weight: 800;
+    font-weight:
+        800;
 
-    letter-spacing: 0.5px;
+    letter-spacing:
+        0.4px;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     box-shadow:
-        0 6px 0 #26752e,
-        0 10px 20px rgba(0,0,0,0.15);
+        0 6px 0 #28752f,
+        0 10px 20px
+        rgba(0,0,0,0.15);
 
     transition:
         transform 0.15s ease,
         box-shadow 0.15s ease;
+
 }
 
 
@@ -149,8 +261,10 @@
         translateY(-3px);
 
     box-shadow:
-        0 9px 0 #26752e,
-        0 14px 25px rgba(0,0,0,0.18);
+        0 9px 0 #28752f,
+        0 14px 25px
+        rgba(0,0,0,0.18);
+
 }
 
 
@@ -160,8 +274,10 @@
         translateY(3px);
 
     box-shadow:
-        0 3px 0 #26752e;
+        0 3px 0 #28752f;
+
 }
+
 
 
 /* =========================================================
@@ -170,32 +286,17 @@
 
 .intro-hint {
 
-    margin-top: 18px;
+    margin:
+        16px 0 0;
 
-    color: #82735f;
+    color:
+        #82735f;
 
-    font-size: 17px;
+    font-size:
+        16px;
+
 }
 
-
-/* =========================================================
-   MASCOT FLOAT
-========================================================= */
-
-@keyframes mascotFloat {
-
-    0% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}
 
 
 /* =========================================================
@@ -204,26 +305,388 @@
 
 #main-game {
 
-    width: 100%;
+    min-height:
+        100vh;
 
-    min-height: 100vh;
+    width:
+        100%;
 
     padding:
-        55px 20px 80px;
+        50px 20px 80px;
 
-    opacity: 0;
+    opacity:
+        0;
 
-    visibility: hidden;
+    visibility:
+        hidden;
 
-    transition:
-        opacity 0.7s ease,
-        visibility 0.7s ease;
 }
 
 
 #main-game.game-visible {
 
-    opacity: 1;
+    opacity:
+        1;
 
-    visibility: visible;
+    visibility:
+        visible;
+
+}
+
+
+
+/* =========================================================
+   GAME CONTAINER
+========================================================= */
+
+.game-container {
+
+    max-width:
+        900px;
+
+    margin:
+        0 auto;
+
+    text-align:
+        center;
+
+}
+
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.game-header {
+
+    margin-bottom:
+        70px;
+
+}
+
+
+.game-header h1 {
+
+    margin:
+        0;
+
+    font-size:
+        56px;
+
+}
+
+
+.game-header p {
+
+    margin-top:
+        10px;
+
+    font-size:
+        25px;
+
+}
+
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+section {
+
+    width:
+        100%;
+
+}
+
+
+section h2 {
+
+    font-size:
+        36px;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+section p {
+
+    font-size:
+        20px;
+
+    line-height:
+        1.6;
+
+}
+
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    margin-top:
+        30px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+input {
+
+    width:
+        350px;
+
+    padding:
+        17px
+        20px;
+
+    border:
+        1px solid
+        #ccc;
+
+    border-radius:
+        12px;
+
+    font-size:
+        19px;
+
+    outline:
+        none;
+
+}
+
+
+input:focus {
+
+    border-color:
+        #5d9cec;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(93,156,236,0.15);
+
+}
+
+
+button {
+
+    padding:
+        17px
+        25px;
+
+    border:
+        none;
+
+    border-radius:
+        12px;
+
+    background:
+        #eeeeee;
+
+    color:
+        #222;
+
+    font-size:
+        18px;
+
+    cursor:
+        pointer;
+
+    transition:
+        0.2s;
+
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden {
+
+    display:
+        none !important;
+
+}
+
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error {
+
+    color:
+        #d33;
+
+    font-size:
+        16px !important;
+
+    min-height:
+        25px;
+
+}
+
+
+
+/* =========================================================
+   BUTTON GROUP
+========================================================= */
+
+.button-group {
+
+    margin-top:
+        30px;
+
+}
+
+
+
+/* =========================================================
+   LORE
+========================================================= */
+
+.lore-text {
+
+    max-width:
+        650px;
+
+    margin:
+        0 auto 30px;
+
+}
+
+
+.lore-text p {
+
+    margin:
+        18px 0;
+
+}
+
+
+
+/* =========================================================
+   GAME STATUS
+========================================================= */
+
+.game-status {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        15px 20px;
+
+    margin-bottom:
+        30px;
+
+    border-radius:
+        12px;
+
+    background:
+        #eee4d2;
+
+}
+
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .intro-mascot {
+
+        width:
+            90vw;
+
+        max-height:
+            65vh;
+
+    }
+
+
+    .intro-start-button {
+
+        min-width:
+            270px;
+
+        font-size:
+            18px;
+
+        padding:
+            14px 22px;
+
+    }
+
+
+    .game-header h1 {
+
+        font-size:
+            42px;
+
+    }
+
+
+    .game-header p {
+
+        font-size:
+            20px;
+
+    }
+
+
+    section h2 {
+
+        font-size:
+            28px;
+
+    }
+
+
+    input {
+
+        width:
+            90%;
+
+    }
+
 }
