@@ -17,6 +17,143 @@
         href="style.css"
     >
 
+    <style>
+
+        /* =====================================================
+           OPENING SCREEN
+        ===================================================== */
+
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #f7f3eb;
+        }
+
+
+        .intro-content {
+            position: relative;
+
+            width: min(92vw, 900px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        /* =====================================================
+           MASCOT
+        ===================================================== */
+
+        .intro-mascot {
+
+            display: block;
+
+            width: 100%;
+            max-width: 900px;
+
+            height: auto;
+
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+
+        /* =====================================================
+           INVISIBLE CLICK AREA
+           
+           Ini bukan tombol hijau.
+           Ini tombol TRANSPARAN yang ditaruh tepat
+           di atas tombol MULAI PETUALANGAN di dalam PNG.
+        ===================================================== */
+
+        .intro-start-button {
+
+            position: absolute;
+
+            /*
+             * Posisi tombol di dalam gambar.
+             * Kalau gambar lu square seperti mascot2.png,
+             * area tombol ada di bagian bawah.
+             */
+
+            left: 25%;
+            bottom: 3%;
+
+            width: 50%;
+            height: 13%;
+
+
+            background: transparent;
+
+            border: none;
+            outline: none;
+
+            cursor: pointer;
+
+            z-index: 10;
+
+            padding: 0;
+            margin: 0;
+        }
+
+
+        /*
+         * Jangan kasih background apa pun
+         * supaya tombol asli di PNG tetap kelihatan.
+         */
+
+        .intro-start-button:hover {
+            background: transparent;
+        }
+
+
+        .intro-start-button:focus {
+            outline: none;
+        }
+
+
+        .intro-start-button:active {
+            background: transparent;
+        }
+
+
+        /* =====================================================
+           MAIN GAME
+        ===================================================== */
+
+        #main-game {
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .intro-content {
+                width: 96vw;
+            }
+
+            .intro-start-button {
+                left: 23%;
+                width: 54%;
+                bottom: 3%;
+                height: 14%;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -31,22 +168,35 @@
 
     <div class="intro-content">
 
+
+        <!--
+            MASCOT
+
+            Menggunakan Raw GitHub URL.
+        -->
+
         <img
-            src="mascot2.png"
+            src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
             class="intro-mascot"
             alt="NPC Mascot"
         >
 
+
+        <!--
+            TOMBOL TRANSPARAN
+
+            Secara visual tombol ini TIDAK KELIHATAN.
+            Kita taruh di atas tombol "MULAI PETUALANGAN"
+            yang memang sudah ada di dalam gambar.
+        -->
+
         <button
             id="intro-start-button"
             class="intro-start-button"
-        >
-            ⚔️ MULAI PETUALANGAN
-        </button>
+            aria-label="Mulai Petualangan"
+            type="button"
+        ></button>
 
-        <p class="intro-hint">
-            Ketuk untuk memulai perjalananmu
-        </p>
 
     </div>
 
@@ -84,7 +234,7 @@
 
     <!-- =================================================
          ACCESS CODE
-    ================================================== -->
+    ================================================= -->
 
     <section id="login-screen">
 
@@ -324,9 +474,11 @@
             </p>
 
             <p>
+
                 <strong>
                     “Wait... who are they again?”
                 </strong>
+
             </p>
 
             <p>
@@ -352,7 +504,6 @@
         id="game-screen"
         class="hidden"
     >
-
 
         <div class="game-status">
 
@@ -391,7 +542,62 @@
 
 
 
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
 <script src="app.js"></script>
+
+
+<script>
+
+    /* =====================================================
+       MULAI PETUALANGAN
+    ===================================================== */
+
+    const introScreen =
+        document.getElementById("intro-screen");
+
+    const introStartButton =
+        document.getElementById("intro-start-button");
+
+
+    introStartButton.addEventListener("click", function () {
+
+        /*
+         * Hilangkan opening.
+         */
+
+        introScreen.style.display = "none";
+
+
+        /*
+         * Pastikan main game muncul.
+         */
+
+        const mainGame =
+            document.getElementById("main-game");
+
+        if (mainGame) {
+            mainGame.style.display = "block";
+        }
+
+
+        /*
+         * Fokus langsung ke Access Code.
+         */
+
+        const accessCode =
+            document.getElementById("access-code");
+
+        if (accessCode) {
+            accessCode.focus();
+        }
+
+    });
+
+</script>
+
 
 </body>
 
