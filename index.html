@@ -40,7 +40,6 @@
             justify-content: center;
 
             background:
-
                 radial-gradient(
                     ellipse at center,
                     #fffdf5 0%,
@@ -93,7 +92,7 @@
 
 
         /* =====================================================
-           MAP DECORATION
+           MAP BACKGROUND
         ===================================================== */
 
         .map-decoration {
@@ -135,7 +134,6 @@
             inset: 28px;
 
             border:
-
                 2px solid
                 rgba(116, 91, 54, 0.13);
 
@@ -192,14 +190,12 @@
             -webkit-user-drag: none;
 
             filter:
-
                 drop-shadow(
                     0 22px 20px
                     rgba(64, 43, 20, 0.23)
                 );
 
             animation:
-
                 mascotFloat
                 4s
                 ease-in-out
@@ -209,7 +205,7 @@
 
 
         /* =====================================================
-           MASCOT FLOAT
+           MASCOT FLOATING
         ===================================================== */
 
         @keyframes mascotFloat {
@@ -239,7 +235,10 @@
 
 
         /* =====================================================
-           STYLE 4 BUTTON
+           CLICK HERE BUTTON
+           
+           Style 4:
+           Rustic medieval wood + gold
         ===================================================== */
 
         .intro-enter-button {
@@ -252,20 +251,20 @@
 
             justify-content: center;
 
-            gap: 12px;
-
             width: 300px;
 
-            min-height: 62px;
+            min-height: 58px;
 
-            margin-top: 8px;
+            /*
+             * DEKAT DENGAN MASCOT
+             */
+            margin-top: -18px;
 
             padding: 0 28px;
 
             border-radius: 13px;
 
             background:
-
                 linear-gradient(
                     180deg,
                     #68482d 0%,
@@ -274,7 +273,6 @@
                 );
 
             border:
-
                 3px solid
                 #b88a42;
 
@@ -344,10 +342,12 @@
             height: 7px;
 
             border-top:
-                2px solid #d9ae5c;
+                2px solid
+                #d9ae5c;
 
             border-left:
-                2px solid #d9ae5c;
+                2px solid
+                #d9ae5c;
 
             opacity:
                 0.85;
@@ -368,10 +368,12 @@
             height: 7px;
 
             border-right:
-                2px solid #d9ae5c;
+                2px solid
+                #d9ae5c;
 
             border-bottom:
-                2px solid #d9ae5c;
+                2px solid
+                #d9ae5c;
 
             opacity:
                 0.85;
@@ -380,29 +382,7 @@
 
 
         /* =====================================================
-           BUTTON ICON
-        ===================================================== */
-
-        .button-lantern {
-
-            font-size:
-                23px;
-
-            line-height:
-                1;
-
-            filter:
-
-                drop-shadow(
-                    0 0 5px
-                    rgba(255, 190, 70, 0.35)
-                );
-
-        }
-
-
-        /* =====================================================
-           BUTTON BREATHING EFFECT
+           BUTTON PULSE
         ===================================================== */
 
         @keyframes buttonPulse {
@@ -456,7 +436,7 @@
 
 
         /* =====================================================
-           ACTIVE
+           ACTIVE / CLICK
         ===================================================== */
 
         .intro-enter-button:active {
@@ -481,14 +461,7 @@
 
 
         /* =====================================================
-           IMPORTANT
-           
-           JANGAN pakai display:none di sini.
-
-           app.js lu menggunakan:
-           .game-visible
-
-           untuk menampilkan main game.
+           MAIN GAME
         ===================================================== */
 
         #main-game {
@@ -508,30 +481,20 @@
 
             .intro-content {
 
-                width:
-                    94vw;
+                width: 94vw;
 
             }
 
 
             .intro-enter-button {
 
-                width:
-                    245px;
+                width: 245px;
 
-                min-height:
-                    58px;
+                min-height: 55px;
 
-                font-size:
-                    16px;
+                margin-top: -14px;
 
-            }
-
-
-            .button-lantern {
-
-                font-size:
-                    21px;
+                font-size: 16px;
 
             }
 
@@ -564,7 +527,6 @@
             xmlns="http://www.w3.org/2000/svg"
         >
 
-
             <!-- OUTER MAP -->
 
             <path
@@ -582,11 +544,8 @@
                 C30 250 40 170 80 120
                 Z
                 "
-
                 fill="none"
-
                 stroke="#78613d"
-
                 stroke-width="4"
             />
 
@@ -600,11 +559,8 @@
                 C370 410 310 500 400 590
                 C460 660 420 760 500 900
                 "
-
                 fill="none"
-
                 stroke="#688f8b"
-
                 stroke-width="7"
             />
 
@@ -618,11 +574,8 @@
                 C1010 420 1080 500 980 610
                 C920 690 960 790 900 900
                 "
-
                 fill="none"
-
                 stroke="#688f8b"
-
                 stroke-width="6"
             />
 
@@ -635,60 +588,17 @@
                 stroke-width="4"
             >
 
-                <path
-                    d="
-                    M70 330
-                    L140 210
-                    L210 330
-                    Z
-                    "
-                />
+                <path d="M70 330 L140 210 L210 330 Z"/>
 
-                <path
-                    d="
-                    M150 330
-                    L230 180
-                    L310 330
-                    Z
-                    "
-                />
+                <path d="M150 330 L230 180 L310 330 Z"/>
 
-                <path
-                    d="
-                    M250 340
-                    L330 220
-                    L410 340
-                    Z
-                    "
-                />
+                <path d="M250 340 L330 220 L410 340 Z"/>
 
+                <path d="M1000 330 L1080 190 L1160 330 Z"/>
 
-                <path
-                    d="
-                    M1000 330
-                    L1080 190
-                    L1160 330
-                    Z
-                    "
-                />
+                <path d="M1100 330 L1190 160 L1280 330 Z"/>
 
-                <path
-                    d="
-                    M1100 330
-                    L1190 160
-                    L1280 330
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M1200 340
-                    L1270 220
-                    L1340 340
-                    Z
-                    "
-                />
+                <path d="M1200 340 L1270 220 L1340 340 Z"/>
 
             </g>
 
@@ -701,86 +611,21 @@
                 stroke-width="3"
             >
 
-                <path
-                    d="
-                    M90 620
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
 
-                <path
-                    d="
-                    M150 650
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
 
-                <path
-                    d="
-                    M210 625
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
 
-                <path
-                    d="
-                    M270 655
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
 
+                <path d="M1100 620 l30 -50 l30 50 l-30 -12 Z"/>
 
-                <path
-                    d="
-                    M1100 620
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M1160 650 l30 -50 l30 50 l-30 -12 Z"/>
 
-                <path
-                    d="
-                    M1160 650
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M1220 625 l30 -50 l30 50 l-30 -12 Z"/>
 
-                <path
-                    d="
-                    M1220 625
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
-
-                <path
-                    d="
-                    M1280 655
-                    l30 -50
-                    l30 50
-                    l-30 -12
-                    Z
-                    "
-                />
+                <path d="M1280 655 l30 -50 l30 50 l-30 -12 Z"/>
 
             </g>
 
@@ -873,13 +718,9 @@
                 stroke-width="3"
             >
 
-                <circle
-                    r="150"
-                />
+                <circle r="150"/>
 
-                <circle
-                    r="125"
-                />
+                <circle r="125"/>
 
                 <path
                     d="
@@ -901,14 +742,12 @@
                     "
                 />
 
-                <circle
-                    r="15"
-                />
+                <circle r="15"/>
 
             </g>
 
 
-            <!-- LABELS -->
+            <!-- MAP LABELS -->
 
             <g
                 fill="#725b3c"
@@ -924,14 +763,12 @@
                     WESTERN WOODS
                 </text>
 
-
                 <text
                     x="1050"
                     y="90"
                 >
                     NORTHERN PEAKS
                 </text>
-
 
                 <text
                     x="580"
@@ -940,14 +777,12 @@
                     SANAPATI LAND
                 </text>
 
-
                 <text
                     x="100"
                     y="820"
                 >
                     WESTERN COAST
                 </text>
-
 
                 <text
                     x="1080"
@@ -958,7 +793,6 @@
 
             </g>
 
-
         </svg>
 
     </div>
@@ -966,7 +800,7 @@
 
 
     <!-- =================================================
-         MASCOT
+         MASCOT + BUTTON
     ================================================== -->
 
     <div class="intro-content">
@@ -980,7 +814,7 @@
 
 
         <!-- =================================================
-             STYLE 4 ENTER BUTTON
+             ENTER BUTTON
         ================================================== -->
 
         <button
@@ -989,16 +823,7 @@
             type="button"
         >
 
-            <span
-                class="button-lantern"
-            >
-                🏮
-            </span>
-
-
-            <span>
-                CLICK HERE
-            </span>
+            CLICK HERE
 
         </button>
 
@@ -1030,7 +855,6 @@
             🎮 NPC
         </h1>
 
-
         <p>
             👤 Need Pamong Context
         </p>
@@ -1039,9 +863,7 @@
 
 
 
-    <!-- =================================================
-         ACCESS CODE
-    ================================================== -->
+    <!-- ACCESS CODE -->
 
     <section
         id="login-screen"
@@ -1050,7 +872,6 @@
         <h2>
             🔐 Enter Access Code
         </h2>
-
 
         <p>
             Masukkan access code untuk memulai permainan.
@@ -1087,9 +908,7 @@
 
 
 
-    <!-- =================================================
-         USERNAME
-    ================================================== -->
+    <!-- USERNAME -->
 
     <section
         id="username-screen"
@@ -1099,7 +918,6 @@
         <h2>
             👤 Who Are You?
         </h2>
-
 
         <p>
             Buat username untuk menyimpan progress permainanmu.
@@ -1137,9 +955,7 @@
 
 
 
-    <!-- =================================================
-         CREATE PIN
-    ================================================== -->
+    <!-- CREATE PIN -->
 
     <section
         id="pin-setup-screen"
@@ -1150,9 +966,9 @@
             🔐 Create Your PIN
         </h2>
 
-
         <p>
-            Buat PIN 4 angka untuk menyimpan dan melanjutkan progressmu.
+            Buat PIN 4 angka untuk menyimpan dan melanjutkan
+            progressmu.
         </p>
 
 
@@ -1198,9 +1014,7 @@
 
 
 
-    <!-- =================================================
-         ENTER PIN
-    ================================================== -->
+    <!-- ENTER PIN -->
 
     <section
         id="pin-login-screen"
@@ -1210,7 +1024,6 @@
         <h2>
             🔑 Welcome Back
         </h2>
-
 
         <p
             id="pin-login-message"
@@ -1251,9 +1064,7 @@
 
 
 
-    <!-- =================================================
-         WELCOME BACK
-    ================================================== -->
+    <!-- WELCOME BACK -->
 
     <section
         id="welcome-screen"
@@ -1263,7 +1074,6 @@
         <h2>
             👋 Welcome Back
         </h2>
-
 
         <p
             id="welcome-message"
@@ -1286,9 +1096,7 @@
 
 
 
-    <!-- =================================================
-         LORE
-    ================================================== -->
+    <!-- LORE -->
 
     <section
         id="lore-screen"
@@ -1308,26 +1116,20 @@
                 You’ve probably seen them before.
             </p>
 
-
             <p>
                 You know the faces.
                 Maybe even the names.
             </p>
 
-
             <p>
                 But when you actually need to call them...
             </p>
 
-
             <p>
-
                 <strong>
                     “Wait... who are they again?”
                 </strong>
-
             </p>
-
 
             <p>
                 NPC — Need Pamong Context is here to fix that.
@@ -1346,15 +1148,12 @@
 
 
 
-    <!-- =================================================
-         GAME
-    ================================================== -->
+    <!-- GAME -->
 
     <section
         id="game-screen"
         class="hidden"
     >
-
 
         <div
             class="game-status"
@@ -1406,10 +1205,8 @@
 <!-- =====================================================
      APP.JS
      
-     SATU-SATUNYA SCRIPT.
-     
-     JANGAN TAMBAHKAN SCRIPT OPENING LAIN
-     DI BAWAH INI.
+     SATU SCRIPT SAJA.
+     Jangan tambahkan listener opening lain.
 ===================================================== -->
 
 <script
