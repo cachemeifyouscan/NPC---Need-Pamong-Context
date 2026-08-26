@@ -1,276 +1,607 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+/* =========================
+   GLOBAL
+========================= */
 
-    <title>NPC — Need Pamong Context</title>
+* {
+    box-sizing: border-box;
+}
 
-    <link rel="stylesheet" href="style.css">
-</head>
 
-<body>
+html {
+    scroll-behavior: smooth;
+}
 
-<!-- =========================
-     NPC MASCOT
-========================== -->
 
-<img
-    src="mascott.jpg"
-    class="floating-mascot"
-    alt="NPC Mascot"
->
+body {
+    margin: 0;
 
+    min-height: 100vh;
 
-<main class="game-container">
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+    background:
+        linear-gradient(
+            135deg,
+            #f8f4ec,
+            #eee8dc
+        );
 
-    <header class="game-header">
-        <h1>🎮 NPC</h1>
-        <p>👤 Need Pamong Context</p>
-    </header>
+    color: #222;
+}
 
 
-    <!-- =========================
-         ACCESS CODE
-    ========================== -->
+/* =========================
+   MAIN CONTAINER
+========================= */
 
-    <section id="login-screen">
+.game-container {
 
-        <h2>🔐 Enter Access Code</h2>
+    width: 100%;
+    max-width: 900px;
 
-        <p>
-            Masukkan access code untuk memulai permainan.
-        </p>
+    margin: 0 auto;
 
-        <div class="form-group">
+    padding:
+        50px
+        20px
+        100px;
 
-            <input
-                type="password"
-                id="access-code"
-                placeholder="Access Code"
-                autocomplete="off"
-            >
+    text-align: center;
 
-            <button id="start-button">
-                🚀 Start Game
-            </button>
+}
 
-        </div>
 
-        <p id="error-message" class="error"></p>
+/* =========================
+   HEADER
+========================= */
 
-    </section>
+.game-header {
 
+    margin-bottom: 50px;
 
-    <!-- =========================
-         USERNAME
-    ========================== -->
+}
 
-    <section id="username-screen" class="hidden">
 
-        <h2>👤 Who Are You?</h2>
+.game-header h1 {
 
-        <p>
-            Buat username untuk menyimpan progress permainanmu.
-        </p>
+    font-size: 48px;
 
-        <div class="form-group">
+    margin:
+        0 0 5px;
 
-            <input
-                type="text"
-                id="username"
-                placeholder="Enter your username"
-                maxlength="20"
-                autocomplete="off"
-            >
+}
 
-            <button id="username-button">
-                ✨ Continue
-            </button>
 
-        </div>
+.game-header p {
 
-        <p id="username-error" class="error"></p>
+    font-size: 20px;
 
-    </section>
+    margin:
+        0;
 
+}
 
-    <!-- =========================
-         CREATE PIN
-    ========================== -->
 
-    <section id="pin-setup-screen" class="hidden">
+/* =========================
+   SECTIONS
+========================= */
 
-        <h2>🔐 Create Your PIN</h2>
+section {
 
-        <p>
-            Buat PIN 4 angka untuk menyimpan dan melanjutkan progressmu.
-        </p>
+    animation:
+        screenEnter
+        0.4s
+        ease;
 
-        <div class="form-group">
+}
 
-            <input
-                type="password"
-                id="pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="new-password"
-            >
 
-            <input
-                type="password"
-                id="pin-confirm-input"
-                placeholder="Confirm PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="new-password"
-            >
+@keyframes screenEnter {
 
-            <button id="pin-button">
-                🔐 Save PIN
-            </button>
+    from {
 
-        </div>
+        opacity: 0;
 
-        <p id="pin-error" class="error"></p>
+        transform:
+            translateY(10px);
 
-    </section>
+    }
 
+    to {
 
-    <!-- =========================
-         ENTER PIN
-    ========================== -->
+        opacity: 1;
 
-    <section id="pin-login-screen" class="hidden">
+        transform:
+            translateY(0);
 
-        <h2>🔑 Welcome Back</h2>
+    }
 
-        <p id="pin-login-message">
-            Masukkan PIN untuk melanjutkan progressmu.
-        </p>
+}
 
-        <div class="form-group">
 
-            <input
-                type="password"
-                id="login-pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="current-password"
-            >
+h2 {
 
-            <button id="pin-login-button">
-                ▶️ Continue
-            </button>
+    margin-top: 30px;
 
-        </div>
+    font-size: 32px;
 
-        <p id="pin-login-error" class="error"></p>
+}
 
-    </section>
 
+p {
 
-    <!-- =========================
-         WELCOME BACK
-    ========================== -->
+    font-size: 18px;
 
-    <section id="welcome-screen" class="hidden">
+    line-height: 1.6;
 
-        <h2>👋 Welcome Back</h2>
+}
 
-        <p id="welcome-message"></p>
 
-        <div class="button-group">
+/* =========================
+   HIDDEN
+========================= */
 
-            <button id="continue-button">
-                ▶️ Continue
-            </button>
+.hidden {
 
-        </div>
+    display: none !important;
 
-    </section>
+}
 
 
-    <!-- =========================
-         LORE
-    ========================== -->
+/* =========================
+   FORM
+========================= */
 
-    <section id="lore-screen" class="hidden">
+.form-group {
 
-        <h2>📖 Before We Begin</h2>
+    display: flex;
 
-        <div class="lore-text">
+    justify-content: center;
 
-            <p>
-                You’ve probably seen them before.
-            </p>
+    align-items: center;
 
-            <p>
-                You know the faces.
-                Maybe even the names.
-            </p>
+    gap: 10px;
 
-            <p>
-                But when you actually need to call them...
-            </p>
+    flex-wrap: wrap;
 
-            <p>
-                <strong>
-                    “Wait... who are they again?”
-                </strong>
-            </p>
+    margin-top: 25px;
 
-            <p>
-                NPC — Need Pamong Context is here to fix that.
-            </p>
+}
 
-        </div>
 
-        <button id="lore-button">
-            🎮 Let's Go
-        </button>
+input {
 
-    </section>
+    width: 280px;
 
+    padding:
+        14px
+        16px;
 
-    <!-- =========================
-         GAME
-    ========================== -->
+    border:
+        1px solid #ccc;
 
-    <section id="game-screen" class="hidden">
+    border-radius: 10px;
 
-        <div class="game-status">
+    font-size: 17px;
 
-            <span>
-                🟢 <strong id="milestone-label">
-                    MILESTONE 1
-                </strong>
-            </span>
+    outline: none;
 
-            <span id="player-label"></span>
+    background: white;
 
-        </div>
+    transition:
+        0.2s;
 
-        <h2>🧑‍🤝‍🧑 Meet Your Pamong</h2>
+}
 
-        <p class="game-description">
-            Kenali wajah, nama, dan konteks Pamong-mu.
-        </p>
 
-        <div id="pengasuh-container"></div>
+input:focus {
 
-    </section>
+    border-color: #6c4ab6;
 
-</main>
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            108,
+            74,
+            182,
+            0.12
+        );
 
+}
 
-<script src="app.js"></script>
 
-</body>
-</html>
+/* =========================
+   BUTTON
+========================= */
+
+button {
+
+    padding:
+        14px
+        22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    background: #f0f0f0;
+
+    color: #222;
+
+    transition:
+        transform 0.15s,
+        box-shadow 0.15s,
+        opacity 0.15s;
+
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 5px 15px
+        rgba(
+            0,
+            0,
+            0,
+            0.1
+        );
+
+}
+
+
+button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+button:disabled {
+
+    cursor: wait;
+
+    opacity: 0.6;
+
+}
+
+
+/* =========================
+   BUTTON GROUP
+========================= */
+
+.button-group {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error {
+
+    color: #d33;
+
+    min-height: 25px;
+
+    margin-top: 15px;
+
+}
+
+
+/* =========================
+   LORE
+========================= */
+
+.lore-text {
+
+    max-width: 600px;
+
+    margin:
+        30px
+        auto;
+
+}
+
+
+/* =========================
+   GAME STATUS
+========================= */
+
+.game-status {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    max-width: 700px;
+
+    margin:
+        0 auto
+        25px;
+
+    padding:
+        12px
+        18px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.8
+        );
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(
+            0,
+            0,
+            0,
+            0.06
+        );
+
+}
+
+
+.game-description {
+
+    margin-bottom: 30px;
+
+}
+
+
+/* =========================
+   PENGASUH CARDS
+========================= */
+
+#pengasuh-container {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                200px,
+                1fr
+            )
+        );
+
+    gap: 20px;
+
+    margin-top: 30px;
+
+}
+
+
+.card {
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+
+    transition:
+        transform 0.2s;
+
+}
+
+
+.card:hover {
+
+    transform:
+        translateY(-5px);
+
+}
+
+
+.card img {
+
+    width: 150px;
+
+    height: 180px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+}
+
+
+.card h3 {
+
+    margin:
+        15px
+        0
+        5px;
+
+}
+
+
+.card p {
+
+    margin:
+        5px 0;
+
+    font-size: 15px;
+
+}
+
+
+/* =========================
+   NPC FLOATING MASCOT
+========================= */
+
+#npc-mascot {
+
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 20px;
+
+    width: 230px;
+
+    height: auto;
+
+    z-index: 1000;
+
+    pointer-events: none;
+
+    animation:
+        npcFloat
+        3.5s
+        ease-in-out
+        infinite;
+
+    filter:
+        drop-shadow(
+            0 12px 18px
+            rgba(
+                0,
+                0,
+                0,
+                0.18
+            )
+        );
+
+}
+
+
+@keyframes npcFloat {
+
+    0% {
+
+        transform:
+            translateY(0)
+            rotate(0deg);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-12px)
+            rotate(1deg);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0)
+            rotate(0deg);
+
+    }
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .game-container {
+
+        padding:
+            35px
+            15px
+            100px;
+
+    }
+
+
+    .game-header h1 {
+
+        font-size: 38px;
+
+    }
+
+
+    h2 {
+
+        font-size: 27px;
+
+    }
+
+
+    .form-group {
+
+        flex-direction: column;
+
+    }
+
+
+    input {
+
+        width: 100%;
+
+        max-width: 320px;
+
+    }
+
+
+    button {
+
+        width: auto;
+
+    }
+
+
+    #npc-mascot {
+
+        width: 130px;
+
+        right: 8px;
+
+        bottom: 8px;
+
+    }
+
+
+    .game-status {
+
+        flex-direction: column;
+
+        gap: 8px;
+
+    }
+
+}
