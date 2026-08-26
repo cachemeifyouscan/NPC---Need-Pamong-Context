@@ -20,29 +20,42 @@
     <style>
 
         /* =====================================================
+           RESET KHUSUS OPENING
+        ===================================================== */
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+        }
+
+
+        /* =====================================================
            OPENING SCREEN
         ===================================================== */
 
         #intro-screen {
 
             position: fixed;
+
             inset: 0;
 
-            z-index: 99999;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100vw;
+            height: 100vh;
 
             overflow: hidden;
 
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
             background:
-                radial-gradient(
-                    circle at center,
-                    #fffdf7 0%,
-                    #f8f1e4 48%,
-                    #eadfc9 100%
-                );
+                #ead9b8;
+
+            z-index: 99999;
 
         }
 
@@ -54,6 +67,7 @@
         .map-background {
 
             position: absolute;
+
             inset: 0;
 
             width: 100%;
@@ -61,9 +75,9 @@
 
             pointer-events: none;
 
-            opacity: 0.10;
-
             z-index: 0;
+
+            opacity: 0.22;
 
         }
 
@@ -77,59 +91,53 @@
 
 
         /* =====================================================
-           SOFT LIGHT BEHIND MASCOT
+           PARchMENT OVERLAY
         ===================================================== */
 
-        #intro-screen::after {
-
-            content: "";
+        .map-overlay {
 
             position: absolute;
 
-            left: 50%;
-            top: 48%;
+            inset: 0;
 
-            width: min(80vw, 850px);
-            height: min(80vw, 850px);
-
-            transform: translate(-50%, -50%);
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(255, 253, 246, 0.95) 0%,
-                    rgba(255, 253, 246, 0.65) 42%,
-                    rgba(255, 253, 246, 0) 72%
-                );
+            z-index: 1;
 
             pointer-events: none;
 
-            z-index: 1;
+            background:
+
+                radial-gradient(
+                    ellipse at center,
+                    rgba(255, 250, 235, 0.25) 0%,
+                    rgba(239, 218, 181, 0.10) 50%,
+                    rgba(120, 85, 40, 0.18) 100%
+                );
 
         }
 
 
         /* =====================================================
-           CONTENT
+           INTRO CONTENT
         ===================================================== */
 
         .intro-content {
 
             position: relative;
 
-            width: min(92vw, 700px);
-
-            display: block;
-
-            margin: 0 auto;
-
             z-index: 5;
+
+            width: min(92vw, 650px);
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
 
         }
 
 
         /* =====================================================
-           MASCOT IMAGE
+           MASCOT
         ===================================================== */
 
         .intro-mascot {
@@ -137,86 +145,122 @@
             display: block;
 
             width: 100%;
-            height: auto;
 
-            margin: 0;
+            height: auto;
 
             user-select: none;
 
             -webkit-user-drag: none;
 
+            filter:
+                drop-shadow(
+                    0 22px 20px rgba(72, 48, 20, 0.28)
+                );
+
+            animation:
+                mascotFloat 3.5s ease-in-out infinite;
+
         }
 
 
         /* =====================================================
-           INVISIBLE CLICK AREA
+           FLOATING EFFECT
+        ===================================================== */
+
+        @keyframes mascotFloat {
+
+            0% {
+
+                transform: translateY(0px);
+
+            }
+
+            50% {
+
+                transform: translateY(-12px);
+
+            }
+
+            100% {
+
+                transform: translateY(0px);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CLICK AREA
            
-           Ini adalah area transparan yang diletakkan
-           tepat di atas tombol "MULAI PETUALANGAN"
-           yang sudah menyatu di dalam gambar.
+           Tombol ini TRANSPARAN.
+
+           Jadi tombol "MULAI PETUALANGAN"
+           tetap berasal dari gambar mascot2.png.
+
+           User tinggal klik tombol yang terlihat
+           di dalam gambar.
         ===================================================== */
 
         #intro-start-button {
 
-            position: absolute !important;
+            position: absolute;
 
-            left: 25% !important;
+            /*
+             * Posisi tombol pada gambar.
+             */
 
-            bottom: 1.5% !important;
+            left: 28%;
 
-            width: 50% !important;
+            bottom: 2%;
 
-            height: 14% !important;
+            width: 44%;
 
-            padding: 0 !important;
-            margin: 0 !important;
+            height: 15%;
 
-            background: transparent !important;
-            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
 
-            border: none !important;
+            background: transparent;
 
-            box-shadow: none !important;
+            border: none;
 
-            outline: none !important;
+            box-shadow: none;
 
             cursor: pointer;
 
             z-index: 20;
+
+            appearance: none;
 
         }
 
 
         #intro-start-button:hover {
 
-            background: transparent !important;
-            background-color: transparent !important;
+            background: transparent;
 
-            border: none !important;
+            border: none;
 
-            box-shadow: none !important;
+            box-shadow: none;
 
         }
 
 
         #intro-start-button:focus {
 
-            background: transparent !important;
-            background-color: transparent !important;
-
-            outline: none !important;
+            outline: none;
 
         }
 
 
         #intro-start-button:active {
 
-            background: transparent !important;
-            background-color: transparent !important;
+            background: transparent;
 
-            border: none !important;
+            border: none;
 
-            box-shadow: none !important;
+            box-shadow: none;
 
         }
 
@@ -231,6 +275,10 @@
 
             min-height: 100vh;
 
+            position: relative;
+
+            z-index: 100;
+
         }
 
 
@@ -238,7 +286,7 @@
            MOBILE
         ===================================================== */
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
 
             .intro-content {
 
@@ -249,13 +297,13 @@
 
             #intro-start-button {
 
-                left: 23% !important;
+                left: 26%;
 
-                width: 54% !important;
+                width: 48%;
 
-                bottom: 1.5% !important;
+                bottom: 2%;
 
-                height: 15% !important;
+                height: 15%;
 
             }
 
@@ -288,314 +336,333 @@
             xmlns="http://www.w3.org/2000/svg"
         >
 
-            <!-- ================================
-                 MAP CONTOURS
-            ================================= -->
+            <!-- OUTER MAP -->
 
             <path
-                d="M70 150
-                   C180 70 300 110 380 75
-                   C490 25 570 100 650 80
-                   C760 45 850 110 930 95
-                   C1050 70 1120 145 1150 230
-                   C1180 320 1100 360 1130 450
-                   C1160 550 1080 620 980 600
-                   C880 580 830 680 720 650
-                   C610 620 540 700 430 660
-                   C320 620 240 680 160 600
-                   C80 520 110 430 65 350
-                   C25 275 25 200 70 150Z"
+                d="
+                M80 120
+                C180 50 300 90 390 70
+                C500 40 580 100 690 70
+                C800 40 900 100 1010 80
+                C1110 70 1160 150 1140 240
+                C1180 330 1110 390 1140 490
+                C1160 590 1060 650 970 620
+                C870 680 800 700 700 660
+                C600 710 500 670 410 690
+                C300 720 220 640 140 610
+                C50 570 80 470 60 390
+                C30 300 40 190 80 120
+                Z
+                "
+
                 fill="none"
-                stroke="#806f4d"
-                stroke-width="3"
+
+                stroke="#806b46"
+
+                stroke-width="4"
             />
 
 
+            <!-- INNER MAP -->
+
             <path
-                d="M120 190
-                   C250 120 330 170 430 130
-                   C530 90 620 150 700 130
-                   C800 100 900 160 990 145
-                   C1080 135 1100 210 1080 270"
+                d="
+                M130 170
+                C230 100 340 140 430 115
+                C530 80 620 140 710 115
+                C820 80 910 145 1010 130
+                C1080 120 1100 190 1080 250
+                C1110 340 1040 400 1070 480
+                C1080 550 1000 590 920 570
+                C820 620 740 640 650 610
+                C560 650 480 620 390 640
+                C300 650 250 580 170 560
+                C100 520 120 430 100 360
+                C80 280 90 220 130 170
+                Z
+                "
+
                 fill="none"
-                stroke="#8f7d57"
+
+                stroke="#8d7850"
+
                 stroke-width="2"
             />
 
 
-            <!-- ================================
-                 RIVERS
-            ================================= -->
+            <!-- RIVER LEFT -->
 
             <path
-                d="M180 80
-                   C250 160 220 230 290 300
-                   C350 365 320 430 390 500
-                   C440 555 420 630 470 730"
+                d="
+                M170 80
+                C230 170 190 230 260 300
+                C320 360 280 430 350 500
+                C400 550 370 640 430 760
+                "
+
                 fill="none"
-                stroke="#7c9a9b"
+
+                stroke="#6e9690"
+
                 stroke-width="8"
+
                 stroke-linecap="round"
             />
 
+
+            <!-- RIVER RIGHT -->
 
             <path
-                d="M1000 80
-                   C930 170 950 240 880 300
-                   C820 350 850 430 780 490
-                   C720 550 760 640 690 730"
+                d="
+                M1030 50
+                C960 150 1010 220 930 300
+                C870 360 910 430 830 500
+                C770 560 810 650 740 750
+                "
+
                 fill="none"
-                stroke="#7c9a9b"
-                stroke-width="6"
+
+                stroke="#6e9690"
+
+                stroke-width="7"
+
                 stroke-linecap="round"
             />
 
 
-            <!-- ================================
-                 MOUNTAINS
-            ================================= -->
+            <!-- MOUNTAINS LEFT -->
 
             <g
                 fill="none"
-                stroke="#776849"
+                stroke="#786848"
                 stroke-width="3"
             >
 
-                <path d="M90 290 L135 220 L180 290 Z"/>
-                <path d="M135 290 L185 200 L235 290 Z"/>
-                <path d="M175 300 L230 215 L285 300 Z"/>
+                <path d="M70 320 L120 230 L170 320 Z"/>
 
-                <path d="M900 280 L950 190 L1000 280 Z"/>
-                <path d="M950 285 L1010 170 L1070 285 Z"/>
-                <path d="M1010 300 L1060 210 L1110 300 Z"/>
+                <path d="M120 320 L180 210 L240 320 Z"/>
+
+                <path d="M180 330 L240 240 L300 330 Z"/>
 
             </g>
 
 
-            <!-- ================================
-                 FOREST
-            ================================= -->
+            <!-- MOUNTAINS RIGHT -->
 
             <g
                 fill="none"
-                stroke="#74805b"
+                stroke="#786848"
                 stroke-width="3"
             >
 
-                <path d="M110 500 l20 -35 l20 35 l-20 -10Z"/>
-                <path d="M150 530 l20 -35 l20 35 l-20 -10Z"/>
-                <path d="M190 510 l20 -35 l20 35 l-20 -10Z"/>
-                <path d="M230 540 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M900 300 L950 210 L1000 300 Z"/>
 
-                <path d="M960 500 l20 -35 l20 35 l-20 -10Z"/>
-                <path d="M1000 530 l20 -35 l20 35 l-20 -10Z"/>
-                <path d="M1040 510 l20 -35 l20 35 l-20 -10Z"/>
-                <path d="M1080 540 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M950 310 L1010 180 L1070 310 Z"/>
+
+                <path d="M1010 320 L1060 230 L1110 320 Z"/>
 
             </g>
 
 
-            <!-- ================================
-                 ROADS
-            ================================= -->
+            <!-- FOREST LEFT -->
 
             <g
                 fill="none"
-                stroke="#9a8762"
-                stroke-width="3"
-                stroke-dasharray="10 10"
-            >
-
-                <path
-                    d="M130 620
-                       C260 560 330 580 430 530
-                       C520 485 610 500 700 540
-                       C810 590 900 550 1060 620"
-                />
-
-                <path
-                    d="M200 180
-                       C320 240 360 300 500 330
-                       C650 360 760 300 950 200"
-                />
-
-            </g>
-
-
-            <!-- ================================
-                 CASTLES
-            ================================= -->
-
-            <g
-                fill="none"
-                stroke="#806f4d"
+                stroke="#687553"
                 stroke-width="3"
             >
 
-                <!-- Castle left -->
+                <path d="M80 500 l20 -35 l20 35 l-20 -8 Z"/>
 
-                <path
-                    d="M120 390
-                       L120 350
-                       L140 330
-                       L160 350
-                       L160 390
-                       Z"
-                />
+                <path d="M125 530 l20 -35 l20 35 l-20 -8 Z"/>
 
-                <path
-                    d="M115 350 L140 315 L165 350"
-                />
+                <path d="M170 510 l20 -35 l20 35 l-20 -8 Z"/>
 
-                <path
-                    d="M140 315 L140 295"
-                />
-
-
-                <!-- Castle right -->
-
-                <path
-                    d="M1010 390
-                       L1010 350
-                       L1030 330
-                       L1050 350
-                       L1050 390
-                       Z"
-                />
-
-                <path
-                    d="M1005 350 L1030 315 L1055 350"
-                />
-
-                <path
-                    d="M1030 315 L1030 295"
-                />
-
-
-                <!-- Castle bottom -->
-
-                <path
-                    d="M560 690
-                       L560 650
-                       L580 630
-                       L600 650
-                       L600 690
-                       Z"
-                />
-
-                <path
-                    d="M555 650 L580 615 L605 650"
-                />
+                <path d="M215 540 l20 -35 l20 35 l-20 -8 Z"/>
 
             </g>
 
 
-            <!-- ================================
-                 SMALL ISLANDS
-            ================================= -->
+            <!-- FOREST RIGHT -->
 
             <g
                 fill="none"
-                stroke="#807153"
-                stroke-width="2"
+                stroke="#687553"
+                stroke-width="3"
             >
 
-                <ellipse
-                    cx="250"
-                    cy="400"
-                    rx="55"
-                    ry="25"
+                <path d="M940 500 l20 -35 l20 35 l-20 -8 Z"/>
+
+                <path d="M985 530 l20 -35 l20 35 l-20 -8 Z"/>
+
+                <path d="M1030 510 l20 -35 l20 35 l-20 -8 Z"/>
+
+                <path d="M1075 540 l20 -35 l20 35 l-20 -8 Z"/>
+
+            </g>
+
+
+            <!-- ROADS -->
+
+            <g
+                fill="none"
+                stroke="#947b51"
+                stroke-width="3"
+                stroke-dasharray="9 10"
+            >
+
+                <path
+                    d="
+                    M100 600
+                    C250 540 330 570 450 510
+                    C560 450 650 490 760 530
+                    C880 570 970 540 1100 600
+                    "
                 />
 
-                <ellipse
-                    cx="940"
-                    cy="420"
-                    rx="60"
-                    ry="28"
-                />
-
-                <ellipse
-                    cx="600"
-                    cy="170"
-                    rx="65"
-                    ry="25"
+                <path
+                    d="
+                    M180 180
+                    C300 240 370 300 500 320
+                    C650 350 780 300 1000 190
+                    "
                 />
 
             </g>
 
 
-            <!-- ================================
-                 COMPASS
-            ================================= -->
+            <!-- CASTLES -->
+
+            <g
+                fill="none"
+                stroke="#806b46"
+                stroke-width="3"
+            >
+
+                <path
+                    d="
+                    M100 420
+                    L100 375
+                    L125 350
+                    L150 375
+                    L150 420
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M95 375
+                    L125 330
+                    L155 375
+                    "
+                />
+
+
+                <path
+                    d="
+                    M1040 420
+                    L1040 375
+                    L1065 350
+                    L1090 375
+                    L1090 420
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M1035 375
+                    L1065 330
+                    L1095 375
+                    "
+                />
+
+            </g>
+
+
+            <!-- COMPASS -->
 
             <g
                 transform="translate(600 400)"
                 fill="none"
-                stroke="#806f4d"
+                stroke="#806b46"
                 stroke-width="3"
             >
 
-                <circle
-                    r="105"
+                <circle r="125"/>
+
+                <circle r="105"/>
+
+                <path
+                    d="
+                    M0 -130
+                    L18 0
+                    L0 130
+                    L-18 0
+                    Z
+                    "
                 />
 
-                <circle
-                    r="85"
+                <path
+                    d="
+                    M-130 0
+                    L0 18
+                    L130 0
+                    L0 -18
+                    Z
+                    "
                 />
 
-                <path d="M0 -120 L15 0 L0 120 L-15 0 Z"/>
-
-                <path d="M-120 0 L0 15 L120 0 L0 -15 Z"/>
-
-                <circle
-                    r="12"
-                />
+                <circle r="14"/>
 
             </g>
 
 
-            <!-- ================================
-                 MAP LABELS
-            ================================= -->
+            <!-- MAP LABELS -->
 
             <g
-                fill="#806f4d"
+                fill="#806b46"
                 font-family="Georgia, serif"
                 font-size="18"
                 letter-spacing="3"
             >
 
                 <text
-                    x="90"
-                    y="120"
+                    x="80"
+                    y="110"
                 >
                     WESTERN WOODS
                 </text>
 
+
                 <text
-                    x="850"
-                    y="120"
+                    x="870"
+                    y="110"
                 >
                     NORTHERN PEAKS
                 </text>
 
+
                 <text
                     x="80"
-                    y="700"
+                    y="710"
                 >
                     WESTERN COAST
                 </text>
 
+
                 <text
-                    x="880"
-                    y="700"
+                    x="900"
+                    y="710"
                 >
                     EASTERN KINGDOM
                 </text>
 
+
                 <text
                     x="520"
-                    y="90"
+                    y="85"
                 >
                     SANAPATI LAND
                 </text>
@@ -606,6 +673,8 @@
 
     </div>
 
+
+    <div class="map-overlay"></div>
 
 
     <!-- =================================================
@@ -623,11 +692,13 @@
 
 
         <!--
-            TRANSPARENT CLICK AREA
+            TRANSPARENT BUTTON
 
-            Area ini berada tepat di atas tombol
-            "MULAI PETUALANGAN" yang sudah ada
-            di dalam gambar.
+            TIDAK ADA TOMBOL HTML YANG TERLIHAT.
+
+            Area ini hanya menangkap klik pada
+            tombol "MULAI PETUALANGAN" yang ada
+            DI DALAM GAMBAR.
         -->
 
         <button
@@ -653,10 +724,6 @@
 >
 
 
-    <!-- =================================================
-         HEADER
-    ================================================== -->
-
     <header class="game-header">
 
         <h1>
@@ -669,11 +736,6 @@
 
     </header>
 
-
-
-    <!-- =================================================
-         ACCESS CODE
-    ================================================== -->
 
     <section id="login-screen">
 
@@ -710,11 +772,6 @@
 
     </section>
 
-
-
-    <!-- =================================================
-         USERNAME
-    ================================================== -->
 
     <section
         id="username-screen"
@@ -755,11 +812,6 @@
 
     </section>
 
-
-
-    <!-- =================================================
-         CREATE PIN
-    ================================================== -->
 
     <section
         id="pin-setup-screen"
@@ -813,11 +865,6 @@
     </section>
 
 
-
-    <!-- =================================================
-         ENTER PIN
-    ================================================== -->
-
     <section
         id="pin-login-screen"
         class="hidden"
@@ -859,11 +906,6 @@
     </section>
 
 
-
-    <!-- =================================================
-         WELCOME BACK
-    ================================================== -->
-
     <section
         id="welcome-screen"
         class="hidden"
@@ -886,11 +928,6 @@
 
     </section>
 
-
-
-    <!-- =================================================
-         LORE
-    ================================================== -->
 
     <section
         id="lore-screen"
@@ -941,16 +978,10 @@
     </section>
 
 
-
-    <!-- =================================================
-         GAME
-    ================================================== -->
-
     <section
         id="game-screen"
         class="hidden"
     >
-
 
         <div class="game-status">
 
@@ -989,15 +1020,11 @@
 
 
 
-<!-- =====================================================
-     EXISTING APP.JS
-===================================================== -->
-
 <script src="app.js"></script>
 
 
 <!-- =====================================================
-     OPENING LOGIC
+     INTRO → MAIN GAME
 ===================================================== -->
 
 <script>
@@ -1018,27 +1045,12 @@
         "click",
         function () {
 
-            /*
-             * Hilangkan opening.
-             */
-
             introScreen.style.display = "none";
-
-
-            /*
-             * Tampilkan game utama.
-             */
 
             mainGame.style.display = "block";
 
-
-            /*
-             * Fokus ke access code.
-             */
-
             const accessCode =
                 document.getElementById("access-code");
-
 
             if (accessCode) {
 
