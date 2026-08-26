@@ -1,410 +1,258 @@
-/* =========================================================
-   NPC — NEED PAMONG CONTEXT
-========================================================= */
-
-
-/* =========================================================
-   ACCESS CODE
-========================================================= */
-
 const ACCESS_CODE = "SANAPATI";
 
 
-/* =========================================================
-   HELPER
-========================================================= */
+/* =================================================
+   SCREEN SWITCHER
+================================================= */
 
-function showScreen(screenId) {
+function showScreen(id) {
 
-    const screens =
-        document.querySelectorAll(".screen");
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
 
-    screens.forEach(screen => {
+            screen.classList.add("hidden");
 
-        screen.classList.add("hidden");
-
-    });
+        });
 
     const target =
-        document.getElementById(screenId);
+        document.getElementById(id);
 
     if (target) {
 
         target.classList.remove("hidden");
 
     }
-
 }
 
 
-/* =========================================================
+/* =================================================
    OPENING
-========================================================= */
+================================================= */
 
-const enterButton =
-    document.getElementById("enter-button");
+document
+    .getElementById("enter-button")
+    .addEventListener("click", () => {
 
-if (enterButton) {
+        showScreen("login-screen");
 
-    enterButton.addEventListener(
-        "click",
-        function () {
-
-            showScreen("login-screen");
-
-        }
-    );
-
-}
+    });
 
 
-/* =========================================================
+/* =================================================
    ACCESS CODE
-========================================================= */
+================================================= */
 
-const startButton =
-    document.getElementById("start-button");
-
-const accessCodeInput =
+const accessInput =
     document.getElementById("access-code");
 
 const errorMessage =
     document.getElementById("error-message");
 
 
-if (startButton) {
+document
+    .getElementById("start-button")
+    .addEventListener("click", () => {
 
-    startButton.addEventListener(
-        "click",
-        function () {
-
-            const code =
-                accessCodeInput.value
+        const code =
+            accessInput.value
                 .trim()
                 .toUpperCase();
 
+        if (code === ACCESS_CODE) {
 
-            if (code === ACCESS_CODE) {
+            errorMessage.textContent = "";
 
-                errorMessage.textContent = "";
+            showScreen(
+                "username-screen"
+            );
 
-                showScreen(
-                    "username-screen"
-                );
+        } else {
 
-            } else {
+            errorMessage.textContent =
+                "❌ Access code salah.";
 
-                errorMessage.textContent =
-                    "❌ Access code salah. Coba lagi.";
+            accessInput.value = "";
 
-                accessCodeInput.value = "";
-
-                accessCodeInput.focus();
-
-            }
+            accessInput.focus();
 
         }
-    );
 
-}
+    });
 
 
-/* =========================================================
+/* =================================================
    USERNAME
-========================================================= */
+================================================= */
 
-const usernameButton =
-    document.getElementById("username-button");
+document
+    .getElementById("username-button")
+    .addEventListener("click", () => {
 
-const usernameInput =
-    document.getElementById("username");
+        const username =
+            document
+                .getElementById("username")
+                .value
+                .trim();
 
-const usernameError =
-    document.getElementById("username-error");
-
-
-if (usernameButton) {
-
-    usernameButton.addEventListener(
-        "click",
-        function () {
-
-            const username =
-                usernameInput.value.trim();
-
-
-            if (
-                username.length < 3
-            ) {
-
-                usernameError.textContent =
-                    "❌ Username minimal 3 karakter.";
-
-                return;
-
-            }
-
-
-            usernameError.textContent = "";
-
-
-            localStorage.setItem(
-                "npc_username",
-                username
+        const error =
+            document.getElementById(
+                "username-error"
             );
 
+        if (username.length < 3) {
 
-            showScreen(
-                "pin-setup-screen"
-            );
+            error.textContent =
+                "❌ Username minimal 3 karakter.";
+
+            return;
 
         }
-    );
 
-}
+        error.textContent = "";
 
+        localStorage.setItem(
+            "npc_username",
+            username
+        );
 
-/* =========================================================
-   CREATE PIN
-========================================================= */
+        showScreen(
+            "pin-setup-screen"
+        );
 
-const pinButton =
-    document.getElementById("pin-button");
-
-const pinInput =
-    document.getElementById("pin-input");
-
-const pinConfirmInput =
-    document.getElementById(
-        "pin-confirm-input"
-    );
-
-const pinError =
-    document.getElementById("pin-error");
+    });
 
 
-if (pinButton) {
+/* =================================================
+   PIN
+================================================= */
 
-    pinButton.addEventListener(
-        "click",
-        function () {
+document
+    .getElementById("pin-button")
+    .addEventListener("click", () => {
 
-            const pin =
-                pinInput.value.trim();
+        const pin =
+            document
+                .getElementById("pin-input")
+                .value
+                .trim();
 
-            const confirmPin =
-                pinConfirmInput.value.trim();
+        const confirm =
+            document
+                .getElementById(
+                    "pin-confirm-input"
+                )
+                .value
+                .trim();
 
-
-            if (
-                !/^\d{4}$/.test(pin)
-            ) {
-
-                pinError.textContent =
-                    "❌ PIN harus terdiri dari 4 angka.";
-
-                return;
-
-            }
-
-
-            if (
-                pin !== confirmPin
-            ) {
-
-                pinError.textContent =
-                    "❌ PIN tidak sama.";
-
-                return;
-
-            }
-
-
-            pinError.textContent = "";
-
-
-            localStorage.setItem(
-                "npc_pin",
-                pin
+        const error =
+            document.getElementById(
+                "pin-error"
             );
 
 
-            const username =
-                localStorage.getItem(
-                    "npc_username"
-                );
+        if (!/^\d{4}$/.test(pin)) {
 
+            error.textContent =
+                "❌ PIN harus 4 angka.";
 
-            const welcomeMessage =
-                document.getElementById(
-                    "welcome-message"
-                );
-
-
-            welcomeMessage.textContent =
-                `Welcome, ${username}! Your adventure in Sanapati Land awaits.`;
-
-
-            showScreen(
-                "welcome-screen"
-            );
+            return;
 
         }
-    );
-
-}
 
 
-/* =========================================================
+        if (pin !== confirm) {
+
+            error.textContent =
+                "❌ PIN tidak sama.";
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            "npc_pin",
+            pin
+        );
+
+
+        const username =
+            localStorage.getItem(
+                "npc_username"
+            );
+
+
+        document.getElementById(
+            "welcome-message"
+        ).textContent =
+            `Welcome, ${username}! Your adventure in Sanapati Land awaits.`;
+
+
+        showScreen(
+            "welcome-screen"
+        );
+
+    });
+
+
+/* =================================================
    WELCOME
-========================================================= */
+================================================= */
 
-const continueButton =
-    document.getElementById(
-        "continue-button"
-    );
+document
+    .getElementById("continue-button")
+    .addEventListener("click", () => {
 
+        showScreen(
+            "lore-screen"
+        );
 
-if (continueButton) {
-
-    continueButton.addEventListener(
-        "click",
-        function () {
-
-            showScreen(
-                "lore-screen"
-            );
-
-        }
-    );
-
-}
+    });
 
 
-/* =========================================================
+/* =================================================
    LORE
-========================================================= */
+================================================= */
 
-const loreButton =
-    document.getElementById(
-        "lore-button"
-    );
+document
+    .getElementById("lore-button")
+    .addEventListener("click", () => {
 
-
-if (loreButton) {
-
-    loreButton.addEventListener(
-        "click",
-        function () {
-
-            showScreen(
-                "game-screen"
+        const username =
+            localStorage.getItem(
+                "npc_username"
             );
 
-            const username =
-                localStorage.getItem(
-                    "npc_username"
-                );
+        document.getElementById(
+            "player-label"
+        ).textContent =
+            `🧭 ${username}`;
+
+        showScreen(
+            "game-screen"
+        );
+
+    });
 
 
-            const playerLabel =
-                document.getElementById(
-                    "player-label"
-                );
+/* =================================================
+   ENTER KEY
+================================================= */
 
+accessInput.addEventListener(
+    "keydown",
+    event => {
 
-            if (playerLabel) {
+        if (event.key === "Enter") {
 
-                playerLabel.textContent =
-                    `🧭 ${username}`;
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ENTER KEY SUPPORT
-========================================================= */
-
-if (accessCodeInput) {
-
-    accessCodeInput.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                startButton.click();
-
-            }
+            document
+                .getElementById(
+                    "start-button"
+                )
+                .click();
 
         }
-    );
 
-}
-
-
-if (usernameInput) {
-
-    usernameInput.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                usernameButton.click();
-
-            }
-
-        }
-    );
-
-}
-
-
-if (pinInput) {
-
-    pinInput.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                pinButton.click();
-
-            }
-
-        }
-    );
-
-}
-
-
-if (pinConfirmInput) {
-
-    pinConfirmInput.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                pinButton.click();
-
-            }
-
-        }
-    );
-
-}
+    }
+);
