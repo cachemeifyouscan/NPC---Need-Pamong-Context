@@ -6,7 +6,7 @@
 
     <title>NPC — Need Pamong Context</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
@@ -14,39 +14,33 @@
 <main class="game-container">
 
     <!-- =================================================
-         OPENING SCREEN
+         OPENING
     ================================================== -->
 
     <section id="opening-screen" class="screen opening-screen">
 
-        <div class="mascot-wrapper">
+        <div class="opening-mascot">
 
             <img
                 src="./mascott.jpg"
-                id="npc-mascot"
-                alt="NPC Mascot"
+                alt="NPC — Need Pamong Context"
             >
 
         </div>
 
-        <h1 class="opening-title">
-            NPC
-        </h1>
-
-        <p class="opening-subtitle">
-            Need Pamong Context
+        <p class="opening-tagline">
+            Explore Sanapati Land and understand the people behind the roles.
         </p>
 
-        <p class="opening-text">
-            Your journey through Sanapati Land begins here.
-        </p>
-
-        <button id="enter-button" class="main-button">
-            ⚔️ ENTER SANAPATI LAND
+        <button
+            id="enter-button"
+            class="adventure-button"
+        >
+            ⚔️ MULAI PETUALANGAN
         </button>
 
-        <p class="click-hint">
-            Click to begin your adventure
+        <p class="opening-hint">
+            Ketuk di mana saja untuk masuk
         </p>
 
     </section>
@@ -147,7 +141,7 @@
             Buat PIN 4 angka untuk menyimpan dan melanjutkan progressmu.
         </p>
 
-        <div class="form-group pin-group">
+        <div class="form-group">
 
             <input
                 type="password"
@@ -179,7 +173,7 @@
 
 
     <!-- =================================================
-         ENTER PIN
+         PIN LOGIN
     ================================================== -->
 
     <section id="pin-login-screen" class="screen hidden">
@@ -234,13 +228,9 @@
 
         <p id="welcome-message"></p>
 
-        <div class="button-group">
-
-            <button id="continue-button">
-                ▶️ Continue Adventure
-            </button>
-
-        </div>
+        <button id="continue-button">
+            ▶️ Continue Adventure
+        </button>
 
     </section>
 
@@ -326,8 +316,7 @@
 
 </main>
 
-
-<script src="app.js"></script>
+<script src="app.js?v=3"></script>
 
 </body>
 </html>
