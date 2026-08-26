@@ -1,438 +1,14 @@
 /* =========================================================
-   NPC — NEED PAMONG CONTEXT
-   MEDIEVAL / PARCHMENT UI
-========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-
-    width: 100%;
-    min-height: 100%;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    color: #3d2d1c;
-
-    background: #eee2cc;
-}
-
-
-body {
-    overflow-x: hidden;
-}
-
-
-/* =========================================================
-   OPENING
-========================================================= */
-
-#intro-screen {
-
-    position: fixed;
-
-    inset: 0;
-
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            #fffdf7 0%,
-            #f8efdf 48%,
-            #e8d7b7 100%
-        );
-
-    z-index: 99999;
-
-    opacity: 1;
-    visibility: visible;
-
-    transition:
-        opacity .7s ease,
-        visibility .7s ease;
-}
-
-
-#intro-screen.intro-hidden {
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    pointer-events: none;
-}
-
-
-/* parchment */
-
-#intro-screen::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: .32;
-
-    background:
-
-        repeating-linear-gradient(
-            0deg,
-            rgba(100,75,40,.025) 0,
-            rgba(100,75,40,.025) 1px,
-            transparent 1px,
-            transparent 6px
-        ),
-
-        repeating-linear-gradient(
-            90deg,
-            rgba(100,75,40,.018) 0,
-            rgba(100,75,40,.018) 1px,
-            transparent 1px,
-            transparent 7px
-        );
-}
-
-
-#intro-screen::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 28px;
-
-    border:
-        2px solid
-        rgba(116,91,54,.12);
-
-    border-radius: 18px;
-
-    pointer-events: none;
-
-}
-
-
-/* =========================================================
-   OPENING MAP
-========================================================= */
-
-.map-decoration {
-
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    pointer-events: none;
-
-    opacity: .13;
-
-    z-index: 1;
-}
-
-
-.map-decoration svg {
-
-    width: 100%;
-    height: 100%;
-}
-
-
-/* =========================================================
-   INTRO CONTENT
-========================================================= */
-
-.intro-content {
-
-    position: relative;
-
-    z-index: 10;
-
-    width: min(82vw, 680px);
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* =========================================================
-   MASCOT
-========================================================= */
-
-.intro-mascot {
-
-    display: block;
-
-    width: 100%;
-
-    max-width: 680px;
-
-    height: auto;
-
-    user-select: none;
-
-    -webkit-user-drag: none;
-
-    filter:
-        drop-shadow(
-            0 22px 20px
-            rgba(64,43,20,.23)
-        );
-
-    animation:
-        mascotFloat
-        4s
-        ease-in-out
-        infinite;
-}
-
-
-@keyframes mascotFloat {
-
-    0% {
-        transform:
-            translateY(0);
-    }
-
-    50% {
-        transform:
-            translateY(-10px);
-    }
-
-    100% {
-        transform:
-            translateY(0);
-    }
-}
-
-
-/* =========================================================
-   OPENING BUTTON
-========================================================= */
-
-.intro-enter-button {
-
-    position: relative;
-
-    width: 300px;
-
-    min-height: 58px;
-
-    margin-top: -18px;
-
-    border:
-        3px solid
-        #b88a42;
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #68482d 0%,
-            #4c301d 55%,
-            #382216 100%
-        );
-
-    color: #fff1ce;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 18px;
-
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
-
-    cursor: pointer;
-
-    box-shadow:
-
-        inset
-        0 0 0 2px
-        rgba(231,188,99,.22),
-
-        0 6px 0
-        #281810,
-
-        0 12px 22px
-        rgba(70,43,19,.22);
-
-    animation:
-        introPulse
-        2.8s
-        ease-in-out
-        infinite;
-
-    transition:
-        filter .18s ease,
-        transform .18s ease;
-}
-
-
-@keyframes introPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        filter: brightness(1);
-    }
-
-    50% {
-        transform: scale(1.025);
-        filter: brightness(1.07);
-    }
-}
-
-
-.intro-enter-button::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 7px;
-    left: 8px;
-
-    width: 7px;
-    height: 7px;
-
-    border-top:
-        2px solid
-        #d8ad57;
-
-    border-left:
-        2px solid
-        #d8ad57;
-}
-
-
-.intro-enter-button::after {
-
-    content: "";
-
-    position: absolute;
-
-    right: 8px;
-    bottom: 7px;
-
-    width: 7px;
-    height: 7px;
-
-    border-right:
-        2px solid
-        #d8ad57;
-
-    border-bottom:
-        2px solid
-        #d8ad57;
-}
-
-
-.intro-enter-button:hover {
-
-    filter: brightness(1.1);
-
-}
-
-
-.intro-enter-button:active {
-
-    transform:
-        translateY(5px)
-        scale(.99);
-
-}
-
-
-/* =========================================================
-   MAIN GAME
-========================================================= */
-
-#main-game {
-
-    min-height: 100vh;
-
-    width: 100%;
-
-    padding:
-        40px 20px 80px;
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition:
-        opacity .6s ease;
-}
-
-
-#main-game.game-visible {
-
-    opacity: 1;
-
-    visibility: visible;
-}
-
-
-.game-container {
-
-    max-width: 1000px;
-
-    margin: 0 auto;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   GATE SCREEN
+   THE GATE — MEDIEVAL PARCHMENT
 ========================================================= */
 
 .gate-screen {
-
     position: relative;
-
-    min-height:
-        calc(100vh - 80px);
-
+    min-height: calc(100vh - 80px);
     width: 100%;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     overflow: hidden;
@@ -440,7 +16,6 @@ body {
     border-radius: 18px;
 
     background:
-
         radial-gradient(
             ellipse at center,
             rgba(255,253,247,.98) 0%,
@@ -449,24 +24,19 @@ body {
         );
 
     box-shadow:
-
-        0 20px 50px
-        rgba(80,56,27,.13),
-
-        inset
-        0 0 100px
-        rgba(130,100,55,.08);
+        0 20px 50px rgba(80,56,27,.13),
+        inset 0 0 100px rgba(130,100,55,.08);
 }
 
 
-/* parchment texture */
+/* =========================================================
+   PARCHMENT TEXTURE
+========================================================= */
 
 .gate-screen::before {
-
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     pointer-events: none;
@@ -474,7 +44,6 @@ body {
     opacity: .32;
 
     background:
-
         repeating-linear-gradient(
             0deg,
             rgba(100,75,40,.025) 0,
@@ -482,7 +51,6 @@ body {
             transparent 1px,
             transparent 6px
         ),
-
         repeating-linear-gradient(
             90deg,
             rgba(100,75,40,.018) 0,
@@ -494,13 +62,11 @@ body {
 
 
 /* =========================================================
-   GATE MAP
+   MAP
 ========================================================= */
 
 .gate-map {
-
     position: absolute;
-
     inset: 0;
 
     z-index: 1;
@@ -510,9 +76,7 @@ body {
     pointer-events: none;
 }
 
-
 .gate-map svg {
-
     width: 100%;
     height: 100%;
 }
@@ -523,7 +87,6 @@ body {
 ========================================================= */
 
 .gate-ghost {
-
     position: absolute;
 
     left: 50%;
@@ -532,8 +95,7 @@ body {
     width: 420px;
     height: 560px;
 
-    transform:
-        translate(-50%, -48%);
+    transform: translate(-50%, -48%);
 
     z-index: 2;
 
@@ -542,9 +104,7 @@ body {
     pointer-events: none;
 }
 
-
 .ghost-arch {
-
     position: absolute;
 
     top: 0;
@@ -553,19 +113,13 @@ body {
     width: 100%;
     height: 190px;
 
-    border:
-        22px solid
-        #5c472e;
-
+    border: 22px solid #5c472e;
     border-bottom: none;
 
-    border-radius:
-        220px 220px 0 0;
+    border-radius: 220px 220px 0 0;
 }
 
-
 .ghost-door {
-
     position: absolute;
 
     left: 30px;
@@ -574,14 +128,10 @@ body {
     top: 170px;
     bottom: 0;
 
-    border:
-        16px solid
-        #5c472e;
-
+    border: 16px solid #5c472e;
     border-top: none;
 
     background:
-
         repeating-linear-gradient(
             90deg,
             transparent 0,
@@ -593,29 +143,27 @@ body {
 
 
 /* =========================================================
-   GATE CONTENT
+   CONTENT
 ========================================================= */
 
 .gate-content {
-
     position: relative;
 
     z-index: 10;
 
-    width:
-        min(90%, 680px);
+    width: min(90%, 680px);
 
-    padding:
-        50px 35px;
+    padding: 50px 35px;
 
     text-align: center;
 }
 
 
-/* ornament */
+/* =========================================================
+   ORNAMENT
+========================================================= */
 
 .gate-ornament {
-
     display: flex;
 
     align-items: center;
@@ -628,22 +176,15 @@ body {
     color: #9a753c;
 }
 
-
 .gate-ornament span {
-
     width: 65px;
-
     height: 1px;
 
-    background:
-        #b69a69;
+    background: #b69a69;
 }
 
-
 .gate-ornament b {
-
     font-size: 23px;
-
     font-weight: normal;
 }
 
@@ -653,7 +194,6 @@ body {
 ========================================================= */
 
 .gate-title {
-
     margin: 0;
 
     color: #4a3520;
@@ -680,14 +220,11 @@ body {
 ========================================================= */
 
 .gate-subtitle {
-
     max-width: 500px;
 
-    margin:
-        18px auto 38px;
+    margin: 18px auto 38px;
 
-    color:
-        #766247;
+    color: #766247;
 
     font-size: 18px;
 
@@ -698,23 +235,20 @@ body {
 
 
 /* =========================================================
-   SEAL LABEL
+   ENTER YOUR SEAL
 ========================================================= */
 
 .seal-label {
-
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 14px;
 
     margin-bottom: 13px;
 
-    color:
-        #71552e;
+    color: #71552e;
 
     font-size: 13px;
 
@@ -723,17 +257,13 @@ body {
     letter-spacing: 3px;
 }
 
-
 .seal-label span {
-
     display: block;
 
     width: 55px;
-
     height: 1px;
 
-    background:
-        #b69a69;
+    background: #b69a69;
 }
 
 
@@ -742,11 +272,9 @@ body {
 ========================================================= */
 
 .gate-form {
-
     display: flex;
 
     align-items: stretch;
-
     justify-content: center;
 
     gap: 12px;
@@ -756,36 +284,31 @@ body {
 
 
 /* =========================================================
-   INPUT
+   SEAL INPUT
 ========================================================= */
 
 .gate-form input {
-
     width: 330px;
 
     min-height: 58px;
 
-    padding:
-        0 20px;
+    padding: 0 20px;
 
     border:
-        2px solid
-        #b99b69;
+        2px solid #b99b69;
 
     border-radius: 9px;
 
     outline: none;
 
     background:
-
         linear-gradient(
             180deg,
             #fffdf6,
             #f4ead5
         );
 
-    color:
-        #4a3520;
+    color: #4a3520;
 
     font-family:
         Georgia,
@@ -795,9 +318,7 @@ body {
     font-size: 18px;
 
     box-shadow:
-
-        inset
-        0 2px 7px
+        inset 0 2px 7px
         rgba(90,65,30,.08),
 
         0 2px 4px
@@ -808,54 +329,41 @@ body {
         box-shadow .2s ease;
 }
 
-
 .gate-form input::placeholder {
+    color: #a08b6d;
 
-    color:
-        #a08b6d;
-
-    font-style:
-        italic;
+    font-style: italic;
 }
 
-
 .gate-form input:focus {
-
-    border-color:
-        #80602f;
+    border-color: #80602f;
 
     box-shadow:
-
         0 0 0 3px
         rgba(151,116,57,.12),
 
-        inset
-        0 2px 7px
+        inset 0 2px 7px
         rgba(90,65,30,.08);
 }
 
 
 /* =========================================================
-   UNLOCK BUTTON
+   UNLOCK GATE
 ========================================================= */
 
 #start-button {
-
     min-width: 175px;
 
     min-height: 58px;
 
-    padding:
-        0 22px;
+    padding: 0 22px;
 
     border:
-        2px solid
-        #b88a42;
+        2px solid #b88a42;
 
     border-radius: 9px;
 
     background:
-
         linear-gradient(
             180deg,
             #68482d 0%,
@@ -863,8 +371,7 @@ body {
             #382216 100%
         );
 
-    color:
-        #fff1ce;
+    color: #fff1ce;
 
     font-family:
         Georgia,
@@ -880,28 +387,21 @@ body {
     cursor: pointer;
 
     box-shadow:
-
-        inset
-        0 0 0 1px
+        inset 0 0 0 1px
         rgba(231,188,99,.25),
 
-        0 4px 0
-        #281810,
+        0 4px 0 #281810,
 
         0 8px 16px
         rgba(70,43,19,.16);
 
     animation:
-        gatePulse
-        3s
-        ease-in-out
-        infinite;
+        gatePulse 3s ease-in-out infinite;
 
     transition:
         filter .2s ease,
         transform .15s ease;
 }
-
 
 @keyframes gatePulse {
 
@@ -915,19 +415,14 @@ body {
     }
 }
 
-
 #start-button:hover {
-
-    filter:
-        brightness(1.12);
+    filter: brightness(1.12);
 
     transform:
         translateY(-2px);
 }
 
-
 #start-button:active {
-
     transform:
         translateY(3px);
 }
@@ -938,20 +433,15 @@ body {
 ========================================================= */
 
 .error {
-
     min-height: 25px;
 
-    margin:
-        18px 0 0;
+    margin: 18px 0 0;
 
-    color:
-        #8d3c2e;
+    color: #8d3c2e;
 
-    font-size:
-        15px !important;
+    font-size: 15px !important;
 
-    font-style:
-        italic;
+    font-style: italic;
 }
 
 
@@ -960,313 +450,61 @@ body {
 ========================================================= */
 
 .gate-footer {
+    margin-top: 28px;
 
-    margin-top:
-        28px;
+    color: #a18d6e;
 
-    color:
-        #a18d6e;
+    font-size: 13px !important;
 
-    font-size:
-        13px !important;
-
-    letter-spacing:
-        1px;
+    letter-spacing: 1px;
 }
 
 
 /* =========================================================
-   OTHER GAME SCREENS
-========================================================= */
-
-section:not(.gate-screen) {
-
-    width: 100%;
-
-    text-align: center;
-}
-
-
-section:not(.gate-screen) h2 {
-
-    color:
-        #4a3520;
-
-    font-size: 36px;
-
-    margin-bottom:
-        20px;
-}
-
-
-section:not(.gate-screen) p {
-
-    font-size: 20px;
-
-    line-height: 1.6;
-}
-
-
-/* =========================================================
-   FORM GROUP
-========================================================= */
-
-.form-group {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 14px;
-
-    margin-top: 30px;
-
-    flex-wrap: wrap;
-}
-
-
-.form-group input {
-
-    width: 350px;
-
-    padding:
-        17px 20px;
-
-    border:
-        1px solid
-        #c8b797;
-
-    border-radius:
-        10px;
-
-    font-size: 18px;
-
-    outline: none;
-
-    background:
-        #fffdf7;
-}
-
-
-.form-group button,
-.button-group button,
-section:not(.gate-screen) button {
-
-    padding:
-        15px 25px;
-
-    border:
-        2px solid
-        #a37a3c;
-
-    border-radius:
-        10px;
-
-    background:
-        #5a3c25;
-
-    color:
-        #fff3d5;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 17px;
-
-    cursor: pointer;
-
-    transition:
-        transform .15s ease,
-        filter .15s ease;
-}
-
-
-.form-group button:hover,
-.button-group button:hover,
-section:not(.gate-screen) button:hover {
-
-    filter:
-        brightness(1.08);
-
-    transform:
-        translateY(-2px);
-}
-
-
-/* =========================================================
-   HIDDEN
-========================================================= */
-
-.hidden {
-
-    display:
-        none !important;
-}
-
-
-/* =========================================================
-   LORE
-========================================================= */
-
-.lore-text {
-
-    max-width:
-        650px;
-
-    margin:
-        0 auto 30px;
-}
-
-
-.lore-text p {
-
-    margin:
-        18px 0;
-}
-
-
-/* =========================================================
-   GAME STATUS
-========================================================= */
-
-.game-status {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    padding:
-        15px 20px;
-
-    margin-bottom:
-        30px;
-
-    border:
-        1px solid
-        #c8b797;
-
-    border-radius:
-        10px;
-
-    background:
-        #eee2cd;
-}
-
-
-/* =========================================================
-   RESPONSIVE
+   MOBILE
 ========================================================= */
 
 @media (max-width: 700px) {
 
-    .intro-content {
-
-        width:
-            94vw;
-    }
-
-
-    .intro-enter-button {
-
-        width:
-            245px;
-
-        min-height:
-            55px;
-
-        margin-top:
-            -12px;
-
-        font-size:
-            16px;
-    }
-
-
     .gate-screen {
-
-        min-height:
-            calc(100vh - 40px);
+        min-height: calc(100vh - 40px);
     }
-
 
     .gate-content {
-
-        width:
-            94%;
-
-        padding:
-            35px 15px;
+        width: 94%;
+        padding: 35px 15px;
     }
-
 
     .gate-title {
-
-        font-size:
-            36px;
-
-        letter-spacing:
-            2px;
+        font-size: 36px;
+        letter-spacing: 2px;
     }
-
 
     .gate-subtitle {
-
-        font-size:
-            16px;
+        font-size: 16px;
     }
-
 
     .gate-form {
-
-        flex-direction:
-            column;
-
-        align-items:
-            center;
+        flex-direction: column;
+        align-items: center;
     }
-
 
     .gate-form input,
     #start-button {
-
-        width:
-            min(100%, 350px);
+        width: min(100%, 350px);
     }
-
 
     .gate-ghost {
-
-        width:
-            300px;
-
-        height:
-            500px;
+        width: 300px;
+        height: 500px;
     }
-
 
     .seal-label {
-
-        font-size:
-            11px;
-
-        letter-spacing:
-            2px;
+        font-size: 11px;
+        letter-spacing: 2px;
     }
-
 
     .seal-label span {
-
-        width:
-            35px;
+        width: 35px;
     }
-
 }
