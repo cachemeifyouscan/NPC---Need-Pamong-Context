@@ -1,52 +1,39 @@
 /* =========================================================
    NPC — NEED PAMONG CONTEXT
-   MEDIEVAL / SANAPATI LAND UI
-========================================================= */
-
-
-/* =========================================================
-   GLOBAL
+   MEDIEVAL / PARCHMENT UI
 ========================================================= */
 
 * {
-
     box-sizing: border-box;
-
 }
 
 
 html,
 body {
-
     margin: 0;
-
     padding: 0;
 
     width: 100%;
-
     min-height: 100%;
-
-}
-
-
-body {
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    color:
-        #35291c;
+    color: #3d2d1c;
 
-    background:
-        #eee1c9;
+    background: #eee2cc;
+}
 
+
+body {
+    overflow-x: hidden;
 }
 
 
 /* =========================================================
-   OPENING SCREEN
+   OPENING
 ========================================================= */
 
 #intro-screen {
@@ -56,36 +43,31 @@ body {
     inset: 0;
 
     width: 100vw;
-
     height: 100vh;
-
-    z-index: 99999;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     overflow: hidden;
 
     background:
-
         radial-gradient(
             ellipse at center,
             #fffdf7 0%,
-            #f7efdf 48%,
-            #e8d7b6 100%
+            #f8efdf 48%,
+            #e8d7b7 100%
         );
 
-    opacity: 1;
+    z-index: 99999;
 
+    opacity: 1;
     visibility: visible;
 
     transition:
-        opacity 0.7s ease,
-        visibility 0.7s ease;
-
+        opacity .7s ease,
+        visibility .7s ease;
 }
 
 
@@ -96,13 +78,10 @@ body {
     visibility: hidden;
 
     pointer-events: none;
-
 }
 
 
-/* =========================================================
-   INTRO TEXTURE
-========================================================= */
+/* parchment */
 
 #intro-screen::before {
 
@@ -114,31 +93,49 @@ body {
 
     pointer-events: none;
 
-    opacity: 0.30;
+    opacity: .32;
 
     background:
 
         repeating-linear-gradient(
             0deg,
-            rgba(100, 75, 40, 0.025) 0px,
-            rgba(100, 75, 40, 0.025) 1px,
+            rgba(100,75,40,.025) 0,
+            rgba(100,75,40,.025) 1px,
             transparent 1px,
-            transparent 5px
+            transparent 6px
         ),
 
         repeating-linear-gradient(
             90deg,
-            rgba(100, 75, 40, 0.018) 0px,
-            rgba(100, 75, 40, 0.018) 1px,
+            rgba(100,75,40,.018) 0,
+            rgba(100,75,40,.018) 1px,
             transparent 1px,
             transparent 7px
         );
+}
+
+
+#intro-screen::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 28px;
+
+    border:
+        2px solid
+        rgba(116,91,54,.12);
+
+    border-radius: 18px;
+
+    pointer-events: none;
 
 }
 
 
 /* =========================================================
-   MAP DECORATION
+   OPENING MAP
 ========================================================= */
 
 .map-decoration {
@@ -148,22 +145,20 @@ body {
     inset: 0;
 
     width: 100%;
-
     height: 100%;
 
     pointer-events: none;
 
-    opacity: 0.13;
+    opacity: .13;
 
+    z-index: 1;
 }
 
 
 .map-decoration svg {
 
     width: 100%;
-
     height: 100%;
-
 }
 
 
@@ -184,9 +179,7 @@ body {
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
-
 }
 
 
@@ -209,61 +202,45 @@ body {
     -webkit-user-drag: none;
 
     filter:
-
         drop-shadow(
             0 22px 20px
-            rgba(64, 43, 20, 0.23)
+            rgba(64,43,20,.23)
         );
 
     animation:
-
-        mascot-float
+        mascotFloat
         4s
         ease-in-out
         infinite;
-
 }
 
 
-@keyframes mascot-float {
+@keyframes mascotFloat {
 
     0% {
-
         transform:
             translateY(0);
-
     }
 
     50% {
-
         transform:
             translateY(-10px);
-
     }
 
     100% {
-
         transform:
             translateY(0);
-
     }
-
 }
 
 
 /* =========================================================
-   INTRO BUTTON
+   OPENING BUTTON
 ========================================================= */
 
 .intro-enter-button {
 
     position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
 
     width: 300px;
 
@@ -271,98 +248,121 @@ body {
 
     margin-top: -18px;
 
-    padding: 0 28px;
-
-    border-radius: 13px;
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #68482d 0%,
-            #4c301d 50%,
-            #382216 100%
-        );
-
     border:
         3px solid
         #b88a42;
 
-    box-shadow:
+    border-radius: 13px;
 
-        inset
-        0 0 0 2px
-        rgba(231, 188, 99, 0.22),
+    background:
+        linear-gradient(
+            180deg,
+            #68482d 0%,
+            #4c301d 55%,
+            #382216 100%
+        );
 
-        0 6px 0
-        #281810,
-
-        0 12px 22px
-        rgba(70, 43, 19, 0.22);
-
-    color:
-        #fff1ce;
+    color: #fff1ce;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size:
-        18px;
+    font-size: 18px;
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    letter-spacing:
-        1.5px;
+    letter-spacing: 1.5px;
 
-    cursor:
-        pointer;
+    cursor: pointer;
+
+    box-shadow:
+
+        inset
+        0 0 0 2px
+        rgba(231,188,99,.22),
+
+        0 6px 0
+        #281810,
+
+        0 12px 22px
+        rgba(70,43,19,.22);
 
     animation:
-        intro-button-pulse
+        introPulse
         2.8s
         ease-in-out
         infinite;
 
     transition:
-        filter 0.18s ease,
-        box-shadow 0.18s ease;
-
+        filter .18s ease,
+        transform .18s ease;
 }
 
 
-@keyframes intro-button-pulse {
+@keyframes introPulse {
 
     0%,
     100% {
-
-        transform:
-            scale(1);
-
-        filter:
-            brightness(1);
-
+        transform: scale(1);
+        filter: brightness(1);
     }
 
     50% {
-
-        transform:
-            scale(1.025);
-
-        filter:
-            brightness(1.07);
-
+        transform: scale(1.025);
+        filter: brightness(1.07);
     }
+}
 
+
+.intro-enter-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 7px;
+    left: 8px;
+
+    width: 7px;
+    height: 7px;
+
+    border-top:
+        2px solid
+        #d8ad57;
+
+    border-left:
+        2px solid
+        #d8ad57;
+}
+
+
+.intro-enter-button::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: 8px;
+    bottom: 7px;
+
+    width: 7px;
+    height: 7px;
+
+    border-right:
+        2px solid
+        #d8ad57;
+
+    border-bottom:
+        2px solid
+        #d8ad57;
 }
 
 
 .intro-enter-button:hover {
 
-    filter:
-        brightness(1.10);
+    filter: brightness(1.1);
 
 }
 
@@ -371,7 +371,7 @@ body {
 
     transform:
         translateY(5px)
-        scale(0.99);
+        scale(.99);
 
 }
 
@@ -386,13 +386,15 @@ body {
 
     width: 100%;
 
+    padding:
+        40px 20px 80px;
+
     opacity: 0;
 
     visibility: hidden;
 
     transition:
-        opacity 0.6s ease;
-
+        opacity .6s ease;
 }
 
 
@@ -401,25 +403,16 @@ body {
     opacity: 1;
 
     visibility: visible;
-
 }
 
 
-/* =========================================================
-   GAME CONTAINER
-========================================================= */
-
 .game-container {
 
-    position: relative;
-
-    max-width: 1100px;
+    max-width: 1000px;
 
     margin: 0 auto;
 
-    padding:
-        70px 25px 100px;
-
+    text-align: center;
 }
 
 
@@ -431,7 +424,10 @@ body {
 
     position: relative;
 
-    min-height: calc(100vh - 40px);
+    min-height:
+        calc(100vh - 80px);
+
+    width: 100%;
 
     display: flex;
 
@@ -447,26 +443,23 @@ body {
 
         radial-gradient(
             ellipse at center,
-            rgba(255, 252, 242, 0.98) 0%,
-            rgba(248, 238, 216, 0.94) 58%,
-            rgba(228, 211, 178, 0.96) 100%
+            rgba(255,253,247,.98) 0%,
+            rgba(248,239,220,.96) 55%,
+            rgba(229,213,182,.98) 100%
         );
 
     box-shadow:
 
-        0 18px 50px
-        rgba(80, 56, 27, 0.13),
+        0 20px 50px
+        rgba(80,56,27,.13),
 
         inset
-        0 0 80px
-        rgba(130, 100, 55, 0.08);
-
+        0 0 100px
+        rgba(130,100,55,.08);
 }
 
 
-/* =========================================================
-   GATE PAPER TEXTURE
-========================================================= */
+/* parchment texture */
 
 .gate-screen::before {
 
@@ -478,26 +471,33 @@ body {
 
     pointer-events: none;
 
-    opacity: 0.35;
+    opacity: .32;
 
     background:
 
         repeating-linear-gradient(
             0deg,
-            rgba(110, 80, 40, 0.025) 0px,
-            rgba(110, 80, 40, 0.025) 1px,
+            rgba(100,75,40,.025) 0,
+            rgba(100,75,40,.025) 1px,
             transparent 1px,
             transparent 6px
-        );
+        ),
 
+        repeating-linear-gradient(
+            90deg,
+            rgba(100,75,40,.018) 0,
+            rgba(100,75,40,.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
 }
 
 
 /* =========================================================
-   MAP LINE ART
+   GATE MAP
 ========================================================= */
 
-.gate-map-lines {
+.gate-map {
 
     position: absolute;
 
@@ -505,142 +505,90 @@ body {
 
     z-index: 1;
 
+    opacity: .115;
+
     pointer-events: none;
-
-    opacity: 0.12;
-
 }
 
 
-.gate-map-lines svg {
+.gate-map svg {
 
     width: 100%;
-
     height: 100%;
-
 }
 
 
 /* =========================================================
-   MEDIEVAL GATE
+   GHOST GATE
 ========================================================= */
 
-.gate-arch {
+.gate-ghost {
 
     position: absolute;
 
     left: 50%;
-
     top: 50%;
 
+    width: 420px;
+    height: 560px;
+
     transform:
-        translate(-50%, -50%);
-
-    width: 430px;
-
-    height: 590px;
+        translate(-50%, -48%);
 
     z-index: 2;
 
-    opacity: 0.055;
+    opacity: .045;
 
     pointer-events: none;
-
 }
 
 
-/* arch */
-
-.gate-arch-top {
+.ghost-arch {
 
     position: absolute;
 
     top: 0;
-
     left: 0;
 
     width: 100%;
-
-    height: 180px;
+    height: 190px;
 
     border:
-
-        20px solid
-        #5d4830;
+        22px solid
+        #5c472e;
 
     border-bottom: none;
 
     border-radius:
         220px 220px 0 0;
-
 }
 
 
-/* door */
-
-.gate-door {
+.ghost-door {
 
     position: absolute;
 
-    left: 35px;
-
-    right: 35px;
+    left: 30px;
+    right: 30px;
 
     top: 170px;
-
     bottom: 0;
 
     border:
-
         16px solid
-        #5d4830;
+        #5c472e;
 
     border-top: none;
-
-}
-
-
-/* wooden doors */
-
-.gate-door-left,
-.gate-door-right {
-
-    position: absolute;
-
-    top: 0;
-
-    bottom: 0;
-
-    width: 50%;
 
     background:
 
         repeating-linear-gradient(
             90deg,
-            transparent 0px,
+            transparent 0,
             transparent 35px,
-            rgba(80, 55, 30, 0.8) 36px,
+            rgba(70,45,22,.7) 36px,
             transparent 39px
         );
-
-}
-
-
-.gate-door-left {
-
-    left: 0;
-
-    border-right:
-        4px solid
-        #5d4830;
-
-}
-
-
-.gate-door-right {
-
-    right: 0;
-
 }
 
 
@@ -654,38 +602,30 @@ body {
 
     z-index: 10;
 
-    width: min(
-        90%,
-        650px
-    );
-
-    text-align: center;
+    width:
+        min(90%, 680px);
 
     padding:
-        50px 40px;
+        50px 35px;
 
+    text-align: center;
 }
 
 
-/* =========================================================
-   ORNAMENT
-========================================================= */
+/* ornament */
 
 .gate-ornament {
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 14px;
 
     margin-bottom: 18px;
 
-    color:
-        #9a753c;
-
+    color: #9a753c;
 }
 
 
@@ -696,16 +636,15 @@ body {
     height: 1px;
 
     background:
-        #b29461;
-
+        #b69a69;
 }
 
 
-.gate-ornament div {
+.gate-ornament b {
 
-    font-size:
-        23px;
+    font-size: 23px;
 
+    font-weight: normal;
 }
 
 
@@ -715,11 +654,9 @@ body {
 
 .gate-title {
 
-    margin:
-        0;
+    margin: 0;
 
-    color:
-        #4a3520;
+    color: #4a3520;
 
     font-family:
         Georgia,
@@ -727,17 +664,14 @@ body {
         serif;
 
     font-size:
-        clamp(38px, 5vw, 60px);
+        clamp(38px, 5vw, 58px);
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    letter-spacing:
-        3px;
+    letter-spacing: 3px;
 
     text-shadow:
         0 1px 0 #fff9e9;
-
 }
 
 
@@ -747,8 +681,7 @@ body {
 
 .gate-subtitle {
 
-    max-width:
-        500px;
+    max-width: 500px;
 
     margin:
         18px auto 38px;
@@ -756,15 +689,11 @@ body {
     color:
         #766247;
 
-    font-size:
-        18px;
+    font-size: 18px;
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 
-    font-style:
-        italic;
-
+    font-style: italic;
 }
 
 
@@ -782,25 +711,22 @@ body {
 
     gap: 14px;
 
-    margin-bottom:
-        14px;
+    margin-bottom: 13px;
 
     color:
         #71552e;
 
-    font-size:
-        13px;
+    font-size: 13px;
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    letter-spacing:
-        3px;
-
+    letter-spacing: 3px;
 }
 
 
-.seal-line {
+.seal-label span {
+
+    display: block;
 
     width: 55px;
 
@@ -808,12 +734,11 @@ body {
 
     background:
         #b69a69;
-
 }
 
 
 /* =========================================================
-   GATE FORM
+   FORM
 ========================================================= */
 
 .gate-form {
@@ -826,23 +751,19 @@ body {
 
     gap: 12px;
 
-    margin-top:
-        12px;
-
+    margin-top: 12px;
 }
 
 
 /* =========================================================
-   SEAL INPUT
+   INPUT
 ========================================================= */
 
 .gate-form input {
 
-    width:
-        330px;
+    width: 330px;
 
-    min-height:
-        58px;
+    min-height: 58px;
 
     padding:
         0 20px;
@@ -851,11 +772,9 @@ body {
         2px solid
         #b99b69;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
-    outline:
-        none;
+    outline: none;
 
     background:
 
@@ -873,22 +792,20 @@ body {
         "Times New Roman",
         serif;
 
-    font-size:
-        18px;
+    font-size: 18px;
 
     box-shadow:
 
         inset
         0 2px 7px
-        rgba(90, 65, 30, 0.08),
+        rgba(90,65,30,.08),
 
         0 2px 4px
-        rgba(90, 65, 30, 0.05);
+        rgba(90,65,30,.05);
 
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-
+        border-color .2s ease,
+        box-shadow .2s ease;
 }
 
 
@@ -899,7 +816,6 @@ body {
 
     font-style:
         italic;
-
 }
 
 
@@ -911,23 +827,23 @@ body {
     box-shadow:
 
         0 0 0 3px
-        rgba(151, 116, 57, 0.12),
+        rgba(151,116,57,.12),
 
         inset
         0 2px 7px
-        rgba(90, 65, 30, 0.08);
-
+        rgba(90,65,30,.08);
 }
 
 
 /* =========================================================
-   UNLOCK GATE BUTTON
+   UNLOCK BUTTON
 ========================================================= */
 
 #start-button {
 
-    min-width:
-        170px;
+    min-width: 175px;
+
+    min-height: 58px;
 
     padding:
         0 22px;
@@ -936,8 +852,7 @@ body {
         2px solid
         #b88a42;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
     background:
 
@@ -956,60 +871,48 @@ body {
         "Times New Roman",
         serif;
 
-    font-size:
-        16px;
+    font-size: 16px;
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    letter-spacing:
-        1.4px;
+    letter-spacing: 1.3px;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
     box-shadow:
 
         inset
         0 0 0 1px
-        rgba(231, 188, 99, 0.25),
+        rgba(231,188,99,.25),
 
         0 4px 0
         #281810,
 
         0 8px 16px
-        rgba(70, 43, 19, 0.16);
+        rgba(70,43,19,.16);
 
     animation:
-        gate-button-pulse
+        gatePulse
         3s
         ease-in-out
         infinite;
 
     transition:
-        filter 0.2s ease,
-        transform 0.15s ease;
-
+        filter .2s ease,
+        transform .15s ease;
 }
 
 
-@keyframes gate-button-pulse {
+@keyframes gatePulse {
 
     0%,
     100% {
-
-        filter:
-            brightness(1);
-
+        filter: brightness(1);
     }
 
     50% {
-
-        filter:
-            brightness(1.055);
-
+        filter: brightness(1.055);
     }
-
 }
 
 
@@ -1020,7 +923,6 @@ body {
 
     transform:
         translateY(-2px);
-
 }
 
 
@@ -1028,7 +930,6 @@ body {
 
     transform:
         translateY(3px);
-
 }
 
 
@@ -1038,8 +939,7 @@ body {
 
 .error {
 
-    min-height:
-        26px;
+    min-height: 25px;
 
     margin:
         18px 0 0;
@@ -1052,18 +952,17 @@ body {
 
     font-style:
         italic;
-
 }
 
 
 /* =========================================================
-   GATE FOOTER
+   FOOTER
 ========================================================= */
 
 .gate-footer {
 
-    margin:
-        30px 0 0;
+    margin-top:
+        28px;
 
     color:
         #a18d6e;
@@ -1073,78 +972,64 @@ body {
 
     letter-spacing:
         1px;
-
 }
 
 
 /* =========================================================
-   OTHER SCREENS
+   OTHER GAME SCREENS
 ========================================================= */
 
 section:not(.gate-screen) {
 
-    width:
-        100%;
+    width: 100%;
 
-    text-align:
-        center;
-
+    text-align: center;
 }
 
 
-section h2 {
+section:not(.gate-screen) h2 {
 
     color:
         #4a3520;
 
-    font-size:
-        36px;
+    font-size: 36px;
 
+    margin-bottom:
+        20px;
 }
 
 
-section p {
+section:not(.gate-screen) p {
 
-    font-size:
-        19px;
+    font-size: 20px;
 
-    line-height:
-        1.6;
-
+    line-height: 1.6;
 }
 
 
 /* =========================================================
-   FORM GROUP — OTHER SCREENS
+   FORM GROUP
 ========================================================= */
 
 .form-group {
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    justify-content: center;
 
-    justify-content:
-        center;
+    align-items: center;
 
-    gap:
-        14px;
+    gap: 14px;
 
-    margin-top:
-        30px;
+    margin-top: 30px;
 
-    flex-wrap:
-        wrap;
-
+    flex-wrap: wrap;
 }
 
 
 .form-group input {
 
-    width:
-        350px;
+    width: 350px;
 
     padding:
         17px 20px;
@@ -1156,21 +1041,18 @@ section p {
     border-radius:
         10px;
 
-    font-size:
-        18px;
+    font-size: 18px;
+
+    outline: none;
 
     background:
         #fffdf7;
-
-    outline:
-        none;
-
 }
 
 
 .form-group button,
 .button-group button,
-section button {
+section:not(.gate-screen) button {
 
     padding:
         15px 25px;
@@ -1193,25 +1075,25 @@ section button {
         "Times New Roman",
         serif;
 
-    font-size:
-        17px;
+    font-size: 17px;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
+    transition:
+        transform .15s ease,
+        filter .15s ease;
 }
 
 
 .form-group button:hover,
 .button-group button:hover,
-section button:hover {
+section:not(.gate-screen) button:hover {
 
     filter:
         brightness(1.08);
 
     transform:
         translateY(-2px);
-
 }
 
 
@@ -1223,7 +1105,6 @@ section button:hover {
 
     display:
         none !important;
-
 }
 
 
@@ -1238,7 +1119,6 @@ section button:hover {
 
     margin:
         0 auto 30px;
-
 }
 
 
@@ -1246,7 +1126,6 @@ section button:hover {
 
     margin:
         18px 0;
-
 }
 
 
@@ -1280,7 +1159,6 @@ section button:hover {
 
     background:
         #eee2cd;
-
 }
 
 
@@ -1290,99 +1168,10 @@ section button:hover {
 
 @media (max-width: 700px) {
 
-
-    .game-container {
-
-        padding:
-            20px 12px 60px;
-
-    }
-
-
-    .gate-screen {
-
-        min-height:
-            calc(100vh - 20px);
-
-    }
-
-
-    .gate-content {
-
-        width:
-            94%;
-
-        padding:
-            35px 15px;
-
-    }
-
-
-    .gate-title {
-
-        font-size:
-            35px;
-
-        letter-spacing:
-            2px;
-
-    }
-
-
-    .gate-subtitle {
-
-        font-size:
-            16px;
-
-    }
-
-
-    .gate-form {
-
-        flex-direction:
-            column;
-
-        align-items:
-            center;
-
-    }
-
-
-    .gate-form input {
-
-        width:
-            min(100%, 350px);
-
-    }
-
-
-    #start-button {
-
-        width:
-            min(100%, 350px);
-
-        min-height:
-            55px;
-
-    }
-
-
-    .gate-arch {
-
-        width:
-            300px;
-
-        height:
-            500px;
-
-    }
-
-
     .intro-content {
 
         width:
             94vw;
-
     }
 
 
@@ -1395,12 +1184,89 @@ section button:hover {
             55px;
 
         margin-top:
-            -14px;
+            -12px;
 
         font-size:
             16px;
-
     }
 
+
+    .gate-screen {
+
+        min-height:
+            calc(100vh - 40px);
+    }
+
+
+    .gate-content {
+
+        width:
+            94%;
+
+        padding:
+            35px 15px;
+    }
+
+
+    .gate-title {
+
+        font-size:
+            36px;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .gate-subtitle {
+
+        font-size:
+            16px;
+    }
+
+
+    .gate-form {
+
+        flex-direction:
+            column;
+
+        align-items:
+            center;
+    }
+
+
+    .gate-form input,
+    #start-button {
+
+        width:
+            min(100%, 350px);
+    }
+
+
+    .gate-ghost {
+
+        width:
+            300px;
+
+        height:
+            500px;
+    }
+
+
+    .seal-label {
+
+        font-size:
+            11px;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .seal-label span {
+
+        width:
+            35px;
+    }
 
 }
