@@ -1,22 +1,857 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+<title>NPC — Need Pamong Context</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<style>
 
-    <title>NPC — Need Pamong Context</title>
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+* {
+    box-sizing: border-box;
+}
 
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f4ead3;
+    color: #302315;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   GENERIC SCREEN
+========================================================= */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   OPENING SCREEN
+========================================================= */
+
+#intro-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 99999;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #fffaf0 0%,
+            #f8eed9 48%,
+            #ead9b6 100%
+        );
+}
+
+
+/* =========================================================
+   PARCHMENT TEXTURE
+========================================================= */
+
+#intro-screen::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .45;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(90,65,35,.025) 0px,
+            rgba(90,65,35,.025) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(90,65,35,.018) 0px,
+            rgba(90,65,35,.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   MAP BORDER
+========================================================= */
+
+#intro-screen::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 35px;
+
+    border:
+        2px solid
+        rgba(105,79,43,.18);
+
+    border-radius: 18px;
+
+    pointer-events: none;
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.map-decoration {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+    opacity: .23;
+}
+
+.map-decoration svg {
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+}
+
+
+/* =========================================================
+   MAP TEXT
+========================================================= */
+
+.map-label {
+
+    fill: #6f5737;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 23px;
+
+    letter-spacing: 4px;
+
+    font-weight: 600;
+}
+
+.map-direction {
+
+    fill: #7a6241;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 18px;
+
+    letter-spacing: 5px;
+}
+
+
+/* =========================================================
+   MAP ELEMENTS
+========================================================= */
+
+.map-river {
+
+    fill: none;
+
+    stroke: #648b88;
+
+    stroke-width: 7;
+
+    stroke-linecap: round;
+}
+
+.map-road {
+
+    fill: none;
+
+    stroke: #806943;
+
+    stroke-width: 3;
+
+    stroke-dasharray: 12 12;
+}
+
+.map-mountain {
+
+    fill: none;
+
+    stroke: #756044;
+
+    stroke-width: 4;
+}
+
+.map-forest {
+
+    fill: none;
+
+    stroke: #64714f;
+
+    stroke-width: 3;
+}
+
+.map-castle {
+
+    fill: none;
+
+    stroke: #78613d;
+
+    stroke-width: 4;
+}
+
+.map-compass {
+
+    fill: none;
+
+    stroke: #806943;
+
+    stroke-width: 3;
+}
+
+
+/* =========================================================
+   INTRO CONTENT
+========================================================= */
+
+.intro-content {
+
+    position: relative;
+
+    z-index: 20;
+
+    width: min(58vw, 600px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   MASCOT
+========================================================= */
+
+.intro-mascot {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    filter:
+        drop-shadow(
+            0 18px 18px
+            rgba(65,43,20,.22)
+        );
+
+    animation:
+        mascotFloat
+        4.5s
+        ease-in-out
+        infinite;
+}
+
+
+/* =========================================================
+   MASCOT FLOAT
+========================================================= */
+
+@keyframes mascotFloat {
+
+    0% {
+        transform:
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-8px);
+    }
+
+    100% {
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   CLICK HERE BUTTON
+   IMPORTANT:
+   THIS IS A REAL BUTTON.
+========================================================= */
+
+#intro-start-button {
+
+    position: absolute;
+
+    /*
+       Posisi mengikuti tombol
+       yang ada di PNG mascot.
+    */
+
+    left: 27%;
+
+    bottom: 2%;
+
+    width: 46%;
+
+    height: 14%;
+
+    padding: 0;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    z-index: 100;
+
+    border-radius: 18px;
+
+    border:
+        3px solid
+        #a98243;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #704525,
+            #4c2b18
+        );
+
+    box-shadow:
+        0 5px 0 #2d1a10,
+        0 8px 18px
+        rgba(55,35,15,.28);
+
+    color: #f9eed4;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: clamp(16px, 2vw, 25px);
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 1px 2px
+        rgba(0,0,0,.4);
+
+    transition:
+        transform .15s ease,
+        filter .15s ease;
+}
+
+
+/* hover */
+
+#intro-start-button:hover {
+
+    filter:
+        brightness(1.12);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* click */
+
+#intro-start-button:active {
+
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        0 2px 0 #2d1a10,
+        0 5px 12px
+        rgba(55,35,15,.22);
+}
+
+
+/* =========================================================
+   OPENING HIDE
+========================================================= */
+
+#intro-screen.intro-hidden {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .45s ease,
+        visibility .45s ease;
+}
+
+
+/* =========================================================
+   MAIN GAME
+========================================================= */
+
+#main-game {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #fffaf0,
+            #f4ead3
+        );
+
+    z-index: 100;
+}
+
+
+#main-game.game-visible {
+
+    display: block;
+}
+
+
+/* =========================================================
+   INNER SCREENS
+========================================================= */
+
+.game-screen {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MEDIEVAL PANEL
+========================================================= */
+
+.medieval-panel {
+
+    width: min(900px, 92vw);
+
+    padding: 50px;
+
+    border:
+        2px solid
+        #c3a66f;
+
+    border-radius: 20px;
+
+    background:
+        rgba(250,242,224,.96);
+
+    box-shadow:
+        0 20px 50px
+        rgba(69,49,25,.15);
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+.medieval-title {
+
+    margin: 0 0 15px;
+
+    color: #3b2717;
+
+    font-size:
+        clamp(30px, 4vw, 54px);
+
+    letter-spacing: 1px;
+}
+
+.medieval-subtitle {
+
+    margin:
+        0 auto 30px;
+
+    max-width: 700px;
+
+    font-size: 20px;
+
+    line-height: 1.6;
+
+    color: #59452d;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.medieval-input {
+
+    width: min(520px, 100%);
+
+    height: 62px;
+
+    padding:
+        0 20px;
+
+    border:
+        1px solid
+        #c7b58f;
+
+    border-radius: 14px;
+
+    background:
+        #fffdf7;
+
+    color:
+        #332417;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 20px;
+
+    outline: none;
+}
+
+.medieval-input:focus {
+
+    border-color:
+        #896b3e;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(137,107,62,.12);
+}
+
+
+/* =========================================================
+   MEDIEVAL BUTTON
+========================================================= */
+
+.medieval-button {
+
+    margin-top: 22px;
+
+    min-width: 220px;
+
+    min-height: 58px;
+
+    padding:
+        12px 28px;
+
+    border:
+        2px solid
+        #a47b3c;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #6e4324,
+            #4d2b18
+        );
+
+    color:
+        #fff3d7;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 0 #2f1b0f;
+
+    transition:
+        transform .15s ease,
+        filter .15s ease;
+}
+
+.medieval-button:hover {
+
+    filter:
+        brightness(1.12);
+
+    transform:
+        translateY(-2px);
+}
+
+.medieval-button:active {
+
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 2px 0 #2f1b0f;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-message {
+
+    min-height: 28px;
+
+    margin-top: 15px;
+
+    color: #a9362b;
+
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   WELCOME / LORE
+========================================================= */
+
+.lore-text {
+
+    max-width: 680px;
+
+    margin:
+        0 auto;
+
+    font-size: 20px;
+
+    line-height: 1.8;
+
+    color: #4c3925;
+}
+
+.lore-quote {
+
+    margin:
+        25px 0;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #3a2717;
+}
+
+
+/* =========================================================
+   GAME HOME
+========================================================= */
+
+.game-home {
+
+    width: min(1000px, 92vw);
+
+    padding: 45px;
+
+    border:
+        2px solid
+        #b89a61;
+
+    border-radius: 22px;
+
+    background:
+        rgba(250,242,224,.97);
+
+    box-shadow:
+        0 20px 55px
+        rgba(60,40,20,.18);
+
+    text-align: center;
+}
+
+.game-home h1 {
+
+    margin-top: 0;
+
+    font-size: 48px;
+
+    color: #3d2919;
+}
+
+.milestone {
+
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    padding:
+        7px 16px;
+
+    border-radius: 999px;
+
+    background:
+        #d6bd86;
+
+    color:
+        #49351e;
+
+    font-size: 14px;
+
+    letter-spacing: 2px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .intro-content {
+
+        width:
+            min(65vw, 520px);
+    }
+
+    .map-label {
+
+        font-size: 18px;
+    }
+
+    .medieval-panel {
+
+        padding: 35px 25px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .intro-content {
+
+        width: 88vw;
+    }
+
+    #intro-start-button {
+
+        left: 25%;
+
+        width: 50%;
+
+        bottom: 2%;
+
+        height: 15%;
+
+        font-size: 14px;
+    }
+
+    #intro-screen::after {
+
+        inset: 14px;
+    }
+
+    .game-screen {
+
+        padding: 15px;
+    }
+
+    .medieval-panel {
+
+        padding: 30px 18px;
+    }
+}
+
+</style>
 </head>
 
 
@@ -24,10 +859,13 @@
 
 
 <!-- =====================================================
-     OPENING / MASCOT SCREEN
+     OPENING SCREEN
 ===================================================== -->
 
 <div id="intro-screen">
+
+
+    <!-- ================= MAP ================= -->
 
     <div class="map-decoration">
 
@@ -37,7 +875,7 @@
             xmlns="http://www.w3.org/2000/svg"
         >
 
-            <!-- MAP BORDER -->
+            <!-- MAP OUTLINE -->
 
             <path
                 d="
@@ -60,7 +898,7 @@
             />
 
 
-            <!-- RIVERS -->
+            <!-- RIVER LEFT -->
 
             <path
                 d="
@@ -69,11 +907,11 @@
                 C370 410 310 500 400 590
                 C460 660 420 760 500 900
                 "
-                fill="none"
-                stroke="#688f8b"
-                stroke-width="7"
+                class="map-river"
             />
 
+
+            <!-- RIVER RIGHT -->
 
             <path
                 d="
@@ -82,60 +920,13 @@
                 C1010 420 1080 500 980 610
                 C920 690 960 790 900 900
                 "
-                fill="none"
-                stroke="#688f8b"
-                stroke-width="6"
+                class="map-river"
             />
-
-
-            <!-- MOUNTAINS -->
-
-            <g
-                fill="none"
-                stroke="#766044"
-                stroke-width="4"
-            >
-
-                <path d="M70 330 L140 210 L210 330 Z"/>
-                <path d="M150 330 L230 180 L310 330 Z"/>
-                <path d="M250 340 L330 220 L410 340 Z"/>
-
-                <path d="M1000 330 L1080 190 L1160 330 Z"/>
-                <path d="M1100 330 L1190 160 L1280 330 Z"/>
-                <path d="M1200 340 L1270 220 L1340 340 Z"/>
-
-            </g>
-
-
-            <!-- FORESTS -->
-
-            <g
-                fill="none"
-                stroke="#647250"
-                stroke-width="3"
-            >
-
-                <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
-                <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
-                <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
-                <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
-
-                <path d="M1100 620 l30 -50 l30 50 l-30 -12 Z"/>
-                <path d="M1160 650 l30 -50 l30 50 l-30 -12 Z"/>
-                <path d="M1220 625 l30 -50 l30 50 l-30 -12 Z"/>
-                <path d="M1280 655 l30 -50 l30 50 l-30 -12 Z"/>
-
-            </g>
 
 
             <!-- ROADS -->
 
-            <g
-                fill="none"
-                stroke="#806943"
-                stroke-width="3"
-                stroke-dasharray="12 12"
-            >
+            <g class="map-road">
 
                 <path
                     d="
@@ -157,13 +948,73 @@
             </g>
 
 
-            <!-- CASTLES -->
+            <!-- WESTERN MOUNTAINS -->
 
-            <g
-                fill="none"
-                stroke="#78613d"
-                stroke-width="4"
-            >
+            <g class="map-mountain">
+
+                <path
+                    d="M70 330 L140 210 L210 330 Z"
+                />
+
+                <path
+                    d="M150 330 L230 180 L310 330 Z"
+                />
+
+                <path
+                    d="M250 340 L330 220 L410 340 Z"
+                />
+
+            </g>
+
+
+            <!-- NORTHERN PEAKS -->
+
+            <g class="map-mountain">
+
+                <path
+                    d="M1000 330 L1080 190 L1160 330 Z"
+                />
+
+                <path
+                    d="M1100 330 L1190 160 L1280 330 Z"
+                />
+
+                <path
+                    d="M1200 340 L1270 220 L1340 340 Z"
+                />
+
+            </g>
+
+
+            <!-- WESTERN WOODS -->
+
+            <g class="map-forest">
+
+                <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M330 630 l30 -50 l30 50 l-30 -12 Z"/>
+
+            </g>
+
+
+            <!-- EASTERN WOODS -->
+
+            <g class="map-forest">
+
+                <path d="M1080 620 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1140 650 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1200 625 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1260 655 l30 -50 l30 50 l-30 -12 Z"/>
+                <path d="M1320 630 l30 -50 l30 50 l-30 -12 Z"/>
+
+            </g>
+
+
+            <!-- CASTLE LEFT -->
+
+            <g class="map-castle">
 
                 <path
                     d="
@@ -184,6 +1035,12 @@
                     "
                 />
 
+            </g>
+
+
+            <!-- CASTLE RIGHT -->
+
+            <g class="map-castle">
 
                 <path
                     d="
@@ -211,66 +1068,92 @@
 
             <g
                 transform="translate(700 450)"
-                fill="none"
-                stroke="#806943"
-                stroke-width="3"
+                class="map-compass"
             >
 
-                <circle r="150"/>
-                <circle r="125"/>
+                <circle r="145"/>
+
+                <circle r="120"/>
 
                 <path
                     d="
-                    M0 -150
-                    L20 0
-                    L0 150
-                    L-20 0
+                    M0 -145
+                    L18 0
+                    L0 145
+                    L-18 0
                     Z
                     "
                 />
 
                 <path
                     d="
-                    M-150 0
-                    L0 20
-                    L150 0
-                    L0 -20
+                    M-145 0
+                    L0 18
+                    L145 0
+                    L0 -18
                     Z
                     "
                 />
 
-                <circle r="15"/>
+                <circle r="12"/>
 
             </g>
 
 
-            <!-- MAP LABELS -->
+            <!-- LABELS -->
 
-            <g
-                fill="#725b3c"
-                font-family="Georgia, serif"
-                font-size="22"
-                letter-spacing="4"
-            >
+            <g class="map-label">
 
-                <text x="100" y="90">
-                    WESTERN WOODS
-                </text>
-
-                <text x="1050" y="90">
-                    NORTHERN PEAKS
-                </text>
-
-                <text x="580" y="70">
+                <text
+                    x="700"
+                    y="68"
+                    text-anchor="middle"
+                >
                     SANAPATI LAND
                 </text>
 
-                <text x="100" y="820">
-                    WESTERN COAST
+                <text
+                    x="100"
+                    y="100"
+                >
+                    WESTERN WOODS
                 </text>
 
-                <text x="1080" y="820">
-                    EASTERN KINGDOM
+                <text
+                    x="1040"
+                    y="100"
+                >
+                    NORTHERN PEAKS
+                </text>
+
+            </g>
+
+
+            <!-- DIRECTIONS -->
+
+            <g class="map-direction">
+
+                <text
+                    x="95"
+                    y="70"
+                >
+                    NORTH WEST
+                </text>
+
+                <text
+                    x="1280"
+                    y="450"
+                    text-anchor="middle"
+                >
+                    EAST
+                </text>
+
+                <text
+                    x="700"
+                    y="850"
+                    text-anchor="middle"
+                >
+                    SOUTHERN COAST
                 </text>
 
             </g>
@@ -280,7 +1163,7 @@
     </div>
 
 
-    <!-- MASCOT -->
+    <!-- ================= MASCOT ================= -->
 
     <div class="intro-content">
 
@@ -291,12 +1174,12 @@
         >
 
 
-        <!-- NO EXTRA ICON -->
+        <!-- REAL CLICK BUTTON -->
 
         <button
             id="intro-start-button"
-            class="intro-enter-button"
             type="button"
+            aria-label="Enter Sanapati Land"
         >
             CLICK HERE
         </button>
@@ -311,264 +1194,54 @@
      MAIN GAME
 ===================================================== -->
 
-<main
-    id="main-game"
-    class="game-container"
->
+<div id="main-game">
 
 
     <!-- =================================================
-         ACCESS / GATE
-    ================================================== -->
+         ACCESS CODE
+    ================================================= -->
 
     <section
         id="login-screen"
-        class="gate-screen"
+        class="game-screen"
     >
 
+        <div class="medieval-panel">
 
-        <!-- BACKGROUND MAP -->
-
-        <div class="gate-map">
-
-            <svg
-                viewBox="0 0 1400 900"
-                preserveAspectRatio="xMidYMid slice"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-
-                <!-- MAP BORDER -->
-
-                <path
-                    d="
-                    M70 120
-                    C250 50 370 100 520 65
-                    C700 25 850 85 1010 65
-                    C1160 50 1280 90 1330 160
-                    C1380 300 1320 430 1350 570
-                    C1380 720 1270 800 1110 820
-                    C930 845 800 790 620 830
-                    C430 850 250 810 100 730
-                    C40 600 80 470 55 350
-                    C30 250 40 170 70 120
-                    Z
-                    "
-                    fill="none"
-                    stroke="#806a47"
-                    stroke-width="4"
-                />
-
-
-                <!-- LEFT RIVER -->
-
-                <path
-                    d="
-                    M140 0
-                    C240 150 180 250 280 350
-                    C350 420 270 540 370 650
-                    C430 720 390 810 450 900
-                    "
-                    fill="none"
-                    stroke="#6f9691"
-                    stroke-width="7"
-                />
-
-
-                <!-- RIGHT RIVER -->
-
-                <path
-                    d="
-                    M1260 0
-                    C1160 150 1220 250 1120 350
-                    C1050 420 1130 540 1030 650
-                    C970 720 1010 810 950 900
-                    "
-                    fill="none"
-                    stroke="#6f9691"
-                    stroke-width="7"
-                />
-
-
-                <!-- MOUNTAINS -->
-
-                <g
-                    fill="none"
-                    stroke="#806a47"
-                    stroke-width="4"
-                >
-
-                    <path d="M50 330 L140 170 L230 330 Z"/>
-                    <path d="M170 340 L250 200 L330 340 Z"/>
-                    <path d="M270 350 L350 230 L430 350 Z"/>
-
-                    <path d="M970 340 L1060 180 L1150 340 Z"/>
-                    <path d="M1080 350 L1170 190 L1260 350 Z"/>
-                    <path d="M1190 350 L1270 230 L1350 350 Z"/>
-
-                </g>
-
-
-                <!-- ROADS -->
-
-                <g
-                    fill="none"
-                    stroke="#8a734c"
-                    stroke-width="3"
-                    stroke-dasharray="12 12"
-                >
-
-                    <path
-                        d="
-                        M70 700
-                        C280 610 430 690 580 580
-                        C730 470 870 570 1010 630
-                        C1160 690 1260 600 1350 690
-                        "
-                    />
-
-                    <path
-                        d="
-                        M120 190
-                        C310 280 430 340 600 350
-                        C800 365 990 280 1270 180
-                        "
-                    />
-
-                </g>
-
-
-                <!-- SMALL CASTLES -->
-
-                <g
-                    fill="none"
-                    stroke="#806a47"
-                    stroke-width="4"
-                >
-
-                    <path
-                        d="
-                        M105 480
-                        L105 410
-                        L140 370
-                        L175 410
-                        L175 480
-                        Z
-                        "
-                    />
-
-                    <path
-                        d="
-                        M100 410
-                        L140 350
-                        L180 410
-                        "
-                    />
-
-
-                    <path
-                        d="
-                        M1225 480
-                        L1225 410
-                        L1260 370
-                        L1295 410
-                        L1295 480
-                        Z
-                        "
-                    />
-
-                    <path
-                        d="
-                        M1220 410
-                        L1260 350
-                        L1300 410
-                        "
-                    />
-
-                </g>
-
-            </svg>
-
-        </div>
-
-
-        <!-- SUBTLE CENTRAL GATE -->
-
-        <div class="gate-ghost">
-
-            <div class="ghost-arch"></div>
-
-            <div class="ghost-door"></div>
-
-        </div>
-
-
-        <!-- GATE CONTENT -->
-
-        <div class="gate-content">
-
-
-            <div class="gate-ornament">
-
-                <span></span>
-
-                <b>✦</b>
-
-                <span></span>
-
-            </div>
-
-
-            <h1 class="gate-title">
-                THE GATE AWAITS
+            <h1 class="medieval-title">
+                🔐 The Gate Awaits
             </h1>
 
-
-            <p class="gate-subtitle">
-                A sealed passage awaits those
-                who know the way.
+            <p class="medieval-subtitle">
+                A sealed passage awaits those who know the way.
             </p>
 
+            <p>
+                <strong>ENTER YOUR SEAL</strong>
+            </p>
 
-            <div class="seal-label">
+            <input
+                id="access-code"
+                class="medieval-input"
+                type="text"
+                placeholder="Enter your seal..."
+                autocomplete="off"
+            >
 
-                <span></span>
+            <br>
 
-                ENTER YOUR SEAL
+            <button
+                id="start-button"
+                class="medieval-button"
+                type="button"
+            >
+                🔓 UNLOCK GATE
+            </button>
 
-                <span></span>
-
-            </div>
-
-
-            <div class="gate-form">
-
-                <input
-                    type="password"
-                    id="access-code"
-                    placeholder="Enter your seal..."
-                    autocomplete="off"
-                >
-
-
-                <button
-                    id="start-button"
-                    type="button"
-                >
-                    UNLOCK GATE
-                </button>
-
-            </div>
-
-
-            <p
+            <div
                 id="error-message"
-                class="error"
-            ></p>
-
-
-            <p class="gate-footer">
-                The realm beyond is waiting.
-            </p>
+                class="error-message"
+            ></div>
 
         </div>
 
@@ -578,44 +1251,47 @@
 
     <!-- =================================================
          USERNAME
-    ================================================== -->
+    ================================================= -->
 
     <section
         id="username-screen"
-        class="hidden"
+        class="game-screen hidden"
     >
 
-        <h2>
-            👤 Who Are You?
-        </h2>
+        <div class="medieval-panel">
 
-        <p>
-            Buat username untuk menyimpan progress permainanmu.
-        </p>
+            <h1 class="medieval-title">
+                👤 Who Are You?
+            </h1>
 
-        <div class="form-group">
+            <p class="medieval-subtitle">
+                Buat username untuk menyimpan dan melanjutkan progressmu.
+            </p>
 
             <input
-                type="text"
                 id="username"
-                placeholder="Enter your username"
-                maxlength="20"
+                class="medieval-input"
+                type="text"
+                placeholder="Choose your name..."
                 autocomplete="off"
             >
 
+            <br>
+
             <button
                 id="username-button"
+                class="medieval-button"
                 type="button"
             >
-                ✨ Continue
+                ✨ CONTINUE
             </button>
 
-        </div>
+            <div
+                id="username-error"
+                class="error-message"
+            ></div>
 
-        <p
-            id="username-error"
-            class="error"
-        ></p>
+        </div>
 
     </section>
 
@@ -623,55 +1299,59 @@
 
     <!-- =================================================
          CREATE PIN
-    ================================================== -->
+    ================================================= -->
 
     <section
         id="pin-setup-screen"
-        class="hidden"
+        class="game-screen hidden"
     >
 
-        <h2>
-            🔐 Create Your PIN
-        </h2>
+        <div class="medieval-panel">
 
-        <p>
-            Buat PIN 4 angka untuk menyimpan dan melanjutkan
-            progressmu.
-        </p>
+            <h1 class="medieval-title">
+                🔐 Create Your PIN
+            </h1>
 
-        <div class="form-group">
+            <p class="medieval-subtitle">
+                Buat PIN 4 angka untuk menyimpan dan melanjutkan progressmu.
+            </p>
 
             <input
-                type="password"
                 id="pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
+                class="medieval-input"
+                type="password"
                 maxlength="4"
-                autocomplete="new-password"
+                inputmode="numeric"
+                placeholder="4-digit PIN"
             >
 
+            <br>
+
             <input
-                type="password"
                 id="pin-confirm-input"
-                placeholder="Confirm PIN"
-                inputmode="numeric"
+                class="medieval-input"
+                type="password"
                 maxlength="4"
-                autocomplete="new-password"
+                inputmode="numeric"
+                placeholder="Confirm PIN"
             >
+
+            <br>
 
             <button
                 id="pin-button"
+                class="medieval-button"
                 type="button"
             >
-                🔐 Save PIN
+                🔒 SAVE PIN
             </button>
 
-        </div>
+            <div
+                id="pin-error"
+                class="error-message"
+            ></div>
 
-        <p
-            id="pin-error"
-            class="error"
-        ></p>
+        </div>
 
     </section>
 
@@ -679,45 +1359,51 @@
 
     <!-- =================================================
          PIN LOGIN
-    ================================================== -->
+    ================================================= -->
 
     <section
         id="pin-login-screen"
-        class="hidden"
+        class="game-screen hidden"
     >
 
-        <h2>
-            🔑 Welcome Back
-        </h2>
+        <div class="medieval-panel">
 
-        <p id="pin-login-message">
-            Masukkan PIN untuk melanjutkan progressmu.
-        </p>
+            <h1 class="medieval-title">
+                🔑 Welcome Back
+            </h1>
 
-        <div class="form-group">
+            <p
+                id="pin-login-message"
+                class="medieval-subtitle"
+            >
+                Masukkan PIN untuk melanjutkan progressmu.
+            </p>
 
             <input
-                type="password"
                 id="login-pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
+                class="medieval-input"
+                type="password"
                 maxlength="4"
-                autocomplete="current-password"
+                inputmode="numeric"
+                placeholder="Enter PIN..."
             >
+
+            <br>
 
             <button
                 id="pin-login-button"
+                class="medieval-button"
                 type="button"
             >
-                ▶️ Continue
+                ▶ CONTINUE
             </button>
 
-        </div>
+            <div
+                id="pin-login-error"
+                class="error-message"
+            ></div>
 
-        <p
-            id="pin-login-error"
-            class="error"
-        ></p>
+        </div>
 
     </section>
 
@@ -725,26 +1411,30 @@
 
     <!-- =================================================
          WELCOME
-    ================================================== -->
+    ================================================= -->
 
     <section
         id="welcome-screen"
-        class="hidden"
+        class="game-screen hidden"
     >
 
-        <h2>
-            👋 Welcome Back
-        </h2>
+        <div class="medieval-panel">
 
-        <p id="welcome-message"></p>
+            <h1 class="medieval-title">
+                👋 Welcome, Adventurer
+            </h1>
 
-        <div class="button-group">
+            <p
+                id="welcome-message"
+                class="medieval-subtitle"
+            ></p>
 
             <button
                 id="continue-button"
+                class="medieval-button"
                 type="button"
             >
-                ▶️ Continue
+                ✨ CONTINUE
             </button>
 
         </div>
@@ -755,100 +1445,899 @@
 
     <!-- =================================================
          LORE
-    ================================================== -->
+    ================================================= -->
 
     <section
         id="lore-screen"
-        class="hidden"
+        class="game-screen hidden"
     >
 
-        <h2>
-            📖 Before We Begin
-        </h2>
+        <div class="medieval-panel">
 
-        <div class="lore-text">
+            <h1 class="medieval-title">
+                📖 Before We Begin
+            </h1>
 
-            <p>
-                You’ve probably seen them before.
-            </p>
+            <div class="lore-text">
 
-            <p>
-                You know the faces.
-                Maybe even the names.
-            </p>
+                <p>
+                    You've probably seen them before.
+                </p>
 
-            <p>
-                But when you actually need to call them...
-            </p>
+                <p>
+                    You know the faces.
+                    Maybe even the names.
+                </p>
 
-            <p>
-                <strong>
-                    “Wait... who are they again?”
-                </strong>
-            </p>
+                <p>
+                    But when you actually need to call them...
+                </p>
 
-            <p>
-                NPC — Need Pamong Context is here to fix that.
-            </p>
+                <p class="lore-quote">
+                    "Wait... who are they again?"
+                </p>
+
+                <p>
+                    NPC — Need Pamong Context is here to fix that.
+                </p>
+
+            </div>
+
+            <button
+                id="lore-button"
+                class="medieval-button"
+                type="button"
+            >
+                🎮 LET'S GO
+            </button>
 
         </div>
-
-        <button
-            id="lore-button"
-            type="button"
-        >
-            🎮 Let's Go
-        </button>
 
     </section>
 
 
 
     <!-- =================================================
-         GAME
-    ================================================== -->
+         GAME HOME
+    ================================================= -->
 
     <section
         id="game-screen"
-        class="hidden"
+        class="game-screen hidden"
     >
 
-        <div class="game-status">
+        <div class="game-home">
 
-            <span>
+            <div
+                id="milestone-label"
+                class="milestone"
+            >
+                MILESTONE 1
+            </div>
 
-                🟢
+            <h1>
+                TEAM A
+            </h1>
 
-                <strong id="milestone-label">
-                    MILESTONE 1
-                </strong>
+            <p class="medieval-subtitle">
+                Kenali Pamong di Team A.
+            </p>
 
-            </span>
+            <p
+                id="player-label"
+                class="medieval-subtitle"
+            ></p>
 
-            <span id="player-label"></span>
+            <button
+                class="medieval-button"
+                type="button"
+            >
+                ▶ START
+            </button>
 
         </div>
 
-        <h2>
-            🧑‍🤝‍🧑 Meet Your Pamong
-        </h2>
-
-        <p class="game-description">
-            Kenali wajah, nama, dan konteks Pamong-mu.
-        </p>
-
-        <div
-            id="pengasuh-container"
-        ></div>
-
     </section>
 
+</div>
 
-</main>
 
 
-<script src="app.js"></script>
+<script>
+
+/* =========================================================
+   NPC — NEED PAMONG CONTEXT
+========================================================= */
+
+
+/* =========================================================
+   OPENING SCREEN
+========================================================= */
+
+const introScreen =
+    document.getElementById(
+        "intro-screen"
+    );
+
+const introStartButton =
+    document.getElementById(
+        "intro-start-button"
+    );
+
+const mainGame =
+    document.getElementById(
+        "main-game"
+    );
+
+
+/*
+   OPENING TIDAK PUNYA TIMER.
+
+   USER SENDIRI YANG MENEKAN
+   CLICK HERE.
+*/
+
+if (introStartButton) {
+
+    introStartButton.addEventListener(
+        "click",
+        function () {
+
+            /*
+               HIDE OPENING
+            */
+
+            introScreen.classList.add(
+                "intro-hidden"
+            );
+
+
+            /*
+               SHOW MAIN GAME
+            */
+
+            mainGame.classList.add(
+                "game-visible"
+            );
+
+
+            /*
+               IMPORTANT:
+               HANYA LOGIN SCREEN YANG
+               BOLEH MUNCUL.
+            */
+
+            showScreen(
+                "login-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
+
+function showScreen(screenId) {
+
+    const screens = [
+
+        "login-screen",
+
+        "username-screen",
+
+        "pin-setup-screen",
+
+        "pin-login-screen",
+
+        "welcome-screen",
+
+        "lore-screen",
+
+        "game-screen"
+
+    ];
+
+
+    screens.forEach(
+        function (id) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+            if (element) {
+
+                element.classList.add(
+                    "hidden"
+                );
+
+            }
+
+        }
+    );
+
+
+    const target =
+        document.getElementById(
+            screenId
+        );
+
+
+    if (target) {
+
+        target.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PLAYER STORAGE
+========================================================= */
+
+function savePlayerData(data) {
+
+    localStorage.setItem(
+        "npcPlayer",
+        JSON.stringify(data)
+    );
+
+}
+
+
+function getPlayerData() {
+
+    const saved =
+        localStorage.getItem(
+            "npcPlayer"
+        );
+
+
+    if (!saved) {
+
+        return null;
+
+    }
+
+
+    try {
+
+        return JSON.parse(
+            saved
+        );
+
+    }
+
+    catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   ACCESS CODE
+========================================================= */
+
+const accessInput =
+    document.getElementById(
+        "access-code"
+    );
+
+const startButton =
+    document.getElementById(
+        "start-button"
+    );
+
+const accessError =
+    document.getElementById(
+        "error-message"
+    );
+
+
+if (startButton) {
+
+    startButton.addEventListener(
+        "click",
+        function () {
+
+            const code =
+                accessInput.value.trim();
+
+
+            if (!code) {
+
+                accessError.textContent =
+                    "The gate awaits your seal.";
+
+                return;
+
+            }
+
+
+            /*
+               ACCESS CODE
+            */
+
+            const correctCode =
+                "SANAPATI";
+
+
+            if (
+                code.toUpperCase()
+                !==
+                correctCode.toUpperCase()
+            ) {
+
+                accessError.textContent =
+                    "The gate remains sealed. Try again.";
+
+                return;
+
+            }
+
+
+            accessError.textContent =
+                "";
+
+
+            const player =
+                getPlayerData();
+
+
+            /*
+               EXISTING PLAYER
+            */
+
+            if (player) {
+
+                document.getElementById(
+                    "pin-login-message"
+                ).textContent =
+                    `Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
+
+                showScreen(
+                    "pin-login-screen"
+                );
+
+                return;
+
+            }
+
+
+            /*
+               NEW PLAYER
+            */
+
+            showScreen(
+                "username-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   USERNAME
+========================================================= */
+
+const usernameInput =
+    document.getElementById(
+        "username"
+    );
+
+const usernameButton =
+    document.getElementById(
+        "username-button"
+    );
+
+const usernameError =
+    document.getElementById(
+        "username-error"
+    );
+
+
+if (usernameButton) {
+
+    usernameButton.addEventListener(
+        "click",
+        function () {
+
+            const username =
+                usernameInput.value.trim();
+
+
+            if (!username) {
+
+                usernameError.textContent =
+                    "Username tidak boleh kosong.";
+
+                return;
+
+            }
+
+
+            if (
+                username.length < 3
+            ) {
+
+                usernameError.textContent =
+                    "Username minimal 3 karakter.";
+
+                return;
+
+            }
+
+
+            usernameError.textContent =
+                "";
+
+
+            sessionStorage.setItem(
+                "npcUsername",
+                username
+            );
+
+
+            showScreen(
+                "pin-setup-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CREATE PIN
+========================================================= */
+
+const pinInput =
+    document.getElementById(
+        "pin-input"
+    );
+
+const pinConfirmInput =
+    document.getElementById(
+        "pin-confirm-input"
+    );
+
+const pinButton =
+    document.getElementById(
+        "pin-button"
+    );
+
+const pinError =
+    document.getElementById(
+        "pin-error"
+    );
+
+
+if (pinButton) {
+
+    pinButton.addEventListener(
+        "click",
+        function () {
+
+            const pin =
+                pinInput.value.trim();
+
+
+            const confirmPin =
+                pinConfirmInput.value.trim();
+
+
+            if (
+                !/^\d{4}$/.test(pin)
+            ) {
+
+                pinError.textContent =
+                    "PIN harus terdiri dari 4 angka.";
+
+                return;
+
+            }
+
+
+            if (
+                pin !==
+                confirmPin
+            ) {
+
+                pinError.textContent =
+                    "PIN dan konfirmasi PIN tidak sama.";
+
+                return;
+
+            }
+
+
+            const username =
+                sessionStorage.getItem(
+                    "npcUsername"
+                );
+
+
+            if (!username) {
+
+                pinError.textContent =
+                    "Username tidak ditemukan.";
+
+                return;
+
+            }
+
+
+            const player = {
+
+                username:
+                    username,
+
+                pin:
+                    pin,
+
+                milestone:
+                    1
+
+            };
+
+
+            savePlayerData(
+                player
+            );
+
+
+            sessionStorage.removeItem(
+                "npcUsername"
+            );
+
+
+            document.getElementById(
+                "welcome-message"
+            ).textContent =
+                `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
+
+
+            showScreen(
+                "welcome-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PIN LOGIN
+========================================================= */
+
+const loginPinInput =
+    document.getElementById(
+        "login-pin-input"
+    );
+
+const pinLoginButton =
+    document.getElementById(
+        "pin-login-button"
+    );
+
+const pinLoginError =
+    document.getElementById(
+        "pin-login-error"
+    );
+
+
+if (pinLoginButton) {
+
+    pinLoginButton.addEventListener(
+        "click",
+        function () {
+
+            const enteredPin =
+                loginPinInput.value.trim();
+
+
+            const player =
+                getPlayerData();
+
+
+            if (!player) {
+
+                pinLoginError.textContent =
+                    "Data player tidak ditemukan.";
+
+                return;
+
+            }
+
+
+            if (
+                enteredPin !==
+                player.pin
+            ) {
+
+                pinLoginError.textContent =
+                    "PIN salah. Coba lagi.";
+
+                return;
+
+            }
+
+
+            pinLoginError.textContent =
+                "";
+
+
+            document.getElementById(
+                "welcome-message"
+            ).textContent =
+                `Welcome back, ${player.username}! Your adventure awaits.`;
+
+
+            showScreen(
+                "welcome-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   WELCOME → LORE
+========================================================= */
+
+const continueButton =
+    document.getElementById(
+        "continue-button"
+    );
+
+
+if (continueButton) {
+
+    continueButton.addEventListener(
+        "click",
+        function () {
+
+            showScreen(
+                "lore-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LORE → GAME
+========================================================= */
+
+const loreButton =
+    document.getElementById(
+        "lore-button"
+    );
+
+
+if (loreButton) {
+
+    loreButton.addEventListener(
+        "click",
+        function () {
+
+            const player =
+                getPlayerData();
+
+
+            if (player) {
+
+                document.getElementById(
+                    "player-label"
+                ).textContent =
+                    `👤 ${player.username}`;
+
+
+                document.getElementById(
+                    "milestone-label"
+                ).textContent =
+                    `MILESTONE ${player.milestone || 1}`;
+
+            }
+
+
+            showScreen(
+                "game-screen"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ENTER KEY — ACCESS CODE
+========================================================= */
+
+if (accessInput) {
+
+    accessInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                startButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ENTER KEY — USERNAME
+========================================================= */
+
+if (usernameInput) {
+
+    usernameInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                usernameButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ENTER KEY — CREATE PIN
+========================================================= */
+
+if (pinInput) {
+
+    pinInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                pinButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+if (pinConfirmInput) {
+
+    pinConfirmInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                pinButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ENTER KEY — LOGIN PIN
+========================================================= */
+
+if (loginPinInput) {
+
+    loginPinInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                pinLoginButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+/*
+   Pastikan ketika halaman pertama kali dibuka:
+
+   - Opening terlihat
+   - Main game tersembunyi
+   - Login belum bocor
+*/
+
+mainGame.classList.remove(
+    "game-visible"
+);
+
+introScreen.classList.remove(
+    "intro-hidden"
+);
+
+
+/*
+   Pastikan semua screen game
+   tersembunyi dulu.
+*/
+
+[
+    "login-screen",
+    "username-screen",
+    "pin-setup-screen",
+    "pin-login-screen",
+    "welcome-screen",
+    "lore-screen",
+    "game-screen"
+].forEach(
+    function (id) {
+
+        const element =
+            document.getElementById(id);
+
+        if (element) {
+
+            element.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+);
+
+</script>
 
 </body>
-
 </html>
