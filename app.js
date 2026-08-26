@@ -1,27 +1,13 @@
 /* =========================================================
    NPC — NEED PAMONG CONTEXT
-   GAME LOGIC
 ========================================================= */
 
 
 /* =========================================================
-   CONFIGURATION
+   ACCESS CODE
 ========================================================= */
 
-/*
-   GANTI ACCESS CODE DI SINI
-   kalau lu punya access code tertentu.
-*/
-
 const ACCESS_CODE = "SANAPATI";
-
-
-/*
-   Berapa lama mascot ditampilkan.
-   3500 = 3.5 detik.
-*/
-
-const INTRO_DURATION = 3500;
 
 
 /* =========================================================
@@ -31,49 +17,43 @@ const INTRO_DURATION = 3500;
 const introScreen =
     document.getElementById("intro-screen");
 
+const introStartButton =
+    document.getElementById("intro-start-button");
+
 const mainGame =
     document.getElementById("main-game");
 
 
 /* =========================================================
-   INTRO / MASCOT
+   OPENING SCREEN
 ========================================================= */
 
-window.addEventListener("load", () => {
+/*
+   TIDAK ADA TIMER.
+
+   Mascot akan tetap tampil selama user belum
+   menekan MULAI PETUALANGAN.
+*/
+
+introStartButton.addEventListener("click", () => {
 
     /*
-       Pastikan main game belum terlihat
-       ketika website pertama kali dibuka.
+       Fade out opening.
     */
 
-    mainGame.classList.remove("game-visible");
+    introScreen.classList.add("intro-hidden");
 
 
     /*
-       Tunggu mascot tampil.
+       Tunggu animasi fade selesai,
+       baru tampilkan game.
     */
 
     setTimeout(() => {
 
-        /*
-           Fade out mascot.
-        */
+        mainGame.classList.add("game-visible");
 
-        introScreen.classList.add("intro-hidden");
-
-
-        /*
-           Setelah fade mulai,
-           munculkan game.
-        */
-
-        setTimeout(() => {
-
-            mainGame.classList.add("game-visible");
-
-        }, 300);
-
-    }, INTRO_DURATION);
+    }, 700);
 
 });
 
@@ -100,9 +80,12 @@ function showScreen(screenId) {
         const element =
             document.getElementById(id);
 
-        if (!element) return;
+        if (element) {
 
-        element.classList.add("hidden");
+            element.classList.add("hidden");
+
+        }
+
     });
 
 
@@ -112,13 +95,14 @@ function showScreen(screenId) {
     if (target) {
 
         target.classList.remove("hidden");
+
     }
 
 }
 
 
 /* =========================================================
-   LOCAL STORAGE
+   PLAYER DATA
 ========================================================= */
 
 function savePlayerData(data) {
@@ -136,9 +120,11 @@ function getPlayerData() {
     const data =
         localStorage.getItem("npcPlayer");
 
+
     if (!data) {
 
         return null;
+
     }
 
 
@@ -149,6 +135,7 @@ function getPlayerData() {
     } catch {
 
         return null;
+
     }
 
 }
@@ -180,6 +167,7 @@ startButton.addEventListener("click", () => {
             "Masukkan access code terlebih dahulu.";
 
         return;
+
     }
 
 
@@ -192,6 +180,7 @@ startButton.addEventListener("click", () => {
             "Access code tidak valid.";
 
         return;
+
     }
 
 
@@ -202,30 +191,20 @@ startButton.addEventListener("click", () => {
         getPlayerData();
 
 
-    /*
-       Kalau sudah pernah bermain,
-       langsung minta PIN.
-    */
-
     if (existingPlayer) {
 
-        const pinMessage =
-            document.getElementById(
-                "pin-login-message"
-            );
-
-        pinMessage.textContent =
+        document.getElementById(
+            "pin-login-message"
+        ).textContent =
             `Welcome back, ${existingPlayer.username}. Masukkan PIN untuk melanjutkan progressmu.`;
+
 
         showScreen("pin-login-screen");
 
         return;
+
     }
 
-
-    /*
-       Player baru.
-    */
 
     showScreen("username-screen");
 
@@ -258,6 +237,7 @@ usernameButton.addEventListener("click", () => {
             "Username tidak boleh kosong.";
 
         return;
+
     }
 
 
@@ -267,15 +247,12 @@ usernameButton.addEventListener("click", () => {
             "Username minimal 3 karakter.";
 
         return;
+
     }
 
 
     usernameError.textContent = "";
 
-
-    /*
-       Simpan sementara.
-    */
 
     sessionStorage.setItem(
         "npcUsername",
@@ -320,6 +297,7 @@ pinButton.addEventListener("click", () => {
             "PIN harus terdiri dari 4 angka.";
 
         return;
+
     }
 
 
@@ -329,29 +307,23 @@ pinButton.addEventListener("click", () => {
             "PIN dan konfirmasi PIN tidak sama.";
 
         return;
+
     }
 
 
     const username =
-        sessionStorage.getItem(
-            "npcUsername"
-        );
+        sessionStorage.getItem("npcUsername");
 
 
     if (!username) {
 
         pinError.textContent =
-            "Username tidak ditemukan. Silakan ulangi.";
-
-        showScreen("username-screen");
+            "Username tidak ditemukan.";
 
         return;
+
     }
 
-
-    /*
-       Simpan player.
-    */
 
     const player = {
 
@@ -373,9 +345,6 @@ pinButton.addEventListener("click", () => {
     sessionStorage.removeItem(
         "npcUsername"
     );
-
-
-    pinError.textContent = "";
 
 
     document.getElementById(
@@ -425,6 +394,7 @@ pinLoginButton.addEventListener("click", () => {
             "Data player tidak ditemukan.";
 
         return;
+
     }
 
 
@@ -434,6 +404,7 @@ pinLoginButton.addEventListener("click", () => {
             "PIN salah. Coba lagi.";
 
         return;
+
     }
 
 
@@ -445,6 +416,7 @@ pinLoginButton.addEventListener("click", () => {
     ).textContent =
         `Welcome back, ${player.username}! Your adventure awaits.`;
 
+
     showScreen("welcome-screen");
 
 });
@@ -454,53 +426,46 @@ pinLoginButton.addEventListener("click", () => {
    WELCOME → LORE
 ========================================================= */
 
-const continueButton =
-    document.getElementById(
-        "continue-button"
-    );
+document
+    .getElementById("continue-button")
+    .addEventListener("click", () => {
 
+        showScreen("lore-screen");
 
-continueButton.addEventListener("click", () => {
-
-    showScreen("lore-screen");
-
-});
+    });
 
 
 /* =========================================================
    LORE → GAME
 ========================================================= */
 
-const loreButton =
-    document.getElementById(
-        "lore-button"
-    );
+document
+    .getElementById("lore-button")
+    .addEventListener("click", () => {
+
+        const player =
+            getPlayerData();
 
 
-loreButton.addEventListener("click", () => {
+        if (player) {
 
-    const player =
-        getPlayerData();
-
-
-    if (player) {
-
-        document.getElementById(
-            "player-label"
-        ).textContent =
-            `👤 ${player.username}`;
+            document.getElementById(
+                "player-label"
+            ).textContent =
+                `👤 ${player.username}`;
 
 
-        document.getElementById(
-            "milestone-label"
-        ).textContent =
-            `MILESTONE ${player.milestone || 1}`;
-    }
+            document.getElementById(
+                "milestone-label"
+            ).textContent =
+                `MILESTONE ${player.milestone || 1}`;
+
+        }
 
 
-    showScreen("game-screen");
+        showScreen("game-screen");
 
-});
+    });
 
 
 /* =========================================================
