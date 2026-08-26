@@ -1,12 +1,52 @@
 /* =========================================================
-   GATE — FULL MEDIEVAL MANUSCRIPT
+   NPC — NEED PAMONG CONTEXT
+   MEDIEVAL / PARCHMENT UI
 ========================================================= */
 
-#login-screen {
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: #3d2d1c;
+
+    background: #eee2cc;
+}
+
+
+body {
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   OPENING
+========================================================= */
+
+#intro-screen {
+
     position: fixed;
+
     inset: 0;
 
+    width: 100vw;
+    height: 100vh;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -15,123 +55,596 @@
     background:
         radial-gradient(
             ellipse at center,
-            #fff9e9 0%,
-            #f3e4c4 65%,
-            #dfc99c 100%
+            #fffdf7 0%,
+            #f8efdf 48%,
+            #e8d7b7 100%
         );
+
+    z-index: 99999;
+
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+        opacity .7s ease,
+        visibility .7s ease;
 }
 
 
-/* parchment vignette */
+#intro-screen.intro-hidden {
 
-#login-screen::before {
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* parchment */
+
+#intro-screen::before {
+
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     pointer-events: none;
 
+    opacity: .32;
+
     background:
-        radial-gradient(
-            ellipse at center,
-            transparent 35%,
-            rgba(104,76,39,.10) 100%
+
+        repeating-linear-gradient(
+            0deg,
+            rgba(100,75,40,.025) 0,
+            rgba(100,75,40,.025) 1px,
+            transparent 1px,
+            transparent 6px
+        ),
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(100,75,40,.018) 0,
+            rgba(100,75,40,.018) 1px,
+            transparent 1px,
+            transparent 7px
         );
 }
 
 
-/* subtle manuscript border */
+#intro-screen::after {
 
-#login-screen::after {
     content: "";
 
     position: absolute;
-    inset: 30px;
 
-    border: 1px solid rgba(112,82,40,.28);
+    inset: 28px;
+
+    border:
+        2px solid
+        rgba(116,91,54,.12);
+
+    border-radius: 18px;
 
     pointer-events: none;
+
 }
 
 
 /* =========================================================
-   REMOVE CARD FEEL
+   OPENING MAP
 ========================================================= */
 
-#login-screen .medieval-panel {
+.map-decoration {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    z-index: 1;
+}
+
+
+.map-decoration svg {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   INTRO CONTENT
+========================================================= */
+
+.intro-content {
 
     position: relative;
 
-    width: min(760px, 88vw);
+    z-index: 10;
 
-    padding: 55px 40px;
+    width: min(82vw, 680px);
 
-    background: transparent;
+    display: flex;
 
-    border: none;
+    flex-direction: column;
 
-    border-radius: 0;
+    align-items: center;
+    justify-content: center;
+}
 
-    box-shadow: none;
+
+/* =========================================================
+   MASCOT
+========================================================= */
+
+.intro-mascot {
+
+    display: block;
+
+    width: 100%;
+
+    max-width: 680px;
+
+    height: auto;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    filter:
+        drop-shadow(
+            0 22px 20px
+            rgba(64,43,20,.23)
+        );
+
+    animation:
+        mascotFloat
+        4s
+        ease-in-out
+        infinite;
+}
+
+
+@keyframes mascotFloat {
+
+    0% {
+        transform:
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-10px);
+    }
+
+    100% {
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   OPENING BUTTON
+========================================================= */
+
+.intro-enter-button {
+
+    position: relative;
+
+    width: 300px;
+
+    min-height: 58px;
+
+    margin-top: -18px;
+
+    border:
+        3px solid
+        #b88a42;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #68482d 0%,
+            #4c301d 55%,
+            #382216 100%
+        );
+
+    color: #fff1ce;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    box-shadow:
+
+        inset
+        0 0 0 2px
+        rgba(231,188,99,.22),
+
+        0 6px 0
+        #281810,
+
+        0 12px 22px
+        rgba(70,43,19,.22);
+
+    animation:
+        introPulse
+        2.8s
+        ease-in-out
+        infinite;
+
+    transition:
+        filter .18s ease,
+        transform .18s ease;
+}
+
+
+@keyframes introPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.025);
+        filter: brightness(1.07);
+    }
+}
+
+
+.intro-enter-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 7px;
+    left: 8px;
+
+    width: 7px;
+    height: 7px;
+
+    border-top:
+        2px solid
+        #d8ad57;
+
+    border-left:
+        2px solid
+        #d8ad57;
+}
+
+
+.intro-enter-button::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: 8px;
+    bottom: 7px;
+
+    width: 7px;
+    height: 7px;
+
+    border-right:
+        2px solid
+        #d8ad57;
+
+    border-bottom:
+        2px solid
+        #d8ad57;
+}
+
+
+.intro-enter-button:hover {
+
+    filter: brightness(1.1);
+
+}
+
+
+.intro-enter-button:active {
+
+    transform:
+        translateY(5px)
+        scale(.99);
+
+}
+
+
+/* =========================================================
+   MAIN GAME
+========================================================= */
+
+#main-game {
+
+    min-height: 100vh;
+
+    width: 100%;
+
+    padding:
+        40px 20px 80px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .6s ease;
+}
+
+
+#main-game.game-visible {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+.game-container {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
 
     text-align: center;
 }
 
 
 /* =========================================================
-   MANUSCRIPT ORNAMENT TOP
+   GATE SCREEN
 ========================================================= */
 
-#login-screen .medieval-panel::before {
+.gate-screen {
 
-    content:
-        "✦  ─────────────  ✦";
+    position: relative;
+
+    min-height:
+        calc(100vh - 80px);
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background:
+
+        radial-gradient(
+            ellipse at center,
+            rgba(255,253,247,.98) 0%,
+            rgba(248,239,220,.96) 55%,
+            rgba(229,213,182,.98) 100%
+        );
+
+    box-shadow:
+
+        0 20px 50px
+        rgba(80,56,27,.13),
+
+        inset
+        0 0 100px
+        rgba(130,100,55,.08);
+}
+
+
+/* parchment texture */
+
+.gate-screen::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .32;
+
+    background:
+
+        repeating-linear-gradient(
+            0deg,
+            rgba(100,75,40,.025) 0,
+            rgba(100,75,40,.025) 1px,
+            transparent 1px,
+            transparent 6px
+        ),
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(100,75,40,.018) 0,
+            rgba(100,75,40,.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
+}
+
+
+/* =========================================================
+   GATE MAP
+========================================================= */
+
+.gate-map {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    opacity: .115;
+
+    pointer-events: none;
+}
+
+
+.gate-map svg {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   GHOST GATE
+========================================================= */
+
+.gate-ghost {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 420px;
+    height: 560px;
+
+    transform:
+        translate(-50%, -48%);
+
+    z-index: 2;
+
+    opacity: .045;
+
+    pointer-events: none;
+}
+
+
+.ghost-arch {
 
     position: absolute;
 
     top: 0;
-    left: 50%;
+    left: 0;
 
-    transform:
-        translateX(-50%);
+    width: 100%;
+    height: 190px;
 
-    white-space: nowrap;
+    border:
+        22px solid
+        #5c472e;
 
-    color: #8d6b39;
+    border-bottom: none;
 
-    font-size: 17px;
-
-    letter-spacing: 3px;
-
-    opacity: .75;
+    border-radius:
+        220px 220px 0 0;
 }
 
 
-/* bottom ornament */
-
-#login-screen .medieval-panel::after {
-
-    content:
-        "──────  ❖  ──────";
+.ghost-door {
 
     position: absolute;
 
+    left: 30px;
+    right: 30px;
+
+    top: 170px;
     bottom: 0;
-    left: 50%;
 
-    transform:
-        translateX(-50%);
+    border:
+        16px solid
+        #5c472e;
 
-    white-space: nowrap;
+    border-top: none;
 
-    color: #8d6b39;
+    background:
 
-    font-size: 16px;
+        repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 35px,
+            rgba(70,45,22,.7) 36px,
+            transparent 39px
+        );
+}
 
-    letter-spacing: 3px;
 
-    opacity: .7;
+/* =========================================================
+   GATE CONTENT
+========================================================= */
+
+.gate-content {
+
+    position: relative;
+
+    z-index: 10;
+
+    width:
+        min(90%, 680px);
+
+    padding:
+        50px 35px;
+
+    text-align: center;
+}
+
+
+/* ornament */
+
+.gate-ornament {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+
+    color: #9a753c;
+}
+
+
+.gate-ornament span {
+
+    width: 65px;
+
+    height: 1px;
+
+    background:
+        #b69a69;
+}
+
+
+.gate-ornament b {
+
+    font-size: 23px;
+
+    font-weight: normal;
 }
 
 
@@ -139,11 +652,11 @@
    TITLE
 ========================================================= */
 
-#login-screen .medieval-title {
+.gate-title {
 
-    margin: 15px 0 12px;
+    margin: 0;
 
-    color: #3c2818;
+    color: #4a3520;
 
     font-family:
         Georgia,
@@ -155,44 +668,32 @@
 
     font-weight: 700;
 
-    letter-spacing: 1px;
+    letter-spacing: 3px;
 
     text-shadow:
-        1px 1px 0 #f9eac8;
-}
-
-
-/* remove previous stars */
-
-#login-screen .medieval-title::before,
-#login-screen .medieval-title::after {
-    display: none;
+        0 1px 0 #fff9e9;
 }
 
 
 /* =========================================================
-   DESCRIPTION
+   SUBTITLE
 ========================================================= */
 
-#login-screen .medieval-subtitle {
+.gate-subtitle {
 
-    max-width: 620px;
+    max-width: 500px;
 
     margin:
-        0 auto 35px;
+        18px auto 38px;
 
-    color: #6c5437;
+    color:
+        #766247;
 
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 19px;
-
-    font-style: italic;
+    font-size: 18px;
 
     line-height: 1.7;
+
+    font-style: italic;
 }
 
 
@@ -200,91 +701,137 @@
    SEAL LABEL
 ========================================================= */
 
-#login-screen .medieval-panel > p strong {
+.seal-label {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-bottom: 13px;
+
+    color:
+        #71552e;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+}
+
+
+.seal-label span {
 
     display: block;
 
-    margin-bottom: 12px;
+    width: 55px;
 
-    color: #4b301c;
+    height: 1px;
 
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+    background:
+        #b69a69;
+}
 
-    font-size: 15px;
 
-    letter-spacing: 4px;
+/* =========================================================
+   FORM
+========================================================= */
+
+.gate-form {
+
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 12px;
 }
 
 
 /* =========================================================
    INPUT
-   looks like parchment strip, NOT textbox card
 ========================================================= */
 
-#login-screen .medieval-input {
+.gate-form input {
 
-    width:
-        min(500px, 85vw);
+    width: 330px;
 
-    height: 58px;
+    min-height: 58px;
 
     padding:
         0 20px;
 
-    background:
-        rgba(255,248,228,.55);
-
     border:
-        none;
+        2px solid
+        #b99b69;
 
-    border-bottom:
-        2px solid #94713e;
+    border-radius: 9px;
 
-    border-radius:
-        0;
+    outline: none;
 
-    outline:
-        none;
+    background:
+
+        linear-gradient(
+            180deg,
+            #fffdf6,
+            #f4ead5
+        );
 
     color:
-        #3b2819;
+        #4a3520;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size:
-        20px;
-
-    text-align:
-        center;
+    font-size: 18px;
 
     box-shadow:
-        none;
+
+        inset
+        0 2px 7px
+        rgba(90,65,30,.08),
+
+        0 2px 4px
+        rgba(90,65,30,.05);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
 }
 
 
-#login-screen .medieval-input::placeholder {
+.gate-form input::placeholder {
 
     color:
-        #8c7456;
+        #a08b6d;
 
     font-style:
         italic;
 }
 
 
-#login-screen .medieval-input:focus {
+.gate-form input:focus {
 
-    border-bottom-color:
-        #5e3c20;
+    border-color:
+        #80602f;
 
-    background:
-        rgba(255,250,236,.8);
+    box-shadow:
+
+        0 0 0 3px
+        rgba(151,116,57,.12),
+
+        inset
+        0 2px 7px
+        rgba(90,65,30,.08);
 }
 
 
@@ -292,63 +839,84 @@
    UNLOCK BUTTON
 ========================================================= */
 
-#login-screen .medieval-button {
+#start-button {
 
-    position: relative;
+    min-width: 175px;
 
-    margin-top: 30px;
-
-    min-width: 240px;
-
-    min-height: 54px;
+    min-height: 58px;
 
     padding:
-        10px 28px;
+        0 22px;
 
     border:
-        2px solid #a77b3d;
+        2px solid
+        #b88a42;
 
-    border-radius:
-        5px;
+    border-radius: 9px;
 
     background:
+
         linear-gradient(
-            to bottom,
-            #704625,
-            #4b2a17
+            180deg,
+            #68482d 0%,
+            #4c301d 55%,
+            #382216 100%
         );
 
     color:
-        #f8eacb;
+        #fff1ce;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size:
-        17px;
+    font-size: 16px;
 
-    font-weight:
-        bold;
+    font-weight: 700;
 
-    letter-spacing:
-        1px;
+    letter-spacing: 1.3px;
+
+    cursor: pointer;
 
     box-shadow:
-        0 4px 0 #2d190e,
-        0 7px 14px rgba(55,35,15,.20);
 
-    cursor:
-        pointer;
+        inset
+        0 0 0 1px
+        rgba(231,188,99,.25),
+
+        0 4px 0
+        #281810,
+
+        0 8px 16px
+        rgba(70,43,19,.16);
+
+    animation:
+        gatePulse
+        3s
+        ease-in-out
+        infinite;
 
     transition:
-        transform .15s ease,
-        filter .15s ease;
+        filter .2s ease,
+        transform .15s ease;
 }
 
 
-#login-screen .medieval-button:hover {
+@keyframes gatePulse {
+
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.055);
+    }
+}
+
+
+#start-button:hover {
 
     filter:
         brightness(1.12);
@@ -358,13 +926,10 @@
 }
 
 
-#login-screen .medieval-button:active {
+#start-button:active {
 
     transform:
-        translateY(2px);
-
-    box-shadow:
-        0 2px 0 #2d190e;
+        translateY(3px);
 }
 
 
@@ -372,41 +937,336 @@
    ERROR
 ========================================================= */
 
-#login-screen .error-message {
+.error {
 
     min-height: 25px;
 
-    margin-top: 18px;
+    margin:
+        18px 0 0;
 
-    color: #91372d;
+    color:
+        #8d3c2e;
+
+    font-size:
+        15px !important;
+
+    font-style:
+        italic;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.gate-footer {
+
+    margin-top:
+        28px;
+
+    color:
+        #a18d6e;
+
+    font-size:
+        13px !important;
+
+    letter-spacing:
+        1px;
+}
+
+
+/* =========================================================
+   OTHER GAME SCREENS
+========================================================= */
+
+section:not(.gate-screen) {
+
+    width: 100%;
+
+    text-align: center;
+}
+
+
+section:not(.gate-screen) h2 {
+
+    color:
+        #4a3520;
+
+    font-size: 36px;
+
+    margin-bottom:
+        20px;
+}
+
+
+section:not(.gate-screen) p {
+
+    font-size: 20px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 30px;
+
+    flex-wrap: wrap;
+}
+
+
+.form-group input {
+
+    width: 350px;
+
+    padding:
+        17px 20px;
+
+    border:
+        1px solid
+        #c8b797;
+
+    border-radius:
+        10px;
+
+    font-size: 18px;
+
+    outline: none;
+
+    background:
+        #fffdf7;
+}
+
+
+.form-group button,
+.button-group button,
+section:not(.gate-screen) button {
+
+    padding:
+        15px 25px;
+
+    border:
+        2px solid
+        #a37a3c;
+
+    border-radius:
+        10px;
+
+    background:
+        #5a3c25;
+
+    color:
+        #fff3d5;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        filter .15s ease;
+}
+
+
+.form-group button:hover,
+.button-group button:hover,
+section:not(.gate-screen) button:hover {
+
+    filter:
+        brightness(1.08);
+
+    transform:
+        translateY(-2px);
 }
 
 
 /* =========================================================
-   MOBILE
+   HIDDEN
 ========================================================= */
 
-@media (max-width: 600px) {
+.hidden {
 
-    #login-screen::after {
-        inset: 15px;
+    display:
+        none !important;
+}
+
+
+/* =========================================================
+   LORE
+========================================================= */
+
+.lore-text {
+
+    max-width:
+        650px;
+
+    margin:
+        0 auto 30px;
+}
+
+
+.lore-text p {
+
+    margin:
+        18px 0;
+}
+
+
+/* =========================================================
+   GAME STATUS
+========================================================= */
+
+.game-status {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        15px 20px;
+
+    margin-bottom:
+        30px;
+
+    border:
+        1px solid
+        #c8b797;
+
+    border-radius:
+        10px;
+
+    background:
+        #eee2cd;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .intro-content {
+
+        width:
+            94vw;
     }
 
-    #login-screen .medieval-panel {
-        width: 92vw;
-        padding: 45px 20px;
+
+    .intro-enter-button {
+
+        width:
+            245px;
+
+        min-height:
+            55px;
+
+        margin-top:
+            -12px;
+
+        font-size:
+            16px;
     }
 
-    #login-screen .medieval-title {
-        font-size: 34px;
+
+    .gate-screen {
+
+        min-height:
+            calc(100vh - 40px);
     }
 
-    #login-screen .medieval-button {
-        min-width: 210px;
+
+    .gate-content {
+
+        width:
+            94%;
+
+        padding:
+            35px 15px;
     }
+
+
+    .gate-title {
+
+        font-size:
+            36px;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .gate-subtitle {
+
+        font-size:
+            16px;
+    }
+
+
+    .gate-form {
+
+        flex-direction:
+            column;
+
+        align-items:
+            center;
+    }
+
+
+    .gate-form input,
+    #start-button {
+
+        width:
+            min(100%, 350px);
+    }
+
+
+    .gate-ghost {
+
+        width:
+            300px;
+
+        height:
+            500px;
+    }
+
+
+    .seal-label {
+
+        font-size:
+            11px;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .seal-label span {
+
+        width:
+            35px;
+    }
+
 }
