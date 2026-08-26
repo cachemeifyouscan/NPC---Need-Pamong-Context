@@ -1,85 +1,32 @@
 /* =====================================================
-   OPENING SCREEN
+   INTRO SCREEN
 ===================================================== */
 
 #intro-screen {
+
     position: fixed;
+
     inset: 0;
+
     width: 100vw;
     height: 100vh;
 
     overflow: hidden;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    z-index: 99999;
-
     background:
         radial-gradient(
-            ellipse at center,
-            rgba(255, 252, 240, 0.98) 0%,
-            rgba(247, 238, 218, 0.96) 48%,
-            rgba(225, 207, 174, 0.98) 100%
-        );
-}
-
-
-/* =====================================================
-   PARCHMENT TEXTURE
-===================================================== */
-
-#intro-screen::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: 0.35;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(100, 75, 40, 0.025) 0px,
-            rgba(100, 75, 40, 0.025) 1px,
-            transparent 1px,
-            transparent 5px
-        ),
-
-        repeating-linear-gradient(
-            90deg,
-            rgba(100, 75, 40, 0.018) 0px,
-            rgba(100, 75, 40, 0.018) 1px,
-            transparent 1px,
-            transparent 7px
+            circle at center,
+            #fffaf0 0%,
+            #f5ead3 60%,
+            #e5d2ad 100%
         );
 
-    z-index: 1;
-}
-
-
-/* =====================================================
-   PARCHMENT FRAME
-===================================================== */
-
-#intro-screen::after {
-    content: "";
-
-    position: absolute;
-    inset: 35px;
-
-    border:
-        2px solid
-        rgba(116, 91, 54, 0.14);
-
-    border-radius: 18px;
-
-    pointer-events: none;
-
-    z-index: 2;
+    z-index: 99999;
 }
 
 
@@ -88,18 +35,24 @@
 ===================================================== */
 
 .map-decoration {
+
     position: absolute;
+
     inset: 0;
+
+    width: 100%;
+    height: 100%;
 
     pointer-events: none;
 
-    z-index: 3;
+    z-index: 1;
 
-    opacity: 0.16;
+    opacity: 0.27;
 }
 
 
 .map-decoration svg {
+
     width: 100%;
     height: 100%;
 
@@ -108,19 +61,165 @@
 
 
 /* =====================================================
+   MAP TEXT
+===================================================== */
+
+.map-label {
+
+    fill: #705a39;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+}
+
+
+.main-label {
+
+    font-size: 30px;
+
+    letter-spacing: 5px;
+
+    font-weight: 700;
+}
+
+
+.direction-label {
+
+    fill: #806943;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   MAP DETAILS
+===================================================== */
+
+.map-river {
+
+    fill: none;
+
+    stroke: #719795;
+
+    stroke-width: 8;
+
+    stroke-linecap: round;
+}
+
+
+.map-road {
+
+    fill: none;
+
+    stroke: #8b7147;
+
+    stroke-width: 3;
+
+    stroke-dasharray: 10 12;
+
+    opacity: 0.8;
+}
+
+
+.map-mountains {
+
+    fill: none;
+
+    stroke: #806b4a;
+
+    stroke-width: 4;
+
+    opacity: 0.8;
+}
+
+
+.map-forest {
+
+    fill: none;
+
+    stroke: #637153;
+
+    stroke-width: 3;
+
+    opacity: 0.8;
+}
+
+
+.map-castle {
+
+    fill: none;
+
+    stroke: #806943;
+
+    stroke-width: 4;
+
+    opacity: 0.8;
+}
+
+
+.map-compass {
+
+    fill: none;
+
+    stroke: #806943;
+
+    stroke-width: 3;
+
+    opacity: 0.8;
+}
+
+
+.map-compass text {
+
+    fill: #705a39;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    stroke: none;
+}
+
+
+/* =====================================================
    INTRO CONTENT
 ===================================================== */
 
 .intro-content {
+
     position: relative;
 
     z-index: 10;
 
-    width: min(88vw, 720px);
+    width: min(88vw, 560px);
 
     display: flex;
 
+    flex-direction: column;
+
     align-items: center;
+
     justify-content: center;
 }
 
@@ -130,113 +229,146 @@
 ===================================================== */
 
 .intro-mascot {
+
     display: block;
 
-    width: 100%;
+    width: min(58vw, 500px);
+
+    max-height: 65vh;
+
     height: auto;
 
-    margin: 0;
+    object-fit: contain;
 
     user-select: none;
+
     -webkit-user-drag: none;
 
     filter:
         drop-shadow(
-            0 22px 20px
-            rgba(70, 48, 22, 0.22)
+            0 18px 20px
+            rgba(70, 48, 22, 0.20)
         );
 
     animation:
         mascotFloat
-        4s
+        4.5s
         ease-in-out
         infinite;
 }
 
 
-/* =====================================================
-   FLOATING
-===================================================== */
-
 @keyframes mascotFloat {
 
     0% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-8px);
     }
 
     100% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
-
 }
 
 
 /* =====================================================
-   INVISIBLE CLICK AREA
+   CLICK HERE BUTTON
 ===================================================== */
 
 #intro-start-button {
 
-    position: absolute;
+    width: 300px;
 
-    /*
-       Posisi tombol MULAI PETUALANGAN
-       yang sudah ada DI DALAM PNG mascot2
-    */
+    height: 62px;
 
-    left: 27%;
-    bottom: 2%;
+    margin-top: -5px;
 
-    width: 46%;
-    height: 14%;
+    border:
 
-    padding: 0;
-    margin: 0;
+        2px solid
 
-    background: transparent !important;
+        #b8893f;
 
-    border: none !important;
+    border-radius: 13px;
 
-    box-shadow: none !important;
+    background:
 
-    outline: none !important;
+        linear-gradient(
+            180deg,
+            #704a2c 0%,
+            #57351f 55%,
+            #3d2517 100%
+        );
+
+    color: #fff0cc;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
 
     cursor: pointer;
 
-    z-index: 50;
+    box-shadow:
+
+        0 4px 0 #29180e,
+
+        0 10px 22px
+        rgba(67, 43, 24, 0.20);
+
+    animation:
+        buttonPulse
+        3.2s
+        ease-in-out
+        infinite;
 }
 
 
-/* =====================================================
-   REMOVE BUTTON VISUAL
-===================================================== */
+#intro-start-button:hover {
 
-#intro-start-button:hover,
-#intro-start-button:focus,
+    filter: brightness(1.12);
+
+}
+
+
 #intro-start-button:active {
 
-    background: transparent !important;
+    transform: translateY(3px);
 
-    border: none !important;
+    box-shadow:
 
-    box-shadow: none !important;
+        0 1px 0 #29180e,
 
-    outline: none !important;
+        0 5px 12px
+        rgba(67, 43, 24, 0.18);
+
 }
 
 
-/* =====================================================
-   MAIN GAME
-===================================================== */
+@keyframes buttonPulse {
 
-#main-game {
-    display: none;
+    0%,
+    100% {
 
-    min-height: 100vh;
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        transform: scale(1.018);
+
+    }
+
 }
 
 
@@ -247,16 +379,43 @@
 @media (max-width: 700px) {
 
     .intro-content {
-        width: 94vw;
+
+        width: 92vw;
+
     }
+
+
+    .intro-mascot {
+
+        width: min(78vw, 420px);
+
+        max-height: 58vh;
+
+    }
+
 
     #intro-start-button {
 
-        left: 25%;
-        width: 50%;
+        width: 260px;
 
-        bottom: 2%;
-        height: 15%;
+        height: 56px;
+
+        font-size: 17px;
+
+    }
+
+
+    .map-label {
+
+        font-size: 16px;
+
+    }
+
+
+    .main-label {
+
+        font-size: 22px;
+
     }
 
 }
