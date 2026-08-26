@@ -12,7 +12,8 @@
 <body>
 
     <!-- =====================================================
-         OPENING / MASCOT SCREEN
+         OPENING SCREEN
+         Tampil terus sampai tombol diklik
     ====================================================== -->
 
     <div id="intro-screen">
@@ -25,8 +26,15 @@
                 alt="NPC Mascot"
             >
 
+            <button
+                id="intro-start-button"
+                class="intro-start-button"
+            >
+                ⚔️ MULAI PETUALANGAN
+            </button>
+
             <p class="intro-hint">
-                Preparing your adventure...
+                Ketuk untuk memulai perjalananmu
             </p>
 
         </div>
@@ -47,26 +55,18 @@
 
         <header class="game-header">
 
-            <h1>
-                🎮 NPC
-            </h1>
+            <h1>🎮 NPC</h1>
 
-            <p>
-                👤 Need Pamong Context
-            </p>
+            <p>👤 Need Pamong Context</p>
 
         </header>
 
 
-        <!-- =================================================
-             ACCESS CODE
-        ================================================== -->
+        <!-- ACCESS CODE -->
 
         <section id="login-screen">
 
-            <h2>
-                🔐 Enter Access Code
-            </h2>
+            <h2>🔐 Enter Access Code</h2>
 
             <p>
                 Masukkan access code untuk memulai permainan.
@@ -95,18 +95,14 @@
         </section>
 
 
-        <!-- =================================================
-             USERNAME
-        ================================================== -->
+        <!-- USERNAME -->
 
         <section
             id="username-screen"
             class="hidden"
         >
 
-            <h2>
-                👤 Who Are You?
-            </h2>
+            <h2>👤 Who Are You?</h2>
 
             <p>
                 Buat username untuk menyimpan progress permainanmu.
@@ -136,18 +132,14 @@
         </section>
 
 
-        <!-- =================================================
-             CREATE PIN
-        ================================================== -->
+        <!-- CREATE PIN -->
 
         <section
             id="pin-setup-screen"
             class="hidden"
         >
 
-            <h2>
-                🔐 Create Your PIN
-            </h2>
+            <h2>🔐 Create Your PIN</h2>
 
             <p>
                 Buat PIN 4 angka untuk menyimpan dan melanjutkan
@@ -188,18 +180,14 @@
         </section>
 
 
-        <!-- =================================================
-             ENTER PIN
-        ================================================== -->
+        <!-- ENTER PIN -->
 
         <section
             id="pin-login-screen"
             class="hidden"
         >
 
-            <h2>
-                🔑 Welcome Back
-            </h2>
+            <h2>🔑 Welcome Back</h2>
 
             <p id="pin-login-message">
                 Masukkan PIN untuk melanjutkan progressmu.
@@ -230,18 +218,14 @@
         </section>
 
 
-        <!-- =================================================
-             WELCOME BACK
-        ================================================== -->
+        <!-- WELCOME BACK -->
 
         <section
             id="welcome-screen"
             class="hidden"
         >
 
-            <h2>
-                👋 Welcome Back
-            </h2>
+            <h2>👋 Welcome Back</h2>
 
             <p id="welcome-message"></p>
 
@@ -256,18 +240,14 @@
         </section>
 
 
-        <!-- =================================================
-             LORE
-        ================================================== -->
+        <!-- LORE -->
 
         <section
             id="lore-screen"
             class="hidden"
         >
 
-            <h2>
-                📖 Before We Begin
-            </h2>
+            <h2>📖 Before We Begin</h2>
 
             <div class="lore-text">
 
@@ -303,9 +283,7 @@
         </section>
 
 
-        <!-- =================================================
-             GAME
-        ================================================== -->
+        <!-- GAME -->
 
         <section
             id="game-screen"
@@ -339,10 +317,6 @@
 
     </main>
 
-
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
 
     <script src="app.js"></script>
 
