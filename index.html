@@ -6,18 +6,22 @@
 
     <title>NPC — Need Pamong Context</title>
 
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
 
 <body>
 
 <main class="game-container">
 
-    <!-- =================================================
-         OPENING
-    ================================================== -->
 
-    <section id="opening-screen" class="screen opening-screen">
+    <!-- =====================================================
+         SCREEN 1 — OPENING
+    ====================================================== -->
+
+    <section
+        id="opening-screen"
+        class="screen opening-screen"
+    >
 
         <div class="opening-mascot">
 
@@ -28,16 +32,20 @@
 
         </div>
 
+
         <p class="opening-tagline">
             Explore Sanapati Land and understand the people behind the roles.
         </p>
 
+
         <button
             id="enter-button"
             class="adventure-button"
+            type="button"
         >
             ⚔️ MULAI PETUALANGAN
         </button>
+
 
         <p class="opening-hint">
             Ketuk di mana saja untuk masuk
@@ -46,23 +54,30 @@
     </section>
 
 
-    <!-- =================================================
-         ACCESS CODE
-    ================================================== -->
 
-    <section id="login-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 2 — ACCESS CODE
+    ====================================================== -->
+
+    <section
+        id="login-screen"
+        class="screen hidden"
+    >
 
         <div class="screen-icon">
             🔐
         </div>
 
+
         <h2>
             Enter Access Code
         </h2>
 
+
         <p>
             Masukkan access code untuk memulai permainan.
         </p>
+
 
         <div class="form-group">
 
@@ -73,34 +88,49 @@
                 autocomplete="off"
             >
 
-            <button id="start-button">
+
+            <button
+                id="start-button"
+                type="button"
+            >
                 🚀 Start Game
             </button>
 
         </div>
 
-        <p id="error-message" class="error"></p>
+
+        <p
+            id="error-message"
+            class="error"
+        ></p>
 
     </section>
 
 
-    <!-- =================================================
-         USERNAME
-    ================================================== -->
 
-    <section id="username-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 3 — USERNAME
+    ====================================================== -->
+
+    <section
+        id="username-screen"
+        class="screen hidden"
+    >
 
         <div class="screen-icon">
             🧭
         </div>
 
+
         <h2>
             Who Are You?
         </h2>
 
+
         <p>
             Buat username untuk menyimpan progress permainanmu.
         </p>
+
 
         <div class="form-group">
 
@@ -112,34 +142,49 @@
                 autocomplete="off"
             >
 
-            <button id="username-button">
+
+            <button
+                id="username-button"
+                type="button"
+            >
                 ✨ Continue
             </button>
 
         </div>
 
-        <p id="username-error" class="error"></p>
+
+        <p
+            id="username-error"
+            class="error"
+        ></p>
 
     </section>
 
 
-    <!-- =================================================
-         CREATE PIN
-    ================================================== -->
 
-    <section id="pin-setup-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 4 — CREATE PIN
+    ====================================================== -->
+
+    <section
+        id="pin-setup-screen"
+        class="screen hidden"
+    >
 
         <div class="screen-icon">
             🔐
         </div>
 
+
         <h2>
             Create Your PIN
         </h2>
 
+
         <p>
             Buat PIN 4 angka untuk menyimpan dan melanjutkan progressmu.
         </p>
+
 
         <div class="form-group">
 
@@ -152,6 +197,7 @@
                 autocomplete="new-password"
             >
 
+
             <input
                 type="password"
                 id="pin-confirm-input"
@@ -161,34 +207,49 @@
                 autocomplete="new-password"
             >
 
-            <button id="pin-button">
+
+            <button
+                id="pin-button"
+                type="button"
+            >
                 🔐 Save PIN
             </button>
 
         </div>
 
-        <p id="pin-error" class="error"></p>
+
+        <p
+            id="pin-error"
+            class="error"
+        ></p>
 
     </section>
 
 
-    <!-- =================================================
-         PIN LOGIN
-    ================================================== -->
 
-    <section id="pin-login-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 5 — PIN LOGIN
+    ====================================================== -->
+
+    <section
+        id="pin-login-screen"
+        class="screen hidden"
+    >
 
         <div class="screen-icon">
             🔑
         </div>
 
+
         <h2>
             Welcome Back
         </h2>
 
+
         <p id="pin-login-message">
             Masukkan PIN untuk melanjutkan progressmu.
         </p>
+
 
         <div class="form-group">
 
@@ -201,53 +262,81 @@
                 autocomplete="current-password"
             >
 
-            <button id="pin-login-button">
+
+            <button
+                id="pin-login-button"
+                type="button"
+            >
                 ▶️ Continue
             </button>
 
         </div>
 
-        <p id="pin-login-error" class="error"></p>
+
+        <p
+            id="pin-login-error"
+            class="error"
+        ></p>
 
     </section>
 
 
-    <!-- =================================================
-         WELCOME BACK
-    ================================================== -->
 
-    <section id="welcome-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 6 — WELCOME BACK
+    ====================================================== -->
+
+    <section
+        id="welcome-screen"
+        class="screen hidden"
+    >
 
         <div class="screen-icon">
             🗺️
         </div>
 
+
         <h2>
             Welcome Back
         </h2>
 
+
         <p id="welcome-message"></p>
 
-        <button id="continue-button">
-            ▶️ Continue Adventure
-        </button>
+
+        <div class="button-group">
+
+            <button
+                id="continue-button"
+                type="button"
+            >
+                ▶️ Continue Adventure
+            </button>
+
+        </div>
 
     </section>
 
 
-    <!-- =================================================
-         LORE
-    ================================================== -->
 
-    <section id="lore-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 7 — LORE
+    ====================================================== -->
+
+    <section
+        id="lore-screen"
+        class="screen hidden"
+    >
 
         <div class="screen-icon">
             📖
         </div>
 
+
         <h2>
             Before We Begin
         </h2>
+
 
         <div class="lore-text">
 
@@ -276,39 +365,54 @@
 
         </div>
 
-        <button id="lore-button">
+
+        <button
+            id="lore-button"
+            type="button"
+        >
             ⚔️ Let's Go
         </button>
 
     </section>
 
 
-    <!-- =================================================
-         GAME
-    ================================================== -->
 
-    <section id="game-screen" class="screen hidden">
+    <!-- =====================================================
+         SCREEN 8 — GAME
+    ====================================================== -->
+
+    <section
+        id="game-screen"
+        class="screen hidden"
+    >
 
         <div class="game-status">
 
             <span>
+
                 🟢
+
                 <strong id="milestone-label">
                     MILESTONE 1
                 </strong>
+
             </span>
+
 
             <span id="player-label"></span>
 
         </div>
 
+
         <h2>
             🧑‍🤝‍🧑 Meet Your Pamong
         </h2>
 
+
         <p class="game-description">
             Kenali wajah, nama, dan konteks Pamong-mu.
         </p>
+
 
         <div id="pengasuh-container"></div>
 
@@ -316,7 +420,8 @@
 
 </main>
 
-<script src="app.js?v=3"></script>
+
+<script src="app.js?v=10"></script>
 
 </body>
 </html>
