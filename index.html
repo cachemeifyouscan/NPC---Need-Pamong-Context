@@ -1,316 +1,1364 @@
-<style>
+<!DOCTYPE html>
+<html lang="id">
 
-/* =====================================================
-   OPENING SCREEN
-===================================================== */
+<head>
 
-#intro-screen {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
+    <meta charset="UTF-8">
 
-    overflow: hidden;
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    <title>NPC — Need Pamong Context</title>
 
-    z-index: 99999;
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    background:
 
-        /* soft parchment center */
-        radial-gradient(
-            ellipse at center,
-            rgba(255, 252, 240, 0.98) 0%,
-            rgba(247, 238, 218, 0.96) 48%,
-            rgba(225, 207, 174, 0.98) 100%
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            min-height: 100%;
+
+        }
+
+
+        body {
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* =====================================================
+           OPENING SCREEN
+        ===================================================== */
+
+        #intro-screen {
+
+            position: fixed;
+
+            inset: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            background:
+
+                radial-gradient(
+                    ellipse at center,
+                    #fffdf5 0%,
+                    #f7efdf 48%,
+                    #ead9b9 100%
+                );
+
+            z-index: 99999;
+
+        }
+
+
+        /* =====================================================
+           PARCHMENT TEXTURE
+        ===================================================== */
+
+        #intro-screen::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.35;
+
+            background:
+
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(100, 75, 40, 0.025) 0px,
+                    rgba(100, 75, 40, 0.025) 1px,
+                    transparent 1px,
+                    transparent 5px
+                ),
+
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(100, 75, 40, 0.018) 0px,
+                    rgba(100, 75, 40, 0.018) 1px,
+                    transparent 1px,
+                    transparent 7px
+                );
+
+            z-index: 1;
+
+        }
+
+
+        /* =====================================================
+           MAP DECORATION
+        ===================================================== */
+
+        .map-decoration {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            pointer-events: none;
+
+            z-index: 2;
+
+            opacity: 0.13;
+
+        }
+
+
+        .map-decoration svg {
+
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+        /* =====================================================
+           MAP EDGE
+        ===================================================== */
+
+        #intro-screen::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 28px;
+
+            border:
+
+                2px solid
+                rgba(116, 91, 54, 0.12);
+
+            border-radius: 18px;
+
+            pointer-events: none;
+
+            z-index: 3;
+
+        }
+
+
+        /* =====================================================
+           INTRO CONTENT
+        ===================================================== */
+
+        .intro-content {
+
+            position: relative;
+
+            z-index: 10;
+
+            width: min(88vw, 680px);
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        /* =====================================================
+           MASCOT
+        ===================================================== */
+
+        .intro-mascot {
+
+            display: block;
+
+            width: 100%;
+
+            max-width: 680px;
+
+            height: auto;
+
+            margin: 0;
+
+            user-select: none;
+
+            -webkit-user-drag: none;
+
+            filter:
+
+                drop-shadow(
+                    0 20px 18px
+                    rgba(64, 43, 20, 0.22)
+                );
+
+            animation:
+
+                mascotFloat
+                4s
+                ease-in-out
+                infinite;
+
+        }
+
+
+        /* =====================================================
+           MASCOT FLOATING
+        ===================================================== */
+
+        @keyframes mascotFloat {
+
+            0% {
+
+                transform:
+                    translateY(0px);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-10px);
+
+            }
+
+            100% {
+
+                transform:
+                    translateY(0px);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           STYLE 4 — RUSTIC BUTTON
+        ===================================================== */
+
+        .intro-enter-button {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 13px;
+
+            width: 300px;
+
+            min-height: 64px;
+
+            margin-top: -4px;
+
+            padding: 0 28px;
+
+            border-radius: 14px;
+
+
+            /* WOOD */
+
+            background:
+
+                linear-gradient(
+                    180deg,
+                    #63442a 0%,
+                    #4a2f1c 48%,
+                    #382217 100%
+                );
+
+
+            /* GOLD BORDER */
+
+            border:
+
+                3px solid
+                #b98a3e;
+
+
+            /* INNER GOLD LINE */
+
+            box-shadow:
+
+                inset 0 0 0 2px
+                rgba(225, 180, 91, 0.25),
+
+                inset 0 5px 8px
+                rgba(255, 220, 130, 0.08),
+
+                0 7px 0
+                #291910,
+
+                0 13px 24px
+                rgba(70, 43, 19, 0.22);
+
+
+            color: #fff3d1;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            cursor: pointer;
+
+            transition:
+
+                transform 0.18s ease,
+                filter 0.18s ease,
+                box-shadow 0.18s ease;
+
+            animation:
+
+                buttonPulse
+                2.8s
+                ease-in-out
+                infinite;
+
+        }
+
+
+        /* =====================================================
+           LITTLE GOLD CORNERS
+        ===================================================== */
+
+        .intro-enter-button::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 7px;
+            left: 8px;
+
+            width: 7px;
+            height: 7px;
+
+            border-top:
+                2px solid #d8ad57;
+
+            border-left:
+                2px solid #d8ad57;
+
+            opacity: 0.8;
+
+        }
+
+
+        .intro-enter-button::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: 8px;
+            bottom: 7px;
+
+            width: 7px;
+            height: 7px;
+
+            border-right:
+                2px solid #d8ad57;
+
+            border-bottom:
+                2px solid #d8ad57;
+
+            opacity: 0.8;
+
+        }
+
+
+        /* =====================================================
+           LANTERN ICON
+        ===================================================== */
+
+        .button-lantern {
+
+            font-size: 25px;
+
+            line-height: 1;
+
+            filter:
+
+                drop-shadow(
+                    0 0 5px
+                    rgba(255, 190, 70, 0.35)
+                );
+
+        }
+
+
+        /* =====================================================
+           BUTTON PULSE
+        ===================================================== */
+
+        @keyframes buttonPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(1);
+
+                filter:
+                    brightness(1);
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.025);
+
+                filter:
+                    brightness(1.07);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           HOVER
+        ===================================================== */
+
+        .intro-enter-button:hover {
+
+            transform:
+                translateY(-2px)
+                scale(1.035);
+
+            filter:
+                brightness(1.1);
+
+            box-shadow:
+
+                inset 0 0 0 2px
+                rgba(225, 180, 91, 0.35),
+
+                0 9px 0
+                #291910,
+
+                0 17px 28px
+                rgba(70, 43, 19, 0.28);
+
+        }
+
+
+        /* =====================================================
+           CLICK
+        ===================================================== */
+
+        .intro-enter-button:active {
+
+            transform:
+                translateY(5px)
+                scale(0.99);
+
+            box-shadow:
+
+                inset 0 0 0 2px
+                rgba(225, 180, 91, 0.25),
+
+                0 2px 0
+                #291910,
+
+                0 5px 10px
+                rgba(70, 43, 19, 0.18);
+
+        }
+
+
+        /* =====================================================
+           MAIN GAME
+        ===================================================== */
+
+        #main-game {
+
+            display: none;
+
+            min-height: 100vh;
+
+            position: relative;
+
+            z-index: 100;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .intro-content {
+
+                width: 94vw;
+
+            }
+
+
+            .intro-mascot {
+
+                width: 100%;
+
+            }
+
+
+            .intro-enter-button {
+
+                width: 245px;
+
+                min-height: 58px;
+
+                font-size: 16px;
+
+                margin-top: -2px;
+
+            }
+
+
+            .button-lantern {
+
+                font-size: 22px;
+
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     OPENING / MASCOT SCREEN
+===================================================== -->
+
+<div id="intro-screen">
+
+
+    <!-- =================================================
+         MAP BACKGROUND
+    ================================================== -->
+
+    <div class="map-decoration">
+
+        <svg
+            viewBox="0 0 1400 900"
+            preserveAspectRatio="xMidYMid slice"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+
+            <!-- OUTER MAP -->
+
+            <path
+                d="
+                M80 120
+                C220 40 330 100 450 70
+                C600 25 700 90 830 65
+                C1000 35 1100 100 1270 80
+                C1370 160 1320 260 1350 370
+                C1380 500 1300 610 1330 730
+                C1180 820 1060 770 920 820
+                C760 850 620 790 480 830
+                C330 850 210 780 90 720
+                C30 580 90 470 55 350
+                C30 250 40 170 80 120
+                Z
+                "
+
+                fill="none"
+
+                stroke="#78613d"
+
+                stroke-width="4"
+            />
+
+
+            <!-- RIVER LEFT -->
+
+            <path
+                d="
+                M180 0
+                C260 130 210 220 300 330
+                C370 410 310 500 400 590
+                C460 660 420 760 500 900
+                "
+
+                fill="none"
+
+                stroke="#688f8b"
+
+                stroke-width="7"
+            />
+
+
+            <!-- RIVER RIGHT -->
+
+            <path
+                d="
+                M1220 0
+                C1130 130 1190 230 1090 330
+                C1010 420 1080 500 980 610
+                C920 690 960 790 900 900
+                "
+
+                fill="none"
+
+                stroke="#688f8b"
+
+                stroke-width="6"
+            />
+
+
+            <!-- MOUNTAINS -->
+
+            <g
+                fill="none"
+                stroke="#766044"
+                stroke-width="4"
+            >
+
+                <path
+                    d="M70 330 L140 210 L210 330 Z"
+                />
+
+                <path
+                    d="M150 330 L230 180 L310 330 Z"
+                />
+
+                <path
+                    d="M250 340 L330 220 L410 340 Z"
+                />
+
+
+                <path
+                    d="M1000 330 L1080 190 L1160 330 Z"
+                />
+
+                <path
+                    d="M1100 330 L1190 160 L1280 330 Z"
+                />
+
+                <path
+                    d="M1200 340 L1270 220 L1340 340 Z"
+                />
+
+            </g>
+
+
+            <!-- FORESTS -->
+
+            <g
+                fill="none"
+                stroke="#647250"
+                stroke-width="3"
+            >
+
+                <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
+
+
+                <path d="M1100 620 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M1160 650 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M1220 625 l30 -50 l30 50 l-30 -12 Z"/>
+
+                <path d="M1280 655 l30 -50 l30 50 l-30 -12 Z"/>
+
+            </g>
+
+
+            <!-- ROADS -->
+
+            <g
+                fill="none"
+                stroke="#806943"
+                stroke-width="3"
+                stroke-dasharray="12 12"
+            >
+
+                <path
+                    d="
+                    M80 700
+                    C280 600 400 660 560 570
+                    C700 490 820 560 980 620
+                    C1100 660 1230 600 1340 700
+                    "
+                />
+
+                <path
+                    d="
+                    M140 180
+                    C300 260 420 330 600 350
+                    C800 380 980 300 1240 180
+                    "
+                />
+
+            </g>
+
+
+            <!-- CASTLES -->
+
+            <g
+                fill="none"
+                stroke="#78613d"
+                stroke-width="4"
+            >
+
+                <path
+                    d="
+                    M100 450
+                    L100 390
+                    L135 355
+                    L170 390
+                    L170 450
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M95 390
+                    L135 335
+                    L175 390
+                    "
+                />
+
+
+                <path
+                    d="
+                    M1230 450
+                    L1230 390
+                    L1265 355
+                    L1300 390
+                    L1300 450
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M1225 390
+                    L1265 335
+                    L1305 390
+                    "
+                />
+
+            </g>
+
+
+            <!-- COMPASS -->
+
+            <g
+                transform="translate(700 450)"
+                fill="none"
+                stroke="#806943"
+                stroke-width="3"
+            >
+
+                <circle r="150"/>
+
+                <circle r="125"/>
+
+                <path
+                    d="
+                    M0 -150
+                    L20 0
+                    L0 150
+                    L-20 0
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M-150 0
+                    L0 20
+                    L150 0
+                    L0 -20
+                    Z
+                    "
+                />
+
+                <circle r="15"/>
+
+            </g>
+
+
+            <!-- MAP LABELS -->
+
+            <g
+                fill="#725b3c"
+                font-family="Georgia, serif"
+                font-size="22"
+                letter-spacing="4"
+            >
+
+                <text
+                    x="100"
+                    y="90"
+                >
+                    WESTERN WOODS
+                </text>
+
+
+                <text
+                    x="1050"
+                    y="90"
+                >
+                    NORTHERN PEAKS
+                </text>
+
+
+                <text
+                    x="580"
+                    y="70"
+                >
+                    SANAPATI LAND
+                </text>
+
+
+                <text
+                    x="100"
+                    y="820"
+                >
+                    WESTERN COAST
+                </text>
+
+
+                <text
+                    x="1080"
+                    y="820"
+                >
+                    EASTERN KINGDOM
+                </text>
+
+            </g>
+
+
+        </svg>
+
+    </div>
+
+
+
+    <!-- =================================================
+         MASCOT + BUTTON
+    ================================================== -->
+
+    <div class="intro-content">
+
+
+        <img
+            src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
+            class="intro-mascot"
+            alt="NPC Mascot"
+        >
+
+
+        <!-- =================================================
+             NEW ENTER BUTTON
+        ================================================== -->
+
+        <button
+            id="intro-start-button"
+            class="intro-enter-button"
+            type="button"
+        >
+
+            <span class="button-lantern">
+                🏮
+            </span>
+
+            <span>
+                CLICK HERE
+            </span>
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN GAME
+===================================================== -->
+
+<main
+    id="main-game"
+    class="game-container"
+>
+
+
+    <!-- HEADER -->
+
+    <header class="game-header">
+
+        <h1>
+            🎮 NPC
+        </h1>
+
+        <p>
+            👤 Need Pamong Context
+        </p>
+
+    </header>
+
+
+
+    <!-- ACCESS CODE -->
+
+    <section id="login-screen">
+
+        <h2>
+            🔐 Enter Access Code
+        </h2>
+
+        <p>
+            Masukkan access code untuk memulai permainan.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="access-code"
+                placeholder="Access Code"
+                autocomplete="off"
+            >
+
+
+            <button
+                id="start-button"
+            >
+                🚀 Start Game
+            </button>
+
+        </div>
+
+
+        <p
+            id="error-message"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- USERNAME -->
+
+    <section
+        id="username-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👤 Who Are You?
+        </h2>
+
+        <p>
+            Buat username untuk menyimpan progress permainanmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+
+            <button
+                id="username-button"
+            >
+                ✨ Continue
+            </button>
+
+        </div>
+
+
+        <p
+            id="username-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- CREATE PIN -->
+
+    <section
+        id="pin-setup-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔐 Create Your PIN
+        </h2>
+
+        <p>
+            Buat PIN 4 angka untuk menyimpan dan melanjutkan
+            progressmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+
+            <input
+                type="password"
+                id="pin-confirm-input"
+                placeholder="Confirm PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+
+            <button
+                id="pin-button"
+            >
+                🔐 Save PIN
+            </button>
+
+        </div>
+
+
+        <p
+            id="pin-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- ENTER PIN -->
+
+    <section
+        id="pin-login-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔑 Welcome Back
+        </h2>
+
+
+        <p id="pin-login-message">
+            Masukkan PIN untuk melanjutkan progressmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="login-pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="current-password"
+            >
+
+
+            <button
+                id="pin-login-button"
+            >
+                ▶️ Continue
+            </button>
+
+        </div>
+
+
+        <p
+            id="pin-login-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- WELCOME BACK -->
+
+    <section
+        id="welcome-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👋 Welcome Back
+        </h2>
+
+
+        <p
+            id="welcome-message"
+        ></p>
+
+
+        <div class="button-group">
+
+            <button
+                id="continue-button"
+            >
+                ▶️ Continue
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- LORE -->
+
+    <section
+        id="lore-screen"
+        class="hidden"
+    >
+
+        <h2>
+            📖 Before We Begin
+        </h2>
+
+
+        <div class="lore-text">
+
+            <p>
+                You’ve probably seen them before.
+            </p>
+
+
+            <p>
+                You know the faces.
+                Maybe even the names.
+            </p>
+
+
+            <p>
+                But when you actually need to call them...
+            </p>
+
+
+            <p>
+
+                <strong>
+                    “Wait... who are they again?”
+                </strong>
+
+            </p>
+
+
+            <p>
+                NPC — Need Pamong Context is here to fix that.
+            </p>
+
+        </div>
+
+
+        <button
+            id="lore-button"
+        >
+            🎮 Let's Go
+        </button>
+
+    </section>
+
+
+
+    <!-- GAME -->
+
+    <section
+        id="game-screen"
+        class="hidden"
+    >
+
+
+        <div class="game-status">
+
+            <span>
+
+                🟢
+
+                <strong id="milestone-label">
+                    MILESTONE 1
+                </strong>
+
+            </span>
+
+
+            <span
+                id="player-label"
+            ></span>
+
+        </div>
+
+
+        <h2>
+            🧑‍🤝‍🧑 Meet Your Pamong
+        </h2>
+
+
+        <p class="game-description">
+            Kenali wajah, nama, dan konteks Pamong-mu.
+        </p>
+
+
+        <div
+            id="pengasuh-container"
+        ></div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     EXISTING APP.JS
+===================================================== -->
+
+<script src="app.js"></script>
+
+
+
+<!-- =====================================================
+     OPENING BUTTON → MAIN GAME
+===================================================== -->
+
+<script>
+
+    const introScreen =
+        document.getElementById(
+            "intro-screen"
         );
 
-}
 
-
-/* =====================================================
-   PARchMENT TEXTURE
-===================================================== */
-
-#intro-screen::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: 0.35;
-
-    background:
-
-        repeating-linear-gradient(
-            0deg,
-            rgba(100, 75, 40, 0.025) 0px,
-            rgba(100, 75, 40, 0.025) 1px,
-            transparent 1px,
-            transparent 5px
-        ),
-
-        repeating-linear-gradient(
-            90deg,
-            rgba(100, 75, 40, 0.018) 0px,
-            rgba(100, 75, 40, 0.018) 1px,
-            transparent 1px,
-            transparent 7px
+    const introStartButton =
+        document.getElementById(
+            "intro-start-button"
         );
 
-    z-index: 1;
 
-}
-
-
-/* =====================================================
-   MAP DECORATION
-===================================================== */
-
-#intro-screen::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 35px;
-
-    border: 2px solid rgba(116, 91, 54, 0.14);
-
-    border-radius: 18px;
-
-    pointer-events: none;
-
-    z-index: 2;
-
-}
-
-
-/* =====================================================
-   FAINT MAP LINES
-===================================================== */
-
-.map-decoration {
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 3;
-
-    opacity: 0.16;
-
-}
-
-
-/* =====================================================
-   MAP SVG
-===================================================== */
-
-.map-decoration svg {
-
-    width: 100%;
-    height: 100%;
-
-}
-
-
-/* =====================================================
-   INTRO CONTENT
-===================================================== */
-
-.intro-content {
-
-    position: relative;
-
-    z-index: 10;
-
-    width: min(88vw, 720px);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-}
-
-
-/* =====================================================
-   MASCOT
-===================================================== */
-
-.intro-mascot {
-
-    display: block;
-
-    width: 100%;
-
-    height: auto;
-
-    margin: 0;
-
-    user-select: none;
-
-    -webkit-user-drag: none;
-
-    filter:
-
-        drop-shadow(
-            0 22px 20px rgba(70, 48, 22, 0.22)
+    const mainGame =
+        document.getElementById(
+            "main-game"
         );
 
-    animation:
 
-        mascotFloat
-        4s
-        ease-in-out
-        infinite;
+    introStartButton.addEventListener(
+        "click",
+        function () {
 
-}
+            introScreen.style.display =
+                "none";
 
 
-/* =====================================================
-   FLOATING
-===================================================== */
+            mainGame.style.display =
+                "block";
 
-@keyframes mascotFloat {
 
-    0% {
+            const accessCode =
+                document.getElementById(
+                    "access-code"
+                );
 
-        transform:
-            translateY(0px);
 
-    }
+            if (accessCode) {
 
-    50% {
+                setTimeout(
+                    function () {
 
-        transform:
-            translateY(-10px);
+                        accessCode.focus();
 
-    }
+                    },
+                    100
+                );
 
-    100% {
+            }
 
-        transform:
-            translateY(0px);
+        }
+    );
 
-    }
+</script>
 
-}
 
+</body>
 
-/* =====================================================
-   INVISIBLE CLICK AREA
-===================================================== */
-
-#intro-start-button {
-
-    position: absolute;
-
-    /*
-       Tombol di dalam mascot2.png
-    */
-
-    left: 27%;
-
-    bottom: 2%;
-
-    width: 46%;
-
-    height: 14%;
-
-
-    padding: 0;
-    margin: 0;
-
-
-    /*
-       BENAR-BENAR TRANSPARAN
-    */
-
-    background: transparent !important;
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-
-
-    cursor: pointer;
-
-    z-index: 50;
-
-}
-
-
-/* =====================================================
-   REMOVE ALL BUTTON VISUALS
-===================================================== */
-
-#intro-start-button:hover,
-#intro-start-button:focus,
-#intro-start-button:active {
-
-    background: transparent !important;
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-
-}
-
-
-/* =====================================================
-   MAIN GAME
-===================================================== */
-
-#main-game {
-
-    display: none;
-
-    min-height: 100vh;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 700px) {
-
-    .intro-content {
-
-        width: 94vw;
-
-    }
-
-
-    #intro-start-button {
-
-        left: 25%;
-
-        width: 50%;
-
-        bottom: 2%;
-
-        height: 15%;
-
-    }
-
-}
-
-</style>
+</html>
