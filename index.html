@@ -1,563 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>NPC — Need Pamong Context</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
-
-    <!-- =================================================
-         OPENING SCREEN OVERRIDE
-         Sengaja ditaruh di sini supaya tidak bentrok
-         dengan CSS lama.
-    ================================================== -->
-
-    <style>
-
-        /* =================================================
-           OPENING SCREEN
-        ================================================= */
-
-        #intro-screen {
-            position: fixed !important;
-
-            inset: 0 !important;
-
-            width: 100vw !important;
-            height: 100vh !important;
-
-            overflow: hidden !important;
-
-            display: flex !important;
-
-            align-items: center !important;
-            justify-content: center !important;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    #fffaf0 0%,
-                    #f5ead3 58%,
-                    #e3d0aa 100%
-                ) !important;
-
-            z-index: 99999 !important;
-        }
-
-
-        /* =================================================
-           PARCHMENT TEXTURE
-        ================================================= */
-
-        #intro-screen::before {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            pointer-events: none;
-
-            background:
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(105, 77, 40, 0.025) 0px,
-                    rgba(105, 77, 40, 0.025) 1px,
-                    transparent 1px,
-                    transparent 5px
-                ),
-
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(105, 77, 40, 0.018) 0px,
-                    rgba(105, 77, 40, 0.018) 1px,
-                    transparent 1px,
-                    transparent 7px
-                );
-
-            z-index: 1;
-        }
-
-
-        /* =================================================
-           MAP FRAME
-        ================================================= */
-
-        #intro-screen::after {
-            content: "";
-
-            position: absolute;
-
-            inset: 34px;
-
-            border:
-                2px solid
-                rgba(116, 91, 54, 0.16);
-
-            border-radius: 18px;
-
-            pointer-events: none;
-
-            z-index: 2;
-        }
-
-
-        /* =================================================
-           MAP
-        ================================================= */
-
-        .map-decoration {
-            position: absolute !important;
-
-            inset: 0 !important;
-
-            width: 100% !important;
-            height: 100% !important;
-
-            pointer-events: none !important;
-
-            z-index: 3 !important;
-
-            opacity: 0.27 !important;
-        }
-
-
-        .map-decoration svg {
-            display: block;
-
-            width: 100%;
-            height: 100%;
-        }
-
-
-        /* =================================================
-           MAP TEXT
-        ================================================= */
-
-        .map-label {
-            fill: #705a39;
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
-
-            font-size: 21px;
-
-            font-weight: 600;
-
-            letter-spacing: 2px;
-        }
-
-
-        .main-label {
-            font-size: 30px;
-
-            font-weight: 700;
-
-            letter-spacing: 5px;
-        }
-
-
-        .direction-label {
-            fill: #806943;
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
-
-            font-size: 17px;
-
-            font-weight: 600;
-
-            letter-spacing: 2px;
-        }
-
-
-        /* =================================================
-           MAP RIVER
-        ================================================= */
-
-        .map-river {
-            fill: none;
-
-            stroke: #719795;
-
-            stroke-width: 8;
-
-            stroke-linecap: round;
-        }
-
-
-        /* =================================================
-           MAP ROADS
-        ================================================= */
-
-        .map-road {
-            fill: none;
-
-            stroke: #8b7147;
-
-            stroke-width: 3;
-
-            stroke-dasharray: 10 12;
-
-            opacity: 0.8;
-        }
-
-
-        /* =================================================
-           MOUNTAINS
-        ================================================= */
-
-        .map-mountains {
-            fill: none;
-
-            stroke: #806b4a;
-
-            stroke-width: 4;
-
-            opacity: 0.8;
-        }
-
-
-        /* =================================================
-           FOREST
-        ================================================= */
-
-        .map-forest {
-            fill: none;
-
-            stroke: #637153;
-
-            stroke-width: 3;
-
-            opacity: 0.8;
-        }
-
-
-        /* =================================================
-           CASTLES
-        ================================================= */
-
-        .map-castle {
-            fill: none;
-
-            stroke: #806943;
-
-            stroke-width: 4;
-
-            opacity: 0.8;
-        }
-
-
-        /* =================================================
-           COMPASS
-        ================================================= */
-
-        .map-compass {
-            fill: none;
-
-            stroke: #806943;
-
-            stroke-width: 3;
-
-            opacity: 0.8;
-        }
-
-
-        .map-compass text {
-            fill: #705a39;
-
-            stroke: none;
-
-            font-family:
-                Georgia,
-                serif;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-
-        /* =================================================
-           INTRO CONTENT
-        ================================================= */
-
-        .intro-content {
-            position: relative !important;
-
-            z-index: 20 !important;
-
-            width: min(88vw, 560px) !important;
-
-            height: auto !important;
-
-            display: flex !important;
-
-            flex-direction: column !important;
-
-            align-items: center !important;
-
-            justify-content: center !important;
-
-            transform: translateY(-1vh) !important;
-        }
-
-
-        /* =================================================
-           MASCOT
-           
-           INI SENGAJA DIKECILKAN.
-        ================================================= */
-
-        .intro-mascot {
-            display: block !important;
-
-            width: min(48vw, 430px) !important;
-
-            max-width: 430px !important;
-
-            max-height: 62vh !important;
-
-            height: auto !important;
-
-            object-fit: contain !important;
-
-            margin: 0 !important;
-
-            user-select: none !important;
-
-            -webkit-user-drag: none !important;
-
-            filter:
-                drop-shadow(
-                    0 18px 20px
-                    rgba(70, 48, 22, 0.20)
-                ) !important;
-
-            animation:
-                mascotFloat
-                4.5s
-                ease-in-out
-                infinite !important;
-        }
-
-
-        /* =================================================
-           MASCOT FLOAT
-        ================================================= */
-
-        @keyframes mascotFloat {
-
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
-
-        }
-
-
-        /* =================================================
-           CLICK HERE
-           
-           INI BUTTON YANG BENERAN KELIHATAN.
-        ================================================= */
-
-        #intro-start-button {
-
-            position: relative !important;
-
-            display: flex !important;
-
-            align-items: center !important;
-
-            justify-content: center !important;
-
-            width: 300px !important;
-
-            height: 62px !important;
-
-            min-width: 300px !important;
-
-            min-height: 62px !important;
-
-            margin-top: 2px !important;
-
-            padding: 0 !important;
-
-            border:
-                2px solid
-                #b8893f !important;
-
-            border-radius: 13px !important;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #704a2c 0%,
-                    #57351f 55%,
-                    #3d2517 100%
-                ) !important;
-
-            color: #fff0cc !important;
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif !important;
-
-            font-size: 19px !important;
-
-            font-weight: 700 !important;
-
-            letter-spacing: 2px !important;
-
-            text-align: center !important;
-
-            cursor: pointer !important;
-
-            opacity: 1 !important;
-
-            visibility: visible !important;
-
-            box-shadow:
-                0 4px 0 #29180e,
-                0 10px 22px
-                rgba(67, 43, 24, 0.20) !important;
-
-            z-index: 100 !important;
-
-            animation:
-                buttonPulse
-                3.2s
-                ease-in-out
-                infinite !important;
-        }
-
-
-        #intro-start-button:hover {
-
-            filter: brightness(1.12);
-
-        }
-
-
-        #intro-start-button:active {
-
-            transform: translateY(3px);
-
-            box-shadow:
-                0 1px 0 #29180e,
-                0 5px 12px
-                rgba(67, 43, 24, 0.18) !important;
-        }
-
-
-        @keyframes buttonPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.018);
-            }
-
-        }
-
-
-        /* =================================================
-           HIDE OLD HINT
-        ================================================= */
-
-        .intro-hint {
-            display: none !important;
-        }
-
-
-        /* =================================================
-           MOBILE
-        ================================================= */
-
-        @media (max-width: 700px) {
-
-            .intro-content {
-                width: 92vw !important;
-            }
-
-
-            .intro-mascot {
-                width: min(70vw, 380px) !important;
-
-                max-height: 56vh !important;
-            }
-
-
-            #intro-start-button {
-                width: 260px !important;
-
-                min-width: 260px !important;
-
-                height: 56px !important;
-
-                min-height: 56px !important;
-
-                font-size: 17px !important;
-            }
-
-
-            .map-label {
-                font-size: 16px;
-            }
-
-
-            .main-label {
-                font-size: 22px;
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
 <!-- =====================================================
      OPENING SCREEN
 ===================================================== -->
 
 <div id="intro-screen">
 
-
-    <!-- =================================================
-         MEDIEVAL PARCHMENT MAP
-    ================================================== -->
+    <!-- ================= MAP BACKGROUND ================= -->
 
     <div class="map-decoration">
 
@@ -567,10 +14,7 @@
             xmlns="http://www.w3.org/2000/svg"
         >
 
-
-            <!-- =========================================
-                 MAP BORDER
-            ========================================== -->
+            <!-- MAP BORDER -->
 
             <rect
                 x="20"
@@ -585,13 +29,11 @@
             />
 
 
-            <!-- =========================================
-                 MAIN TITLE
-            ========================================== -->
+            <!-- NORTH LABEL -->
 
             <text
                 x="700"
-                y="70"
+                y="65"
                 text-anchor="middle"
                 class="map-label main-label"
             >
@@ -599,38 +41,32 @@
             </text>
 
 
-            <!-- =========================================
-                 WESTERN WOODS
-            ========================================== -->
+            <!-- WESTERN WOODS -->
 
             <text
-                x="115"
-                y="175"
+                x="175"
+                y="180"
                 class="map-label"
             >
                 WESTERN WOODS
             </text>
 
 
-            <!-- =========================================
-                 NORTHERN PEAKS
-            ========================================== -->
+            <!-- NORTHERN PEAKS -->
 
             <text
-                x="1060"
-                y="175"
+                x="1080"
+                y="180"
                 class="map-label"
             >
                 NORTHERN PEAKS
             </text>
 
 
-            <!-- =========================================
-                 NORTH WEST
-            ========================================== -->
+            <!-- NORTH WEST -->
 
             <text
-                x="90"
+                x="120"
                 y="90"
                 class="direction-label"
             >
@@ -638,9 +74,7 @@
             </text>
 
 
-            <!-- =========================================
-                 EAST
-            ========================================== -->
+            <!-- EAST -->
 
             <text
                 x="1270"
@@ -651,9 +85,7 @@
             </text>
 
 
-            <!-- =========================================
-                 SOUTH
-            ========================================== -->
+            <!-- SOUTH -->
 
             <text
                 x="700"
@@ -665,9 +97,7 @@
             </text>
 
 
-            <!-- =========================================
-                 LEFT RIVER
-            ========================================== -->
+            <!-- ================= RIVERS ================= -->
 
             <path
                 d="
@@ -688,10 +118,6 @@
             />
 
 
-            <!-- =========================================
-                 RIGHT RIVER
-            ========================================== -->
-
             <path
                 d="
                 M 1230 0
@@ -711,9 +137,7 @@
             />
 
 
-            <!-- =========================================
-                 ROADS
-            ========================================== -->
+            <!-- ================= ROADS ================= -->
 
             <path
                 d="
@@ -749,113 +173,55 @@
             />
 
 
-            <!-- =========================================
-                 WESTERN MOUNTAINS
-            ========================================== -->
+            <!-- ================= WESTERN MOUNTAINS ================= -->
 
             <g class="map-mountains">
 
-                <path
-                    d="M70 350 L145 210 L220 350 Z"
-                />
-
-                <path
-                    d="M180 350 L270 170 L360 350 Z"
-                />
-
-                <path
-                    d="M300 350 L375 225 L450 350 Z"
-                />
+                <path d="M70 350 L145 210 L220 350 Z"/>
+                <path d="M180 350 L270 170 L360 350 Z"/>
+                <path d="M300 350 L375 225 L450 350 Z"/>
 
             </g>
 
 
-            <!-- =========================================
-                 NORTHERN PEAKS
-            ========================================== -->
+            <!-- ================= NORTHERN PEAKS ================= -->
 
             <g class="map-mountains">
 
-                <path
-                    d="M960 350 L1040 190 L1120 350 Z"
-                />
-
-                <path
-                    d="M1080 350 L1170 150 L1260 350 Z"
-                />
-
-                <path
-                    d="M1200 350 L1270 220 L1340 350 Z"
-                />
+                <path d="M960 350 L1040 190 L1120 350 Z"/>
+                <path d="M1080 350 L1170 150 L1260 350 Z"/>
+                <path d="M1200 350 L1270 220 L1340 350 Z"/>
 
             </g>
 
 
-            <!-- =========================================
-                 WESTERN FOREST
-            ========================================== -->
+            <!-- ================= FOREST LEFT ================= -->
 
             <g class="map-forest">
 
-                <path
-                    d="M80 620 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M140 650 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M200 625 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M260 660 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M320 630 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M380 660 l30 -55 l30 55 l-30 -12 Z"
-                />
+                <path d="M80 620 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M140 650 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M200 625 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M260 660 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M320 630 l30 -55 l30 55 l-30 -12 Z"/>
 
             </g>
 
 
-            <!-- =========================================
-                 EASTERN FOREST
-            ========================================== -->
+            <!-- ================= FOREST RIGHT ================= -->
 
             <g class="map-forest">
 
-                <path
-                    d="M1080 620 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M1140 650 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M1200 625 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M1260 660 l30 -55 l30 55 l-30 -12 Z"
-                />
-
-                <path
-                    d="M1320 630 l30 -55 l30 55 l-30 -12 Z"
-                />
+                <path d="M1080 620 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M1140 650 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M1200 625 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M1260 660 l30 -55 l30 55 l-30 -12 Z"/>
+                <path d="M1320 630 l30 -55 l30 55 l-30 -12 Z"/>
 
             </g>
 
 
-            <!-- =========================================
-                 WESTERN CASTLE
-            ========================================== -->
+            <!-- ================= CASTLE LEFT ================= -->
 
             <g class="map-castle">
 
@@ -885,9 +251,7 @@
             </g>
 
 
-            <!-- =========================================
-                 EASTERN CASTLE
-            ========================================== -->
+            <!-- ================= CASTLE RIGHT ================= -->
 
             <g class="map-castle">
 
@@ -917,9 +281,7 @@
             </g>
 
 
-            <!-- =========================================
-                 COMPASS
-            ========================================== -->
+            <!-- ================= COMPASS ================= -->
 
             <g
                 transform="translate(700 450)"
@@ -997,10 +359,7 @@
     </div>
 
 
-
-    <!-- =================================================
-         MASCOT + CLICK HERE
-    ================================================== -->
+    <!-- ================= MASCOT ================= -->
 
     <div class="intro-content">
 
@@ -1011,6 +370,7 @@
         >
 
 
+        <!-- BUTTON VISUAL -->
         <button
             id="intro-start-button"
             type="button"
@@ -1021,370 +381,3 @@
     </div>
 
 </div>
-
-
-
-<!-- =====================================================
-     MAIN GAME
-===================================================== -->
-
-<main
-    id="main-game"
-    class="game-container"
->
-
-
-    <!-- =================================================
-         HEADER
-    ================================================== -->
-
-    <header class="game-header">
-
-        <h1>
-            🎮 NPC
-        </h1>
-
-        <p>
-            👤 Need Pamong Context
-        </p>
-
-    </header>
-
-
-
-    <!-- =================================================
-         ACCESS CODE
-    ================================================== -->
-
-    <section id="login-screen">
-
-        <h2>
-            🔐 The Gate Awaits
-        </h2>
-
-        <p>
-            A sealed passage awaits those who know the way.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="access-code"
-                placeholder="Enter your seal..."
-                autocomplete="off"
-            >
-
-            <button
-                id="start-button"
-                type="button"
-            >
-                🔓 Unlock Gate
-            </button>
-
-        </div>
-
-
-        <p
-            id="error-message"
-            class="error"
-        ></p>
-
-    </section>
-
-
-
-    <!-- =================================================
-         USERNAME
-    ================================================== -->
-
-    <section
-        id="username-screen"
-        class="hidden"
-    >
-
-        <h2>
-            👤 Who Are You?
-        </h2>
-
-        <p>
-            Buat username untuk menyimpan progress permainanmu.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="text"
-                id="username"
-                placeholder="Enter your username"
-                maxlength="20"
-                autocomplete="off"
-            >
-
-            <button
-                id="username-button"
-                type="button"
-            >
-                ✨ Continue
-            </button>
-
-        </div>
-
-
-        <p
-            id="username-error"
-            class="error"
-        ></p>
-
-    </section>
-
-
-
-    <!-- =================================================
-         CREATE PIN
-    ================================================== -->
-
-    <section
-        id="pin-setup-screen"
-        class="hidden"
-    >
-
-        <h2>
-            🔐 Create Your PIN
-        </h2>
-
-        <p>
-            Buat PIN 4 angka untuk menyimpan dan melanjutkan
-            progressmu.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="new-password"
-            >
-
-            <input
-                type="password"
-                id="pin-confirm-input"
-                placeholder="Confirm PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="new-password"
-            >
-
-            <button
-                id="pin-button"
-                type="button"
-            >
-                🔐 Save PIN
-            </button>
-
-        </div>
-
-
-        <p
-            id="pin-error"
-            class="error"
-        ></p>
-
-    </section>
-
-
-
-    <!-- =================================================
-         ENTER PIN
-    ================================================== -->
-
-    <section
-        id="pin-login-screen"
-        class="hidden"
-    >
-
-        <h2>
-            🔑 Welcome Back
-        </h2>
-
-        <p id="pin-login-message">
-            Masukkan PIN untuk melanjutkan progressmu.
-        </p>
-
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="login-pin-input"
-                placeholder="4-digit PIN"
-                inputmode="numeric"
-                maxlength="4"
-                autocomplete="current-password"
-            >
-
-            <button
-                id="pin-login-button"
-                type="button"
-            >
-                ▶️ Continue
-            </button>
-
-        </div>
-
-
-        <p
-            id="pin-login-error"
-            class="error"
-        ></p>
-
-    </section>
-
-
-
-    <!-- =================================================
-         WELCOME BACK
-    ================================================== -->
-
-    <section
-        id="welcome-screen"
-        class="hidden"
-    >
-
-        <h2>
-            👋 Welcome Back
-        </h2>
-
-        <p id="welcome-message"></p>
-
-
-        <div class="button-group">
-
-            <button
-                id="continue-button"
-                type="button"
-            >
-                ▶️ Continue
-            </button>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         LORE
-    ================================================== -->
-
-    <section
-        id="lore-screen"
-        class="hidden"
-    >
-
-        <h2>
-            📖 Before We Begin
-        </h2>
-
-
-        <div class="lore-text">
-
-            <p>
-                You’ve probably seen them before.
-            </p>
-
-            <p>
-                You know the faces.
-                Maybe even the names.
-            </p>
-
-            <p>
-                But when you actually need to call them...
-            </p>
-
-            <p>
-                <strong>
-                    “Wait... who are they again?”
-                </strong>
-            </p>
-
-            <p>
-                NPC — Need Pamong Context is here to fix that.
-            </p>
-
-        </div>
-
-
-        <button
-            id="lore-button"
-            type="button"
-        >
-            🎮 Let's Go
-        </button>
-
-    </section>
-
-
-
-    <!-- =================================================
-         GAME
-    ================================================== -->
-
-    <section
-        id="game-screen"
-        class="hidden"
-    >
-
-        <div class="game-status">
-
-            <span>
-
-                🟢
-
-                <strong id="milestone-label">
-                    MILESTONE 1
-                </strong>
-
-            </span>
-
-
-            <span id="player-label"></span>
-
-        </div>
-
-
-        <h2>
-            🧑‍🤝‍🧑 Meet Your Pamong
-        </h2>
-
-
-        <p class="game-description">
-            Kenali wajah, nama, dan konteks Pamong-mu.
-        </p>
-
-
-        <div id="pengasuh-container"></div>
-
-    </section>
-
-
-</main>
-
-
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
-<script src="app.js"></script>
-
-
-</body>
-
-</html>
