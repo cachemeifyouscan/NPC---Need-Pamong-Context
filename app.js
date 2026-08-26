@@ -33,6 +33,33 @@ const usernameButton =
 const usernameError =
     document.getElementById("username-error");
 
+const pinSetupScreen =
+    document.getElementById("pin-setup-screen");
+
+const pinInput =
+    document.getElementById("pin-input");
+
+const pinConfirmInput =
+    document.getElementById("pin-confirm-input");
+
+const pinButton =
+    document.getElementById("pin-button");
+
+const pinError =
+    document.getElementById("pin-error");
+
+const pinLoginScreen =
+    document.getElementById("pin-login-screen");
+
+const loginPinInput =
+    document.getElementById("login-pin-input");
+
+const pinLoginButton =
+    document.getElementById("pin-login-button");
+
+const pinLoginError =
+    document.getElementById("pin-login-error");
+
 const welcomeScreen =
     document.getElementById("welcome-screen");
 
@@ -54,9 +81,12 @@ const gameScreen =
 const pengasuhContainer =
     document.getElementById("pengasuh-container");
 
+const playerLabel =
+    document.getElementById("player-label");
+
 
 // ==========================================
-// GAME DATA
+// GAME STATE
 // ==========================================
 
 let pengasuhData = [];
@@ -67,87 +97,172 @@ let currentProgress = null;
 
 
 // ==========================================
-// 1. ACCESS CODE
+// HELPER
 // ==========================================
 
-startButton.addEventListener("click", async () => {
+function hideAllScreens() {
 
-    const code =
-        accessCodeInput.value.trim();
+    loginScreen.classList.add("hidden");
+    usernameScreen.classList.add("hidden");
+    pinSetupScreen.classList.add("hidden");
+    pinLoginScreen.classList.add("hidden");
+    welcomeScreen.classList.add("hidden");
+    loreScreen.classList.add("hidden");
+    gameScreen.classList.add("hidden");
+}
 
-    errorMessage.textContent = "";
 
-    if (!code) {
-        errorMessage.textContent =
-            "Masukkan access code terlebih dahulu.";
+function showScreen(screen) {
+
+    hideAllScreens();
+
+    screen.classList.remove("hidden");
+}
+
+
+function savePlayerLocally() {
+
+    if (!currentPlayer) {
         return;
     }
 
-    startButton.disabled = true;
-    startButton.textContent = "Loading...";
+    localStorage.setItem(
+        "npc_player_id",
+        currentPlayer.id
+    );
 
-    try {
+    localStorage.setItem(
+        "npc_username",
+        currentPlayer.username
+    );
+}
 
-        const response = await fetch(
-            SUPABASE_FUNCTION_URL,
-            {
-                method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+function setCurrentPlayer(result) {
 
-                body: JSON.stringify({
-                    code: code
-                })
-            }
-        );
+    currentPlayer =
+        result.player || null;
 
-        const result =
-            await response.json();
+    currentProgress =
+        result.progress || null;
 
-        if (!result.success) {
+    savePlayerLocally();
+
+    console.log(
+        "Current player:",
+        currentPlayer
+    );
+
+    console.log(
+        "Current progress:",
+        currentProgress
+    );
+}
+
+
+function progressIsNew() {
+
+    if (!currentProgress) {
+        return true;
+    }
+
+    return (
+        Number(currentProgress.current_milestone) === 1 &&
+        currentProgress.current_stage === "intro"
+    );
+}
+
+
+// ==========================================
+// 1. ACCESS CODE
+// ==========================================
+
+startButton.addEventListener(
+    "click",
+    async () => {
+
+        const code =
+            accessCodeInput.value.trim();
+
+        errorMessage.textContent = "";
+
+        if (!code) {
 
             errorMessage.textContent =
-                "Access code salah.";
+                "Masukkan access code terlebih dahulu.";
 
             return;
         }
 
-        // Simpan data Pengasuh untuk dipakai nanti
-        pengasuhData = result.data || [];
+        startButton.disabled = true;
+        startButton.textContent = "Loading...";
 
-        console.log(
-            "Data Pengasuh:",
-            pengasuhData
-        );
+        try {
 
-        // Masuk ke username
-        loginScreen.classList.add("hidden");
+            const response =
+                await fetch(
+                    SUPABASE_FUNCTION_URL,
+                    {
+                        method: "POST",
 
-        usernameScreen.classList.remove("hidden");
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
-        usernameInput.focus();
+                        body: JSON.stringify({
+                            code: code
+                        })
+                    }
+                );
 
-    } catch (error) {
+            const result =
+                await response.json();
 
-        console.error(error);
+            if (!result.success) {
 
-        errorMessage.textContent =
-            "Terjadi kesalahan saat mengambil data.";
+                errorMessage.textContent =
+                    "Access code salah.";
 
-    } finally {
+                return;
+            }
 
-        startButton.disabled = false;
 
-        startButton.textContent =
-            "🚀 Start Game";
+            // Simpan data Pamong
+            pengasuhData =
+                result.data || [];
+
+            console.log(
+                "Data Pengasuh:",
+                pengasuhData
+            );
+
+
+            // Masuk ke username
+            showScreen(usernameScreen);
+
+            usernameInput.focus();
+
+        } catch (error) {
+
+            console.error(error);
+
+            errorMessage.textContent =
+                "Terjadi kesalahan saat mengambil data.";
+
+        } finally {
+
+            startButton.disabled = false;
+
+            startButton.textContent =
+                "🚀 Start Game";
+        }
     }
-});
+);
 
 
 // ==========================================
-// 2. USERNAME
+// 2. CHECK USERNAME
 // ==========================================
 
 usernameButton.addEventListener(
@@ -188,11 +303,12 @@ usernameButton.addEventListener(
                         method: "POST",
 
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type":
+                                "application/json"
                         },
 
                         body: JSON.stringify({
-                            action: "login",
+                            action: "check",
                             username: username
                         })
                     }
@@ -202,80 +318,64 @@ usernameButton.addEventListener(
                 await response.json();
 
             console.log(
-                "Player result:",
+                "Username check:",
                 result
             );
+
 
             if (!result.success) {
 
                 usernameError.textContent =
                     result.message ||
-                    "Gagal membuat player.";
+                    "Gagal mengecek username.";
 
                 return;
             }
 
-            // Simpan player dan progress
+
+            // ==================================
+            // USERNAME BELUM ADA
+            // ==================================
+
+            if (!result.exists) {
+
+                currentPlayer = {
+                    username: username
+                };
+
+                currentProgress = null;
+
+                showScreen(pinSetupScreen);
+
+                pinInput.focus();
+
+                return;
+            }
+
+
+            // ==================================
+            // USERNAME SUDAH ADA
+            // ==================================
+
             currentPlayer =
                 result.player;
 
-            currentProgress =
-                result.progress;
 
-            // Simpan player ID di browser
-            localStorage.setItem(
-                "npc_player_id",
-                currentPlayer.id
-            );
+            // Akun lama belum punya PIN
+            if (result.needsPinSetup) {
 
-            localStorage.setItem(
-                "npc_username",
-                currentPlayer.username
-            );
+                showScreen(pinSetupScreen);
 
-            console.log(
-                "Current player:",
-                currentPlayer
-            );
-
-            console.log(
-                "Current progress:",
-                currentProgress
-            );
-
-
-            // ==================================
-            // PLAYER BARU
-            // ==================================
-
-            if (result.isNewPlayer) {
-
-                usernameScreen.classList.add(
-                    "hidden"
-                );
-
-                loreScreen.classList.remove(
-                    "hidden"
-                );
+                pinInput.focus();
 
                 return;
             }
 
 
-            // ==================================
-            // PLAYER LAMA
-            // ==================================
+            // Akun sudah punya PIN
+            showScreen(pinLoginScreen);
 
-            usernameScreen.classList.add(
-                "hidden"
-            );
-
-            welcomeScreen.classList.remove(
-                "hidden"
-            );
-
-            welcomeMessage.textContent =
-                `Welcome back, ${currentPlayer.username}!`;
+            pinLoginInput.focus();
 
         } catch (error) {
 
@@ -296,17 +396,301 @@ usernameButton.addEventListener(
 
 
 // ==========================================
-// 3. CONTINUE PLAYER LAMA
+// 3. CREATE / SET PIN
+// ==========================================
+
+pinButton.addEventListener(
+    "click",
+    async () => {
+
+        const pin =
+            pinInput.value.trim();
+
+        const confirmPin =
+            pinConfirmInput.value.trim();
+
+        pinError.textContent = "";
+
+
+        // Validasi PIN
+        if (!/^\d{4}$/.test(pin)) {
+
+            pinError.textContent =
+                "PIN harus terdiri dari 4 angka.";
+
+            return;
+        }
+
+
+        if (pin !== confirmPin) {
+
+            pinError.textContent =
+                "Konfirmasi PIN tidak cocok.";
+
+            return;
+        }
+
+
+        if (!currentPlayer) {
+
+            pinError.textContent =
+                "Data player tidak ditemukan.";
+
+            return;
+        }
+
+
+        pinButton.disabled = true;
+
+        pinButton.textContent =
+            "Saving...";
+
+
+        try {
+
+            let result;
+
+
+            // ==================================
+            // PLAYER BARU
+            // ==================================
+
+            if (!currentPlayer.id) {
+
+                const response =
+                    await fetch(
+                        SUPABASE_PROGRESS_URL,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                action: "register",
+                                username:
+                                    currentPlayer.username,
+                                pin: pin
+                            })
+                        }
+                    );
+
+                result =
+                    await response.json();
+
+            }
+
+
+            // ==================================
+            // PLAYER LAMA TANPA PIN
+            // ==================================
+
+            else {
+
+                const response =
+                    await fetch(
+                        SUPABASE_PROGRESS_URL,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                action: "set-pin",
+                                playerId:
+                                    currentPlayer.id,
+                                pin: pin
+                            })
+                        }
+                    );
+
+                result =
+                    await response.json();
+            }
+
+
+            console.log(
+                "PIN result:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                pinError.textContent =
+                    result.message ||
+                    "Gagal menyimpan PIN.";
+
+                return;
+            }
+
+
+            setCurrentPlayer(result);
+
+
+            // PIN berhasil dibuat
+            // Kalau progress masih intro,
+            // masuk ke lore terlebih dahulu.
+
+            if (progressIsNew()) {
+
+                showScreen(loreScreen);
+
+            } else {
+
+                showScreen(welcomeScreen);
+
+                welcomeMessage.textContent =
+                    `Welcome back, ${currentPlayer.username}!`;
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            pinError.textContent =
+                "Tidak dapat terhubung ke server.";
+
+        } finally {
+
+            pinButton.disabled = false;
+
+            pinButton.textContent =
+                "🔐 Save PIN";
+        }
+    }
+);
+
+
+// ==========================================
+// 4. LOGIN DENGAN PIN
+// ==========================================
+
+pinLoginButton.addEventListener(
+    "click",
+    async () => {
+
+        const pin =
+            loginPinInput.value.trim();
+
+        pinLoginError.textContent = "";
+
+
+        if (!/^\d{4}$/.test(pin)) {
+
+            pinLoginError.textContent =
+                "PIN harus terdiri dari 4 angka.";
+
+            return;
+        }
+
+
+        const username =
+            usernameInput.value.trim();
+
+
+        pinLoginButton.disabled = true;
+
+        pinLoginButton.textContent =
+            "Checking...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    SUPABASE_PROGRESS_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            action: "login",
+                            username: username,
+                            pin: pin
+                        })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Login result:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                pinLoginError.textContent =
+                    result.message ||
+                    "Username atau PIN salah.";
+
+                return;
+            }
+
+
+            // Akun ternyata belum punya PIN
+            if (result.needsPinSetup) {
+
+                currentPlayer =
+                    result.player;
+
+                showScreen(pinSetupScreen);
+
+                pinInput.focus();
+
+                return;
+            }
+
+
+            setCurrentPlayer(result);
+
+
+            // Player sudah punya progress
+            showScreen(welcomeScreen);
+
+            welcomeMessage.textContent =
+                `Welcome back, ${currentPlayer.username}!`;
+
+        } catch (error) {
+
+            console.error(error);
+
+            pinLoginError.textContent =
+                "Tidak dapat terhubung ke server.";
+
+        } finally {
+
+            pinLoginButton.disabled = false;
+
+            pinLoginButton.textContent =
+                "▶️ Continue";
+        }
+    }
+);
+
+
+// ==========================================
+// 5. CONTINUE PLAYER LAMA
 // ==========================================
 
 continueButton.addEventListener(
     "click",
     () => {
 
-        welcomeScreen.classList.add(
-            "hidden"
-        );
-
         masukKeGame();
 
     }
@@ -314,17 +698,13 @@ continueButton.addEventListener(
 
 
 // ==========================================
-// 4. LORE PLAYER BARU
+// 6. LORE
 // ==========================================
 
 loreButton.addEventListener(
     "click",
     () => {
 
-        loreScreen.classList.add(
-            "hidden"
-        );
-
         masukKeGame();
 
     }
@@ -332,24 +712,48 @@ loreButton.addEventListener(
 
 
 // ==========================================
-// 5. MASUK KE GAME
+// 7. MASUK KE GAME
 // ==========================================
 
 function masukKeGame() {
 
-    gameScreen.classList.remove(
-        "hidden"
-    );
+    showScreen(gameScreen);
+
+
+    if (currentPlayer) {
+
+        playerLabel.textContent =
+            `👤 ${currentPlayer.username}`;
+
+    }
+
+
+    if (currentProgress) {
+
+        const milestone =
+            currentProgress.current_milestone ||
+            1;
+
+        document.getElementById(
+            "milestone-label"
+        ).textContent =
+            `MILESTONE ${milestone}`;
+
+    }
+
 
     console.log(
         "Starting game for:",
-        currentPlayer.username
+        currentPlayer
+            ? currentPlayer.username
+            : "-"
     );
 
     console.log(
         "Progress:",
         currentProgress
     );
+
 
     tampilkanPengasuh(
         pengasuhData
@@ -358,55 +762,74 @@ function masukKeGame() {
 
 
 // ==========================================
-// 6. TAMPILKAN PENGASUH
+// 8. TAMPILKAN PENGASUH
 // ==========================================
 
 function tampilkanPengasuh(data) {
 
     pengasuhContainer.innerHTML = "";
 
-    data.forEach((pengasuh) => {
 
-        const card =
-            document.createElement("div");
+    if (!data || data.length === 0) {
 
-        card.className = "card";
+        pengasuhContainer.innerHTML =
+            `<p>Tidak ada data Pamong.</p>`;
 
-        card.innerHTML = `
+        return;
+    }
 
-            ${
-                pengasuh.foto_url
-                ? `<img
-                    src="${pengasuh.foto_url}"
-                    alt="Foto Pengasuh"
-                  >`
-                : `<div>
-                    👤 Foto belum tersedia
-                  </div>`
-            }
 
-            <h3>
-                ${pengasuh.panggilan || "-"}
-            </h3>
+    data.forEach(
+        (pengasuh) => {
 
-            <p>
-                ${pengasuh.nama || "-"}
-            </p>
+            const card =
+                document.createElement("div");
 
-            <p>
-                <strong>
+            card.className =
+                "card";
+
+
+            card.innerHTML = `
+
+                ${
+                    pengasuh.foto_url
+
+                    ? `
+                        <img
+                            src="${pengasuh.foto_url}"
+                            alt="Foto Pengasuh"
+                        >
+                    `
+
+                    : `
+                        <div class="no-photo">
+                            👤 Foto belum tersedia
+                        </div>
+                    `
+                }
+
+                <h3>
+                    ${pengasuh.panggilan || "-"}
+                </h3>
+
+                <p>
+                    ${pengasuh.nama || "-"}
+                </p>
+
+                <p class="team-label">
                     TEAM ${pengasuh.tim || "-"}
-                </strong>
-            </p>
+                </p>
 
-            <p>
-                ${pengasuh.penempatan || "-"}
-            </p>
+                <p>
+                    ${pengasuh.penempatan || "-"}
+                </p>
 
-        `;
+            `;
 
-        pengasuhContainer.appendChild(
-            card
-        );
-    });
+
+            pengasuhContainer.appendChild(
+                card
+            );
+        }
+    );
 }
