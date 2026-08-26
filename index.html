@@ -1,324 +1,398 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>NPC — Need Pamong Context</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-    <!-- =====================================================
-         OPENING SCREEN
-         Tampil terus sampai tombol diklik
-    ====================================================== -->
 
-    <div id="intro-screen">
+<!-- =====================================================
+     OPENING / MASCOT SCREEN
+===================================================== -->
 
-        <div class="intro-content">
+<div id="intro-screen">
 
-            <img
-                src="https://cachemeifyouscan.github.io/NPC---Need-Pamong-Context/mascott.png"
-                class="intro-mascot"
-                alt="NPC Mascot"
+    <div class="intro-content">
+
+        <img
+            src="mascott.png"
+            class="intro-mascot"
+            alt="NPC Mascot"
+        >
+
+        <button
+            id="intro-start-button"
+            class="intro-start-button"
+        >
+            ⚔️ MULAI PETUALANGAN
+        </button>
+
+        <p class="intro-hint">
+            Ketuk untuk memulai perjalananmu
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN GAME
+===================================================== -->
+
+<main
+    id="main-game"
+    class="game-container"
+>
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <header class="game-header">
+
+        <h1>
+            🎮 NPC
+        </h1>
+
+        <p>
+            👤 Need Pamong Context
+        </p>
+
+    </header>
+
+
+
+    <!-- =================================================
+         ACCESS CODE
+    ================================================== -->
+
+    <section id="login-screen">
+
+        <h2>
+            🔐 Enter Access Code
+        </h2>
+
+        <p>
+            Masukkan access code untuk memulai permainan.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="access-code"
+                placeholder="Access Code"
+                autocomplete="off"
             >
 
-            <button
-                id="intro-start-button"
-                class="intro-start-button"
-            >
-                ⚔️ MULAI PETUALANGAN
+            <button id="start-button">
+                🚀 Start Game
             </button>
 
-            <p class="intro-hint">
-                Ketuk untuk memulai perjalananmu
+        </div>
+
+
+        <p
+            id="error-message"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         USERNAME
+    ================================================== -->
+
+    <section
+        id="username-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👤 Who Are You?
+        </h2>
+
+        <p>
+            Buat username untuk menyimpan progress permainanmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+            <button id="username-button">
+                ✨ Continue
+            </button>
+
+        </div>
+
+
+        <p
+            id="username-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CREATE PIN
+    ================================================== -->
+
+    <section
+        id="pin-setup-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔐 Create Your PIN
+        </h2>
+
+        <p>
+            Buat PIN 4 angka untuk menyimpan dan melanjutkan
+            progressmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+            <input
+                type="password"
+                id="pin-confirm-input"
+                placeholder="Confirm PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+            <button id="pin-button">
+                🔐 Save PIN
+            </button>
+
+        </div>
+
+
+        <p
+            id="pin-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ENTER PIN
+    ================================================== -->
+
+    <section
+        id="pin-login-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔑 Welcome Back
+        </h2>
+
+        <p id="pin-login-message">
+            Masukkan PIN untuk melanjutkan progressmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="login-pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="current-password"
+            >
+
+            <button id="pin-login-button">
+                ▶️ Continue
+            </button>
+
+        </div>
+
+
+        <p
+            id="pin-login-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WELCOME BACK
+    ================================================== -->
+
+    <section
+        id="welcome-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👋 Welcome Back
+        </h2>
+
+        <p id="welcome-message"></p>
+
+
+        <div class="button-group">
+
+            <button id="continue-button">
+                ▶️ Continue
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         LORE
+    ================================================== -->
+
+    <section
+        id="lore-screen"
+        class="hidden"
+    >
+
+        <h2>
+            📖 Before We Begin
+        </h2>
+
+
+        <div class="lore-text">
+
+            <p>
+                You’ve probably seen them before.
+            </p>
+
+            <p>
+                You know the faces.
+                Maybe even the names.
+            </p>
+
+            <p>
+                But when you actually need to call them...
+            </p>
+
+            <p>
+                <strong>
+                    “Wait... who are they again?”
+                </strong>
+            </p>
+
+            <p>
+                NPC — Need Pamong Context is here to fix that.
             </p>
 
         </div>
 
-    </div>
+
+        <button id="lore-button">
+            🎮 Let's Go
+        </button>
+
+    </section>
 
 
-    <!-- =====================================================
-         MAIN GAME
-    ====================================================== -->
 
-    <main
-        class="game-container"
-        id="main-game"
+    <!-- =================================================
+         GAME
+    ================================================== -->
+
+    <section
+        id="game-screen"
+        class="hidden"
     >
 
-        <!-- HEADER -->
 
-        <header class="game-header">
+        <div class="game-status">
 
-            <h1>🎮 NPC</h1>
+            <span>
 
-            <p>👤 Need Pamong Context</p>
+                🟢
 
-        </header>
+                <strong id="milestone-label">
+                    MILESTONE 1
+                </strong>
 
+            </span>
 
-        <!-- ACCESS CODE -->
 
-        <section id="login-screen">
+            <span id="player-label"></span>
 
-            <h2>🔐 Enter Access Code</h2>
+        </div>
 
-            <p>
-                Masukkan access code untuk memulai permainan.
-            </p>
 
-            <div class="form-group">
+        <h2>
+            🧑‍🤝‍🧑 Meet Your Pamong
+        </h2>
 
-                <input
-                    type="password"
-                    id="access-code"
-                    placeholder="Access Code"
-                    autocomplete="off"
-                >
 
-                <button id="start-button">
-                    🚀 Start Game
-                </button>
+        <p class="game-description">
+            Kenali wajah, nama, dan konteks Pamong-mu.
+        </p>
 
-            </div>
 
-            <p
-                id="error-message"
-                class="error"
-            ></p>
+        <div id="pengasuh-container"></div>
 
-        </section>
+    </section>
 
 
-        <!-- USERNAME -->
+</main>
 
-        <section
-            id="username-screen"
-            class="hidden"
-        >
 
-            <h2>👤 Who Are You?</h2>
 
-            <p>
-                Buat username untuk menyimpan progress permainanmu.
-            </p>
-
-            <div class="form-group">
-
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Enter your username"
-                    maxlength="20"
-                    autocomplete="off"
-                >
-
-                <button id="username-button">
-                    ✨ Continue
-                </button>
-
-            </div>
-
-            <p
-                id="username-error"
-                class="error"
-            ></p>
-
-        </section>
-
-
-        <!-- CREATE PIN -->
-
-        <section
-            id="pin-setup-screen"
-            class="hidden"
-        >
-
-            <h2>🔐 Create Your PIN</h2>
-
-            <p>
-                Buat PIN 4 angka untuk menyimpan dan melanjutkan
-                progressmu.
-            </p>
-
-            <div class="form-group">
-
-                <input
-                    type="password"
-                    id="pin-input"
-                    placeholder="4-digit PIN"
-                    inputmode="numeric"
-                    maxlength="4"
-                    autocomplete="new-password"
-                >
-
-                <input
-                    type="password"
-                    id="pin-confirm-input"
-                    placeholder="Confirm PIN"
-                    inputmode="numeric"
-                    maxlength="4"
-                    autocomplete="new-password"
-                >
-
-                <button id="pin-button">
-                    🔐 Save PIN
-                </button>
-
-            </div>
-
-            <p
-                id="pin-error"
-                class="error"
-            ></p>
-
-        </section>
-
-
-        <!-- ENTER PIN -->
-
-        <section
-            id="pin-login-screen"
-            class="hidden"
-        >
-
-            <h2>🔑 Welcome Back</h2>
-
-            <p id="pin-login-message">
-                Masukkan PIN untuk melanjutkan progressmu.
-            </p>
-
-            <div class="form-group">
-
-                <input
-                    type="password"
-                    id="login-pin-input"
-                    placeholder="4-digit PIN"
-                    inputmode="numeric"
-                    maxlength="4"
-                    autocomplete="current-password"
-                >
-
-                <button id="pin-login-button">
-                    ▶️ Continue
-                </button>
-
-            </div>
-
-            <p
-                id="pin-login-error"
-                class="error"
-            ></p>
-
-        </section>
-
-
-        <!-- WELCOME BACK -->
-
-        <section
-            id="welcome-screen"
-            class="hidden"
-        >
-
-            <h2>👋 Welcome Back</h2>
-
-            <p id="welcome-message"></p>
-
-            <div class="button-group">
-
-                <button id="continue-button">
-                    ▶️ Continue
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- LORE -->
-
-        <section
-            id="lore-screen"
-            class="hidden"
-        >
-
-            <h2>📖 Before We Begin</h2>
-
-            <div class="lore-text">
-
-                <p>
-                    You’ve probably seen them before.
-                </p>
-
-                <p>
-                    You know the faces.
-                    Maybe even the names.
-                </p>
-
-                <p>
-                    But when you actually need to call them...
-                </p>
-
-                <p>
-                    <strong>
-                        “Wait... who are they again?”
-                    </strong>
-                </p>
-
-                <p>
-                    NPC — Need Pamong Context is here to fix that.
-                </p>
-
-            </div>
-
-            <button id="lore-button">
-                🎮 Let's Go
-            </button>
-
-        </section>
-
-
-        <!-- GAME -->
-
-        <section
-            id="game-screen"
-            class="hidden"
-        >
-
-            <div class="game-status">
-
-                <span>
-                    🟢
-                    <strong id="milestone-label">
-                        MILESTONE 1
-                    </strong>
-                </span>
-
-                <span id="player-label"></span>
-
-            </div>
-
-            <h2>
-                🧑‍🤝‍🧑 Meet Your Pamong
-            </h2>
-
-            <p class="game-description">
-                Kenali wajah, nama, dan konteks Pamong-mu.
-            </p>
-
-            <div id="pengasuh-container"></div>
-
-        </section>
-
-    </main>
-
-
-    <script src="app.js"></script>
+<script src="app.js"></script>
 
 </body>
+
 </html>
