@@ -1,118 +1,37 @@
-/* =====================================================
+/* =========================================================
    NPC — NEED PAMONG CONTEXT
-===================================================== */
+========================================================= */
 
 
-/* =====================================================
-   OPENING ELEMENTS
-===================================================== */
+/* =========================================================
+   OPENING SCREEN
+========================================================= */
 
 const introScreen =
-    document.getElementById("intro-screen");
+    document.getElementById(
+        "intro-screen"
+    );
+
 
 const introStartButton =
-    document.getElementById("intro-start-button");
+    document.getElementById(
+        "intro-start-button"
+    );
+
 
 const mainGame =
-    document.getElementById("main-game");
-
-
-/* =====================================================
-   GAME SCREENS
-===================================================== */
-
-const screens = [
-
-    "login-screen",
-
-    "username-screen",
-
-    "pin-setup-screen",
-
-    "pin-login-screen",
-
-    "welcome-screen",
-
-    "lore-screen",
-
-    "game-screen"
-
-];
-
-
-/* =====================================================
-   SCREEN CONTROLLER
-===================================================== */
-
-function showScreen(screenId) {
-
-    screens.forEach(function (id) {
-
-        const screen =
-            document.getElementById(id);
-
-        if (screen) {
-
-            screen.classList.add("hidden");
-
-        }
-
-    });
-
-
-    const target =
-        document.getElementById(screenId);
-
-
-    if (target) {
-
-        target.classList.remove("hidden");
-
-    }
-
-}
-
-
-/* =====================================================
-   INITIAL STATE
-===================================================== */
-
-if (mainGame) {
-
-    mainGame.style.display = "none";
-
-}
-
-
-if (introScreen) {
-
-    introScreen.style.display = "flex";
-
-}
+    document.getElementById(
+        "main-game"
+    );
 
 
 /*
-   Semua game screen disembunyikan
-   saat opening masih aktif.
+   OPENING TIDAK PUNYA TIMER.
+
+   MASCOT AKAN TETAP MUNCUL
+   SAMPAI USER SENDIRI MENEKAN
+   CLICK HERE.
 */
-
-screens.forEach(function (id) {
-
-    const screen =
-        document.getElementById(id);
-
-    if (screen) {
-
-        screen.classList.add("hidden");
-
-    }
-
-});
-
-
-/* =====================================================
-   CLICK HERE
-===================================================== */
 
 if (introStartButton) {
 
@@ -120,38 +39,13 @@ if (introStartButton) {
         "click",
         function () {
 
-            /*
-               Hide opening.
-            */
-
-            introScreen.style.display =
-                "none";
-
-
-            /*
-               Show main game.
-            */
-
-            mainGame.style.display =
-                "block";
-
-
-            /*
-               ONLY access code.
-            */
-
-            showScreen(
-                "login-screen"
+            introScreen.classList.add(
+                "intro-hidden"
             );
 
 
-            /*
-               Scroll to top.
-            */
-
-            window.scrollTo(
-                0,
-                0
+            mainGame.classList.add(
+                "game-visible"
             );
 
         }
@@ -160,24 +54,95 @@ if (introStartButton) {
 }
 
 
-/* =====================================================
+
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
+
+function showScreen(screenId) {
+
+    const screens = [
+
+        "login-screen",
+
+        "username-screen",
+
+        "pin-setup-screen",
+
+        "pin-login-screen",
+
+        "welcome-screen",
+
+        "lore-screen",
+
+        "game-screen"
+
+    ];
+
+
+    screens.forEach(
+        function (id) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.classList.add(
+                    "hidden"
+                );
+
+            }
+
+        }
+    );
+
+
+    const target =
+        document.getElementById(
+            screenId
+        );
+
+
+    if (target) {
+
+        target.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
    PLAYER STORAGE
-===================================================== */
+========================================================= */
 
 function savePlayerData(data) {
 
     localStorage.setItem(
+
         "npcPlayer",
+
         JSON.stringify(data)
+
     );
 
 }
 
 
+
 function getPlayerData() {
 
     const saved =
-        localStorage.getItem("npcPlayer");
+        localStorage.getItem(
+            "npcPlayer"
+        );
 
 
     if (!saved) {
@@ -189,7 +154,9 @@ function getPlayerData() {
 
     try {
 
-        return JSON.parse(saved);
+        return JSON.parse(
+            saved
+        );
 
     }
 
@@ -202,18 +169,27 @@ function getPlayerData() {
 }
 
 
-/* =====================================================
+
+/* =========================================================
    ACCESS CODE
-===================================================== */
+========================================================= */
 
 const accessInput =
-    document.getElementById("access-code");
+    document.getElementById(
+        "access-code"
+    );
+
 
 const startButton =
-    document.getElementById("start-button");
+    document.getElementById(
+        "start-button"
+    );
+
 
 const accessError =
-    document.getElementById("error-message");
+    document.getElementById(
+        "error-message"
+    );
 
 
 if (startButton) {
@@ -237,13 +213,17 @@ if (startButton) {
 
 
             /*
-               ACCESS CODE:
-               SANAPATI
+               ACCESS CODE
             */
 
+            const correctCode =
+                "SANAPATI";
+
+
             if (
-                code.toUpperCase() !==
-                "SANAPATI"
+                code.toUpperCase()
+                !==
+                correctCode.toUpperCase()
             ) {
 
                 accessError.textContent =
@@ -254,7 +234,8 @@ if (startButton) {
             }
 
 
-            accessError.textContent = "";
+            accessError.textContent =
+                "";
 
 
             const player =
@@ -270,12 +251,14 @@ if (startButton) {
                 document.getElementById(
                     "pin-login-message"
                 ).textContent =
+
                     `Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
 
 
                 showScreen(
                     "pin-login-screen"
                 );
+
 
                 return;
 
@@ -296,18 +279,27 @@ if (startButton) {
 }
 
 
-/* =====================================================
+
+/* =========================================================
    USERNAME
-===================================================== */
+========================================================= */
 
 const usernameInput =
-    document.getElementById("username");
+    document.getElementById(
+        "username"
+    );
+
 
 const usernameButton =
-    document.getElementById("username-button");
+    document.getElementById(
+        "username-button"
+    );
+
 
 const usernameError =
-    document.getElementById("username-error");
+    document.getElementById(
+        "username-error"
+    );
 
 
 if (usernameButton) {
@@ -330,7 +322,9 @@ if (usernameButton) {
             }
 
 
-            if (username.length < 3) {
+            if (
+                username.length < 3
+            ) {
 
                 usernameError.textContent =
                     "Username minimal 3 karakter.";
@@ -340,7 +334,8 @@ if (usernameButton) {
             }
 
 
-            usernameError.textContent = "";
+            usernameError.textContent =
+                "";
 
 
             sessionStorage.setItem(
@@ -359,21 +354,33 @@ if (usernameButton) {
 }
 
 
-/* =====================================================
+
+/* =========================================================
    CREATE PIN
-===================================================== */
+========================================================= */
 
 const pinInput =
-    document.getElementById("pin-input");
+    document.getElementById(
+        "pin-input"
+    );
+
 
 const pinConfirmInput =
-    document.getElementById("pin-confirm-input");
+    document.getElementById(
+        "pin-confirm-input"
+    );
+
 
 const pinButton =
-    document.getElementById("pin-button");
+    document.getElementById(
+        "pin-button"
+    );
+
 
 const pinError =
-    document.getElementById("pin-error");
+    document.getElementById(
+        "pin-error"
+    );
 
 
 if (pinButton) {
@@ -385,11 +392,14 @@ if (pinButton) {
             const pin =
                 pinInput.value.trim();
 
+
             const confirmPin =
                 pinConfirmInput.value.trim();
 
 
-            if (!/^\d{4}$/.test(pin)) {
+            if (
+                !/^\d{4}$/.test(pin)
+            ) {
 
                 pinError.textContent =
                     "PIN harus terdiri dari 4 angka.";
@@ -399,7 +409,10 @@ if (pinButton) {
             }
 
 
-            if (pin !== confirmPin) {
+            if (
+                pin !==
+                confirmPin
+            ) {
 
                 pinError.textContent =
                     "PIN dan konfirmasi PIN tidak sama.";
@@ -427,16 +440,21 @@ if (pinButton) {
 
             const player = {
 
-                username: username,
+                username:
+                    username,
 
-                pin: pin,
+                pin:
+                    pin,
 
-                milestone: 1
+                milestone:
+                    1
 
             };
 
 
-            savePlayerData(player);
+            savePlayerData(
+                player
+            );
 
 
             sessionStorage.removeItem(
@@ -447,6 +465,7 @@ if (pinButton) {
             document.getElementById(
                 "welcome-message"
             ).textContent =
+
                 `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
 
 
@@ -460,18 +479,27 @@ if (pinButton) {
 }
 
 
-/* =====================================================
+
+/* =========================================================
    PIN LOGIN
-===================================================== */
+========================================================= */
 
 const loginPinInput =
-    document.getElementById("login-pin-input");
+    document.getElementById(
+        "login-pin-input"
+    );
+
 
 const pinLoginButton =
-    document.getElementById("pin-login-button");
+    document.getElementById(
+        "pin-login-button"
+    );
+
 
 const pinLoginError =
-    document.getElementById("pin-login-error");
+    document.getElementById(
+        "pin-login-error"
+    );
 
 
 if (pinLoginButton) {
@@ -511,12 +539,14 @@ if (pinLoginButton) {
             }
 
 
-            pinLoginError.textContent = "";
+            pinLoginError.textContent =
+                "";
 
 
             document.getElementById(
                 "welcome-message"
             ).textContent =
+
                 `Welcome back, ${player.username}! Your adventure awaits.`;
 
 
@@ -530,12 +560,15 @@ if (pinLoginButton) {
 }
 
 
-/* =====================================================
+
+/* =========================================================
    WELCOME → LORE
-===================================================== */
+========================================================= */
 
 const continueButton =
-    document.getElementById("continue-button");
+    document.getElementById(
+        "continue-button"
+    );
 
 
 if (continueButton) {
@@ -554,12 +587,15 @@ if (continueButton) {
 }
 
 
-/* =====================================================
+
+/* =========================================================
    LORE → GAME
-===================================================== */
+========================================================= */
 
 const loreButton =
-    document.getElementById("lore-button");
+    document.getElementById(
+        "lore-button"
+    );
 
 
 if (loreButton) {
@@ -577,12 +613,14 @@ if (loreButton) {
                 document.getElementById(
                     "player-label"
                 ).textContent =
+
                     `👤 ${player.username}`;
 
 
                 document.getElementById(
                     "milestone-label"
                 ).textContent =
+
                     `MILESTONE ${player.milestone || 1}`;
 
             }
@@ -598,9 +636,10 @@ if (loreButton) {
 }
 
 
-/* =====================================================
-   ENTER KEY — ACCESS CODE
-===================================================== */
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
 
 if (accessInput) {
 
@@ -608,7 +647,9 @@ if (accessInput) {
         "keydown",
         function (event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 startButton.click();
 
@@ -620,9 +661,6 @@ if (accessInput) {
 }
 
 
-/* =====================================================
-   ENTER KEY — USERNAME
-===================================================== */
 
 if (usernameInput) {
 
@@ -630,7 +668,9 @@ if (usernameInput) {
         "keydown",
         function (event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 usernameButton.click();
 
@@ -642,9 +682,6 @@ if (usernameInput) {
 }
 
 
-/* =====================================================
-   ENTER KEY — PIN
-===================================================== */
 
 if (pinInput) {
 
@@ -652,7 +689,9 @@ if (pinInput) {
         "keydown",
         function (event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 pinButton.click();
 
@@ -662,6 +701,7 @@ if (pinInput) {
     );
 
 }
+
 
 
 if (pinConfirmInput) {
@@ -670,7 +710,9 @@ if (pinConfirmInput) {
         "keydown",
         function (event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 pinButton.click();
 
@@ -682,9 +724,6 @@ if (pinConfirmInput) {
 }
 
 
-/* =====================================================
-   ENTER KEY — LOGIN PIN
-===================================================== */
 
 if (loginPinInput) {
 
@@ -692,7 +731,9 @@ if (loginPinInput) {
         "keydown",
         function (event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 pinLoginButton.click();
 
