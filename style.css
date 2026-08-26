@@ -1,36 +1,40 @@
-/* =====================================================
-   RESET
-===================================================== */
+/* =========================================================
+   NPC — NEED PAMONG CONTEXT
+   MEDIEVAL / PARCHMENT UI
+========================================================= */
 
 * {
     box-sizing: border-box;
 }
 
+
 html,
 body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     min-height: 100%;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: #3d2d1c;
+
+    background: #eee2cc;
 }
+
 
 body {
     overflow-x: hidden;
 }
 
 
-/* =====================================================
-   HIDDEN
-===================================================== */
-
-.hidden {
-    display: none !important;
-}
-
-
-/* =====================================================
+/* =========================================================
    OPENING
-===================================================== */
+========================================================= */
 
 #intro-screen {
 
@@ -41,28 +45,43 @@ body {
     width: 100vw;
     height: 100vh;
 
-    overflow: hidden;
-
     display: flex;
 
     align-items: center;
     justify-content: center;
 
+    overflow: hidden;
+
     background:
         radial-gradient(
             ellipse at center,
-            #fffaf0 0%,
-            #f6ead2 55%,
-            #e4d0a8 100%
+            #fffdf7 0%,
+            #f8efdf 48%,
+            #e8d7b7 100%
         );
 
     z-index: 99999;
+
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+        opacity .7s ease,
+        visibility .7s ease;
 }
 
 
-/* =====================================================
-   PARCHMENT
-===================================================== */
+#intro-screen.intro-hidden {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* parchment */
 
 #intro-screen::before {
 
@@ -74,16 +93,25 @@ body {
 
     pointer-events: none;
 
+    opacity: .32;
+
     background:
+
         repeating-linear-gradient(
             0deg,
-            rgba(100, 75, 40, 0.025) 0px,
-            rgba(100, 75, 40, 0.025) 1px,
+            rgba(100,75,40,.025) 0,
+            rgba(100,75,40,.025) 1px,
             transparent 1px,
-            transparent 5px
-        );
+            transparent 6px
+        ),
 
-    z-index: 1;
+        repeating-linear-gradient(
+            90deg,
+            rgba(100,75,40,.018) 0,
+            rgba(100,75,40,.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
 }
 
 
@@ -93,23 +121,22 @@ body {
 
     position: absolute;
 
-    inset: 35px;
+    inset: 28px;
 
     border:
         2px solid
-        rgba(116, 91, 54, 0.14);
+        rgba(116,91,54,.12);
 
     border-radius: 18px;
 
     pointer-events: none;
 
-    z-index: 2;
 }
 
 
-/* =====================================================
-   MAP
-===================================================== */
+/* =========================================================
+   OPENING MAP
+========================================================= */
 
 .map-decoration {
 
@@ -122,9 +149,9 @@ body {
 
     pointer-events: none;
 
-    z-index: 3;
+    opacity: .13;
 
-    opacity: 0.30;
+    z-index: 1;
 }
 
 
@@ -132,198 +159,57 @@ body {
 
     width: 100%;
     height: 100%;
-
-    display: block;
 }
 
 
-/* =====================================================
-   MAP LABELS
-===================================================== */
-
-.map-label {
-
-    fill: #705a39;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 21px;
-
-    font-weight: 600;
-
-    letter-spacing: 2px;
-}
-
-
-.main-label {
-
-    font-size: 30px;
-
-    font-weight: 700;
-
-    letter-spacing: 5px;
-}
-
-
-.direction-label {
-
-    fill: #806943;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 17px;
-
-    font-weight: 600;
-
-    letter-spacing: 2px;
-}
-
-
-/* =====================================================
-   MAP ELEMENTS
-===================================================== */
-
-.map-river {
-
-    fill: none;
-
-    stroke: #719795;
-
-    stroke-width: 8;
-
-    stroke-linecap: round;
-}
-
-
-.map-road {
-
-    fill: none;
-
-    stroke: #8b7147;
-
-    stroke-width: 3;
-
-    stroke-dasharray: 10 12;
-}
-
-
-.map-mountains {
-
-    fill: none;
-
-    stroke: #806b4a;
-
-    stroke-width: 4;
-}
-
-
-.map-forest {
-
-    fill: none;
-
-    stroke: #637153;
-
-    stroke-width: 3;
-}
-
-
-.map-castle {
-
-    fill: none;
-
-    stroke: #806943;
-
-    stroke-width: 4;
-}
-
-
-.map-compass {
-
-    fill: none;
-
-    stroke: #806943;
-
-    stroke-width: 3;
-}
-
-
-.map-compass text {
-
-    fill: #705a39;
-
-    stroke: none;
-
-    font-family: Georgia, serif;
-
-    font-size: 18px;
-
-    font-weight: 700;
-}
-
-
-/* =====================================================
+/* =========================================================
    INTRO CONTENT
-===================================================== */
+========================================================= */
 
 .intro-content {
 
     position: relative;
 
-    z-index: 100;
+    z-index: 10;
 
-    width: min(88vw, 560px);
+    width: min(82vw, 680px);
 
     display: flex;
 
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
-
-    transform: translateY(-1vh);
 }
 
 
-/* =====================================================
+/* =========================================================
    MASCOT
-===================================================== */
+========================================================= */
 
 .intro-mascot {
 
     display: block;
 
-    width: min(48vw, 430px);
+    width: 100%;
 
-    max-width: 430px;
-
-    max-height: 62vh;
+    max-width: 680px;
 
     height: auto;
-
-    object-fit: contain;
 
     user-select: none;
 
     -webkit-user-drag: none;
 
-    pointer-events: none;
-
     filter:
         drop-shadow(
-            0 18px 20px
-            rgba(70, 48, 22, 0.20)
+            0 22px 20px
+            rgba(64,43,20,.23)
         );
 
     animation:
         mascotFloat
-        4.5s
+        4s
         ease-in-out
         infinite;
 }
@@ -332,272 +218,216 @@ body {
 @keyframes mascotFloat {
 
     0% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 
     50% {
-        transform: translateY(-8px);
+        transform:
+            translateY(-10px);
     }
 
     100% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 }
 
 
-/* =====================================================
-   CLICK HERE BUTTON
-===================================================== */
+/* =========================================================
+   OPENING BUTTON
+========================================================= */
 
-#intro-start-button {
+.intro-enter-button {
 
     position: relative;
 
-    z-index: 1000;
+    width: 300px;
 
-    width: 375px;
+    min-height: 58px;
 
-    max-width: 78vw;
-
-    height: 78px;
-
-    margin-top: 18px;
+    margin-top: -18px;
 
     border:
         3px solid
-        #a77938;
+        #b88a42;
 
-    border-radius: 16px;
+    border-radius: 13px;
 
     background:
         linear-gradient(
             180deg,
-            #714a2b 0%,
-            #54321e 100%
+            #68482d 0%,
+            #4c301d 55%,
+            #382216 100%
         );
 
-    color: #fff1d0;
+    color: #fff1ce;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size: 24px;
+    font-size: 18px;
 
     font-weight: 700;
 
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
 
     cursor: pointer;
 
     box-shadow:
-        0 6px 0 #302014,
-        0 12px 20px
-        rgba(62, 39, 20, 0.20);
 
-    transition:
-        transform 0.18s ease,
-        filter 0.18s ease;
-}
+        inset
+        0 0 0 2px
+        rgba(231,188,99,.22),
 
+        0 6px 0
+        #281810,
 
-/* =====================================================
-   BUTTON ANIMATION
-===================================================== */
-
-#intro-start-button {
+        0 12px 22px
+        rgba(70,43,19,.22);
 
     animation:
-        buttonPulse
-        2.4s
+        introPulse
+        2.8s
         ease-in-out
         infinite;
+
+    transition:
+        filter .18s ease,
+        transform .18s ease;
 }
 
 
-@keyframes buttonPulse {
+@keyframes introPulse {
 
     0%,
     100% {
-
-        transform:
-            scale(1);
-
+        transform: scale(1);
+        filter: brightness(1);
     }
 
     50% {
-
-        transform:
-            scale(1.025);
-
+        transform: scale(1.025);
+        filter: brightness(1.07);
     }
 }
 
 
-#intro-start-button:hover {
+.intro-enter-button::before {
 
-    filter:
-        brightness(1.13);
+    content: "";
 
-    transform:
-        scale(1.04);
+    position: absolute;
+
+    top: 7px;
+    left: 8px;
+
+    width: 7px;
+    height: 7px;
+
+    border-top:
+        2px solid
+        #d8ad57;
+
+    border-left:
+        2px solid
+        #d8ad57;
 }
 
 
-#intro-start-button:active {
+.intro-enter-button::after {
 
-    transform:
-        translateY(4px)
-        scale(0.99);
+    content: "";
 
-    box-shadow:
-        0 2px 0 #302014;
+    position: absolute;
+
+    right: 8px;
+    bottom: 7px;
+
+    width: 7px;
+    height: 7px;
+
+    border-right:
+        2px solid
+        #d8ad57;
+
+    border-bottom:
+        2px solid
+        #d8ad57;
 }
 
 
-/* =====================================================
+.intro-enter-button:hover {
+
+    filter: brightness(1.1);
+
+}
+
+
+.intro-enter-button:active {
+
+    transform:
+        translateY(5px)
+        scale(.99);
+
+}
+
+
+/* =========================================================
    MAIN GAME
-===================================================== */
+========================================================= */
 
 #main-game {
 
-    display: none;
+    min-height: 100vh;
 
     width: 100%;
 
-    min-height: 100vh;
-
     padding:
-        50px 20px;
+        40px 20px 80px;
 
-    background:
-        radial-gradient(
-            circle at center,
-            #fffaf0 0%,
-            #f5ead3 60%,
-            #e6d4b1 100%
-        );
+    opacity: 0;
 
-    color: #3f2b1d;
+    visibility: hidden;
 
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+    transition:
+        opacity .6s ease;
 }
 
 
-/* =====================================================
-   HEADER
-===================================================== */
+#main-game.game-visible {
 
-.game-header {
+    opacity: 1;
 
-    width:
-        min(900px, 92vw);
+    visibility: visible;
+}
 
-    margin:
-        0 auto 40px;
+
+.game-container {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
 
     text-align: center;
 }
 
 
-.game-header h1 {
+/* =========================================================
+   GATE SCREEN
+========================================================= */
 
-    margin:
-        0 0 8px;
+.gate-screen {
 
-    font-size:
-        42px;
+    position: relative;
 
-    color:
-        #4b301d;
-}
+    min-height:
+        calc(100vh - 80px);
 
-
-.game-header p {
-
-    margin: 0;
-
-    font-size: 20px;
-
-    color: #745337;
-}
-
-
-/* =====================================================
-   GAME SCREENS
-===================================================== */
-
-#login-screen,
-#username-screen,
-#pin-setup-screen,
-#pin-login-screen,
-#welcome-screen,
-#lore-screen,
-#game-screen {
-
-    width:
-        min(900px, 92vw);
-
-    margin:
-        30px auto;
-
-    padding:
-        45px;
-
-    background:
-        rgba(255, 249, 235, 0.96);
-
-    border:
-        1px solid
-        rgba(130, 96, 53, 0.28);
-
-    border-radius:
-        18px;
-
-    box-shadow:
-        0 12px 30px
-        rgba(78, 52, 27, 0.12);
-
-    text-align:
-        center;
-}
-
-
-/* =====================================================
-   HEADINGS
-===================================================== */
-
-#main-game h2 {
-
-    margin-top: 0;
-
-    margin-bottom: 18px;
-
-    color: #4b301d;
-
-    font-size: 34px;
-}
-
-
-#main-game p {
-
-    color: #63482f;
-
-    font-size: 18px;
-
-    line-height: 1.6;
-}
-
-
-/* =====================================================
-   FORM
-===================================================== */
-
-.form-group {
+    width: 100%;
 
     display: flex;
 
@@ -605,7 +435,591 @@ body {
 
     justify-content: center;
 
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background:
+
+        radial-gradient(
+            ellipse at center,
+            rgba(255,253,247,.98) 0%,
+            rgba(248,239,220,.96) 55%,
+            rgba(229,213,182,.98) 100%
+        );
+
+    box-shadow:
+
+        0 20px 50px
+        rgba(80,56,27,.13),
+
+        inset
+        0 0 100px
+        rgba(130,100,55,.08);
+}
+
+
+/* parchment texture */
+
+.gate-screen::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .32;
+
+    background:
+
+        repeating-linear-gradient(
+            0deg,
+            rgba(100,75,40,.025) 0,
+            rgba(100,75,40,.025) 1px,
+            transparent 1px,
+            transparent 6px
+        ),
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(100,75,40,.018) 0,
+            rgba(100,75,40,.018) 1px,
+            transparent 1px,
+            transparent 7px
+        );
+}
+
+
+/* =========================================================
+   GATE MAP
+========================================================= */
+
+.gate-map {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    opacity: .115;
+
+    pointer-events: none;
+}
+
+
+.gate-map svg {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   GHOST GATE
+========================================================= */
+
+.gate-ghost {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 420px;
+    height: 560px;
+
+    transform:
+        translate(-50%, -48%);
+
+    z-index: 2;
+
+    opacity: .045;
+
+    pointer-events: none;
+}
+
+
+.ghost-arch {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 190px;
+
+    border:
+        22px solid
+        #5c472e;
+
+    border-bottom: none;
+
+    border-radius:
+        220px 220px 0 0;
+}
+
+
+.ghost-door {
+
+    position: absolute;
+
+    left: 30px;
+    right: 30px;
+
+    top: 170px;
+    bottom: 0;
+
+    border:
+        16px solid
+        #5c472e;
+
+    border-top: none;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 35px,
+            rgba(70,45,22,.7) 36px,
+            transparent 39px
+        );
+}
+
+
+/* =========================================================
+   GATE CONTENT
+========================================================= */
+
+.gate-content {
+
+    position: relative;
+
+    z-index: 10;
+
+    width:
+        min(90%, 680px);
+
+    padding:
+        50px 35px;
+
+    text-align: center;
+}
+
+
+/* ornament */
+
+.gate-ornament {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+
+    color: #9a753c;
+}
+
+
+.gate-ornament span {
+
+    width: 65px;
+
+    height: 1px;
+
+    background:
+        #b69a69;
+}
+
+
+.gate-ornament b {
+
+    font-size: 23px;
+
+    font-weight: normal;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.gate-title {
+
+    margin: 0;
+
+    color: #4a3520;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(38px, 5vw, 58px);
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 1px 0 #fff9e9;
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.gate-subtitle {
+
+    max-width: 500px;
+
+    margin:
+        18px auto 38px;
+
+    color:
+        #766247;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   SEAL LABEL
+========================================================= */
+
+.seal-label {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-bottom: 13px;
+
+    color:
+        #71552e;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+}
+
+
+.seal-label span {
+
+    display: block;
+
+    width: 55px;
+
+    height: 1px;
+
+    background:
+        #b69a69;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.gate-form {
+
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: center;
+
     gap: 12px;
+
+    margin-top: 12px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.gate-form input {
+
+    width: 330px;
+
+    min-height: 58px;
+
+    padding:
+        0 20px;
+
+    border:
+        2px solid
+        #b99b69;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #fffdf6,
+            #f4ead5
+        );
+
+    color:
+        #4a3520;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 18px;
+
+    box-shadow:
+
+        inset
+        0 2px 7px
+        rgba(90,65,30,.08),
+
+        0 2px 4px
+        rgba(90,65,30,.05);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.gate-form input::placeholder {
+
+    color:
+        #a08b6d;
+
+    font-style:
+        italic;
+}
+
+
+.gate-form input:focus {
+
+    border-color:
+        #80602f;
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(151,116,57,.12),
+
+        inset
+        0 2px 7px
+        rgba(90,65,30,.08);
+}
+
+
+/* =========================================================
+   UNLOCK BUTTON
+========================================================= */
+
+#start-button {
+
+    min-width: 175px;
+
+    min-height: 58px;
+
+    padding:
+        0 22px;
+
+    border:
+        2px solid
+        #b88a42;
+
+    border-radius: 9px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #68482d 0%,
+            #4c301d 55%,
+            #382216 100%
+        );
+
+    color:
+        #fff1ce;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    cursor: pointer;
+
+    box-shadow:
+
+        inset
+        0 0 0 1px
+        rgba(231,188,99,.25),
+
+        0 4px 0
+        #281810,
+
+        0 8px 16px
+        rgba(70,43,19,.16);
+
+    animation:
+        gatePulse
+        3s
+        ease-in-out
+        infinite;
+
+    transition:
+        filter .2s ease,
+        transform .15s ease;
+}
+
+
+@keyframes gatePulse {
+
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.055);
+    }
+}
+
+
+#start-button:hover {
+
+    filter:
+        brightness(1.12);
+
+    transform:
+        translateY(-2px);
+}
+
+
+#start-button:active {
+
+    transform:
+        translateY(3px);
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error {
+
+    min-height: 25px;
+
+    margin:
+        18px 0 0;
+
+    color:
+        #8d3c2e;
+
+    font-size:
+        15px !important;
+
+    font-style:
+        italic;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.gate-footer {
+
+    margin-top:
+        28px;
+
+    color:
+        #a18d6e;
+
+    font-size:
+        13px !important;
+
+    letter-spacing:
+        1px;
+}
+
+
+/* =========================================================
+   OTHER GAME SCREENS
+========================================================= */
+
+section:not(.gate-screen) {
+
+    width: 100%;
+
+    text-align: center;
+}
+
+
+section:not(.gate-screen) h2 {
+
+    color:
+        #4a3520;
+
+    font-size: 36px;
+
+    margin-bottom:
+        20px;
+}
+
+
+section:not(.gate-screen) p {
+
+    font-size: 20px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 14px;
 
     margin-top: 30px;
 
@@ -615,68 +1029,46 @@ body {
 
 .form-group input {
 
-    width: 320px;
+    width: 350px;
 
-    height: 56px;
-
-    padding: 0 18px;
+    padding:
+        17px 20px;
 
     border:
-        2px solid
-        #b99a68;
+        1px solid
+        #c8b797;
 
-    border-radius: 10px;
-
-    background: #fffdf7;
-
-    color: #3d2919;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+    border-radius:
+        10px;
 
     font-size: 18px;
 
     outline: none;
+
+    background:
+        #fffdf7;
 }
 
 
-.form-group input:focus {
+.form-group button,
+.button-group button,
+section:not(.gate-screen) button {
 
-    border-color:
-        #80603a;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(128, 96, 58, 0.12);
-}
-
-
-/* =====================================================
-   GAME BUTTONS
-===================================================== */
-
-#main-game button {
-
-    height: 56px;
-
-    padding: 0 26px;
+    padding:
+        15px 25px;
 
     border:
         2px solid
-        #a77938;
+        #a37a3c;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 
     background:
-        linear-gradient(
-            180deg,
-            #704a2c 0%,
-            #57351f 100%
-        );
+        #5a3c25;
 
-    color: #fff1d0;
+    color:
+        #fff3d5;
 
     font-family:
         Georgia,
@@ -685,198 +1077,196 @@ body {
 
     font-size: 17px;
 
-    font-weight: 700;
-
     cursor: pointer;
 
-    box-shadow:
-        0 4px 0 #342013;
+    transition:
+        transform .15s ease,
+        filter .15s ease;
 }
 
 
-#main-game button:hover {
+.form-group button:hover,
+.button-group button:hover,
+section:not(.gate-screen) button:hover {
 
     filter:
-        brightness(1.12);
-}
-
-
-#main-game button:active {
+        brightness(1.08);
 
     transform:
-        translateY(3px);
-
-    box-shadow:
-        0 1px 0 #342013;
+        translateY(-2px);
 }
 
 
-/* =====================================================
-   ERROR
-===================================================== */
+/* =========================================================
+   HIDDEN
+========================================================= */
 
-.error {
+.hidden {
 
-    color:
-        #a52b22 !important;
-
-    font-weight: 600;
-
-    min-height: 24px;
+    display:
+        none !important;
 }
 
 
-/* =====================================================
+/* =========================================================
    LORE
-===================================================== */
+========================================================= */
 
 .lore-text {
 
-    max-width: 650px;
+    max-width:
+        650px;
 
-    margin: 30px auto;
-
-    text-align: center;
+    margin:
+        0 auto 30px;
 }
 
 
 .lore-text p {
 
-    margin: 20px 0;
+    margin:
+        18px 0;
 }
 
 
-/* =====================================================
+/* =========================================================
    GAME STATUS
-===================================================== */
+========================================================= */
 
 .game-status {
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: space-between;
+    justify-content:
+        space-between;
 
-    align-items: center;
+    align-items:
+        center;
 
-    max-width: 700px;
+    padding:
+        15px 20px;
 
-    margin: 0 auto 30px;
-
-    padding: 12px 20px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(112, 74, 44, 0.08);
+    margin-bottom:
+        30px;
 
     border:
         1px solid
-        rgba(112, 74, 44, 0.18);
+        #c8b797;
+
+    border-radius:
+        10px;
+
+    background:
+        #eee2cd;
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 700px) {
 
-    #intro-screen::after {
-
-        inset: 15px;
-
-    }
-
-
     .intro-content {
 
-        width: 92vw;
-
+        width:
+            94vw;
     }
 
 
-    .intro-mascot {
+    .intro-enter-button {
 
         width:
-            min(68vw, 380px);
+            245px;
 
-        max-height:
-            56vh;
-
-    }
-
-
-    #intro-start-button {
-
-        width:
-            min(330px, 78vw);
-
-        height:
-            68px;
-
-        font-size:
-            20px;
+        min-height:
+            55px;
 
         margin-top:
-            14px;
-
-    }
-
-
-    #main-game {
-
-        padding:
-            30px 12px;
-
-    }
-
-
-    #login-screen,
-    #username-screen,
-    #pin-setup-screen,
-    #pin-login-screen,
-    #welcome-screen,
-    #lore-screen,
-    #game-screen {
-
-        padding:
-            28px 18px;
-
-    }
-
-
-    #main-game h2 {
+            -12px;
 
         font-size:
-            27px;
-
+            16px;
     }
 
 
-    .form-group input {
+    .gate-screen {
+
+        min-height:
+            calc(100vh - 40px);
+    }
+
+
+    .gate-content {
 
         width:
-            100%;
+            94%;
 
+        padding:
+            35px 15px;
     }
 
 
-    .form-group button {
+    .gate-title {
 
-        width:
-            100%;
+        font-size:
+            36px;
 
+        letter-spacing:
+            2px;
     }
 
 
-    .game-status {
+    .gate-subtitle {
+
+        font-size:
+            16px;
+    }
+
+
+    .gate-form {
 
         flex-direction:
             column;
 
-        gap:
-            10px;
+        align-items:
+            center;
+    }
 
+
+    .gate-form input,
+    #start-button {
+
+        width:
+            min(100%, 350px);
+    }
+
+
+    .gate-ghost {
+
+        width:
+            300px;
+
+        height:
+            500px;
+    }
+
+
+    .seal-label {
+
+        font-size:
+            11px;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .seal-label span {
+
+        width:
+            35px;
     }
 
 }
