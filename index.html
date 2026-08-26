@@ -20,39 +20,110 @@
     <style>
 
         /* =====================================================
-           OPENING / MASCOT SCREEN
+           OPENING SCREEN
         ===================================================== */
 
         #intro-screen {
 
             position: fixed;
-
             inset: 0;
 
-            z-index: 9999;
+            z-index: 99999;
 
             display: flex;
-
             justify-content: center;
-
             align-items: center;
 
-            background: #f7f3eb;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #fffdf7 0%,
+                    #f8f1e4 48%,
+                    #eadfc9 100%
+                );
 
         }
 
+
+        /* =====================================================
+           ANCIENT MAP BACKGROUND
+        ===================================================== */
+
+        .map-background {
+
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            pointer-events: none;
+
+            opacity: 0.10;
+
+            z-index: 0;
+
+        }
+
+
+        .map-background svg {
+
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+        /* =====================================================
+           SOFT LIGHT BEHIND MASCOT
+        ===================================================== */
+
+        #intro-screen::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 50%;
+            top: 48%;
+
+            width: min(80vw, 850px);
+            height: min(80vw, 850px);
+
+            transform: translate(-50%, -50%);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 253, 246, 0.95) 0%,
+                    rgba(255, 253, 246, 0.65) 42%,
+                    rgba(255, 253, 246, 0) 72%
+                );
+
+            pointer-events: none;
+
+            z-index: 1;
+
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
 
         .intro-content {
 
             position: relative;
 
-            width: min(92vw, 900px);
+            width: min(92vw, 700px);
 
-            display: flex;
+            display: block;
 
-            justify-content: center;
+            margin: 0 auto;
 
-            align-items: center;
+            z-index: 5;
 
         }
 
@@ -66,10 +137,9 @@
             display: block;
 
             width: 100%;
-
-            max-width: 900px;
-
             height: auto;
+
+            margin: 0;
 
             user-select: none;
 
@@ -81,63 +151,72 @@
         /* =====================================================
            INVISIBLE CLICK AREA
            
-           Tombol ini TIDAK TERLIHAT.
-           Fungsinya hanya membuat tombol
-           "MULAI PETUALANGAN" di dalam PNG
-           bisa diklik.
+           Ini adalah area transparan yang diletakkan
+           tepat di atas tombol "MULAI PETUALANGAN"
+           yang sudah menyatu di dalam gambar.
         ===================================================== */
 
-        .intro-start-button {
+        #intro-start-button {
 
-            position: absolute;
+            position: absolute !important;
 
-            /*
-             * Area tombol yang ada di dalam gambar.
-             */
+            left: 25% !important;
 
-            left: 25%;
+            bottom: 1.5% !important;
 
-            bottom: 3%;
+            width: 50% !important;
 
-            width: 50%;
+            height: 14% !important;
 
-            height: 13%;
+            padding: 0 !important;
+            margin: 0 !important;
 
+            background: transparent !important;
+            background-color: transparent !important;
 
-            background: transparent;
+            border: none !important;
 
-            border: none;
+            box-shadow: none !important;
 
-            outline: none;
-
-            padding: 0;
-
-            margin: 0;
+            outline: none !important;
 
             cursor: pointer;
 
-            z-index: 10;
+            z-index: 20;
 
         }
 
 
-        .intro-start-button:hover {
+        #intro-start-button:hover {
 
-            background: transparent;
+            background: transparent !important;
+            background-color: transparent !important;
 
-        }
+            border: none !important;
 
-
-        .intro-start-button:focus {
-
-            outline: none;
+            box-shadow: none !important;
 
         }
 
 
-        .intro-start-button:active {
+        #intro-start-button:focus {
 
-            background: transparent;
+            background: transparent !important;
+            background-color: transparent !important;
+
+            outline: none !important;
+
+        }
+
+
+        #intro-start-button:active {
+
+            background: transparent !important;
+            background-color: transparent !important;
+
+            border: none !important;
+
+            box-shadow: none !important;
 
         }
 
@@ -147,6 +226,8 @@
         ===================================================== */
 
         #main-game {
+
+            display: none;
 
             min-height: 100vh;
 
@@ -166,15 +247,15 @@
             }
 
 
-            .intro-start-button {
+            #intro-start-button {
 
-                left: 23%;
+                left: 23% !important;
 
-                width: 54%;
+                width: 54% !important;
 
-                bottom: 3%;
+                bottom: 1.5% !important;
 
-                height: 14%;
+                height: 15% !important;
 
             }
 
@@ -189,17 +270,350 @@
 
 
 <!-- =====================================================
-     OPENING / MASCOT SCREEN
+     OPENING SCREEN
 ===================================================== -->
 
 <div id="intro-screen">
 
+
+    <!-- =================================================
+         ANCIENT FANTASY MAP
+    ================================================== -->
+
+    <div class="map-background">
+
+        <svg
+            viewBox="0 0 1200 800"
+            preserveAspectRatio="xMidYMid slice"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <!-- ================================
+                 MAP CONTOURS
+            ================================= -->
+
+            <path
+                d="M70 150
+                   C180 70 300 110 380 75
+                   C490 25 570 100 650 80
+                   C760 45 850 110 930 95
+                   C1050 70 1120 145 1150 230
+                   C1180 320 1100 360 1130 450
+                   C1160 550 1080 620 980 600
+                   C880 580 830 680 720 650
+                   C610 620 540 700 430 660
+                   C320 620 240 680 160 600
+                   C80 520 110 430 65 350
+                   C25 275 25 200 70 150Z"
+                fill="none"
+                stroke="#806f4d"
+                stroke-width="3"
+            />
+
+
+            <path
+                d="M120 190
+                   C250 120 330 170 430 130
+                   C530 90 620 150 700 130
+                   C800 100 900 160 990 145
+                   C1080 135 1100 210 1080 270"
+                fill="none"
+                stroke="#8f7d57"
+                stroke-width="2"
+            />
+
+
+            <!-- ================================
+                 RIVERS
+            ================================= -->
+
+            <path
+                d="M180 80
+                   C250 160 220 230 290 300
+                   C350 365 320 430 390 500
+                   C440 555 420 630 470 730"
+                fill="none"
+                stroke="#7c9a9b"
+                stroke-width="8"
+                stroke-linecap="round"
+            />
+
+
+            <path
+                d="M1000 80
+                   C930 170 950 240 880 300
+                   C820 350 850 430 780 490
+                   C720 550 760 640 690 730"
+                fill="none"
+                stroke="#7c9a9b"
+                stroke-width="6"
+                stroke-linecap="round"
+            />
+
+
+            <!-- ================================
+                 MOUNTAINS
+            ================================= -->
+
+            <g
+                fill="none"
+                stroke="#776849"
+                stroke-width="3"
+            >
+
+                <path d="M90 290 L135 220 L180 290 Z"/>
+                <path d="M135 290 L185 200 L235 290 Z"/>
+                <path d="M175 300 L230 215 L285 300 Z"/>
+
+                <path d="M900 280 L950 190 L1000 280 Z"/>
+                <path d="M950 285 L1010 170 L1070 285 Z"/>
+                <path d="M1010 300 L1060 210 L1110 300 Z"/>
+
+            </g>
+
+
+            <!-- ================================
+                 FOREST
+            ================================= -->
+
+            <g
+                fill="none"
+                stroke="#74805b"
+                stroke-width="3"
+            >
+
+                <path d="M110 500 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M150 530 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M190 510 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M230 540 l20 -35 l20 35 l-20 -10Z"/>
+
+                <path d="M960 500 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M1000 530 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M1040 510 l20 -35 l20 35 l-20 -10Z"/>
+                <path d="M1080 540 l20 -35 l20 35 l-20 -10Z"/>
+
+            </g>
+
+
+            <!-- ================================
+                 ROADS
+            ================================= -->
+
+            <g
+                fill="none"
+                stroke="#9a8762"
+                stroke-width="3"
+                stroke-dasharray="10 10"
+            >
+
+                <path
+                    d="M130 620
+                       C260 560 330 580 430 530
+                       C520 485 610 500 700 540
+                       C810 590 900 550 1060 620"
+                />
+
+                <path
+                    d="M200 180
+                       C320 240 360 300 500 330
+                       C650 360 760 300 950 200"
+                />
+
+            </g>
+
+
+            <!-- ================================
+                 CASTLES
+            ================================= -->
+
+            <g
+                fill="none"
+                stroke="#806f4d"
+                stroke-width="3"
+            >
+
+                <!-- Castle left -->
+
+                <path
+                    d="M120 390
+                       L120 350
+                       L140 330
+                       L160 350
+                       L160 390
+                       Z"
+                />
+
+                <path
+                    d="M115 350 L140 315 L165 350"
+                />
+
+                <path
+                    d="M140 315 L140 295"
+                />
+
+
+                <!-- Castle right -->
+
+                <path
+                    d="M1010 390
+                       L1010 350
+                       L1030 330
+                       L1050 350
+                       L1050 390
+                       Z"
+                />
+
+                <path
+                    d="M1005 350 L1030 315 L1055 350"
+                />
+
+                <path
+                    d="M1030 315 L1030 295"
+                />
+
+
+                <!-- Castle bottom -->
+
+                <path
+                    d="M560 690
+                       L560 650
+                       L580 630
+                       L600 650
+                       L600 690
+                       Z"
+                />
+
+                <path
+                    d="M555 650 L580 615 L605 650"
+                />
+
+            </g>
+
+
+            <!-- ================================
+                 SMALL ISLANDS
+            ================================= -->
+
+            <g
+                fill="none"
+                stroke="#807153"
+                stroke-width="2"
+            >
+
+                <ellipse
+                    cx="250"
+                    cy="400"
+                    rx="55"
+                    ry="25"
+                />
+
+                <ellipse
+                    cx="940"
+                    cy="420"
+                    rx="60"
+                    ry="28"
+                />
+
+                <ellipse
+                    cx="600"
+                    cy="170"
+                    rx="65"
+                    ry="25"
+                />
+
+            </g>
+
+
+            <!-- ================================
+                 COMPASS
+            ================================= -->
+
+            <g
+                transform="translate(600 400)"
+                fill="none"
+                stroke="#806f4d"
+                stroke-width="3"
+            >
+
+                <circle
+                    r="105"
+                />
+
+                <circle
+                    r="85"
+                />
+
+                <path d="M0 -120 L15 0 L0 120 L-15 0 Z"/>
+
+                <path d="M-120 0 L0 15 L120 0 L0 -15 Z"/>
+
+                <circle
+                    r="12"
+                />
+
+            </g>
+
+
+            <!-- ================================
+                 MAP LABELS
+            ================================= -->
+
+            <g
+                fill="#806f4d"
+                font-family="Georgia, serif"
+                font-size="18"
+                letter-spacing="3"
+            >
+
+                <text
+                    x="90"
+                    y="120"
+                >
+                    WESTERN WOODS
+                </text>
+
+                <text
+                    x="850"
+                    y="120"
+                >
+                    NORTHERN PEAKS
+                </text>
+
+                <text
+                    x="80"
+                    y="700"
+                >
+                    WESTERN COAST
+                </text>
+
+                <text
+                    x="880"
+                    y="700"
+                >
+                    EASTERN KINGDOM
+                </text>
+
+                <text
+                    x="520"
+                    y="90"
+                >
+                    SANAPATI LAND
+                </text>
+
+            </g>
+
+        </svg>
+
+    </div>
+
+
+
+    <!-- =================================================
+         MASCOT
+    ================================================== -->
+
     <div class="intro-content">
 
-
-        <!-- =================================================
-             MASCOT
-        ================================================== -->
 
         <img
             src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
@@ -208,17 +622,16 @@
         >
 
 
-        <!-- =================================================
-             INVISIBLE CLICK BUTTON
+        <!--
+            TRANSPARENT CLICK AREA
 
-             Tombol ini transparan dan berada tepat
-             di atas tombol MULAI PETUALANGAN
-             yang sudah ada di dalam gambar.
-        ================================================== -->
+            Area ini berada tepat di atas tombol
+            "MULAI PETUALANGAN" yang sudah ada
+            di dalam gambar.
+        -->
 
         <button
             id="intro-start-button"
-            class="intro-start-button"
             type="button"
             aria-label="Mulai Petualangan"
         ></button>
@@ -508,11 +921,9 @@
 
 
             <p>
-
                 <strong>
                     “Wait... who are they again?”
                 </strong>
-
             </p>
 
 
@@ -579,17 +990,17 @@
 
 
 <!-- =====================================================
-     JAVASCRIPT
+     EXISTING APP.JS
 ===================================================== -->
 
 <script src="app.js"></script>
 
 
-<script>
+<!-- =====================================================
+     OPENING LOGIC
+===================================================== -->
 
-    /* =====================================================
-       MULAI PETUALANGAN
-    ===================================================== */
+<script>
 
     const introScreen =
         document.getElementById("intro-screen");
@@ -599,34 +1010,30 @@
         document.getElementById("intro-start-button");
 
 
+    const mainGame =
+        document.getElementById("main-game");
+
+
     introStartButton.addEventListener(
         "click",
         function () {
 
             /*
-             * Tutup opening.
+             * Hilangkan opening.
              */
 
             introScreen.style.display = "none";
 
 
             /*
-             * Pastikan halaman utama game muncul.
+             * Tampilkan game utama.
              */
 
-            const mainGame =
-                document.getElementById("main-game");
-
-
-            if (mainGame) {
-
-                mainGame.style.display = "block";
-
-            }
+            mainGame.style.display = "block";
 
 
             /*
-             * Fokus ke Access Code.
+             * Fokus ke access code.
              */
 
             const accessCode =
