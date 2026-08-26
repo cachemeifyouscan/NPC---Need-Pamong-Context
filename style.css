@@ -1,99 +1,137 @@
 /* =========================================================
-   MEDIEVAL GATE SCREEN
+   GATE — FULL MEDIEVAL MANUSCRIPT
 ========================================================= */
 
 #login-screen {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
     background:
         radial-gradient(
             ellipse at center,
-            rgba(255,250,238,.96) 0%,
-            rgba(239,225,194,.94) 70%,
-            rgba(222,201,159,.92) 100%
+            #fff9e9 0%,
+            #f3e4c4 65%,
+            #dfc99c 100%
         );
 }
 
 
+/* parchment vignette */
+
+#login-screen::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 35%,
+            rgba(104,76,39,.10) 100%
+        );
+}
+
+
+/* subtle manuscript border */
+
+#login-screen::after {
+    content: "";
+
+    position: absolute;
+    inset: 30px;
+
+    border: 1px solid rgba(112,82,40,.28);
+
+    pointer-events: none;
+}
+
+
 /* =========================================================
-   GATE PANEL
+   REMOVE CARD FEEL
 ========================================================= */
 
 #login-screen .medieval-panel {
 
     position: relative;
 
-    width: min(850px, 90vw);
+    width: min(760px, 88vw);
 
-    padding: 58px 70px 65px;
+    padding: 55px 40px;
 
-    background:
-        linear-gradient(
-            rgba(255,249,232,.96),
-            rgba(244,230,199,.96)
-        );
+    background: transparent;
 
-    border: 2px solid #b99352;
+    border: none;
 
-    border-radius: 6px;
+    border-radius: 0;
 
-    box-shadow:
-        0 10px 30px rgba(67,46,24,.18),
-        inset 0 0 0 5px rgba(255,248,224,.55),
-        inset 0 0 0 7px rgba(151,113,55,.18);
+    box-shadow: none;
 
     text-align: center;
 }
 
 
 /* =========================================================
-   INNER MANUSCRIPT BORDER
+   MANUSCRIPT ORNAMENT TOP
 ========================================================= */
 
 #login-screen .medieval-panel::before {
 
-    content: "";
-
-    position: absolute;
-
-    inset: 13px;
-
-    border:
-        1px solid
-        rgba(137,101,49,.42);
-
-    pointer-events: none;
-}
-
-
-/* =========================================================
-   CORNER ORNAMENTS
-========================================================= */
-
-#login-screen .medieval-panel::after {
-
     content:
-        "❧                              ❧";
+        "✦  ─────────────  ✦";
 
     position: absolute;
 
-    top: 17px;
-
+    top: 0;
     left: 50%;
 
     transform:
         translateX(-50%);
 
-    width: 90%;
+    white-space: nowrap;
 
-    color:
-        #a17b43;
+    color: #8d6b39;
 
-    font-size: 22px;
+    font-size: 17px;
 
     letter-spacing: 3px;
 
     opacity: .75;
+}
 
-    pointer-events: none;
+
+/* bottom ornament */
+
+#login-screen .medieval-panel::after {
+
+    content:
+        "──────  ❖  ──────";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    white-space: nowrap;
+
+    color: #8d6b39;
+
+    font-size: 16px;
+
+    letter-spacing: 3px;
+
+    opacity: .7;
 }
 
 
@@ -103,13 +141,9 @@
 
 #login-screen .medieval-title {
 
-    position: relative;
+    margin: 15px 0 12px;
 
-    margin:
-        0 0 18px;
-
-    color:
-        #3e2818;
+    color: #3c2818;
 
     font-family:
         Georgia,
@@ -117,55 +151,22 @@
         serif;
 
     font-size:
-        clamp(34px, 4vw, 48px);
+        clamp(38px, 5vw, 58px);
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    letter-spacing:
-        1px;
+    letter-spacing: 1px;
 
     text-shadow:
-        1px 1px 0 #f6e8c5;
+        1px 1px 0 #f9eac8;
 }
 
 
-/* =========================================================
-   TITLE ORNAMENT
-========================================================= */
+/* remove previous stars */
 
 #login-screen .medieval-title::before,
 #login-screen .medieval-title::after {
-
-    color:
-        #a47a3c;
-
-    font-size:
-        20px;
-
-    vertical-align:
-        middle;
-
-    opacity:
-        .8;
-}
-
-#login-screen .medieval-title::before {
-
-    content:
-        "✦";
-
-    margin-right:
-        16px;
-}
-
-#login-screen .medieval-title::after {
-
-    content:
-        "✦";
-
-    margin-left:
-        16px;
+    display: none;
 }
 
 
@@ -175,88 +176,81 @@
 
 #login-screen .medieval-subtitle {
 
-    margin:
-        0 auto 30px;
+    max-width: 620px;
 
-    color:
-        #685035;
+    margin:
+        0 auto 35px;
+
+    color: #6c5437;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size:
-        20px;
+    font-size: 19px;
 
-    font-style:
-        italic;
+    font-style: italic;
 
-    line-height:
-        1.6;
+    line-height: 1.7;
 }
 
 
 /* =========================================================
-   ENTER YOUR SEAL
+   SEAL LABEL
 ========================================================= */
 
 #login-screen .medieval-panel > p strong {
 
-    display:
-        inline-block;
+    display: block;
 
-    margin-bottom:
-        10px;
+    margin-bottom: 12px;
 
-    color:
-        #4b301c;
+    color: #4b301c;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size:
-        17px;
+    font-size: 15px;
 
-    letter-spacing:
-        3px;
+    letter-spacing: 4px;
 }
 
 
 /* =========================================================
-   INPUT — PARCHMENT / SEAL
+   INPUT
+   looks like parchment strip, NOT textbox card
 ========================================================= */
 
 #login-screen .medieval-input {
 
     width:
-        min(560px, 100%);
+        min(500px, 85vw);
 
-    height:
-        60px;
+    height: 58px;
 
     padding:
-        0 24px;
+        0 20px;
 
     background:
-        #f9efd8;
+        rgba(255,248,228,.55);
 
     border:
         none;
 
     border-bottom:
-        3px solid #a77b3e;
-
-    border-top:
-        1px solid rgba(140,102,49,.25);
+        2px solid #94713e;
 
     border-radius:
-        3px;
+        0;
+
+    outline:
+        none;
 
     color:
-        #392617;
+        #3b2819;
 
     font-family:
         Georgia,
@@ -266,81 +260,62 @@
     font-size:
         20px;
 
-    font-style:
-        italic;
-
-    outline:
-        none;
+    text-align:
+        center;
 
     box-shadow:
-        inset 0 2px 7px
-        rgba(92,63,28,.12);
-
-    transition:
-        background .2s ease,
-        border-color .2s ease;
+        none;
 }
 
 
 #login-screen .medieval-input::placeholder {
 
     color:
-        #8b7455;
+        #8c7456;
 
-    opacity:
-        .8;
+    font-style:
+        italic;
 }
 
 
 #login-screen .medieval-input:focus {
 
-    background:
-        #fff7e7;
-
     border-bottom-color:
-        #704525;
+        #5e3c20;
 
-    box-shadow:
-        inset 0 2px 7px
-        rgba(92,63,28,.12),
-        0 3px 0
-        rgba(164,122,60,.15);
+    background:
+        rgba(255,250,236,.8);
 }
 
 
 /* =========================================================
-   UNLOCK GATE
+   UNLOCK BUTTON
 ========================================================= */
 
 #login-screen .medieval-button {
 
-    position:
-        relative;
+    position: relative;
 
-    margin-top:
-        27px;
+    margin-top: 30px;
 
-    min-width:
-        270px;
+    min-width: 240px;
 
-    min-height:
-        58px;
+    min-height: 54px;
 
     padding:
-        12px 30px;
+        10px 28px;
 
     border:
-        2px solid #b78945;
+        2px solid #a77b3d;
 
     border-radius:
-        7px;
+        5px;
 
     background:
         linear-gradient(
             to bottom,
-            #704827 0%,
-            #5b351e 48%,
-            #472717 100%
+            #704625,
+            #4b2a17
         );
 
     color:
@@ -352,7 +327,7 @@
         serif;
 
     font-size:
-        18px;
+        17px;
 
     font-weight:
         bold;
@@ -361,9 +336,8 @@
         1px;
 
     box-shadow:
-        0 4px 0 #2b190f,
-        0 8px 15px
-        rgba(54,34,16,.22);
+        0 4px 0 #2d190e,
+        0 7px 14px rgba(55,35,15,.20);
 
     cursor:
         pointer;
@@ -387,28 +361,24 @@
 #login-screen .medieval-button:active {
 
     transform:
-        translateY(3px);
+        translateY(2px);
 
     box-shadow:
-        0 2px 0 #2b190f;
+        0 2px 0 #2d190e;
 }
 
 
 /* =========================================================
-   SMALL MEDIEVAL DETAIL UNDER BUTTON
+   ERROR
 ========================================================= */
 
-#login-screen .medieval-panel
-    .error-message {
+#login-screen .error-message {
 
-    min-height:
-        28px;
+    min-height: 25px;
 
-    margin-top:
-        18px;
+    margin-top: 18px;
 
-    color:
-        #8d3026;
+    color: #91372d;
 
     font-family:
         Georgia,
@@ -418,36 +388,25 @@
 
 
 /* =========================================================
-   RESPONSIVE
+   MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
 
+    #login-screen::after {
+        inset: 15px;
+    }
+
     #login-screen .medieval-panel {
-
-        width:
-            92vw;
-
-        padding:
-            48px 25px 50px;
+        width: 92vw;
+        padding: 45px 20px;
     }
 
     #login-screen .medieval-title {
-
-        font-size:
-            32px;
-    }
-
-    #login-screen .medieval-title::before,
-    #login-screen .medieval-title::after {
-
-        display:
-            none;
+        font-size: 34px;
     }
 
     #login-screen .medieval-button {
-
-        width:
-            80%;
+        min-width: 210px;
     }
 }
