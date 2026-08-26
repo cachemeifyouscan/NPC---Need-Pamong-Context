@@ -4,68 +4,119 @@
 
 
 /* =========================================================
-   SETTINGS
-========================================================= */
-
-const ACCESS_CODE = "SANAPATI";
-
-
-/* =========================================================
    ELEMENTS
 ========================================================= */
 
 const introScreen =
-    document.getElementById("intro-screen");
+    document.getElementById(
+        "intro-screen"
+    );
+
 
 const introStartButton =
-    document.getElementById("intro-start-button");
+    document.getElementById(
+        "intro-start-button"
+    );
+
 
 const mainGame =
-    document.getElementById("main-game");
+    document.getElementById(
+        "main-game"
+    );
 
 
 /* =========================================================
-   SCREEN CONTROLLER
+   ALL GAME SCREENS
+========================================================= */
+
+const screens = [
+
+    "login-screen",
+
+    "username-screen",
+
+    "pin-setup-screen",
+
+    "pin-login-screen",
+
+    "welcome-screen",
+
+    "lore-screen",
+
+    "game-screen"
+
+];
+
+
+/* =========================================================
+   SCREEN SYSTEM
 ========================================================= */
 
 function showScreen(screenId) {
 
-    const screens = [
-        "login-screen",
-        "username-screen",
-        "pin-setup-screen",
-        "pin-login-screen",
-        "welcome-screen",
-        "lore-screen",
-        "game-screen"
-    ];
+    screens.forEach(
+        function (id) {
 
+            const element =
+                document.getElementById(id);
 
-    screens.forEach(function(id) {
+            if (element) {
 
-        const screen =
-            document.getElementById(id);
+                element.classList.add(
+                    "hidden"
+                );
 
-        if (screen) {
-
-            screen.classList.add("hidden");
+            }
 
         }
-
-    });
+    );
 
 
     const target =
-        document.getElementById(screenId);
+        document.getElementById(
+            screenId
+        );
 
 
     if (target) {
 
-        target.classList.remove("hidden");
+        target.classList.remove(
+            "hidden"
+        );
 
     }
 
 }
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+if (mainGame) {
+
+    mainGame.style.display =
+        "none";
+
+}
+
+
+if (introScreen) {
+
+    introScreen.style.display =
+        "flex";
+
+}
+
+
+/*
+   Saat pertama dibuka,
+   hanya login-screen yang disiapkan.
+*/
+
+showScreen(
+    "login-screen"
+);
 
 
 /* =========================================================
@@ -76,44 +127,107 @@ if (introStartButton) {
 
     introStartButton.addEventListener(
         "click",
-        function() {
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
 
             /*
-               Hide opening
+               Hilangkan opening.
             */
 
             if (introScreen) {
 
-                introScreen.classList.add(
-                    "intro-hidden"
-                );
+                introScreen.style.display =
+                    "none";
 
             }
 
 
             /*
-               Reveal game container
+               Tampilkan game.
             */
 
             if (mainGame) {
 
-                mainGame.classList.add(
-                    "game-visible"
-                );
+                mainGame.style.display =
+                    "block";
 
             }
 
 
             /*
-               Open access-code screen
+               Pastikan hanya Access Code
+               yang terlihat.
             */
 
             showScreen(
                 "login-screen"
             );
 
+
+            /*
+               Scroll kembali ke atas.
+            */
+
+            window.scrollTo(
+                0,
+                0
+            );
+
         }
     );
+
+}
+
+
+/* =========================================================
+   PLAYER STORAGE
+========================================================= */
+
+function savePlayerData(data) {
+
+    localStorage.setItem(
+
+        "npcPlayer",
+
+        JSON.stringify(data)
+
+    );
+
+}
+
+
+function getPlayerData() {
+
+    const saved =
+        localStorage.getItem(
+            "npcPlayer"
+        );
+
+
+    if (!saved) {
+
+        return null;
+
+    }
+
+
+    try {
+
+        return JSON.parse(
+            saved
+        );
+
+    }
+
+    catch (error) {
+
+        return null;
+
+    }
 
 }
 
@@ -144,12 +258,11 @@ if (startButton) {
 
     startButton.addEventListener(
         "click",
-        function() {
+        function () {
+
 
             const code =
-                accessInput.value
-                    .trim()
-                    .toUpperCase();
+                accessInput.value.trim();
 
 
             if (!code) {
@@ -162,29 +275,66 @@ if (startButton) {
             }
 
 
+            /*
+               ACCESS CODE
+            */
+
+            const correctCode =
+                "SANAPATI";
+
+
             if (
-                code === ACCESS_CODE
+                code.toUpperCase()
+                !==
+                correctCode.toUpperCase()
             ) {
-
-                accessError.textContent =
-                    "";
-
-                showScreen(
-                    "username-screen"
-                );
-
-            }
-
-            else {
 
                 accessError.textContent =
                     "The gate remains sealed. Try again.";
 
-                accessInput.value = "";
-
-                accessInput.focus();
+                return;
 
             }
+
+
+            accessError.textContent =
+                "";
+
+
+            const player =
+                getPlayerData();
+
+
+            /*
+               EXISTING PLAYER
+            */
+
+            if (player) {
+
+                document.getElementById(
+                    "pin-login-message"
+                ).textContent =
+
+                    `Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
+
+
+                showScreen(
+                    "pin-login-screen"
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+               NEW PLAYER
+            */
+
+            showScreen(
+                "username-screen"
+            );
 
         }
     );
@@ -218,10 +368,21 @@ if (usernameButton) {
 
     usernameButton.addEventListener(
         "click",
-        function() {
+        function () {
+
 
             const username =
                 usernameInput.value.trim();
+
+
+            if (!username) {
+
+                usernameError.textContent =
+                    "Username tidak boleh kosong.";
+
+                return;
+
+            }
 
 
             if (
@@ -240,8 +401,8 @@ if (usernameButton) {
                 "";
 
 
-            localStorage.setItem(
-                "npc_username",
+            sessionStorage.setItem(
+                "npcUsername",
                 username
             );
 
@@ -288,7 +449,8 @@ if (pinButton) {
 
     pinButton.addEventListener(
         "click",
-        function() {
+        function () {
+
 
             const pin =
                 pinInput.value.trim();
@@ -311,45 +473,63 @@ if (pinButton) {
 
 
             if (
-                pin !== confirmPin
+                pin !==
+                confirmPin
             ) {
 
                 pinError.textContent =
-                    "PIN tidak sama.";
+                    "PIN dan konfirmasi PIN tidak sama.";
 
                 return;
 
             }
 
 
-            pinError.textContent =
-                "";
+            const username =
+                sessionStorage.getItem(
+                    "npcUsername"
+                );
 
 
-            localStorage.setItem(
-                "npc_pin",
-                pin
+            if (!username) {
+
+                pinError.textContent =
+                    "Username tidak ditemukan.";
+
+                return;
+
+            }
+
+
+            const player = {
+
+                username:
+                    username,
+
+                pin:
+                    pin,
+
+                milestone:
+                    1
+
+            };
+
+
+            savePlayerData(
+                player
             );
 
 
-            const username =
-                localStorage.getItem(
-                    "npc_username"
-                );
+            sessionStorage.removeItem(
+                "npcUsername"
+            );
 
 
-            const welcomeMessage =
-                document.getElementById(
-                    "welcome-message"
-                );
+            document.getElementById(
+                "welcome-message"
+            ).textContent =
 
-
-            if (welcomeMessage) {
-
-                welcomeMessage.textContent =
-                    `Welcome, ${username}. Your journey in Sanapati Land awaits.`;
-
-            }
+                `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
 
 
             showScreen(
@@ -388,20 +568,30 @@ if (pinLoginButton) {
 
     pinLoginButton.addEventListener(
         "click",
-        function() {
+        function () {
+
 
             const enteredPin =
                 loginPinInput.value.trim();
 
 
-            const savedPin =
-                localStorage.getItem(
-                    "npc_pin"
-                );
+            const player =
+                getPlayerData();
+
+
+            if (!player) {
+
+                pinLoginError.textContent =
+                    "Data player tidak ditemukan.";
+
+                return;
+
+            }
 
 
             if (
-                enteredPin !== savedPin
+                enteredPin !==
+                player.pin
             ) {
 
                 pinLoginError.textContent =
@@ -416,24 +606,11 @@ if (pinLoginButton) {
                 "";
 
 
-            const username =
-                localStorage.getItem(
-                    "npc_username"
-                );
+            document.getElementById(
+                "welcome-message"
+            ).textContent =
 
-
-            const welcomeMessage =
-                document.getElementById(
-                    "welcome-message"
-                );
-
-
-            if (welcomeMessage) {
-
-                welcomeMessage.textContent =
-                    `Welcome back, ${username}. Your journey awaits.`;
-
-            }
+                `Welcome back, ${player.username}! Your adventure awaits.`;
 
 
             showScreen(
@@ -460,7 +637,7 @@ if (continueButton) {
 
     continueButton.addEventListener(
         "click",
-        function() {
+        function () {
 
             showScreen(
                 "lore-screen"
@@ -486,24 +663,27 @@ if (loreButton) {
 
     loreButton.addEventListener(
         "click",
-        function() {
-
-            const username =
-                localStorage.getItem(
-                    "npc_username"
-                );
+        function () {
 
 
-            const playerLabel =
+            const player =
+                getPlayerData();
+
+
+            if (player) {
+
                 document.getElementById(
                     "player-label"
-                );
+                ).textContent =
+
+                    `👤 ${player.username}`;
 
 
-            if (playerLabel) {
+                document.getElementById(
+                    "milestone-label"
+                ).textContent =
 
-                playerLabel.textContent =
-                    `🧭 ${username}`;
+                    `MILESTONE ${player.milestone || 1}`;
 
             }
 
@@ -526,7 +706,7 @@ if (accessInput) {
 
     accessInput.addEventListener(
         "keydown",
-        function(event) {
+        function (event) {
 
             if (
                 event.key === "Enter"
@@ -550,7 +730,7 @@ if (usernameInput) {
 
     usernameInput.addEventListener(
         "keydown",
-        function(event) {
+        function (event) {
 
             if (
                 event.key === "Enter"
@@ -574,7 +754,7 @@ if (pinInput) {
 
     pinInput.addEventListener(
         "keydown",
-        function(event) {
+        function (event) {
 
             if (
                 event.key === "Enter"
@@ -589,12 +769,16 @@ if (pinInput) {
 
 }
 
+
+/* =========================================================
+   ENTER KEY — CONFIRM PIN
+========================================================= */
 
 if (pinConfirmInput) {
 
     pinConfirmInput.addEventListener(
         "keydown",
-        function(event) {
+        function (event) {
 
             if (
                 event.key === "Enter"
@@ -610,11 +794,15 @@ if (pinConfirmInput) {
 }
 
 
+/* =========================================================
+   ENTER KEY — LOGIN PIN
+========================================================= */
+
 if (loginPinInput) {
 
     loginPinInput.addEventListener(
         "keydown",
-        function(event) {
+        function (event) {
 
             if (
                 event.key === "Enter"
