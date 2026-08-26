@@ -1,44 +1,135 @@
-.intro-content {
-    position: relative;
-    z-index: 10;
+/* =========================================================
+   OPENING SCREEN
+========================================================= */
 
-    width: min(90vw, 560px);
+#intro-screen {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
 
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    margin: 0 auto;
+    overflow: hidden;
 
-    transform: translateY(-2vh);
+    z-index: 9999;
+
+    /*
+       parchment / medieval map background
+    */
+    background:
+        linear-gradient(
+            rgba(246, 237, 216, 0.86),
+            rgba(246, 237, 216, 0.86)
+        ),
+        url("map-bg.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    box-sizing: border-box;
 }
 
 
+/* subtle parchment frame */
+
+#intro-screen::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 32px;
+
+    border: 1px solid rgba(121, 91, 49, 0.16);
+
+    border-radius: 18px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.intro-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 560px;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    /*
+       sedikit naik supaya visual benar-benar
+       berada di tengah viewport
+    */
+    transform: translateY(-2vh);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MASCOT
+========================================================= */
+
 .intro-mascot {
+
     display: block;
 
-    width: min(78vw, 540px);
-    max-width: 540px;
+    /*
+       INI YANG KITA KECILKAN
+    */
+    width: min(68vw, 430px);
 
     height: auto;
 
+    max-height: 66vh;
+
+    object-fit: contain;
+
     user-select: none;
+
     -webkit-user-drag: none;
 
     filter:
         drop-shadow(
-            0 18px 18px
-            rgba(64, 43, 20, .20)
+            0 14px 18px
+            rgba(63, 42, 22, 0.18)
         );
 
+    /*
+       floating
+    */
     animation:
         mascotFloat
         4s
         ease-in-out
         infinite;
+
+    flex-shrink: 1;
 }
 
+
+/* =========================================================
+   FLOATING ANIMATION
+========================================================= */
 
 @keyframes mascotFloat {
 
@@ -47,36 +138,58 @@
     }
 
     50% {
-        transform: translateY(-8px);
+        transform: translateY(-7px);
     }
 
     100% {
         transform: translateY(0);
     }
+
 }
 
 
-.intro-enter-button {
+/* =========================================================
+   CLICK HERE BUTTON
+========================================================= */
+
+.intro-start-button {
+
+    /*
+       IMPORTANT:
+       selector ini sesuai HTML lu
+    */
 
     position: relative;
 
-    width: 280px;
-    min-height: 54px;
+    display: flex;
 
-    margin-top: -12px;
+    align-items: center;
+    justify-content: center;
 
-    border: 3px solid #b88a42;
-    border-radius: 12px;
+    width: 270px;
+
+    height: 54px;
+
+    /*
+       DEKAT dengan mascot
+    */
+    margin-top: -2px;
+
+    padding: 0 28px;
+
+    border: 2px solid #b48742;
+
+    border-radius: 11px;
 
     background:
         linear-gradient(
             180deg,
             #68482d 0%,
-            #4c301d 55%,
-            #382216 100%
+            #50321f 55%,
+            #3b2417 100%
         );
 
-    color: #fff1ce;
+    color: #fff2d1;
 
     font-family:
         Georgia,
@@ -84,31 +197,155 @@
         serif;
 
     font-size: 17px;
+
     font-weight: 700;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 1.4px;
 
     cursor: pointer;
 
     box-shadow:
 
         inset
-        0 0 0 2px
-        rgba(231,188,99,.22),
+        0 0 0 1px
+        rgba(255, 224, 157, 0.20),
 
-        0 5px 0
-        #281810,
+        0 4px 0
+        #2a180e,
 
-        0 10px 20px
-        rgba(70,43,19,.18);
+        0 9px 18px
+        rgba(62, 40, 20, 0.16);
 
     animation:
-        introPulse
-        2.8s
+        buttonPulse
+        3s
         ease-in-out
         infinite;
 
     transition:
+        transform .18s ease,
         filter .18s ease,
-        transform .18s ease;
+        box-shadow .18s ease;
+
+}
+
+
+/* =========================================================
+   BUTTON HOVER
+========================================================= */
+
+.intro-start-button:hover {
+
+    filter:
+        brightness(1.08);
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+
+        inset
+        0 0 0 1px
+        rgba(255, 224, 157, 0.28),
+
+        0 5px 0
+        #2a180e,
+
+        0 12px 22px
+        rgba(62, 40, 20, 0.22);
+
+}
+
+
+/* =========================================================
+   BUTTON CLICK
+========================================================= */
+
+.intro-start-button:active {
+
+    transform:
+        translateY(2px);
+
+    box-shadow:
+
+        inset
+        0 0 0 1px
+        rgba(255, 224, 157, 0.20),
+
+        0 2px 0
+        #2a180e,
+
+        0 5px 12px
+        rgba(62, 40, 20, 0.15);
+
+}
+
+
+/* =========================================================
+   SUBTLE PULSE
+========================================================= */
+
+@keyframes buttonPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.025);
+    }
+
+}
+
+
+/* =========================================================
+   HIDE OLD HINT
+========================================================= */
+
+.intro-hint {
+    display: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    #intro-screen::before {
+        inset: 18px;
+    }
+
+
+    .intro-content {
+
+        transform:
+            translateY(-1vh);
+
+    }
+
+
+    .intro-mascot {
+
+        width: min(78vw, 360px);
+
+        max-height: 58vh;
+
+    }
+
+
+    .intro-start-button {
+
+        width: 230px;
+
+        height: 50px;
+
+        margin-top: -2px;
+
+        font-size: 15px;
+
+    }
+
 }
