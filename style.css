@@ -1,6 +1,6 @@
 /* =========================================================
    NPC — NEED PAMONG CONTEXT
-   MEDIEVAL / PARCHMENT UI
+   MEDIEVAL MAP / PARCHMENT UI
 ========================================================= */
 
 
@@ -12,39 +12,34 @@
     box-sizing: border-box;
 }
 
-
 html,
 body {
-
     margin: 0;
     padding: 0;
 
     width: 100%;
-    height: 100%;
+    min-height: 100%;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    background: #eee2c8;
-
-    color: #3f2a1d;
+    color: #432b1b;
 }
 
 
 /*
-   IMPORTANT:
-   Tidak boleh scroll pada opening.
+   Opening tidak boleh bisa discroll.
+   Main game baru boleh tampil setelah opening selesai.
 */
-
 body {
     overflow: hidden;
 }
 
 
 /* =========================================================
-   OPENING
+   OPENING SCREEN
 ========================================================= */
 
 #intro-screen {
@@ -66,19 +61,12 @@ body {
     justify-content: center;
 
     background:
-
-        linear-gradient(
-            rgba(241, 230, 207, 0.88),
-            rgba(241, 230, 207, 0.88)
-        ),
-
-        url("map-bg.png");
-
-    background-size: cover;
-
-    background-position: center;
-
-    background-repeat: no-repeat;
+        radial-gradient(
+            circle at center,
+            rgba(255, 250, 239, 0.98) 0%,
+            rgba(242, 231, 207, 0.96) 55%,
+            rgba(226, 210, 178, 0.96) 100%
+        );
 
     transition:
         opacity 0.45s ease,
@@ -86,9 +74,73 @@ body {
 }
 
 
+/* =========================================================
+   MAP DECORATION
+   SVG YANG SUDAH ADA DI INDEX.HTML
+========================================================= */
+
+.map-decoration {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    opacity: 0.16;
+}
+
+
+.map-decoration svg {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
 /*
-   Parchment border
+   Soft parchment wash di tengah.
+   Jadi mascot tetap menjadi fokus utama.
 */
+
+#intro-screen::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255, 251, 241, 0.96) 0%,
+            rgba(255, 251, 241, 0.72) 28%,
+            rgba(255, 251, 241, 0.12) 65%,
+            rgba(255, 251, 241, 0) 100%
+        );
+}
+
+
+/* =========================================================
+   PARCHMENT BORDER
+========================================================= */
 
 #intro-screen::before {
 
@@ -96,30 +148,32 @@ body {
 
     position: absolute;
 
-    inset: 32px;
+    inset: 34px;
+
+    z-index: 4;
 
     border:
-
         1px solid
-        rgba(115, 83, 40, 0.18);
+        rgba(112, 82, 43, 0.18);
 
     border-radius: 18px;
 
     pointer-events: none;
+
 }
 
 
 /* =========================================================
-   OPENING CONTENT
+   INTRO CONTENT
 ========================================================= */
 
 .intro-content {
 
     position: relative;
 
-    z-index: 5;
+    z-index: 10;
 
-    width: min(90vw, 560px);
+    width: min(90vw, 620px);
 
     height: 100%;
 
@@ -133,6 +187,7 @@ body {
 
     transform:
         translateY(-2vh);
+
 }
 
 
@@ -145,13 +200,15 @@ body {
     display: block;
 
     width:
-        min(68vw, 430px);
-
-    max-height: 65vh;
+        min(52vw, 470px);
 
     height: auto;
 
+    max-height: 64vh;
+
     object-fit: contain;
+
+    flex-shrink: 0;
 
     user-select: none;
 
@@ -159,15 +216,16 @@ body {
 
     filter:
         drop-shadow(
-            0 14px 18px
-            rgba(63, 42, 22, 0.18)
+            0 16px 20px
+            rgba(67, 43, 24, 0.18)
         );
 
     animation:
         mascotFloat
-        4s
+        4.5s
         ease-in-out
         infinite;
+
 }
 
 
@@ -191,6 +249,7 @@ body {
         transform:
             translateY(0);
     }
+
 }
 
 
@@ -200,88 +259,137 @@ body {
 
 .intro-enter-button {
 
+    /*
+       INI SELECTOR YANG BENAR
+       sesuai index.html lu
+    */
+
     position: relative;
 
-    width: 270px;
+    display: flex;
 
-    height: 54px;
+    align-items: center;
+    justify-content: center;
 
-    margin-top: -2px;
+    width: 300px;
+
+    height: 60px;
+
+    margin-top: -4px;
+
+    padding: 0 30px;
 
     border:
-
         2px solid
-        #b48742;
+        #b9893e;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     background:
-
         linear-gradient(
             180deg,
-            #68482d 0%,
-            #50321f 55%,
-            #3b2417 100%
+            #6c4a2d 0%,
+            #56371f 50%,
+            #3b2416 100%
         );
 
-    color: #fff2d1;
+    color:
+        #fff1cf;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size: 17px;
+    font-size: 18px;
 
     font-weight: 700;
 
-    letter-spacing: 1.4px;
+    letter-spacing: 1.5px;
 
     cursor: pointer;
+
+    outline: none;
 
     box-shadow:
 
         inset
         0 0 0 1px
-        rgba(255, 224, 157, 0.2),
+        rgba(255, 226, 167, 0.20),
 
         0 4px 0
-        #2a180e,
+        #29180e,
 
-        0 9px 18px
-        rgba(62, 40, 20, 0.16);
+        0 10px 22px
+        rgba(67, 43, 24, 0.18);
 
     animation:
         buttonPulse
-        3s
+        3.2s
         ease-in-out
         infinite;
 
     transition:
+        filter 0.18s ease,
         transform 0.18s ease,
-        filter 0.18s ease;
+        box-shadow 0.18s ease;
+
 }
 
+
+/* =========================================================
+   CLICK HERE — HOVER
+========================================================= */
 
 .intro-enter-button:hover {
 
     filter:
-        brightness(1.08);
+        brightness(1.10);
 
     transform:
         translateY(-2px);
+
+    box-shadow:
+
+        inset
+        0 0 0 1px
+        rgba(255, 226, 167, 0.30),
+
+        0 5px 0
+        #29180e,
+
+        0 13px 25px
+        rgba(67, 43, 24, 0.22);
+
 }
 
+
+/* =========================================================
+   CLICK HERE — ACTIVE
+========================================================= */
 
 .intro-enter-button:active {
 
     transform:
         translateY(2px);
+
+    box-shadow:
+
+        inset
+        0 0 0 1px
+        rgba(255, 226, 167, 0.18),
+
+        0 2px 0
+        #29180e,
+
+        0 5px 12px
+        rgba(67, 43, 24, 0.15);
+
 }
 
 
 /* =========================================================
-   BUTTON PULSE
+   SUBTLE BUTTON PULSE
 ========================================================= */
 
 @keyframes buttonPulse {
@@ -294,60 +402,55 @@ body {
 
     50% {
         transform:
-            scale(1.025);
+            scale(1.018);
     }
+
 }
 
 
 /* =========================================================
-   MAIN GAME
+   OLD HINT
+========================================================= */
+
+.intro-hint {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   IMPORTANT:
+   MAIN GAME HARUS BENAR-BENAR HIDDEN
 ========================================================= */
 
 #main-game {
 
-    display: none;
+    display: none !important;
+
+    position: relative;
 
     width: 100vw;
-
     height: 100vh;
 
     overflow: hidden;
 
-    background:
-
-        linear-gradient(
-            rgba(241, 230, 207, 0.90),
-            rgba(241, 230, 207, 0.90)
-        ),
-
-        url("map-bg.png");
-
-    background-size: cover;
-
-    background-position: center;
-
-    background-repeat: no-repeat;
 }
 
+
+/*
+   Hanya boleh muncul setelah CLICK HERE.
+*/
 
 #main-game.game-visible {
 
-    display: block;
+    display: block !important;
+
 }
 
 
 /* =========================================================
-   HIDDEN
-========================================================= */
-
-.hidden {
-
-    display: none !important;
-}
-
-
-/* =========================================================
-   INTRO HIDDEN
+   OPENING HIDDEN
 ========================================================= */
 
 #intro-screen.intro-hidden {
@@ -357,17 +460,30 @@ body {
     visibility: hidden;
 
     pointer-events: none;
+
 }
 
 
 /* =========================================================
-   GAME SCREEN
+   UNIVERSAL HIDDEN
 ========================================================= */
 
-.game-screen {
+.hidden {
 
-    width: 100%;
+    display: none !important;
 
+}
+
+
+/* =========================================================
+   ACCESS / GATE SCREEN
+========================================================= */
+
+#login-screen {
+
+    position: relative;
+
+    width: 100vw;
     height: 100vh;
 
     overflow: hidden;
@@ -375,304 +491,280 @@ body {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    padding: 30px;
+    background:
+        #f1e6cf;
+
 }
 
 
 /* =========================================================
-   SCREEN CARD
+   GATE CONTENT
 ========================================================= */
 
-.screen-card {
+.gate-content {
 
     position: relative;
 
-    width:
-        min(850px, 92vw);
+    z-index: 10;
 
-    padding:
-        55px 65px;
+    width:
+        min(720px, 90vw);
 
     text-align: center;
 
-    background:
+    padding:
+        40px 30px;
 
-        linear-gradient(
-            rgba(250, 244, 230, 0.96),
-            rgba(242, 231, 207, 0.96)
-        );
-
-    border:
-
-        1px solid
-        rgba(126, 91, 46, 0.30);
-
-    border-radius: 18px;
-
-    box-shadow:
-
-        0 18px 45px
-        rgba(68, 46, 25, 0.15),
-
-        inset
-        0 0 35px
-        rgba(154, 115, 58, 0.07);
 }
 
 
-/* =========================================================
-   DECORATION
-========================================================= */
-
-.screen-decoration {
-
-    color: #9a7037;
-
-    font-size: 22px;
-
-    margin-bottom: 8px;
-}
-
-
-/* =========================================================
-   HEADINGS
-========================================================= */
-
-.screen-card h2 {
+.gate-title {
 
     margin:
+        10px 0 18px;
 
-        0 0 18px;
-
-    color: #4a2d1b;
+    color:
+        #4c301d;
 
     font-size:
-        clamp(32px, 4vw, 48px);
+        clamp(36px, 5vw, 58px);
 
-    letter-spacing: 0.5px;
+    letter-spacing:
+        1px;
+
 }
 
 
-.screen-subtitle {
+.gate-subtitle {
 
     margin:
+        0 auto 30px;
 
-        0 auto 35px;
-
-    max-width: 650px;
-
-    color: #70553a;
+    color:
+        #765a3c;
 
     font-size:
-        clamp(16px, 2vw, 21px);
+        19px;
 
-    line-height: 1.6;
+    line-height:
+        1.6;
+
 }
 
 
 /* =========================================================
-   LABEL
+   GATE ORNAMENT
 ========================================================= */
 
-.screen-card label {
-
-    display: block;
-
-    margin-bottom: 9px;
-
-    color: #62452b;
-
-    font-size: 15px;
-
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
-
-    text-align: left;
-
-    max-width: 620px;
-
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-/* =========================================================
-   FORM
-========================================================= */
-
-.form-group {
-
-    width: 100%;
-
-    max-width: 620px;
-
-    margin: 0 auto;
+.gate-ornament {
 
     display: flex;
 
-    gap: 12px;
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    color:
+        #a27a3d;
+
 }
 
 
-.form-column {
+.gate-ornament span {
 
-    flex-direction: column;
+    width:
+        70px;
+
+    height:
+        1px;
+
+    background:
+        rgba(120, 88, 43, 0.45);
+
 }
 
 
 /* =========================================================
-   INPUT
+   SEAL LABEL
 ========================================================= */
 
-.form-group input {
+.seal-label {
 
-    flex: 1;
+    display: flex;
 
-    height: 58px;
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-bottom:
+        10px;
+
+    color:
+        #65482c;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        2px;
+
+}
+
+
+.seal-label span {
+
+    width:
+        55px;
+
+    height:
+        1px;
+
+    background:
+        rgba(120, 88, 43, 0.4);
+
+}
+
+
+/* =========================================================
+   GATE FORM
+========================================================= */
+
+.gate-form {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: stretch;
+
+    gap: 10px;
+
+}
+
+
+.gate-form input {
+
+    width:
+        min(430px, 60vw);
+
+    height:
+        58px;
 
     padding:
         0 20px;
 
     border:
-
         1px solid
-        #c7ae83;
+        #c4a77b;
 
-    border-radius: 11px;
-
-    outline: none;
+    border-radius:
+        10px;
 
     background:
         #fffaf0;
 
     color:
-        #422d1d;
+        #4a301d;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size: 18px;
+    font-size:
+        18px;
 
-    box-shadow:
+    outline:
+        none;
 
-        inset
-        0 2px 5px
-        rgba(70, 40, 15, 0.05);
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
 
-.form-group input:focus {
+.gate-form input:focus {
 
     border-color:
-        #9b6c2e;
+        #98703a;
 
     box-shadow:
-
         0 0 0 3px
-        rgba(155, 108, 46, 0.12);
+        rgba(152,112,58,0.12);
+
 }
 
 
-.form-group input::placeholder {
+.gate-form button {
 
-    color:
-        #a18c73;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.form-group button,
-.large-game-button {
-
-    height: 58px;
+    height:
+        58px;
 
     padding:
-        0 28px;
+        0 25px;
 
     border:
+        2px solid
+        #b9893e;
 
-        1px solid
-        #a87935;
-
-    border-radius: 11px;
+    border-radius:
+        10px;
 
     background:
-
         linear-gradient(
             180deg,
             #68482d,
-            #432817
+            #402717
         );
 
     color:
-        #fff3d4;
+        #fff0ce;
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    font-size: 17px;
+    font-size:
+        16px;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    cursor: pointer;
+    letter-spacing:
+        1px;
+
+    cursor:
+        pointer;
 
     box-shadow:
+        0 4px 0 #29180e;
 
-        0 4px 0
-        #2b1a10;
-
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
 }
 
 
-.form-group button:hover,
-.large-game-button:hover {
+.gate-form button:hover {
 
     filter:
         brightness(1.08);
 
-    transform:
-        translateY(-2px);
 }
 
 
-.form-group button:active,
-.large-game-button:active {
+.gate-form button:active {
 
     transform:
         translateY(2px);
 
     box-shadow:
-        0 2px 0 #2b1a10;
-}
+        0 2px 0 #29180e;
 
-
-/* =========================================================
-   LARGE BUTTON
-========================================================= */
-
-.large-game-button {
-
-    min-width: 280px;
-
-    margin-top: 10px;
 }
 
 
@@ -682,133 +774,205 @@ body {
 
 .error {
 
-    min-height: 24px;
+    min-height:
+        24px;
 
     margin:
         14px 0 0;
 
     color:
-        #9b3026;
-
-    font-size: 15px;
-}
-
-
-/* =========================================================
-   LORE
-========================================================= */
-
-.lore-card {
-
-    max-width: 760px;
-}
-
-
-.lore-text {
-
-    max-width: 580px;
-
-    margin:
-        0 auto 30px;
-
-    color: #624a32;
-
-    font-size: 18px;
-
-    line-height: 1.75;
-}
-
-
-.lore-text p {
-
-    margin:
-        0 0 14px;
-}
-
-
-/* =========================================================
-   GAME PANEL
-========================================================= */
-
-.game-panel {
-
-    width:
-        min(1000px, 94vw);
-
-    height:
-        min(760px, 90vh);
-
-    overflow-y: auto;
-
-    padding: 35px;
-
-    background:
-        rgba(250, 244, 230, 0.96);
-
-    border:
-        1px solid
-        rgba(126, 91, 46, 0.3);
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 18px 45px
-        rgba(68, 46, 25, 0.15);
-
-    scrollbar-width: thin;
-}
-
-
-/* =========================================================
-   GAME STATUS
-========================================================= */
-
-.game-status {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding-bottom: 15px;
-
-    border-bottom:
-        1px solid
-        rgba(126, 91, 46, 0.18);
-
-    color:
-        #76542e;
-
-    font-size: 15px;
-}
-
-
-.game-panel h2 {
-
-    margin:
-        28px 0 10px;
-
-    text-align: center;
-
-    color:
-        #4a2d1b;
+        #a2382d;
 
     font-size:
-        clamp(28px, 4vw, 42px);
+        15px;
+
 }
 
 
-.game-description {
+/* =========================================================
+   GATE FOOTER
+========================================================= */
 
-    text-align: center;
+.gate-footer {
+
+    margin-top:
+        28px;
 
     color:
-        #765c3e;
+        #806849;
 
-    font-size: 17px;
+    font-style:
+        italic;
 
-    margin-bottom: 30px;
+}
+
+
+/* =========================================================
+   OTHER GAME SCREENS
+========================================================= */
+
+#username-screen,
+#pin-setup-screen,
+#pin-login-screen,
+#welcome-screen,
+#lore-screen,
+#game-screen {
+
+    width:
+        100vw;
+
+    height:
+        100vh;
+
+    overflow:
+        hidden;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        30px;
+
+    background:
+        #f1e6cf;
+
+}
+
+
+#username-screen.hidden,
+#pin-setup-screen.hidden,
+#pin-login-screen.hidden,
+#welcome-screen.hidden,
+#lore-screen.hidden,
+#game-screen.hidden {
+
+    display:
+        none !important;
+
+}
+
+
+/* =========================================================
+   BASIC GAME CARD
+========================================================= */
+
+#username-screen > *,
+#pin-setup-screen > *,
+#pin-login-screen > *,
+#welcome-screen > *,
+#lore-screen > * {
+
+    max-width:
+        850px;
+
+}
+
+
+#username-screen h2,
+#pin-setup-screen h2,
+#pin-login-screen h2,
+#welcome-screen h2,
+#lore-screen h2 {
+
+    color:
+        #4c301d;
+
+}
+
+
+/* =========================================================
+   BASIC FORM GROUP
+========================================================= */
+
+.form-group {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        10px;
+
+}
+
+
+.form-group input {
+
+    height:
+        58px;
+
+    padding:
+        0 18px;
+
+    border:
+        1px solid #c4a77b;
+
+    border-radius:
+        10px;
+
+    background:
+        #fffaf0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        17px;
+
+}
+
+
+.form-group button {
+
+    height:
+        58px;
+
+    padding:
+        0 25px;
+
+    border:
+        1px solid #a87935;
+
+    border-radius:
+        10px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #68482d,
+            #432817
+        );
+
+    color:
+        #fff1d0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        16px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
 }
 
 
@@ -821,7 +985,9 @@ body {
 
     #intro-screen::before {
 
-        inset: 18px;
+        inset:
+            18px;
+
     }
 
 
@@ -829,75 +995,73 @@ body {
 
         transform:
             translateY(-1vh);
+
     }
 
 
     .intro-mascot {
 
         width:
-            min(78vw, 360px);
+            min(76vw, 360px);
 
-        max-height: 58vh;
+        max-height:
+            57vh;
+
     }
 
 
     .intro-enter-button {
 
-        width: 230px;
+        width:
+            245px;
 
-        height: 50px;
+        height:
+            52px;
 
-        font-size: 15px;
+        font-size:
+            15px;
+
     }
 
 
-    .screen-card {
+    .gate-form {
 
-        padding:
-            35px 22px;
+        flex-direction:
+            column;
+
     }
 
 
-    .screen-card h2 {
+    .gate-form input {
 
-        font-size: 30px;
+        width:
+            100%;
+
     }
 
 
-    .screen-subtitle {
+    .gate-form button {
 
-        font-size: 16px;
+        width:
+            100%;
+
     }
 
 
     .form-group {
 
-        flex-direction: column;
+        flex-direction:
+            column;
+
     }
 
 
     .form-group input,
     .form-group button {
 
-        width: 100%;
-    }
+        width:
+            100%;
 
-
-    .game-screen {
-
-        padding: 15px;
-    }
-
-
-    .game-panel {
-
-        padding: 22px;
-    }
-
-
-    .game-status {
-
-        font-size: 13px;
     }
 
 }
