@@ -17,31 +17,7 @@
         href="style.css"
     >
 
-
     <style>
-
-        /* =====================================================
-           RESET
-        ===================================================== */
-
-        html,
-        body {
-
-            margin: 0;
-            padding: 0;
-
-            width: 100%;
-            min-height: 100%;
-
-        }
-
-
-        body {
-
-            overflow-x: hidden;
-
-        }
-
 
         /* =====================================================
            OPENING SCREEN
@@ -60,16 +36,16 @@
 
             display: flex;
 
-            justify-content: center;
             align-items: center;
+            justify-content: center;
 
             background:
 
                 radial-gradient(
                     ellipse at center,
                     #fffdf5 0%,
-                    #f7efdf 48%,
-                    #ead9b9 100%
+                    #f8efdd 45%,
+                    #ead9b8 100%
                 );
 
             z-index: 99999;
@@ -91,7 +67,7 @@
 
             pointer-events: none;
 
-            opacity: 0.35;
+            opacity: 0.30;
 
             background:
 
@@ -133,7 +109,7 @@
 
             z-index: 2;
 
-            opacity: 0.13;
+            opacity: 0.14;
 
         }
 
@@ -147,7 +123,7 @@
 
 
         /* =====================================================
-           MAP EDGE
+           PARCHMENT BORDER
         ===================================================== */
 
         #intro-screen::after {
@@ -161,7 +137,7 @@
             border:
 
                 2px solid
-                rgba(116, 91, 54, 0.12);
+                rgba(116, 91, 54, 0.13);
 
             border-radius: 18px;
 
@@ -182,7 +158,7 @@
 
             z-index: 10;
 
-            width: min(88vw, 680px);
+            width: min(82vw, 680px);
 
             display: flex;
 
@@ -218,8 +194,8 @@
             filter:
 
                 drop-shadow(
-                    0 20px 18px
-                    rgba(64, 43, 20, 0.22)
+                    0 22px 20px
+                    rgba(64, 43, 20, 0.23)
                 );
 
             animation:
@@ -233,7 +209,7 @@
 
 
         /* =====================================================
-           MASCOT FLOATING
+           MASCOT FLOAT
         ===================================================== */
 
         @keyframes mascotFloat {
@@ -241,7 +217,7 @@
             0% {
 
                 transform:
-                    translateY(0px);
+                    translateY(0);
 
             }
 
@@ -255,7 +231,7 @@
             100% {
 
                 transform:
-                    translateY(0px);
+                    translateY(0);
 
             }
 
@@ -263,7 +239,7 @@
 
 
         /* =====================================================
-           STYLE 4 — RUSTIC BUTTON
+           STYLE 4 BUTTON
         ===================================================== */
 
         .intro-enter-button {
@@ -276,89 +252,83 @@
 
             justify-content: center;
 
-            gap: 13px;
+            gap: 12px;
 
             width: 300px;
 
-            min-height: 64px;
+            min-height: 62px;
 
-            margin-top: -4px;
+            margin-top: 8px;
 
             padding: 0 28px;
 
-            border-radius: 14px;
-
-
-            /* WOOD */
+            border-radius: 13px;
 
             background:
 
                 linear-gradient(
                     180deg,
-                    #63442a 0%,
-                    #4a2f1c 48%,
-                    #382217 100%
+                    #68482d 0%,
+                    #4c301d 50%,
+                    #382216 100%
                 );
-
-
-            /* GOLD BORDER */
 
             border:
 
                 3px solid
-                #b98a3e;
-
-
-            /* INNER GOLD LINE */
+                #b88a42;
 
             box-shadow:
 
-                inset 0 0 0 2px
-                rgba(225, 180, 91, 0.25),
+                inset
+                0 0 0 2px
+                rgba(231, 188, 99, 0.22),
 
-                inset 0 5px 8px
+                inset
+                0 5px 8px
                 rgba(255, 220, 130, 0.08),
 
-                0 7px 0
-                #291910,
+                0 6px 0
+                #281810,
 
-                0 13px 24px
+                0 12px 22px
                 rgba(70, 43, 19, 0.22);
 
-
-            color: #fff3d1;
+            color:
+                #fff1ce;
 
             font-family:
                 Georgia,
                 "Times New Roman",
                 serif;
 
-            font-size: 19px;
+            font-size:
+                18px;
 
-            font-weight: bold;
+            font-weight:
+                700;
 
-            letter-spacing: 1.5px;
+            letter-spacing:
+                1.5px;
 
-            cursor: pointer;
-
-            transition:
-
-                transform 0.18s ease,
-                filter 0.18s ease,
-                box-shadow 0.18s ease;
+            cursor:
+                pointer;
 
             animation:
-
                 buttonPulse
                 2.8s
                 ease-in-out
                 infinite;
 
+            transition:
+                filter 0.18s ease,
+                box-shadow 0.18s ease;
+
         }
 
 
         /* =====================================================
-           LITTLE GOLD CORNERS
+           DECORATIVE CORNERS
         ===================================================== */
 
         .intro-enter-button::before {
@@ -374,12 +344,13 @@
             height: 7px;
 
             border-top:
-                2px solid #d8ad57;
+                2px solid #d9ae5c;
 
             border-left:
-                2px solid #d8ad57;
+                2px solid #d9ae5c;
 
-            opacity: 0.8;
+            opacity:
+                0.85;
 
         }
 
@@ -397,25 +368,28 @@
             height: 7px;
 
             border-right:
-                2px solid #d8ad57;
+                2px solid #d9ae5c;
 
             border-bottom:
-                2px solid #d8ad57;
+                2px solid #d9ae5c;
 
-            opacity: 0.8;
+            opacity:
+                0.85;
 
         }
 
 
         /* =====================================================
-           LANTERN ICON
+           BUTTON ICON
         ===================================================== */
 
         .button-lantern {
 
-            font-size: 25px;
+            font-size:
+                23px;
 
-            line-height: 1;
+            line-height:
+                1;
 
             filter:
 
@@ -428,7 +402,7 @@
 
 
         /* =====================================================
-           BUTTON PULSE
+           BUTTON BREATHING EFFECT
         ===================================================== */
 
         @keyframes buttonPulse {
@@ -463,29 +437,26 @@
 
         .intro-enter-button:hover {
 
-            transform:
-                translateY(-2px)
-                scale(1.035);
-
             filter:
-                brightness(1.1);
+                brightness(1.10);
 
             box-shadow:
 
-                inset 0 0 0 2px
-                rgba(225, 180, 91, 0.35),
+                inset
+                0 0 0 2px
+                rgba(231, 188, 99, 0.35),
 
-                0 9px 0
-                #291910,
+                0 8px 0
+                #281810,
 
-                0 17px 28px
+                0 16px 28px
                 rgba(70, 43, 19, 0.28);
 
         }
 
 
         /* =====================================================
-           CLICK
+           ACTIVE
         ===================================================== */
 
         .intro-enter-button:active {
@@ -496,11 +467,12 @@
 
             box-shadow:
 
-                inset 0 0 0 2px
-                rgba(225, 180, 91, 0.25),
+                inset
+                0 0 0 2px
+                rgba(231, 188, 99, 0.25),
 
                 0 2px 0
-                #291910,
+                #281810,
 
                 0 5px 10px
                 rgba(70, 43, 19, 0.18);
@@ -509,14 +481,17 @@
 
 
         /* =====================================================
-           MAIN GAME
+           IMPORTANT
+           
+           JANGAN pakai display:none di sini.
+
+           app.js lu menggunakan:
+           .game-visible
+
+           untuk menampilkan main game.
         ===================================================== */
 
         #main-game {
-
-            display: none;
-
-            min-height: 100vh;
 
             position: relative;
 
@@ -533,39 +508,34 @@
 
             .intro-content {
 
-                width: 94vw;
-
-            }
-
-
-            .intro-mascot {
-
-                width: 100%;
+                width:
+                    94vw;
 
             }
 
 
             .intro-enter-button {
 
-                width: 245px;
+                width:
+                    245px;
 
-                min-height: 58px;
+                min-height:
+                    58px;
 
-                font-size: 16px;
-
-                margin-top: -2px;
+                font-size:
+                    16px;
 
             }
 
 
             .button-lantern {
 
-                font-size: 22px;
+                font-size:
+                    21px;
 
             }
 
         }
-
 
     </style>
 
@@ -576,7 +546,7 @@
 
 
 <!-- =====================================================
-     OPENING / MASCOT SCREEN
+     OPENING SCREEN
 ===================================================== -->
 
 <div id="intro-screen">
@@ -621,7 +591,7 @@
             />
 
 
-            <!-- RIVER LEFT -->
+            <!-- LEFT RIVER -->
 
             <path
                 d="
@@ -639,7 +609,7 @@
             />
 
 
-            <!-- RIVER RIGHT -->
+            <!-- RIGHT RIVER -->
 
             <path
                 d="
@@ -666,28 +636,58 @@
             >
 
                 <path
-                    d="M70 330 L140 210 L210 330 Z"
+                    d="
+                    M70 330
+                    L140 210
+                    L210 330
+                    Z
+                    "
                 />
 
                 <path
-                    d="M150 330 L230 180 L310 330 Z"
+                    d="
+                    M150 330
+                    L230 180
+                    L310 330
+                    Z
+                    "
                 />
 
                 <path
-                    d="M250 340 L330 220 L410 340 Z"
+                    d="
+                    M250 340
+                    L330 220
+                    L410 340
+                    Z
+                    "
                 />
 
 
                 <path
-                    d="M1000 330 L1080 190 L1160 330 Z"
+                    d="
+                    M1000 330
+                    L1080 190
+                    L1160 330
+                    Z
+                    "
                 />
 
                 <path
-                    d="M1100 330 L1190 160 L1280 330 Z"
+                    d="
+                    M1100 330
+                    L1190 160
+                    L1280 330
+                    Z
+                    "
                 />
 
                 <path
-                    d="M1200 340 L1270 220 L1340 340 Z"
+                    d="
+                    M1200 340
+                    L1270 220
+                    L1340 340
+                    Z
+                    "
                 />
 
             </g>
@@ -701,22 +701,86 @@
                 stroke-width="3"
             >
 
-                <path d="M90 620 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M90 620
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
-                <path d="M150 650 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M150 650
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
-                <path d="M210 625 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M210 625
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
-                <path d="M270 655 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M270 655
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
 
-                <path d="M1100 620 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M1100 620
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
-                <path d="M1160 650 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M1160 650
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
-                <path d="M1220 625 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M1220 625
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
-                <path d="M1280 655 l30 -50 l30 50 l-30 -12 Z"/>
+                <path
+                    d="
+                    M1280 655
+                    l30 -50
+                    l30 50
+                    l-30 -12
+                    Z
+                    "
+                />
 
             </g>
 
@@ -809,9 +873,13 @@
                 stroke-width="3"
             >
 
-                <circle r="150"/>
+                <circle
+                    r="150"
+                />
 
-                <circle r="125"/>
+                <circle
+                    r="125"
+                />
 
                 <path
                     d="
@@ -833,12 +901,14 @@
                     "
                 />
 
-                <circle r="15"/>
+                <circle
+                    r="15"
+                />
 
             </g>
 
 
-            <!-- MAP LABELS -->
+            <!-- LABELS -->
 
             <g
                 fill="#725b3c"
@@ -896,7 +966,7 @@
 
 
     <!-- =================================================
-         MASCOT + BUTTON
+         MASCOT
     ================================================== -->
 
     <div class="intro-content">
@@ -910,7 +980,7 @@
 
 
         <!-- =================================================
-             NEW ENTER BUTTON
+             STYLE 4 ENTER BUTTON
         ================================================== -->
 
         <button
@@ -919,9 +989,12 @@
             type="button"
         >
 
-            <span class="button-lantern">
+            <span
+                class="button-lantern"
+            >
                 🏮
             </span>
+
 
             <span>
                 CLICK HERE
@@ -949,11 +1022,14 @@
 
     <!-- HEADER -->
 
-    <header class="game-header">
+    <header
+        class="game-header"
+    >
 
         <h1>
             🎮 NPC
         </h1>
+
 
         <p>
             👤 Need Pamong Context
@@ -963,20 +1039,27 @@
 
 
 
-    <!-- ACCESS CODE -->
+    <!-- =================================================
+         ACCESS CODE
+    ================================================== -->
 
-    <section id="login-screen">
+    <section
+        id="login-screen"
+    >
 
         <h2>
             🔐 Enter Access Code
         </h2>
+
 
         <p>
             Masukkan access code untuk memulai permainan.
         </p>
 
 
-        <div class="form-group">
+        <div
+            class="form-group"
+        >
 
             <input
                 type="password"
@@ -1004,7 +1087,9 @@
 
 
 
-    <!-- USERNAME -->
+    <!-- =================================================
+         USERNAME
+    ================================================== -->
 
     <section
         id="username-screen"
@@ -1015,12 +1100,15 @@
             👤 Who Are You?
         </h2>
 
+
         <p>
             Buat username untuk menyimpan progress permainanmu.
         </p>
 
 
-        <div class="form-group">
+        <div
+            class="form-group"
+        >
 
             <input
                 type="text"
@@ -1049,7 +1137,9 @@
 
 
 
-    <!-- CREATE PIN -->
+    <!-- =================================================
+         CREATE PIN
+    ================================================== -->
 
     <section
         id="pin-setup-screen"
@@ -1060,13 +1150,15 @@
             🔐 Create Your PIN
         </h2>
 
+
         <p>
-            Buat PIN 4 angka untuk menyimpan dan melanjutkan
-            progressmu.
+            Buat PIN 4 angka untuk menyimpan dan melanjutkan progressmu.
         </p>
 
 
-        <div class="form-group">
+        <div
+            class="form-group"
+        >
 
             <input
                 type="password"
@@ -1106,7 +1198,9 @@
 
 
 
-    <!-- ENTER PIN -->
+    <!-- =================================================
+         ENTER PIN
+    ================================================== -->
 
     <section
         id="pin-login-screen"
@@ -1118,12 +1212,16 @@
         </h2>
 
 
-        <p id="pin-login-message">
+        <p
+            id="pin-login-message"
+        >
             Masukkan PIN untuk melanjutkan progressmu.
         </p>
 
 
-        <div class="form-group">
+        <div
+            class="form-group"
+        >
 
             <input
                 type="password"
@@ -1153,7 +1251,9 @@
 
 
 
-    <!-- WELCOME BACK -->
+    <!-- =================================================
+         WELCOME BACK
+    ================================================== -->
 
     <section
         id="welcome-screen"
@@ -1170,7 +1270,9 @@
         ></p>
 
 
-        <div class="button-group">
+        <div
+            class="button-group"
+        >
 
             <button
                 id="continue-button"
@@ -1184,7 +1286,9 @@
 
 
 
-    <!-- LORE -->
+    <!-- =================================================
+         LORE
+    ================================================== -->
 
     <section
         id="lore-screen"
@@ -1196,7 +1300,9 @@
         </h2>
 
 
-        <div class="lore-text">
+        <div
+            class="lore-text"
+        >
 
             <p>
                 You’ve probably seen them before.
@@ -1240,7 +1346,9 @@
 
 
 
-    <!-- GAME -->
+    <!-- =================================================
+         GAME
+    ================================================== -->
 
     <section
         id="game-screen"
@@ -1248,13 +1356,17 @@
     >
 
 
-        <div class="game-status">
+        <div
+            class="game-status"
+        >
 
             <span>
 
                 🟢
 
-                <strong id="milestone-label">
+                <strong
+                    id="milestone-label"
+                >
                     MILESTONE 1
                 </strong>
 
@@ -1273,7 +1385,9 @@
         </h2>
 
 
-        <p class="game-description">
+        <p
+            class="game-description"
+        >
             Kenali wajah, nama, dan konteks Pamong-mu.
         </p>
 
@@ -1281,7 +1395,6 @@
         <div
             id="pengasuh-container"
         ></div>
-
 
     </section>
 
@@ -1291,72 +1404,17 @@
 
 
 <!-- =====================================================
-     EXISTING APP.JS
+     APP.JS
+     
+     SATU-SATUNYA SCRIPT.
+     
+     JANGAN TAMBAHKAN SCRIPT OPENING LAIN
+     DI BAWAH INI.
 ===================================================== -->
 
-<script src="app.js"></script>
-
-
-
-<!-- =====================================================
-     OPENING BUTTON → MAIN GAME
-===================================================== -->
-
-<script>
-
-    const introScreen =
-        document.getElementById(
-            "intro-screen"
-        );
-
-
-    const introStartButton =
-        document.getElementById(
-            "intro-start-button"
-        );
-
-
-    const mainGame =
-        document.getElementById(
-            "main-game"
-        );
-
-
-    introStartButton.addEventListener(
-        "click",
-        function () {
-
-            introScreen.style.display =
-                "none";
-
-
-            mainGame.style.display =
-                "block";
-
-
-            const accessCode =
-                document.getElementById(
-                    "access-code"
-                );
-
-
-            if (accessCode) {
-
-                setTimeout(
-                    function () {
-
-                        accessCode.focus();
-
-                    },
-                    100
-                );
-
-            }
-
-        }
-    );
-
-</script>
+<script
+    src="app.js"
+></script>
 
 
 </body>
