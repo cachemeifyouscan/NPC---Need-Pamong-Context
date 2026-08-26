@@ -1,6 +1,6 @@
-/* =====================================================
+/* =========================================================
    GLOBAL
-===================================================== */
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -22,17 +22,24 @@ body {
         sans-serif;
 
     background:
-        #f8f1e5;
+        linear-gradient(
+            135deg,
+            #fffdf7 0%,
+            #f7f1e5 100%
+        );
 
     color: #222;
+
+    min-height: 100vh;
 
     overflow-x: hidden;
 }
 
 
-/* =====================================================
+/* =========================================================
    OPENING SCREEN
-===================================================== */
+   Ini yang muncul PALING PERTAMA
+========================================================= */
 
 #intro-screen {
 
@@ -40,27 +47,34 @@ body {
 
     inset: 0;
 
-    z-index: 9999;
+    width: 100%;
+    height: 100vh;
+
+    z-index: 99999;
 
     display: flex;
 
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
-
-    background: #f8f1e5;
+    background:
+        linear-gradient(
+            135deg,
+            #fffdf7 0%,
+            #f7f1e5 100%
+        );
 
     opacity: 1;
 
     visibility: visible;
 
     transition:
-        opacity 0.8s ease,
-        visibility 0.8s ease;
+        opacity 0.9s ease,
+        visibility 0.9s ease;
 }
 
 
-/* ketika opening selesai */
+/* Saat opening selesai */
 
 #intro-screen.intro-hidden {
 
@@ -72,11 +86,13 @@ body {
 }
 
 
-/* =====================================================
-   INTRO CONTENT
-===================================================== */
+/* =========================================================
+   OPENING CONTENT
+========================================================= */
 
 .intro-content {
+
+    width: min(90vw, 720px);
 
     display: flex;
 
@@ -86,100 +102,142 @@ body {
 
     justify-content: center;
 
-    width: min(90vw, 650px);
-
     text-align: center;
 
     animation:
-        mascotAppear 1s ease-out;
+        introAppear 1s ease-out;
 }
 
 
-/* =====================================================
+/* =========================================================
    MASCOT
-===================================================== */
+========================================================= */
 
 .intro-mascot {
 
     display: block;
 
-    width: min(72vw, 560px);
+    width: min(70vw, 520px);
+
+    max-width: 520px;
 
     max-height: 72vh;
 
+    height: auto;
+
     object-fit: contain;
 
-    /* penting: PNG transparan */
+    /*
+       Penting:
+       tidak ada background,
+       tidak ada border,
+       tidak ada box.
+    */
+
+    border: none;
 
     background: transparent;
 
     filter:
         drop-shadow(
-            0 18px 25px rgba(70, 45, 20, 0.16)
+            0 18px 30px
+            rgba(65, 45, 20, 0.18)
         );
 
     animation:
-        mascotFloat 3.5s ease-in-out infinite;
+        mascotFloat 3s ease-in-out infinite;
 }
 
 
-/* =====================================================
-   INTRO TEXT
-===================================================== */
+/* =========================================================
+   OPENING TEXT
+========================================================= */
 
 .intro-hint {
 
-    margin-top: -15px;
+    margin: 18px 0 0;
 
-    color: #8b7b68;
+    font-size: 20px;
 
-    font-size: 15px;
+    color: #82735f;
 
-    letter-spacing: 0.4px;
-
-    opacity: 0.9;
+    letter-spacing: 0.2px;
 
     animation:
-        hintFade 1.5s ease-in-out infinite alternate;
+        hintPulse 2s ease-in-out infinite;
 }
 
 
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
+/* =========================================================
+   MAIN GAME
+========================================================= */
 
-.game-container {
+#main-game {
 
-    width: min(100% - 40px, 850px);
+    width: 100%;
 
-    margin: 0 auto;
+    min-height: 100vh;
 
     padding:
         55px 20px 80px;
 
-    text-align: center;
+    opacity: 0;
 
-    opacity: 1;
+    visibility: hidden;
 
     transition:
-        opacity 0.5s ease;
+        opacity 0.8s ease,
+        visibility 0.8s ease;
 }
 
 
-/* =====================================================
+/*
+   Setelah opening selesai,
+   main game muncul.
+*/
+
+#main-game.game-visible {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* =========================================================
+   GAME CONTAINER
+========================================================= */
+
+.game-container {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+
+/* =========================================================
    HEADER
-===================================================== */
+========================================================= */
 
 .game-header {
 
-    margin-bottom: 70px;
+    margin-bottom: 75px;
 }
 
 .game-header h1 {
 
     margin: 0;
 
-    font-size: clamp(42px, 7vw, 64px);
+    font-size: clamp(
+        48px,
+        7vw,
+        72px
+    );
 
     font-weight: 800;
 
@@ -188,110 +246,123 @@ body {
 
 .game-header p {
 
-    margin-top: 8px;
+    margin:
+        12px 0 0;
 
-    font-size: clamp(20px, 3vw, 27px);
+    font-size: 25px;
 
     color: #333;
 }
 
 
-/* =====================================================
+/* =========================================================
    SECTIONS
-===================================================== */
+========================================================= */
 
 section {
 
+    width: 100%;
+
     animation:
-        sectionAppear 0.45s ease;
+        sectionAppear 0.5s ease;
 }
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
 
 section h2 {
 
-    font-size: clamp(30px, 5vw, 44px);
+    margin:
+        0 0 25px;
 
-    margin-bottom: 25px;
+    font-size: clamp(
+        32px,
+        5vw,
+        48px
+    );
+
+    font-weight: 700;
 }
 
 section > p {
 
-    font-size: 20px;
+    font-size: 21px;
 
     line-height: 1.6;
+
+    color: #333;
 
     margin-bottom: 35px;
 }
 
 
-/* =====================================================
-   HIDDEN
-===================================================== */
-
-.hidden {
-
-    display: none !important;
-}
-
-
-/* =====================================================
-   FORM
-===================================================== */
+/* =========================================================
+   FORMS
+========================================================= */
 
 .form-group {
 
     display: flex;
 
-    justify-content: center;
-
     align-items: center;
 
-    gap: 12px;
+    justify-content: center;
+
+    gap: 14px;
 
     flex-wrap: wrap;
+
+    margin-top: 30px;
 }
 
 
 input {
 
-    width: min(100%, 350px);
+    width: 390px;
+
+    max-width: 90vw;
 
     height: 62px;
 
-    padding: 0 20px;
+    padding:
+        0 20px;
 
     border:
-        1px solid #d3cec6;
+        1px solid #d0d0d0;
 
     border-radius: 14px;
 
     background: white;
 
-    font-size: 19px;
+    font-size: 20px;
 
     outline: none;
 
     transition:
-        border-color 0.2s ease,
+        border 0.2s ease,
         box-shadow 0.2s ease;
 }
 
 
 input:focus {
 
-    border-color: #49a447;
+    border-color: #4caf50;
 
     box-shadow:
-        0 0 0 4px rgba(73, 164, 71, 0.12);
+        0 0 0 4px
+        rgba(76, 175, 80, 0.12);
 }
 
 
-/* =====================================================
-   BUTTON
-===================================================== */
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 button {
 
-    height: 62px;
+    min-height: 62px;
 
     padding:
         0 28px;
@@ -300,236 +371,178 @@ button {
 
     border-radius: 14px;
 
-    background: #eeeeee;
+    background:
+        linear-gradient(
+            180deg,
+            #4caf50,
+            #3da447
+        );
 
-    color: #222;
+    color: white;
 
-    font-size: 19px;
+    font-size: 20px;
+
+    font-weight: 700;
 
     cursor: pointer;
+
+    box-shadow:
+        0 5px 0 #278537;
 
     transition:
         transform 0.15s ease,
         box-shadow 0.15s ease,
-        background 0.15s ease;
+        filter 0.15s ease;
 }
 
 
 button:hover {
 
-    transform: translateY(-2px);
+    filter: brightness(1.05);
+
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 8px 18px rgba(0, 0, 0, 0.10);
-
-    background: #e5e5e5;
+        0 7px 0 #278537;
 }
 
 
 button:active {
 
     transform:
-        translateY(0);
+        translateY(3px);
+
+    box-shadow:
+        0 2px 0 #278537;
 }
 
 
-/* =====================================================
-   GREEN ACTION BUTTON
-===================================================== */
+/* =========================================================
+   BUTTON GROUP
+========================================================= */
 
-#start-button,
-#username-button,
-#pin-button,
-#pin-login-button,
-#continue-button,
-#lore-button {
+.button-group {
 
-    background:
-        #43a047;
-
-    color:
-        white;
-
-    font-weight:
-        600;
+    margin-top: 35px;
 }
 
 
-#start-button:hover,
-#username-button:hover,
-#pin-button:hover,
-#pin-login-button:hover,
-#continue-button:hover,
-#lore-button:hover {
-
-    background:
-        #388e3c;
-}
-
-
-/* =====================================================
+/* =========================================================
    ERROR
-===================================================== */
+========================================================= */
 
 .error {
 
-    min-height: 25px;
+    min-height: 28px;
 
-    margin-top: 15px;
+    margin-top: 20px;
 
-    color: #c62828;
+    color: #d32f2f !important;
 
-    font-size: 16px;
+    font-size: 17px !important;
 }
 
 
-/* =====================================================
+/* =========================================================
    LORE
-===================================================== */
+========================================================= */
 
 .lore-text {
 
-    max-width: 650px;
+    max-width: 680px;
 
     margin:
         0 auto 35px;
 
-    font-size: 20px;
+    padding:
+        30px;
+
+    background:
+        rgba(255, 255, 255, 0.55);
+
+    border-radius: 18px;
 
     line-height: 1.7;
 
-    color: #4d463d;
+    font-size: 21px;
+
+    color: #403a32;
+}
+
+.lore-text p {
+
+    margin:
+        0 0 20px;
+}
+
+.lore-text p:last-child {
+
+    margin-bottom: 0;
 }
 
 
-.lore-text strong {
-
-    font-size: 24px;
-
-    color: #222;
-}
-
-
-/* =====================================================
+/* =========================================================
    GAME STATUS
-===================================================== */
+========================================================= */
 
 .game-status {
 
     display: flex;
 
-    justify-content: space-between;
-
     align-items: center;
 
-    margin-bottom: 30px;
+    justify-content: space-between;
 
-    padding: 15px 20px;
+    gap: 20px;
+
+    padding:
+        14px 20px;
+
+    margin-bottom: 35px;
+
+    background:
+        rgba(255,255,255,0.7);
 
     border-radius: 14px;
 
-    background:
-        rgba(67, 160, 71, 0.10);
-
     font-size: 17px;
+
+    color: #555;
 }
 
 
-/* =====================================================
+/* =========================================================
    GAME DESCRIPTION
-===================================================== */
+========================================================= */
 
 .game-description {
 
-    color: #666;
+    margin-top: -10px;
 
     margin-bottom: 35px;
+
+    color: #666;
 }
 
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+/* =========================================================
+   HIDDEN
+========================================================= */
 
-@media (max-width: 600px) {
+.hidden {
 
-    .game-container {
-
-        width:
-            min(100% - 25px, 850px);
-
-        padding-top: 35px;
-    }
-
-    .game-header {
-
-        margin-bottom: 45px;
-    }
-
-    .intro-mascot {
-
-        width: 88vw;
-
-        max-height: 70vh;
-    }
-
-    .intro-hint {
-
-        font-size: 13px;
-    }
-
-    .form-group {
-
-        flex-direction: column;
-    }
-
-    input,
-    button {
-
-        width: 100%;
-
-        max-width: 400px;
-    }
-
-    .game-status {
-
-        flex-direction: column;
-
-        gap: 8px;
-    }
+    display: none !important;
 }
 
 
-/* =====================================================
-   ANIMATIONS
-===================================================== */
-
-@keyframes mascotAppear {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            scale(0.88)
-            translateY(25px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            scale(1)
-            translateY(0);
-    }
-}
-
+/* =========================================================
+   MASCOT FLOAT ANIMATION
+========================================================= */
 
 @keyframes mascotFloat {
 
-    0%,
-    100% {
+    0% {
 
         transform:
             translateY(0);
@@ -540,22 +553,63 @@ button:active {
         transform:
             translateY(-10px);
     }
+
+    100% {
+
+        transform:
+            translateY(0);
+    }
 }
 
 
-@keyframes hintFade {
+/* =========================================================
+   INTRO APPEAR
+========================================================= */
 
-    from {
+@keyframes introAppear {
 
-        opacity: 0.45;
+    0% {
+
+        opacity: 0;
+
+        transform:
+            scale(0.94)
+            translateY(15px);
     }
 
-    to {
+    100% {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   HINT PULSE
+========================================================= */
+
+@keyframes hintPulse {
+
+    0%,
+    100% {
+
+        opacity: 0.55;
+    }
+
+    50% {
 
         opacity: 1;
     }
 }
 
+
+/* =========================================================
+   SECTION APPEAR
+========================================================= */
 
 @keyframes sectionAppear {
 
@@ -564,7 +618,7 @@ button:active {
         opacity: 0;
 
         transform:
-            translateY(12px);
+            translateY(15px);
     }
 
     to {
@@ -573,5 +627,114 @@ button:active {
 
         transform:
             translateY(0);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #main-game {
+
+        padding:
+            35px 16px 60px;
+    }
+
+
+    .game-header {
+
+        margin-bottom: 50px;
+    }
+
+
+    .game-header h1 {
+
+        font-size: 48px;
+    }
+
+
+    .game-header p {
+
+        font-size: 19px;
+    }
+
+
+    section h2 {
+
+        font-size: 32px;
+    }
+
+
+    section > p {
+
+        font-size: 17px;
+    }
+
+
+    .intro-mascot {
+
+        width: 88vw;
+
+        max-height: 65vh;
+    }
+
+
+    .intro-hint {
+
+        font-size: 16px;
+    }
+
+
+    .form-group {
+
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+
+    input {
+
+        width: 100%;
+
+        max-width: 400px;
+    }
+
+
+    button {
+
+        width: 100%;
+
+        max-width: 400px;
+    }
+
+
+    .game-status {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
     }
 }
