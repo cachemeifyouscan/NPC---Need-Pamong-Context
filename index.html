@@ -1,10 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>NPC — Need Pamong Context</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
 <!-- =====================================================
      OPENING SCREEN
 ===================================================== -->
 
 <div id="intro-screen">
 
-    <!-- ================= MAP BACKGROUND ================= -->
+
+    <!-- =================================================
+         MAP BACKGROUND
+    ================================================== -->
 
     <div class="map-decoration">
 
@@ -14,7 +42,7 @@
             xmlns="http://www.w3.org/2000/svg"
         >
 
-            <!-- MAP BORDER -->
+            <!-- BORDER -->
 
             <rect
                 x="20"
@@ -25,11 +53,10 @@
                 fill="none"
                 stroke="#806943"
                 stroke-width="3"
-                opacity="0.55"
             />
 
 
-            <!-- NORTH LABEL -->
+            <!-- MAP LABELS -->
 
             <text
                 x="700"
@@ -41,8 +68,6 @@
             </text>
 
 
-            <!-- WESTERN WOODS -->
-
             <text
                 x="175"
                 y="180"
@@ -51,8 +76,6 @@
                 WESTERN WOODS
             </text>
 
-
-            <!-- NORTHERN PEAKS -->
 
             <text
                 x="1080"
@@ -63,8 +86,6 @@
             </text>
 
 
-            <!-- NORTH WEST -->
-
             <text
                 x="120"
                 y="90"
@@ -74,8 +95,6 @@
             </text>
 
 
-            <!-- EAST -->
-
             <text
                 x="1270"
                 y="450"
@@ -84,8 +103,6 @@
                 EAST
             </text>
 
-
-            <!-- SOUTH -->
 
             <text
                 x="700"
@@ -97,62 +114,40 @@
             </text>
 
 
-            <!-- ================= RIVERS ================= -->
+            <!-- LEFT RIVER -->
 
             <path
                 d="
-                M 170 0
-                C 230 100,
-                  190 180,
-                  270 270
-
-                C 340 350,
-                  260 440,
-                  340 530
-
-                C 420 620,
-                  350 710,
-                  430 900
+                    M170 0
+                    C230 100 190 180 270 270
+                    C340 350 260 440 340 530
+                    C420 620 350 710 430 900
                 "
                 class="map-river"
             />
 
 
+            <!-- RIGHT RIVER -->
+
             <path
                 d="
-                M 1230 0
-                C 1170 100,
-                  1210 180,
-                  1130 270
-
-                C 1060 350,
-                  1140 440,
-                  1060 530
-
-                C 980 620,
-                  1050 710,
-                  970 900
+                    M1230 0
+                    C1170 100 1210 180 1130 270
+                    C1060 350 1140 440 1060 530
+                    C980 620 1050 710 970 900
                 "
                 class="map-river"
             />
 
 
-            <!-- ================= ROADS ================= -->
+            <!-- ROAD -->
 
             <path
                 d="
-                M 80 680
-                C 250 580,
-                  390 650,
-                  530 570
-
-                C 670 490,
-                  760 500,
-                  900 560
-
-                C 1060 630,
-                  1190 560,
-                  1320 680
+                    M80 680
+                    C250 580 390 650 530 570
+                    C670 490 760 500 900 560
+                    C1060 630 1190 560 1320 680
                 "
                 class="map-road"
             />
@@ -160,42 +155,41 @@
 
             <path
                 d="
-                M 160 200
-                C 330 280,
-                  450 350,
-                  620 365
-
-                C 790 380,
-                  970 300,
-                  1240 190
+                    M160 200
+                    C330 280 450 350 620 365
+                    C790 380 970 300 1240 190
                 "
                 class="map-road"
             />
 
 
-            <!-- ================= WESTERN MOUNTAINS ================= -->
+            <!-- WESTERN MOUNTAINS -->
 
             <g class="map-mountains">
 
                 <path d="M70 350 L145 210 L220 350 Z"/>
+
                 <path d="M180 350 L270 170 L360 350 Z"/>
+
                 <path d="M300 350 L375 225 L450 350 Z"/>
 
             </g>
 
 
-            <!-- ================= NORTHERN PEAKS ================= -->
+            <!-- NORTHERN PEAKS -->
 
             <g class="map-mountains">
 
                 <path d="M960 350 L1040 190 L1120 350 Z"/>
+
                 <path d="M1080 350 L1170 150 L1260 350 Z"/>
+
                 <path d="M1200 350 L1270 220 L1340 350 Z"/>
 
             </g>
 
 
-            <!-- ================= FOREST LEFT ================= -->
+            <!-- WESTERN WOODS -->
 
             <g class="map-forest">
 
@@ -208,7 +202,7 @@
             </g>
 
 
-            <!-- ================= FOREST RIGHT ================= -->
+            <!-- EASTERN WOODS -->
 
             <g class="map-forest">
 
@@ -221,7 +215,7 @@
             </g>
 
 
-            <!-- ================= CASTLE LEFT ================= -->
+            <!-- CASTLE LEFT -->
 
             <g class="map-castle">
 
@@ -234,10 +228,10 @@
 
                 <path
                     d="
-                    M85 400
-                    L140 325
-                    L195 400
-                    Z
+                        M85 400
+                        L140 325
+                        L195 400
+                        Z
                     "
                 />
 
@@ -251,7 +245,7 @@
             </g>
 
 
-            <!-- ================= CASTLE RIGHT ================= -->
+            <!-- CASTLE RIGHT -->
 
             <g class="map-castle">
 
@@ -264,10 +258,10 @@
 
                 <path
                     d="
-                    M1205 400
-                    L1260 325
-                    L1315 400
-                    Z
+                        M1205 400
+                        L1260 325
+                        L1315 400
+                        Z
                     "
                 />
 
@@ -281,44 +275,39 @@
             </g>
 
 
-            <!-- ================= COMPASS ================= -->
+            <!-- COMPASS -->
 
             <g
                 transform="translate(700 450)"
                 class="map-compass"
             >
 
-                <circle
-                    r="82"
-                />
+                <circle r="82"/>
 
-                <circle
-                    r="67"
-                />
+                <circle r="67"/>
 
                 <path
                     d="
-                    M0 -75
-                    L15 0
-                    L0 75
-                    L-15 0
-                    Z
+                        M0 -75
+                        L15 0
+                        L0 75
+                        L-15 0
+                        Z
                     "
                 />
 
                 <path
                     d="
-                    M-75 0
-                    L0 15
-                    L75 0
-                    L0 -15
-                    Z
+                        M-75 0
+                        L0 15
+                        L75 0
+                        L0 -15
+                        Z
                     "
                 />
 
-                <circle
-                    r="7"
-                />
+                <circle r="7"/>
+
 
                 <text
                     x="0"
@@ -328,6 +317,7 @@
                     N
                 </text>
 
+
                 <text
                     x="0"
                     y="112"
@@ -336,6 +326,7 @@
                     S
                 </text>
 
+
                 <text
                     x="-100"
                     y="6"
@@ -343,6 +334,7 @@
                 >
                     W
                 </text>
+
 
                 <text
                     x="100"
@@ -359,7 +351,9 @@
     </div>
 
 
-    <!-- ================= MASCOT ================= -->
+    <!-- =================================================
+         MASCOT
+    ================================================== -->
 
     <div class="intro-content">
 
@@ -370,14 +364,377 @@
         >
 
 
-        <!-- BUTTON VISUAL -->
+        <!-- TRANSPARENT CLICK HITBOX -->
+
         <button
             id="intro-start-button"
             type="button"
-        >
-            CLICK HERE
-        </button>
+            aria-label="Enter the game"
+        ></button>
 
     </div>
 
 </div>
+
+
+
+<!-- =====================================================
+     MAIN GAME
+===================================================== -->
+
+<main id="main-game">
+
+
+    <!-- HEADER -->
+
+    <header class="game-header">
+
+        <h1>
+            🎮 NPC
+        </h1>
+
+        <p>
+            👤 Need Pamong Context
+        </p>
+
+    </header>
+
+
+
+    <!-- =================================================
+         ACCESS CODE
+    ================================================== -->
+
+    <section id="login-screen">
+
+        <h2>
+            🔐 The Gate Awaits
+        </h2>
+
+        <p>
+            A sealed passage awaits those who know the way.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="access-code"
+                placeholder="Enter your seal..."
+                autocomplete="off"
+            >
+
+
+            <button
+                id="start-button"
+                type="button"
+            >
+                🔓 Unlock Gate
+            </button>
+
+        </div>
+
+
+        <p
+            id="error-message"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         USERNAME
+    ================================================== -->
+
+    <section
+        id="username-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👤 Who Are You?
+        </h2>
+
+        <p>
+            Buat username untuk menyimpan progress permainanmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                maxlength="20"
+                autocomplete="off"
+            >
+
+
+            <button
+                id="username-button"
+                type="button"
+            >
+                ✨ Continue
+            </button>
+
+        </div>
+
+
+        <p
+            id="username-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CREATE PIN
+    ================================================== -->
+
+    <section
+        id="pin-setup-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔐 Create Your PIN
+        </h2>
+
+        <p>
+            Buat PIN 4 angka untuk menyimpan dan melanjutkan
+            progressmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+
+            <input
+                type="password"
+                id="pin-confirm-input"
+                placeholder="Confirm PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="new-password"
+            >
+
+
+            <button
+                id="pin-button"
+                type="button"
+            >
+                🔐 Save PIN
+            </button>
+
+        </div>
+
+
+        <p
+            id="pin-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PIN LOGIN
+    ================================================== -->
+
+    <section
+        id="pin-login-screen"
+        class="hidden"
+    >
+
+        <h2>
+            🔑 Welcome Back
+        </h2>
+
+        <p id="pin-login-message">
+            Masukkan PIN untuk melanjutkan progressmu.
+        </p>
+
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="login-pin-input"
+                placeholder="4-digit PIN"
+                inputmode="numeric"
+                maxlength="4"
+                autocomplete="current-password"
+            >
+
+
+            <button
+                id="pin-login-button"
+                type="button"
+            >
+                ▶️ Continue
+            </button>
+
+        </div>
+
+
+        <p
+            id="pin-login-error"
+            class="error"
+        ></p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WELCOME BACK
+    ================================================== -->
+
+    <section
+        id="welcome-screen"
+        class="hidden"
+    >
+
+        <h2>
+            👋 Welcome Back
+        </h2>
+
+        <p id="welcome-message"></p>
+
+
+        <div class="button-group">
+
+            <button
+                id="continue-button"
+                type="button"
+            >
+                ▶️ Continue
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         LORE
+    ================================================== -->
+
+    <section
+        id="lore-screen"
+        class="hidden"
+    >
+
+        <h2>
+            📖 Before We Begin
+        </h2>
+
+
+        <div class="lore-text">
+
+            <p>
+                You’ve probably seen them before.
+            </p>
+
+            <p>
+                You know the faces.
+                Maybe even the names.
+            </p>
+
+            <p>
+                But when you actually need to call them...
+            </p>
+
+            <p>
+
+                <strong>
+                    “Wait... who are they again?”
+                </strong>
+
+            </p>
+
+            <p>
+                NPC — Need Pamong Context is here to fix that.
+            </p>
+
+        </div>
+
+
+        <button
+            id="lore-button"
+            type="button"
+        >
+            🎮 Let's Go
+        </button>
+
+    </section>
+
+
+
+    <!-- =================================================
+         GAME
+    ================================================== -->
+
+    <section
+        id="game-screen"
+        class="hidden"
+    >
+
+        <div class="game-status">
+
+            <span>
+
+                🟢
+
+                <strong id="milestone-label">
+                    MILESTONE 1
+                </strong>
+
+            </span>
+
+
+            <span id="player-label"></span>
+
+        </div>
+
+
+        <h2>
+            🧑‍🤝‍🧑 Meet Your Pamong
+        </h2>
+
+
+        <p class="game-description">
+            Kenali wajah, nama, dan konteks Pamong-mu.
+        </p>
+
+
+        <div id="pengasuh-container"></div>
+
+    </section>
+
+
+</main>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
