@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Gate Awaits</title>
+<title>NPC — Need Pamong Context</title>
 
-<!-- Medieval / Old Manuscript Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
@@ -17,83 +16,409 @@
    RESET
 ========================================================= */
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
 html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+button,
+input{
+    font:inherit;
 }
 
 
 /* =========================================================
-   MAIN SCREEN
+   OPENING SCREEN
 ========================================================= */
 
-#gate-screen {
+#intro-screen{
 
-    position: fixed;
-    inset: 0;
+    position:fixed;
+    inset:0;
 
-    width: 100vw;
-    height: 100vh;
+    width:100vw;
+    height:100vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow:hidden;
 
-    padding: 35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     background:
+
+        radial-gradient(
+            circle at 50% 48%,
+            rgba(255,249,222,.96),
+            rgba(235,215,174,.98) 62%,
+            #c8a66c 100%
+        );
+
+    z-index:100000;
+
+    transition:
+        opacity .7s ease,
+        visibility .7s ease;
+}
+
+#intro-screen.hide{
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   OLD MAP BACKGROUND
+========================================================= */
+
+.intro-map{
+
+    position:absolute;
+    inset:0;
+
+    opacity:.38;
+
+    pointer-events:none;
+}
+
+.intro-map svg{
+
+    width:100%;
+    height:100%;
+}
+
+
+/* map labels */
+
+.map-label{
+
+    fill:#71512b;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    letter-spacing:4px;
+
+    font-size:19px;
+}
+
+.map-title{
+
+    font-size:29px;
+
+    font-weight:bold;
+
+    letter-spacing:8px;
+}
+
+
+/* =========================================================
+   MAP TEXTURES
+========================================================= */
+
+#intro-screen::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+
+        repeating-linear-gradient(
+            0deg,
+            rgba(72,43,15,.025) 0 1px,
+            transparent 1px 5px
+        ),
+
+        radial-gradient(
+            ellipse at center,
+            transparent 40%,
+            rgba(65,38,13,.27) 100%
+        );
+}
+
+
+/* =========================================================
+   INTRO CONTENT
+========================================================= */
+
+.intro-content{
+
+    position:relative;
+
+    z-index:10;
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+}
+
+
+/* =========================================================
+   MASCOT
+========================================================= */
+
+.intro-mascot{
+
+    position:absolute;
+
+    width:min(520px,54vw);
+
+    max-height:67vh;
+
+    object-fit:contain;
+
+    user-select:none;
+
+    -webkit-user-drag:none;
+
+    filter:
+
+        drop-shadow(
+            0 18px 18px
+            rgba(60,38,14,.20)
+        );
+
+    animation:
+
+        mascotFloat
+        4.5s
+        ease-in-out
+        infinite;
+}
+
+
+@keyframes mascotFloat{
+
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-11px);
+    }
+
+}
+
+
+/* =========================================================
+   CLICK HERE
+========================================================= */
+
+#intro-start-button{
+
+    position:absolute;
+
+    left:50%;
+
+    /*
+       Sedikit naik supaya dekat mascot
+       tapi tidak menutupi tombol bawaan mascot.
+    */
+
+    bottom:13%;
+
+    transform:translateX(-50%);
+
+    width:230px;
+    height:58px;
+
+    border:0;
+
+    background:transparent;
+
+    cursor:pointer;
+
+    z-index:20;
+
+    color:transparent;
+}
+
+
+/*
+   Visual button
+*/
+
+#intro-start-button::before{
+
+    content:"CLICK HERE";
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:
+
+        2px solid
+        #6d4724;
+
+    border-radius:6px;
+
+    background:
+
+        repeating-linear-gradient(
+            8deg,
+            rgba(255,220,145,.08) 0 2px,
+            rgba(45,23,8,.08) 3px 7px
+        ),
+
+        linear-gradient(
+            #80552d,
+            #60391e
+        );
+
+    color:#f6dfad;
+
+    font-family:
+        Cinzel,
+        Georgia,
+        serif;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    text-shadow:
+        1px 1px 0 #2c1709;
+
+    box-shadow:
+
+        inset
+        0 2px 0
+        rgba(255,226,164,.25),
+
+        0 4px 0
+        #2c180b,
+
+        0 10px 18px
+        rgba(55,32,11,.20);
+
+    transition:
+
+        transform .15s ease,
+        filter .15s ease;
+}
+
+
+#intro-start-button::after{
+
+    content:"✦";
+
+    position:absolute;
+
+    right:20px;
+
+    color:#e0b65b;
+
+    font-size:16px;
+}
+
+
+#intro-start-button:hover::before{
+
+    filter:brightness(1.12);
+
+    transform:translateY(-2px);
+}
+
+
+#intro-start-button:active::before{
+
+    transform:translateY(3px);
+}
+
+
+/* =========================================================
+   GATE SCREEN
+========================================================= */
+
+#gate-screen{
+
+    position:fixed;
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    padding:35px;
+
+    background:
+
         radial-gradient(
             circle at 50% 45%,
-            rgba(255,247,215,0.95) 0%,
-            rgba(236,214,170,0.98) 72%,
+            rgba(255,247,215,.95) 0%,
+            rgba(236,214,170,.98) 72%,
             rgba(186,145,82,1) 100%
         );
 
-    z-index: 99999;
+    overflow:hidden;
 
-    font-family: Georgia, "Times New Roman", serif;
-
-    overflow: hidden;
+    z-index:99999;
 }
 
 
 /* =========================================================
-   OLD PARCHMENT
+   PARCHMENT
 ========================================================= */
 
-.parchment {
+.parchment{
 
-    position: relative;
+    position:relative;
 
-    width: min(1100px, 92vw);
-    height: min(720px, 88vh);
+    width:min(1100px,92vw);
 
-    padding: 70px 90px;
+    height:min(720px,88vh);
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding:70px 90px;
 
-    text-align: center;
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
 
     background:
 
-        /* parchment fibers */
         repeating-linear-gradient(
             0deg,
-            rgba(90,55,20,0.025) 0px,
-            rgba(90,55,20,0.025) 1px,
-            transparent 1px,
-            transparent 5px
+            rgba(90,55,20,.025) 0 1px,
+            transparent 1px 5px
         ),
 
         radial-gradient(
@@ -102,92 +427,102 @@ body {
             #ead2a0 100%
         );
 
-    border: 2px solid #9b7138;
+    border:2px solid #9b7138;
 
     box-shadow:
-        0 18px 45px rgba(65,42,20,0.30),
-        inset 0 0 45px rgba(100,65,20,0.18),
-        inset 0 0 8px rgba(70,40,15,0.35);
 
-    overflow: hidden;
+        0 18px 45px
+        rgba(65,42,20,.30),
+
+        inset
+        0 0 45px
+        rgba(100,65,20,.18),
+
+        inset
+        0 0 8px
+        rgba(70,40,15,.35);
+
+    overflow:hidden;
+}
+
+
+.parchment::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:9px;
+
+    border:
+        1px solid
+        rgba(102,70,32,.55);
+
+    pointer-events:none;
+}
+
+
+.parchment::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:20px;
+
+    border:
+        1px solid
+        rgba(130,91,43,.25);
+
+    pointer-events:none;
 }
 
 
 /* =========================================================
-   PARCHMENT AGED EDGES
+   CORNER ORNAMENTS
 ========================================================= */
 
-.parchment::before {
+.corner{
 
-    content: "";
+    position:absolute;
 
-    position: absolute;
-    inset: 9px;
+    width:80px;
+    height:80px;
 
-    border: 1px solid rgba(102,70,32,0.55);
+    color:#775124;
 
-    pointer-events: none;
+    opacity:.72;
+
+    font-family:Georgia,serif;
+
+    font-size:55px;
+
+    line-height:1;
+
+    pointer-events:none;
 }
 
-
-.parchment::after {
-
-    content: "";
-
-    position: absolute;
-    inset: 20px;
-
-    border: 1px solid rgba(130,91,43,0.25);
-
-    pointer-events: none;
+.corner.tl{
+    top:24px;
+    left:28px;
 }
 
-
-/* =========================================================
-   ORNAMENTS
-========================================================= */
-
-.corner {
-
-    position: absolute;
-
-    width: 80px;
-    height: 80px;
-
-    color: #775124;
-
-    opacity: 0.72;
-
-    font-family: Georgia, serif;
-
-    font-size: 55px;
-
-    line-height: 1;
-
-    pointer-events: none;
+.corner.tr{
+    top:24px;
+    right:28px;
+    transform:scaleX(-1);
 }
 
-.corner.tl {
-    top: 24px;
-    left: 28px;
+.corner.bl{
+    bottom:24px;
+    left:28px;
+    transform:scaleY(-1);
 }
 
-.corner.tr {
-    top: 24px;
-    right: 28px;
-    transform: scaleX(-1);
-}
-
-.corner.bl {
-    bottom: 24px;
-    left: 28px;
-    transform: scaleY(-1);
-}
-
-.corner.br {
-    bottom: 24px;
-    right: 28px;
-    transform: scale(-1);
+.corner.br{
+    bottom:24px;
+    right:28px;
+    transform:scale(-1);
 }
 
 
@@ -195,34 +530,34 @@ body {
    TOP ORNAMENT
 ========================================================= */
 
-.top-ornament {
+.top-ornament{
 
-    position: absolute;
+    position:absolute;
 
-    top: 38px;
-    left: 50%;
+    top:38px;
+    left:50%;
 
-    transform: translateX(-50%);
+    transform:translateX(-50%);
 
-    width: 360px;
+    width:360px;
 
-    color: #765025;
+    color:#765025;
 
-    font-size: 25px;
+    font-size:25px;
 
-    letter-spacing: 8px;
+    letter-spacing:8px;
 
-    opacity: 0.7;
+    opacity:.7;
 }
 
 .top-ornament::before,
-.top-ornament::after {
+.top-ornament::after{
 
-    content: "──────";
+    content:"──────";
 
-    margin: 0 10px;
+    margin:0 10px;
 
-    letter-spacing: 0;
+    letter-spacing:0;
 }
 
 
@@ -230,135 +565,115 @@ body {
    COMPASS
 ========================================================= */
 
-.compass {
+.compass{
 
-    position: absolute;
+    position:absolute;
 
-    top: 45px;
-    right: 55px;
+    top:45px;
+    right:55px;
 
-    width: 80px;
-    height: 80px;
+    width:80px;
+    height:80px;
 
-    border: 2px solid rgba(103,72,35,0.45);
+    border:
+        2px solid
+        rgba(103,72,35,.45);
 
-    border-radius: 50%;
+    border-radius:50%;
 
-    opacity: 0.55;
+    opacity:.55;
 
-    transform: rotate(12deg);
+    transform:rotate(12deg);
 }
 
-.compass::before {
+.compass::before{
 
-    content: "";
+    content:"";
 
-    position: absolute;
+    position:absolute;
 
-    left: 50%;
-    top: 8px;
+    left:50%;
+    top:8px;
 
-    width: 2px;
-    height: 62px;
+    width:2px;
+    height:62px;
 
-    background: #765025;
+    background:#765025;
 
-    transform: translateX(-50%) rotate(45deg);
+    transform:
+        translateX(-50%)
+        rotate(45deg);
 }
 
-.compass::after {
+.compass::after{
 
-    content: "N";
+    content:"N";
 
-    position: absolute;
+    position:absolute;
 
-    top: -24px;
-    left: 50%;
+    top:-24px;
+    left:50%;
 
-    transform: translateX(-50%);
+    transform:translateX(-50%);
 
-    font-family: Cinzel, serif;
+    font-family:Cinzel,serif;
 
-    font-size: 13px;
+    font-size:13px;
 
-    font-weight: 700;
+    font-weight:700;
 
-    color: #765025;
-}
-
-
-/* =========================================================
-   TITLE
-========================================================= */
-
-.gate-title {
-
-    position: relative;
-
-    margin: 0;
-
-    color: #3f2818;
-
-    font-family: "UnifrakturCook", "Times New Roman", serif;
-
-    font-size: clamp(50px, 6vw, 78px);
-
-    line-height: 1;
-
-    letter-spacing: 1px;
-
-    text-shadow:
-        1px 1px 0 #d9b979,
-        2px 2px 3px rgba(50,30,10,0.20);
-
-    z-index: 2;
+    color:#765025;
 }
 
 
 /* =========================================================
-   KEY
+   ANTIQUE KEY
 ========================================================= */
 
-.key-wrapper {
+.key-wrapper{
 
-    position: absolute;
+    position:absolute;
 
-    left: 85px;
-    top: 50%;
+    left:85px;
+    top:50%;
 
     transform:
         translateY(-50%)
         rotate(-18deg);
 
-    width: 95px;
-    height: 245px;
+    width:95px;
+    height:245px;
 
-    opacity: 0.9;
+    opacity:.9;
 
     filter:
-        drop-shadow(4px 7px 4px rgba(55,30,10,0.25));
+        drop-shadow(
+            4px 7px 4px
+            rgba(55,30,10,.25)
+        );
 
-    pointer-events: none;
+    pointer-events:none;
 }
 
 
-/* key head */
+.key-head{
 
-.key-head {
+    position:absolute;
 
-    position: absolute;
+    top:0;
+    left:12px;
 
-    top: 0;
-    left: 12px;
+    width:70px;
+    height:70px;
 
-    width: 70px;
-    height: 70px;
+    border:
+        7px solid
+        #9a6a24;
 
-    border: 7px solid #9a6a24;
-
-    border-radius: 50%;
+    border-radius:50%;
 
     background:
+
         radial-gradient(
             circle,
             #e1b95b 0%,
@@ -367,46 +682,51 @@ body {
         );
 
     box-shadow:
-        inset 3px 3px 5px rgba(255,220,120,0.5),
-        inset -4px -4px 7px rgba(50,25,5,0.35);
+
+        inset
+        3px 3px 5px
+        rgba(255,220,120,.5),
+
+        inset
+        -4px -4px 7px
+        rgba(50,25,5,.35);
 }
 
 
-/* key hole */
+.key-head::after{
 
-.key-head::after {
+    content:"";
 
-    content: "";
+    position:absolute;
 
-    position: absolute;
+    left:50%;
+    top:50%;
 
-    left: 50%;
-    top: 50%;
+    width:13px;
+    height:25px;
 
-    width: 13px;
-    height: 25px;
+    transform:
+        translate(-50%,-50%);
 
-    transform: translate(-50%, -50%);
+    background:#5a3815;
 
-    background: #5a3815;
-
-    border-radius: 50% 50% 45% 45%;
+    border-radius:
+        50% 50% 45% 45%;
 }
 
 
-/* key shaft */
+.key-shaft{
 
-.key-shaft {
+    position:absolute;
 
-    position: absolute;
+    top:57px;
+    left:39px;
 
-    top: 57px;
-    left: 39px;
-
-    width: 18px;
-    height: 145px;
+    width:18px;
+    height:145px;
 
     background:
+
         linear-gradient(
             90deg,
             #684316,
@@ -416,27 +736,31 @@ body {
             #674116
         );
 
-    border-radius: 7px;
+    border-radius:7px;
 
     box-shadow:
-        inset 1px 0 rgba(255,240,170,0.5),
-        3px 3px 5px rgba(60,30,5,0.25);
+
+        inset
+        1px 0
+        rgba(255,240,170,.5),
+
+        3px 3px 5px
+        rgba(60,30,5,.25);
 }
 
 
-/* key teeth */
+.key-teeth{
 
-.key-teeth {
+    position:absolute;
 
-    position: absolute;
+    bottom:5px;
+    left:32px;
 
-    bottom: 5px;
-    left: 32px;
-
-    width: 38px;
-    height: 45px;
+    width:38px;
+    height:45px;
 
     background:
+
         linear-gradient(
             90deg,
             #704817 0%,
@@ -444,7 +768,7 @@ body {
             #80531b 100%
         );
 
-    clip-path: polygon(
+    clip-path:polygon(
         0 0,
         100% 0,
         100% 20%,
@@ -460,51 +784,85 @@ body {
 
 
 /* =========================================================
-   SUBTITLE
+   GATE TITLE
 ========================================================= */
 
-.subtitle {
+.gate-title{
 
-    margin-top: 22px;
-    margin-bottom: 38px;
+    position:relative;
 
-    color: #5b4128;
+    margin:0;
 
-    font-family: Georgia, serif;
+    color:#3f2818;
 
-    font-size: 20px;
+    font-family:
+        "UnifrakturCook",
+        "Times New Roman",
+        serif;
 
-    font-style: italic;
+    font-size:
+        clamp(50px,6vw,78px);
 
-    letter-spacing: 0.4px;
+    line-height:1;
+
+    text-shadow:
+
+        1px 1px 0 #d9b979,
+
+        2px 2px 3px
+        rgba(50,30,10,.20);
+
+    z-index:2;
 }
 
 
 /* =========================================================
-   LABEL
+   SUBTITLE
 ========================================================= */
 
-.seal-label {
+.subtitle{
 
-    margin-bottom: 12px;
+    margin-top:22px;
+    margin-bottom:38px;
 
-    color: #3e2818;
+    color:#5b4128;
 
-    font-family: Cinzel, Georgia, serif;
+    font-family:Georgia,serif;
 
-    font-size: 18px;
+    font-size:20px;
 
-    font-weight: 800;
-
-    letter-spacing: 3px;
+    font-style:italic;
 }
 
-.seal-label::before {
-    content: "✦  ";
+
+/* =========================================================
+   SEAL LABEL
+========================================================= */
+
+.seal-label{
+
+    margin-bottom:12px;
+
+    color:#3e2818;
+
+    font-family:
+        Cinzel,
+        Georgia,
+        serif;
+
+    font-size:18px;
+
+    font-weight:800;
+
+    letter-spacing:3px;
 }
 
-.seal-label::after {
-    content: "  ✦";
+.seal-label::before{
+    content:"✦  ";
+}
+
+.seal-label::after{
+    content:"  ✦";
 }
 
 
@@ -512,55 +870,68 @@ body {
    INPUT
 ========================================================= */
 
-.seal-input {
+.seal-input{
 
-    width: min(600px, 70vw);
+    width:min(600px,70vw);
 
-    height: 68px;
+    height:68px;
 
-    padding: 0 24px;
+    padding:
+        0 24px;
 
-    border: 1px solid #a47a3c;
+    border:
+        1px solid
+        #a47a3c;
 
-    border-radius: 5px;
+    border-radius:5px;
 
-    outline: none;
+    outline:none;
 
     background:
 
         repeating-linear-gradient(
             0deg,
-            rgba(80,50,20,0.025) 0px,
-            rgba(80,50,20,0.025) 2px,
-            transparent 2px,
-            transparent 6px
+            rgba(80,50,20,.025) 0 2px,
+            transparent 2px 6px
         ),
 
         #f2dfb7;
 
     box-shadow:
-        inset 0 3px 8px rgba(70,40,10,0.12),
-        0 3px 5px rgba(70,40,10,0.12);
 
-    color: #392518;
+        inset
+        0 3px 8px
+        rgba(70,40,10,.12),
 
-    font-family: Georgia, serif;
+        0 3px 5px
+        rgba(70,40,10,.12);
 
-    font-size: 22px;
+    color:#392518;
+
+    font-family:Georgia,serif;
+
+    font-size:22px;
 }
 
-.seal-input::placeholder {
-    color: #816c50;
-    font-style: italic;
+.seal-input::placeholder{
+
+    color:#816c50;
+
+    font-style:italic;
 }
 
-.seal-input:focus {
+.seal-input:focus{
 
-    border-color: #765025;
+    border-color:#765025;
 
     box-shadow:
-        0 0 0 3px rgba(157,113,56,0.15),
-        inset 0 3px 8px rgba(70,40,10,0.12);
+
+        0 0 0 3px
+        rgba(157,113,56,.15),
+
+        inset
+        0 3px 8px
+        rgba(70,40,10,.12);
 }
 
 
@@ -568,128 +939,121 @@ body {
    WOOD BUTTON
 ========================================================= */
 
-.unlock-button {
+.unlock-button{
 
-    position: relative;
+    position:relative;
 
-    margin-top: 28px;
+    margin-top:28px;
 
-    min-width: 300px;
+    min-width:300px;
 
-    height: 66px;
+    height:66px;
 
-    padding: 0 38px;
+    padding:
+        0 38px;
 
-    border: 3px solid #9c6b28;
+    border:
+        3px solid
+        #9c6b28;
 
-    border-radius: 10px;
+    border-radius:10px;
 
     background:
 
         repeating-linear-gradient(
             90deg,
-            rgba(255,255,255,0.025) 0px,
-            rgba(255,255,255,0.025) 3px,
-            rgba(0,0,0,0.025) 3px,
-            rgba(0,0,0,0.025) 8px
+            rgba(255,255,255,.025) 0 3px,
+            rgba(0,0,0,.025) 3px 8px
         ),
 
         linear-gradient(
-            180deg,
-            #714522 0%,
+            #714522,
             #542e16 50%,
-            #3e210f 100%
+            #3e210f
         );
 
-    color: #f7e6bc;
+    color:#f7e6bc;
 
-    font-family: Cinzel, Georgia, serif;
+    font-family:
+        Cinzel,
+        Georgia,
+        serif;
 
-    font-size: 20px;
+    font-size:20px;
 
-    font-weight: 700;
+    font-weight:700;
 
-    letter-spacing: 1px;
+    letter-spacing:1px;
 
-    cursor: pointer;
+    cursor:pointer;
 
     box-shadow:
+
         0 6px 0 #281509,
-        0 9px 14px rgba(45,25,10,0.35),
-        inset 0 1px 0 rgba(255,210,120,0.45);
+
+        0 9px 14px
+        rgba(45,25,10,.35),
+
+        inset
+        0 1px 0
+        rgba(255,210,120,.45);
 
     transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        filter 0.15s ease;
+        transform .15s ease,
+        box-shadow .15s ease,
+        filter .15s ease;
 
-    z-index: 5;
+    z-index:5;
 }
 
 
-/* button inner border */
+.unlock-button::before{
 
-.unlock-button::before {
+    content:"";
 
-    content: "";
+    position:absolute;
 
-    position: absolute;
+    inset:6px;
 
-    inset: 6px;
+    border:
+        1px solid
+        rgba(218,166,73,.55);
 
-    border: 1px solid rgba(218,166,73,0.55);
+    border-radius:5px;
 
-    border-radius: 5px;
-
-    pointer-events: none;
+    pointer-events:none;
 }
 
 
-/* button hover */
+.unlock-button:hover{
 
-.unlock-button:hover {
+    filter:brightness(1.12);
 
-    filter: brightness(1.12);
-
-    transform: translateY(-2px);
+    transform:translateY(-2px);
 
     box-shadow:
+
         0 8px 0 #281509,
-        0 13px 18px rgba(45,25,10,0.35),
-        inset 0 1px 0 rgba(255,210,120,0.55);
+
+        0 13px 18px
+        rgba(45,25,10,.35),
+
+        inset
+        0 1px 0
+        rgba(255,210,120,.55);
 }
 
 
-/* button click */
+.unlock-button:active{
 
-.unlock-button:active {
-
-    transform: translateY(5px);
+    transform:translateY(5px);
 
     box-shadow:
+
         0 1px 0 #281509,
-        0 4px 8px rgba(45,25,10,0.25);
-}
 
-
-/* =========================================================
-   KEY ICON IN BUTTON
-========================================================= */
-
-.button-key {
-
-    display: inline-block;
-
-    margin-right: 10px;
-
-    font-size: 23px;
-
-    color: #e4b64f;
-
-    transform: rotate(-25deg);
-
-    text-shadow:
-        1px 1px 2px #1e1007;
+        0 4px 8px
+        rgba(45,25,10,.25);
 }
 
 
@@ -697,153 +1061,112 @@ body {
    SPARKLES
 ========================================================= */
 
-.sparkle {
+.sparkle{
 
-    position: absolute;
+    position:absolute;
 
-    width: 5px;
-    height: 5px;
+    width:5px;
+    height:5px;
 
-    background: #e5b94e;
+    background:#e5b94e;
 
-    border-radius: 50%;
+    border-radius:50%;
 
     box-shadow:
+
         0 0 6px #f4d47a,
-        0 0 12px rgba(238,190,65,0.7);
 
-    animation: sparkle 2.5s ease-in-out infinite;
+        0 0 12px
+        rgba(238,190,65,.7);
 
-    pointer-events: none;
+    animation:
+        sparkle 2.5s
+        ease-in-out
+        infinite;
+
+    pointer-events:none;
 }
 
 
 .sparkle::before,
-.sparkle::after {
+.sparkle::after{
 
-    content: "";
+    content:"";
 
-    position: absolute;
+    position:absolute;
 
-    background: #f3d47b;
+    background:#f3d47b;
 }
 
 
-.sparkle::before {
+.sparkle::before{
 
-    width: 2px;
-    height: 17px;
+    width:2px;
+    height:17px;
 
-    left: 2px;
-    top: -6px;
+    left:2px;
+    top:-6px;
 }
 
 
-.sparkle::after {
+.sparkle::after{
 
-    width: 17px;
-    height: 2px;
+    width:17px;
+    height:2px;
 
-    left: -6px;
-    top: 2px;
+    left:-6px;
+    top:2px;
 }
 
 
-@keyframes sparkle {
+@keyframes sparkle{
 
     0%,
-    100% {
-        opacity: 0.15;
-        transform: scale(0.7);
+    100%{
+        opacity:.15;
+        transform:scale(.7);
     }
 
-    50% {
-        opacity: 1;
-        transform: scale(1.15);
+    50%{
+        opacity:1;
+        transform:scale(1.15);
     }
 }
 
 
-/* positions */
-
-.s1 {
-    top: 16%;
-    left: 21%;
+.s1{
+    top:16%;
+    left:21%;
 }
 
-.s2 {
-    top: 24%;
-    right: 25%;
-    animation-delay: 0.7s;
+.s2{
+    top:24%;
+    right:25%;
+    animation-delay:.7s;
 }
 
-.s3 {
-    top: 67%;
-    left: 18%;
-    animation-delay: 1.2s;
+.s3{
+    top:67%;
+    left:18%;
+    animation-delay:1.2s;
 }
 
-.s4 {
-    bottom: 18%;
-    right: 22%;
-    animation-delay: 1.8s;
+.s4{
+    bottom:18%;
+    right:22%;
+    animation-delay:1.8s;
 }
 
-.s5 {
-    top: 40%;
-    right: 15%;
-    animation-delay: 0.3s;
+.s5{
+    top:40%;
+    right:15%;
+    animation-delay:.3s;
 }
 
-.s6 {
-    bottom: 25%;
-    left: 31%;
-    animation-delay: 1.5s;
-}
-
-
-/* =========================================================
-   SUCCESS STATE
-========================================================= */
-
-.gate-success {
-
-    display: none;
-
-    position: absolute;
-
-    inset: 0;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-direction: column;
-
-    background: #ead3a2;
-
-    z-index: 20;
-
-    color: #3d2615;
-
-    text-align: center;
-}
-
-
-.gate-success h2 {
-
-    margin: 0 0 15px;
-
-    font-family: "UnifrakturCook", serif;
-
-    font-size: 64px;
-}
-
-
-.gate-success p {
-
-    font-family: Georgia, serif;
-
-    font-size: 20px;
+.s6{
+    bottom:25%;
+    left:31%;
+    animation-delay:1.5s;
 }
 
 
@@ -851,19 +1174,28 @@ body {
    ERROR
 ========================================================= */
 
-#error-message {
+#error-message{
 
-    min-height: 24px;
+    min-height:24px;
 
-    margin-top: 14px;
+    margin-top:14px;
 
-    color: #8a281e;
+    color:#8a281e;
 
-    font-family: Georgia, serif;
+    font-family:Georgia,serif;
 
-    font-size: 15px;
+    font-size:15px;
 
-    font-weight: bold;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden{
+    display:none !important;
 }
 
 
@@ -871,84 +1203,149 @@ body {
    MOBILE
 ========================================================= */
 
-@media (max-width: 800px) {
+@media(max-width:800px){
 
-    #gate-screen {
-        padding: 15px;
+    .intro-mascot{
+
+        width:75vw;
+
+        max-height:65vh;
     }
 
-    .parchment {
+    #intro-start-button{
 
-        width: 96vw;
-        height: 92vh;
+        bottom:10%;
 
-        padding: 55px 25px;
+        width:210px;
     }
 
-    .gate-title {
-        font-size: 46px;
+
+    #gate-screen{
+
+        padding:15px;
     }
 
-    .subtitle {
-        font-size: 16px;
-        max-width: 80%;
+
+    .parchment{
+
+        width:96vw;
+
+        height:92vh;
+
+        padding:
+            55px 25px;
     }
 
-    .key-wrapper {
-        left: 18px;
-        opacity: 0.35;
+
+    .gate-title{
+
+        font-size:46px;
+    }
+
+
+    .subtitle{
+
+        font-size:16px;
+
+        max-width:80%;
+    }
+
+
+    .key-wrapper{
+
+        left:18px;
+
+        opacity:.35;
+
         transform:
             translateY(-50%)
             rotate(-18deg)
-            scale(0.7);
+            scale(.7);
     }
 
-    .compass {
-        right: 20px;
-        transform: scale(0.7) rotate(12deg);
+
+    .compass{
+
+        right:20px;
+
+        transform:
+            scale(.7)
+            rotate(12deg);
     }
 
-    .seal-input {
-        width: 85vw;
-        max-width: 600px;
+
+    .seal-input{
+
+        width:85vw;
+
+        max-width:600px;
     }
 
-    .unlock-button {
-        min-width: 250px;
-        font-size: 17px;
+
+    .unlock-button{
+
+        min-width:250px;
+
+        font-size:17px;
     }
 
 }
 
 
 /* =========================================================
-   VERY SMALL SCREEN
+   SMALL HEIGHT
 ========================================================= */
 
-@media (max-height: 650px) {
+@media(max-height:650px){
 
-    .parchment {
-        height: 94vh;
-        padding-top: 45px;
+    .intro-mascot{
+
+        max-height:58vh;
     }
 
-    .gate-title {
-        font-size: 42px;
+    #intro-start-button{
+
+        bottom:7%;
+
+        height:50px;
     }
 
-    .subtitle {
-        margin-top: 12px;
-        margin-bottom: 20px;
+
+    .parchment{
+
+        height:94vh;
+
+        padding-top:45px;
     }
 
-    .seal-input {
-        height: 58px;
+
+    .gate-title{
+
+        font-size:42px;
     }
 
-    .unlock-button {
-        height: 58px;
-        margin-top: 18px;
+
+    .subtitle{
+
+        margin-top:12px;
+
+        margin-bottom:20px;
     }
+
+
+    .seal-input{
+
+        height:58px;
+    }
+
+
+    .unlock-button{
+
+        height:58px;
+
+        margin-top:18px;
+    }
+
 }
 
 </style>
@@ -959,23 +1356,358 @@ body {
 
 
 <!-- =========================================================
-     GATE SCREEN
+     SCREEN 1 — MASCOT OPENING
 ========================================================= -->
 
-<div id="gate-screen">
+<section id="intro-screen">
+
+
+    <!-- MAP -->
+
+    <div class="intro-map">
+
+        <svg
+            viewBox="0 0 1400 900"
+            preserveAspectRatio="xMidYMid slice"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+
+            <!-- RIVERS -->
+
+            <g
+                fill="none"
+                stroke="#638c88"
+                stroke-width="8"
+                opacity=".6"
+            >
+
+                <path
+                    d="
+                    M130 -30
+                    C220 80 160 190 260 300
+                    C350 405 270 500 355 610
+                    C430 710 360 800 440 930
+                    "
+                />
+
+                <path
+                    d="
+                    M1270 -30
+                    C1180 80 1240 190 1140 300
+                    C1050 405 1130 500 1045 610
+                    C970 710 1040 800 960 930
+                    "
+                />
+
+            </g>
+
+
+            <!-- ROADS -->
+
+            <g
+                fill="none"
+                stroke="#79582e"
+                stroke-width="3"
+                stroke-dasharray="13 12"
+            >
+
+                <path
+                    d="
+                    M60 690
+                    C250 590 400 660 555 570
+                    C700 490 820 540 975 620
+                    C1120 690 1240 600 1345 700
+                    "
+                />
+
+                <path
+                    d="
+                    M115 180
+                    C290 255 430 330 600 350
+                    C800 380 990 300 1285 175
+                    "
+                />
+
+            </g>
+
+
+            <!-- FORESTS -->
+
+            <g
+                fill="none"
+                stroke="#657054"
+                stroke-width="4"
+            >
+
+                <path d="M60 650 L120 535 L180 650 Z"/>
+                <path d="M140 680 L205 545 L270 680 Z"/>
+                <path d="M235 650 L300 525 L365 650 Z"/>
+
+                <path d="M1080 650 L1140 535 L1200 650 Z"/>
+                <path d="M1160 680 L1225 545 L1290 680 Z"/>
+                <path d="M1250 650 L1310 525 L1370 650 Z"/>
+
+            </g>
+
+
+            <!-- MOUNTAINS -->
+
+            <g
+                fill="none"
+                stroke="#76684d"
+                stroke-width="4"
+            >
+
+                <path d="M55 345 L145 180 L235 345 Z"/>
+                <path d="M185 345 L285 145 L385 345 Z"/>
+
+                <path d="M1010 345 L1100 180 L1190 345 Z"/>
+                <path d="M1130 345 L1230 145 L1330 345 Z"/>
+
+            </g>
+
+
+            <!-- CASTLES -->
+
+            <g
+                fill="none"
+                stroke="#76532a"
+                stroke-width="4"
+            >
+
+                <path
+                    d="
+                    M95 470
+                    L95 395
+                    L135 350
+                    L175 395
+                    L175 470
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M90 395
+                    L135 325
+                    L180 395
+                    "
+                />
+
+                <path
+                    d="
+                    M1225 470
+                    L1225 395
+                    L1265 350
+                    L1305 395
+                    L1305 470
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M1220 395
+                    L1265 325
+                    L1310 395
+                    "
+                />
+
+            </g>
+
+
+            <!-- COMPASS -->
+
+            <g
+                transform="translate(700 450)"
+                fill="none"
+                stroke="#76562d"
+                stroke-width="3"
+            >
+
+                <circle r="145"/>
+                <circle r="125"/>
+
+                <path
+                    d="
+                    M0 -125
+                    L18 0
+                    L0 125
+                    L-18 0
+                    Z
+                    "
+                />
+
+                <path
+                    d="
+                    M-125 0
+                    L0 18
+                    L125 0
+                    L0 -18
+                    Z
+                    "
+                />
+
+                <circle r="9"/>
+
+                <text
+                    x="0"
+                    y="-160"
+                    text-anchor="middle"
+                    fill="#76562d"
+                    stroke="none"
+                    font-size="22"
+                    font-weight="bold"
+                >
+                    N
+                </text>
+
+                <text
+                    x="0"
+                    y="180"
+                    text-anchor="middle"
+                    fill="#76562d"
+                    stroke="none"
+                    font-size="22"
+                    font-weight="bold"
+                >
+                    S
+                </text>
+
+                <text
+                    x="-160"
+                    y="7"
+                    text-anchor="middle"
+                    fill="#76562d"
+                    stroke="none"
+                    font-size="22"
+                    font-weight="bold"
+                >
+                    W
+                </text>
+
+                <text
+                    x="160"
+                    y="7"
+                    text-anchor="middle"
+                    fill="#76562d"
+                    stroke="none"
+                    font-size="22"
+                    font-weight="bold"
+                >
+                    E
+                </text>
+
+            </g>
+
+
+            <!-- LABELS -->
+
+            <g class="map-label">
+
+                <text
+                    x="700"
+                    y="82"
+                    text-anchor="middle"
+                    class="map-title"
+                >
+                    SANAPATI LAND
+                </text>
+
+                <text
+                    x="75"
+                    y="125"
+                >
+                    WESTERN WOODS
+                </text>
+
+                <text
+                    x="1080"
+                    y="125"
+                >
+                    NORTHERN PEAKS
+                </text>
+
+                <text
+                    x="80"
+                    y="820"
+                >
+                    WESTERN COAST
+                </text>
+
+                <text
+                    x="1090"
+                    y="820"
+                >
+                    EASTERN KINGDOM
+                </text>
+
+            </g>
+
+        </svg>
+
+    </div>
+
+
+    <!-- MASCOT -->
+
+    <div class="intro-content">
+
+        <img
+            src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
+            class="intro-mascot"
+            alt="NPC Mascot"
+        >
+
+
+        <!-- CLICK HERE -->
+
+        <button
+            id="intro-start-button"
+            type="button"
+            aria-label="Click Here"
+        ></button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SCREEN 2 — THE GATE
+========================================================= -->
+
+<section
+    id="gate-screen"
+    class="hidden"
+>
+
 
     <div class="parchment">
 
 
-        <!-- CORNER ORNAMENTS -->
+        <!-- CORNERS -->
 
-        <div class="corner tl">❧</div>
-        <div class="corner tr">❧</div>
-        <div class="corner bl">❧</div>
-        <div class="corner br">❧</div>
+        <div class="corner tl">
+            ❧
+        </div>
+
+        <div class="corner tr">
+            ❧
+        </div>
+
+        <div class="corner bl">
+            ❧
+        </div>
+
+        <div class="corner br">
+            ❧
+        </div>
 
 
-        <!-- TOP DECORATION -->
+        <!-- TOP ORNAMENT -->
 
         <div class="top-ornament">
             ✦
@@ -987,7 +1719,7 @@ body {
         <div class="compass"></div>
 
 
-        <!-- ANTIQUE KEY -->
+        <!-- OLD KEY -->
 
         <div class="key-wrapper">
 
@@ -1010,22 +1742,28 @@ body {
         <div class="sparkle s6"></div>
 
 
-        <!-- MAIN CONTENT -->
+        <!-- TITLE -->
 
         <h1 class="gate-title">
             The Gate Awaits
         </h1>
 
 
+        <!-- SUBTITLE -->
+
         <p class="subtitle">
             A sealed passage awaits those who know the way.
         </p>
 
 
+        <!-- LABEL -->
+
         <div class="seal-label">
             ENTER YOUR SEAL
         </div>
 
+
+        <!-- INPUT -->
 
         <input
             id="seal-input"
@@ -1037,86 +1775,152 @@ body {
         >
 
 
+        <!-- BUTTON -->
+
         <button
             id="unlock-button"
             class="unlock-button"
             type="button"
         >
 
-            <span class="button-key">⚿</span>
+            <span class="button-key">
+                ⚿
+            </span>
 
             UNLOCK GATE
 
         </button>
 
 
-        <div id="error-message"></div>
-
-
-        <!-- SUCCESS -->
+        <!-- ERROR -->
 
         <div
-            id="gate-success"
-            class="gate-success"
-        >
-
-            <h2>
-                The Gate Opens
-            </h2>
-
-            <p>
-                The seal has been recognized.
-            </p>
-
-        </div>
-
+            id="error-message"
+        ></div>
 
     </div>
 
-</div>
+</section>
 
 
 
 <script>
 
 /* =========================================================
-   GATE LOGIC
+   SCREEN REFERENCES
+========================================================= */
+
+const introScreen =
+    document.getElementById(
+        "intro-screen"
+    );
+
+const gateScreen =
+    document.getElementById(
+        "gate-screen"
+    );
+
+
+/* =========================================================
+   INTRO → GATE
+========================================================= */
+
+const introButton =
+    document.getElementById(
+        "intro-start-button"
+    );
+
+
+introButton.addEventListener(
+    "click",
+    function(){
+
+        /*
+         * Fade out mascot screen
+         */
+
+        introScreen.classList.add(
+            "hide"
+        );
+
+
+        /*
+         * Show gate
+         */
+
+        gateScreen.classList.remove(
+            "hidden"
+        );
+
+
+        /*
+         * Wait until fade finishes
+         * then focus input.
+         */
+
+        setTimeout(
+            function(){
+
+                document
+                    .getElementById(
+                        "seal-input"
+                    )
+                    .focus();
+
+            },
+            450
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ACCESS CODE
 ========================================================= */
 
 const sealInput =
-    document.getElementById("seal-input");
+    document.getElementById(
+        "seal-input"
+    );
 
 const unlockButton =
-    document.getElementById("unlock-button");
+    document.getElementById(
+        "unlock-button"
+    );
 
 const errorMessage =
-    document.getElementById("error-message");
-
-const gateSuccess =
-    document.getElementById("gate-success");
+    document.getElementById(
+        "error-message"
+    );
 
 
 /*
-    YOUR ACCESS CODE
-    =================
-
-    SANAPATI
+   YOUR CODE
 */
 
-const CORRECT_CODE = "SANAPATI";
+const CORRECT_CODE =
+    "SANAPATI";
 
 
-function unlockGate() {
+/* =========================================================
+   UNLOCK
+========================================================= */
+
+function unlockGate(){
 
     const enteredCode =
-        sealInput.value
+        sealInput
+            .value
             .trim()
             .toUpperCase();
 
 
-    /* Empty input */
+    /*
+     * EMPTY
+     */
 
-    if (!enteredCode) {
+    if(!enteredCode){
 
         errorMessage.textContent =
             "The seal remains silent...";
@@ -1127,60 +1931,75 @@ function unlockGate() {
     }
 
 
-    /* Correct code */
+    /*
+     * CORRECT
+     */
 
-    if (enteredCode === CORRECT_CODE) {
+    if(
+        enteredCode ===
+        CORRECT_CODE
+    ){
 
-        errorMessage.textContent = "";
+        errorMessage.textContent =
+            "";
 
-        gateSuccess.style.display = "flex";
+
+        unlockButton.textContent =
+            "✦ GATE UNLOCKED ✦";
+
+
+        unlockButton.style.pointerEvents =
+            "none";
+
+
+        unlockButton.style.opacity =
+            ".75";
 
 
         /*
-            Kalau flow game lo punya fungsi
-            setelah gate terbuka, bisa dipanggil
-            di sini.
-        */
+         * Here you can connect
+         * the next screen/game logic.
+         *
+         * For now the gate stays
+         * on screen.
+         */
 
-        setTimeout(() => {
+        setTimeout(
+            function(){
 
-            /*
-              CONTOH:
+                console.log(
+                    "Gate unlocked."
+                );
 
-              document.getElementById("next-section")
-                  .scrollIntoView();
+            },
+            500
+        );
 
-            */
 
-            gateSuccess.style.display = "none";
-
-            /*
-              HAPUS BARIS DI ATAS kalau setelah
-              unlock memang mau pindah ke section
-              berikutnya menggunakan logic game lo.
-            */
-
-        }, 1800);
-
+        return;
     }
 
 
-    /* Wrong code */
+    /*
+     * WRONG CODE
+     */
 
-    else {
+    errorMessage.textContent =
+        "The seal bears no such mark.";
 
-        errorMessage.textContent =
-            "The seal bears no such mark.";
 
-        sealInput.value = "";
+    sealInput.value =
+        "";
 
-        sealInput.focus();
-    }
+
+    sealInput.focus();
 
 }
 
 
-/* Button */
+/* =========================================================
+   BUTTON
+========================================================= */
 
 unlockButton.addEventListener(
     "click",
@@ -1188,17 +2007,23 @@ unlockButton.addEventListener(
 );
 
 
-/* Enter key */
+/* =========================================================
+   ENTER KEY
+========================================================= */
 
 sealInput.addEventListener(
     "keydown",
-    function(event) {
+    function(event){
 
-        if (event.key === "Enter") {
+        if(
+            event.key ===
+            "Enter"
+        ){
 
             event.preventDefault();
 
             unlockGate();
+
         }
 
     }
