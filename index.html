@@ -440,22 +440,39 @@ button,input{font:inherit}
 
 
 /* =========================================================
-   SANAPATI MAP — GAME HOME
-   Only replaces the Team A mission content with the map.
+   SANAPATI MAP — SIMPLE
 ========================================================= */
 
 .sanapati-map-wrap{
+    position:relative;
     width:100%;
     min-height:520px;
+    padding:18px;
+    box-sizing:border-box;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    background:#07100f;
-    border:1px solid rgba(156,119,69,.75);
+
+    background:#ead6aa;
+    border:1px solid #9c7745;
+    box-shadow:
+        0 8px 18px rgba(65,42,16,.16),
+        inset 0 0 0 5px rgba(255,248,224,.35);
 }
 
-.sanapati-map-wrap img{
+.sanapati-map-wrap::before{
+    content:"";
+    position:absolute;
+    inset:9px;
+    border:1px solid rgba(126,87,39,.55);
+    pointer-events:none;
+    z-index:2;
+}
+
+.sanapati-map{
+    position:relative;
+    z-index:1;
     display:block;
     width:100%;
     height:auto;
@@ -464,12 +481,29 @@ button,input{font:inherit}
     object-position:center;
     user-select:none;
     -webkit-user-drag:none;
+
+    filter:drop-shadow(0 6px 7px rgba(40,24,9,.25));
+    animation:map-breathe 8s ease-in-out infinite;
+}
+
+@keyframes map-breathe{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.003)}
 }
 
 @media(max-width:760px){
     .sanapati-map-wrap{
         min-height:360px;
+        padding:12px;
     }
+
+    .sanapati-map-wrap::before{
+        inset:7px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    .sanapati-map{animation:none}
 }
 
 </style>
@@ -757,12 +791,17 @@ button,input{font:inherit}
             <div>
                 <article class="mission-card" style="padding:0;overflow:hidden;">
                     <div class="sanapati-map-wrap">
-                        <img
-                            src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/sanapati-map.webp"
-                            alt="Sanapati Land"
-                            decoding="async"
-                            fetchpriority="high"
-                        >
+                        <div class="sanapati-scroll sanapati-scroll-left" aria-hidden="true"></div>
+                        <div class="sanapati-scroll sanapati-scroll-right" aria-hidden="true"></div>
+
+                        <div class="sanapati-map-art">
+                            <img
+                                src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/sanapati-map.webp"
+                                alt="Sanapati Land"
+                                decoding="async"
+                                fetchpriority="high"
+                            >
+                        </div>
                     </div>
                 </article>
 
@@ -1025,14 +1064,11 @@ if (loreButton) {
     loreButton.addEventListener("click", function () {
         const player = getPlayerData();
 
-        if (player) {
-            document.getElementById("player-label").textContent =
-                `👤 ${player.username}`;
-
-            document.getElementById("milestone-label").textContent =
-                `MILESTONE ${player.milestone || 1}`;
-        }
-
+        /*
+         * The map screen no longer has the old player/milestone overlay.
+         * Keep the existing LET'S GO flow, but don't try to update
+         * elements that are no longer present.
+         */
         showScreen("game-screen");
     });
 }
