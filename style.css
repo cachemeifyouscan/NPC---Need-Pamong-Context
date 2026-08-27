@@ -1,677 +1,502 @@
 /* =========================================================
-   NPC — NEED PAMONG CONTEXT
-   MEDIEVAL / PARCHMENT UI
+   SANAPATI LAND
+   MEDIEVAL PARCHMENT GATE
 ========================================================= */
 
-* {
-    box-sizing: border-box;
-}
+/* Medieval typography */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=IM+Fell+English:ital@0;1&display=swap');
 
 
-html,
-body {
-    margin: 0;
-    padding: 0;
+/* =========================================================
+   GATE — FULL PARCHMENT
+========================================================= */
 
-    width: 100%;
-    min-height: 100%;
+#login-screen.gate-screen {
+
+    position: relative !important;
+
+    width: 100vw !important;
+    min-height: 100vh !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+
+    background:
+
+        /* aged parchment vignette */
+
+        radial-gradient(
+            ellipse at center,
+            rgba(255,248,220,.95) 0%,
+            rgba(235,216,174,.98) 58%,
+            rgba(173,135,79,.95) 100%
+        ) !important;
+
+    color: #3b2817 !important;
 
     font-family:
+        "IM Fell English",
         Georgia,
-        "Times New Roman",
-        serif;
+        serif !important;
 
-    color: #3d2d1c;
+    box-shadow:
+        inset 0 0 120px rgba(65,39,15,.35),
+        inset 0 0 35px rgba(60,35,12,.18) !important;
 
-    background: #eee2cc;
-}
-
-
-body {
-    overflow-x: hidden;
 }
 
 
 /* =========================================================
-   OPENING
+   PARCHMENT PAPER TEXTURE
 ========================================================= */
 
-#intro-screen {
+#login-screen.gate-screen::before {
 
-    position: fixed;
+    content: "" !important;
 
-    inset: 0;
+    position: absolute !important;
+    inset: 0 !important;
 
-    width: 100vw;
-    height: 100vh;
+    z-index: 0 !important;
 
-    display: flex;
+    pointer-events: none !important;
 
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
+    opacity: .8 !important;
 
     background:
-        radial-gradient(
-            ellipse at center,
-            #fffdf7 0%,
-            #f8efdf 48%,
-            #e8d7b7 100%
-        );
 
-    z-index: 99999;
-
-    opacity: 1;
-    visibility: visible;
-
-    transition:
-        opacity .7s ease,
-        visibility .7s ease;
-}
-
-
-#intro-screen.intro-hidden {
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    pointer-events: none;
-}
-
-
-/* parchment */
-
-#intro-screen::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: .32;
-
-    background:
+        /* paper fibres */
 
         repeating-linear-gradient(
             0deg,
-            rgba(100,75,40,.025) 0,
-            rgba(100,75,40,.025) 1px,
+            rgba(91,63,30,.045) 0px,
+            rgba(91,63,30,.045) 1px,
             transparent 1px,
-            transparent 6px
+            transparent 5px
         ),
 
         repeating-linear-gradient(
             90deg,
-            rgba(100,75,40,.018) 0,
-            rgba(100,75,40,.018) 1px,
+            rgba(91,63,30,.025) 0px,
+            rgba(91,63,30,.025) 1px,
             transparent 1px,
-            transparent 7px
+            transparent 8px
+        ),
+
+        /* stains */
+
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(103,69,27,.14),
+            transparent 17%
+        ),
+
+        radial-gradient(
+            circle at 83% 74%,
+            rgba(103,69,27,.12),
+            transparent 20%
+        ),
+
+        radial-gradient(
+            circle at 50% 50%,
+            transparent 45%,
+            rgba(72,43,15,.16) 100%
         );
+
 }
 
 
-#intro-screen::after {
+/* =========================================================
+   OLD PAPER BORDER
+========================================================= */
 
-    content: "";
+#login-screen.gate-screen::after {
 
-    position: absolute;
+    content: "" !important;
 
-    inset: 28px;
+    position: absolute !important;
+
+    inset: 22px !important;
+
+    z-index: 3 !important;
+
+    pointer-events: none !important;
 
     border:
         2px solid
-        rgba(116,91,54,.12);
+        rgba(101,69,28,.45) !important;
 
-    border-radius: 18px;
+    box-shadow:
 
-    pointer-events: none;
+        inset 0 0 0 7px
+        rgba(122,87,39,.08),
 
+        inset 0 0 25px
+        rgba(73,44,17,.18),
+
+        0 0 25px
+        rgba(55,31,9,.20) !important;
 }
 
 
 /* =========================================================
-   OPENING MAP
+   MAP
 ========================================================= */
 
-.map-decoration {
+#login-screen .gate-map {
 
-    position: absolute;
+    position: absolute !important;
 
-    inset: 0;
+    inset: 0 !important;
 
-    width: 100%;
-    height: 100%;
+    z-index: 1 !important;
 
-    pointer-events: none;
+    opacity: .20 !important;
 
-    opacity: .13;
+    pointer-events: none !important;
 
-    z-index: 1;
-}
-
-
-.map-decoration svg {
-
-    width: 100%;
-    height: 100%;
-}
-
-
-/* =========================================================
-   INTRO CONTENT
-========================================================= */
-
-.intro-content {
-
-    position: relative;
-
-    z-index: 10;
-
-    width: min(82vw, 680px);
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* =========================================================
-   MASCOT
-========================================================= */
-
-.intro-mascot {
-
-    display: block;
-
-    width: 100%;
-
-    max-width: 680px;
-
-    height: auto;
-
-    user-select: none;
-
-    -webkit-user-drag: none;
+    mix-blend-mode: multiply !important;
 
     filter:
-        drop-shadow(
-            0 22px 20px
-            rgba(64,43,20,.23)
-        );
+        sepia(.65)
+        contrast(.9) !important;
 
-    animation:
-        mascotFloat
-        4s
-        ease-in-out
-        infinite;
 }
 
+#login-screen .gate-map svg {
 
-@keyframes mascotFloat {
+    width: 100% !important;
+    height: 100% !important;
 
-    0% {
-        transform:
-            translateY(0);
-    }
-
-    50% {
-        transform:
-            translateY(-10px);
-    }
-
-    100% {
-        transform:
-            translateY(0);
-    }
 }
 
 
 /* =========================================================
-   OPENING BUTTON
+   FADED OLD GATE SILHOUETTE
 ========================================================= */
 
-.intro-enter-button {
+#login-screen .gate-ghost {
 
-    position: relative;
+    position: absolute !important;
 
-    width: 300px;
+    left: 50% !important;
+    top: 50% !important;
 
-    min-height: 58px;
+    width: 470px !important;
+    height: 620px !important;
 
-    margin-top: -18px;
+    transform:
+        translate(-50%, -50%) !important;
+
+    z-index: 2 !important;
+
+    opacity: .065 !important;
+
+    pointer-events: none !important;
+
+}
+
+
+/* arch */
+
+#login-screen .ghost-arch {
+
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 230px !important;
 
     border:
-        3px solid
-        #b88a42;
+        28px solid
+        #422a15 !important;
 
-    border-radius: 13px;
+    border-bottom: none !important;
 
-    background:
-        linear-gradient(
-            180deg,
-            #68482d 0%,
-            #4c301d 55%,
-            #382216 100%
-        );
-
-    color: #fff1ce;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 18px;
-
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
-
-    cursor: pointer;
-
-    box-shadow:
-
-        inset
-        0 0 0 2px
-        rgba(231,188,99,.22),
-
-        0 6px 0
-        #281810,
-
-        0 12px 22px
-        rgba(70,43,19,.22);
-
-    animation:
-        introPulse
-        2.8s
-        ease-in-out
-        infinite;
-
-    transition:
-        filter .18s ease,
-        transform .18s ease;
-}
-
-
-@keyframes introPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        filter: brightness(1);
-    }
-
-    50% {
-        transform: scale(1.025);
-        filter: brightness(1.07);
-    }
-}
-
-
-.intro-enter-button::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 7px;
-    left: 8px;
-
-    width: 7px;
-    height: 7px;
-
-    border-top:
-        2px solid
-        #d8ad57;
-
-    border-left:
-        2px solid
-        #d8ad57;
-}
-
-
-.intro-enter-button::after {
-
-    content: "";
-
-    position: absolute;
-
-    right: 8px;
-    bottom: 7px;
-
-    width: 7px;
-    height: 7px;
-
-    border-right:
-        2px solid
-        #d8ad57;
-
-    border-bottom:
-        2px solid
-        #d8ad57;
-}
-
-
-.intro-enter-button:hover {
-
-    filter: brightness(1.1);
+    border-radius:
+        250px 250px 0 0 !important;
 
 }
 
 
-.intro-enter-button:active {
+/* door */
 
-    transform:
-        translateY(5px)
-        scale(.99);
+#login-screen .ghost-door {
 
-}
+    position: absolute !important;
 
+    left: 35px !important;
+    right: 35px !important;
 
-/* =========================================================
-   MAIN GAME
-========================================================= */
-
-#main-game {
-
-    min-height: 100vh;
-
-    width: 100%;
-
-    padding:
-        40px 20px 80px;
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition:
-        opacity .6s ease;
-}
-
-
-#main-game.game-visible {
-
-    opacity: 1;
-
-    visibility: visible;
-}
-
-
-.game-container {
-
-    max-width: 1000px;
-
-    margin: 0 auto;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   GATE SCREEN
-========================================================= */
-
-.gate-screen {
-
-    position: relative;
-
-    min-height:
-        calc(100vh - 80px);
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
-
-    border-radius: 18px;
-
-    background:
-
-        radial-gradient(
-            ellipse at center,
-            rgba(255,253,247,.98) 0%,
-            rgba(248,239,220,.96) 55%,
-            rgba(229,213,182,.98) 100%
-        );
-
-    box-shadow:
-
-        0 20px 50px
-        rgba(80,56,27,.13),
-
-        inset
-        0 0 100px
-        rgba(130,100,55,.08);
-}
-
-
-/* parchment texture */
-
-.gate-screen::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: .32;
-
-    background:
-
-        repeating-linear-gradient(
-            0deg,
-            rgba(100,75,40,.025) 0,
-            rgba(100,75,40,.025) 1px,
-            transparent 1px,
-            transparent 6px
-        ),
-
-        repeating-linear-gradient(
-            90deg,
-            rgba(100,75,40,.018) 0,
-            rgba(100,75,40,.018) 1px,
-            transparent 1px,
-            transparent 7px
-        );
-}
-
-
-/* =========================================================
-   GATE MAP
-========================================================= */
-
-.gate-map {
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 1;
-
-    opacity: .115;
-
-    pointer-events: none;
-}
-
-
-.gate-map svg {
-
-    width: 100%;
-    height: 100%;
-}
-
-
-/* =========================================================
-   GHOST GATE
-========================================================= */
-
-.gate-ghost {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: 420px;
-    height: 560px;
-
-    transform:
-        translate(-50%, -48%);
-
-    z-index: 2;
-
-    opacity: .045;
-
-    pointer-events: none;
-}
-
-
-.ghost-arch {
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 190px;
+    top: 205px !important;
+    bottom: 0 !important;
 
     border:
         22px solid
-        #5c472e;
+        #422a15 !important;
 
-    border-bottom: none;
+    border-top: none !important;
 
-    border-radius:
-        220px 220px 0 0;
 }
 
 
-.ghost-door {
+/* wooden vertical boards */
 
-    position: absolute;
+#login-screen .ghost-door::before {
 
-    left: 30px;
-    right: 30px;
+    content: "" !important;
 
-    top: 170px;
-    bottom: 0;
+    position: absolute !important;
 
-    border:
-        16px solid
-        #5c472e;
-
-    border-top: none;
+    inset: 0 !important;
 
     background:
 
         repeating-linear-gradient(
             90deg,
-            transparent 0,
-            transparent 35px,
-            rgba(70,45,22,.7) 36px,
-            transparent 39px
-        );
+            transparent 0px,
+            transparent 48px,
+            rgba(57,35,17,.8) 49px,
+            rgba(57,35,17,.8) 54px
+        ) !important;
+
 }
 
 
-/* =========================================================
-   GATE CONTENT
-========================================================= */
+/* gate bars */
 
-.gate-content {
+#login-screen .ghost-door::after {
 
-    position: relative;
+    content: "" !important;
 
-    z-index: 10;
+    position: absolute !important;
 
-    width:
-        min(90%, 680px);
+    left: -2px !important;
+    right: -2px !important;
 
-    padding:
-        50px 35px;
+    top: 45% !important;
 
-    text-align: center;
-}
-
-
-/* ornament */
-
-.gate-ornament {
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 14px;
-
-    margin-bottom: 18px;
-
-    color: #9a753c;
-}
-
-
-.gate-ornament span {
-
-    width: 65px;
-
-    height: 1px;
+    height: 20px !important;
 
     background:
-        #b69a69;
-}
+        #422a15 !important;
 
-
-.gate-ornament b {
-
-    font-size: 23px;
-
-    font-weight: normal;
 }
 
 
 /* =========================================================
-   TITLE
+   MAIN CONTENT
 ========================================================= */
 
-.gate-title {
+#login-screen .gate-content {
 
-    margin: 0;
+    position: relative !important;
 
-    color: #4a3520;
+    z-index: 10 !important;
+
+    width: min(850px, 90vw) !important;
+
+    padding:
+        55px 50px 45px !important;
+
+    text-align: center !important;
+
+}
+
+
+/* =========================================================
+   TOP ORNAMENT
+========================================================= */
+
+#login-screen .gate-ornament {
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 18px !important;
+
+    margin-bottom: 25px !important;
+
+    color:
+        #75501f !important;
+
+}
+
+#login-screen .gate-ornament span {
+
+    width: 110px !important;
+    height: 1px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #75501f,
+            transparent
+        ) !important;
+
+}
+
+#login-screen .gate-ornament b {
 
     font-family:
         Georgia,
-        "Times New Roman",
-        serif;
+        serif !important;
+
+    font-size: 28px !important;
+
+    font-weight: normal !important;
+
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+#login-screen .gate-heading {
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 22px !important;
+
+}
+
+
+/* =========================================================
+   MEDIEVAL LOCK
+========================================================= */
+
+#login-screen .medieval-lock {
+
+    position: relative !important;
+
+    width: 58px !important;
+    height: 70px !important;
+
+    flex-shrink: 0 !important;
+
+    filter:
+        drop-shadow(
+            0 4px 3px
+            rgba(54,31,10,.30)
+        ) !important;
+
+}
+
+
+/* shackle */
+
+#login-screen .lock-shackle {
+
+    position: absolute !important;
+
+    left: 15px !important;
+    top: 0 !important;
+
+    width: 29px !important;
+    height: 34px !important;
+
+    border:
+        6px solid
+        #795019 !important;
+
+    border-bottom: none !important;
+
+    border-radius:
+        18px 18px 0 0 !important;
+
+}
+
+
+/* lock */
+
+#login-screen .lock-body {
+
+    position: absolute !important;
+
+    left: 5px !important;
+    bottom: 0 !important;
+
+    width: 48px !important;
+    height: 44px !important;
+
+    border:
+        2px solid
+        #54330f !important;
+
+    border-radius:
+        4px !important;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #d8ad4b 0%,
+            #9a6b1d 35%,
+            #6e4615 60%,
+            #c08c2d 100%
+        ) !important;
+
+    box-shadow:
+
+        inset 2px 2px 0
+        rgba(255,239,167,.65),
+
+        inset -3px -3px 0
+        rgba(60,35,10,.35) !important;
+
+}
+
+
+/* =========================================================
+   TITLE — THIS IS WHERE IT STARTS LOOKING MEDIEVAL
+========================================================= */
+
+#login-screen .gate-title {
+
+    margin: 0 !important;
+
+    color:
+        #3d2715 !important;
+
+    font-family:
+        "Cinzel",
+        Georgia,
+        serif !important;
 
     font-size:
-        clamp(38px, 5vw, 58px);
+        clamp(42px, 5vw, 68px) !important;
 
-    font-weight: 700;
+    font-weight:
+        700 !important;
 
-    letter-spacing: 3px;
+    letter-spacing:
+        5px !important;
+
+    text-transform:
+        uppercase !important;
+
+    line-height:
+        1.05 !important;
 
     text-shadow:
-        0 1px 0 #fff9e9;
+
+        1px 1px 0 #fff4d3,
+
+        2px 2px 0 rgba(87,57,23,.15) !important;
+
 }
 
 
@@ -679,21 +504,30 @@ body {
    SUBTITLE
 ========================================================= */
 
-.gate-subtitle {
+#login-screen .gate-subtitle {
 
-    max-width: 500px;
+    max-width: 580px !important;
 
     margin:
-        18px auto 38px;
+        24px auto 42px !important;
 
     color:
-        #766247;
+        #644a2d !important;
 
-    font-size: 18px;
+    font-family:
+        "IM Fell English",
+        Georgia,
+        serif !important;
 
-    line-height: 1.7;
+    font-size:
+        21px !important;
 
-    font-style: italic;
+    line-height:
+        1.65 !important;
+
+    font-style:
+        italic !important;
+
 }
 
 
@@ -701,39 +535,46 @@ body {
    SEAL LABEL
 ========================================================= */
 
-.seal-label {
+#login-screen .seal-label {
 
-    display: flex;
+    display: flex !important;
 
-    align-items: center;
+    align-items: center !important;
+    justify-content: center !important;
 
-    justify-content: center;
+    gap: 16px !important;
 
-    gap: 14px;
-
-    margin-bottom: 13px;
+    margin-bottom: 14px !important;
 
     color:
-        #71552e;
+        #63441f !important;
 
-    font-size: 13px;
+    font-family:
+        "Cinzel",
+        Georgia,
+        serif !important;
 
-    font-weight: 700;
+    font-size:
+        12px !important;
 
-    letter-spacing: 3px;
+    font-weight:
+        700 !important;
+
+    letter-spacing:
+        4px !important;
+
 }
 
 
-.seal-label span {
+#login-screen .seal-label span {
 
-    display: block;
+    width: 75px !important;
 
-    width: 55px;
-
-    height: 1px;
+    height: 1px !important;
 
     background:
-        #b69a69;
+        #9a753c !important;
+
 }
 
 
@@ -741,195 +582,281 @@ body {
    FORM
 ========================================================= */
 
-.gate-form {
+#login-screen .gate-form {
 
-    display: flex;
+    display: flex !important;
 
-    align-items: stretch;
+    align-items: stretch !important;
+    justify-content: center !important;
 
-    justify-content: center;
+    gap: 0 !important;
 
-    gap: 12px;
+    margin-top:
+        12px !important;
 
-    margin-top: 12px;
 }
 
 
 /* =========================================================
    INPUT
+   OLD MANUSCRIPT STYLE
 ========================================================= */
 
-.gate-form input {
+#login-screen .gate-form input {
 
-    width: 330px;
+    width: 350px !important;
 
-    min-height: 58px;
+    height: 62px !important;
+
+    box-sizing:
+        border-box !important;
 
     padding:
-        0 20px;
+        0 22px !important;
 
     border:
         2px solid
-        #b99b69;
+        #8d6a38 !important;
 
-    border-radius: 9px;
+    border-right:
+        none !important;
 
-    outline: none;
+    border-radius:
+        4px 0 0 4px !important;
+
+    outline:
+        none !important;
 
     background:
 
         linear-gradient(
             180deg,
-            #fffdf6,
-            #f4ead5
-        );
+            rgba(255,250,230,.95),
+            rgba(228,207,163,.95)
+        ) !important;
 
     color:
-        #4a3520;
+        #3c2817 !important;
 
     font-family:
+        "IM Fell English",
         Georgia,
-        "Times New Roman",
-        serif;
+        serif !important;
 
-    font-size: 18px;
-
-    box-shadow:
-
-        inset
-        0 2px 7px
-        rgba(90,65,30,.08),
-
-        0 2px 4px
-        rgba(90,65,30,.05);
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-
-
-.gate-form input::placeholder {
-
-    color:
-        #a08b6d;
+    font-size:
+        20px !important;
 
     font-style:
-        italic;
-}
-
-
-.gate-form input:focus {
-
-    border-color:
-        #80602f;
+        italic !important;
 
     box-shadow:
 
-        0 0 0 3px
-        rgba(151,116,57,.12),
+        inset 0 2px 8px
+        rgba(65,40,14,.12),
 
-        inset
-        0 2px 7px
-        rgba(90,65,30,.08);
+        inset 0 -1px 0
+        rgba(255,255,255,.5) !important;
+
+}
+
+
+#login-screen .gate-form input::placeholder {
+
+    color:
+        #927a59 !important;
+
+    opacity:
+        .9 !important;
+
+}
+
+
+/* focus */
+
+#login-screen .gate-form input:focus {
+
+    border-color:
+        #68451b !important;
+
+    box-shadow:
+
+        inset 0 2px 8px
+        rgba(65,40,14,.12),
+
+        0 0 0 2px
+        rgba(139,101,45,.13) !important;
+
 }
 
 
 /* =========================================================
-   UNLOCK BUTTON
+   WOODEN BUTTON
 ========================================================= */
 
-#start-button {
+#login-screen #start-button {
 
-    min-width: 175px;
+    position: relative !important;
 
-    min-height: 58px;
+    width:
+        210px !important;
+
+    height:
+        62px !important;
+
+    min-width:
+        210px !important;
 
     padding:
-        0 22px;
+        0 20px !important;
 
     border:
-        2px solid
-        #b88a42;
+        3px solid
+        #68451c !important;
 
-    border-radius: 9px;
+    border-radius:
+        3px !important;
 
     background:
 
+        /* wood grain */
+
+        repeating-linear-gradient(
+            8deg,
+            rgba(255,213,132,.06) 0px,
+            rgba(255,213,132,.06) 2px,
+            rgba(57,31,12,.08) 3px,
+            rgba(57,31,12,.08) 7px
+        ),
+
         linear-gradient(
             180deg,
-            #68482d 0%,
-            #4c301d 55%,
-            #382216 100%
-        );
+            #80552b 0%,
+            #623b1e 45%,
+            #452816 100%
+        ) !important;
 
     color:
-        #fff1ce;
+        #f7e4b6 !important;
 
     font-family:
+        "Cinzel",
         Georgia,
-        "Times New Roman",
-        serif;
+        serif !important;
 
-    font-size: 16px;
+    font-size:
+        14px !important;
 
-    font-weight: 700;
+    font-weight:
+        700 !important;
 
-    letter-spacing: 1.3px;
+    letter-spacing:
+        1.8px !important;
 
-    cursor: pointer;
+    text-shadow:
+        1px 1px 0 #2d180b !important;
+
+    cursor:
+        pointer !important;
 
     box-shadow:
 
-        inset
-        0 0 0 1px
-        rgba(231,188,99,.25),
+        inset 0 0 0 2px
+        rgba(220,170,84,.18),
 
-        0 4px 0
-        #281810,
+        inset 0 3px 0
+        rgba(255,213,140,.12),
 
-        0 8px 16px
-        rgba(70,43,19,.16);
+        inset 0 -5px 0
+        rgba(32,17,7,.20),
+
+        0 5px 0
+        #2d180c,
+
+        0 9px 16px
+        rgba(54,30,11,.28) !important;
 
     animation:
-        gatePulse
-        3s
-        ease-in-out
-        infinite;
+        none !important;
 
     transition:
-        filter .2s ease,
-        transform .15s ease;
+        transform .15s ease,
+        filter .15s ease !important;
+
 }
 
 
-@keyframes gatePulse {
+/* wooden highlight */
 
-    0%,
-    100% {
-        filter: brightness(1);
-    }
+#login-screen #start-button::before {
 
-    50% {
-        filter: brightness(1.055);
-    }
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 8px !important;
+    right: 8px !important;
+
+    top: 7px !important;
+
+    height: 1px !important;
+
+    background:
+        rgba(255,225,160,.25) !important;
+
 }
 
 
-#start-button:hover {
+/* wood knot */
+
+#login-screen #start-button::after {
+
+    content: "◈" !important;
+
+    position: absolute !important;
+
+    right: 10px !important;
+    bottom: 7px !important;
+
+    font-size: 8px !important;
+
+    color:
+        rgba(30,15,5,.35) !important;
+
+}
+
+
+/* hover */
+
+#login-screen #start-button:hover {
 
     filter:
-        brightness(1.12);
+        brightness(1.15)
+        saturate(1.1) !important;
 
     transform:
-        translateY(-2px);
+        translateY(-2px) !important;
+
 }
 
 
-#start-button:active {
+/* click */
+
+#login-screen #start-button:active {
 
     transform:
-        translateY(3px);
+        translateY(4px) !important;
+
+    box-shadow:
+
+        inset 0 0 0 2px
+        rgba(220,170,84,.18),
+
+        0 1px 0
+        #2d180c,
+
+        0 3px 7px
+        rgba(54,30,11,.20) !important;
+
 }
 
 
@@ -937,21 +864,77 @@ body {
    ERROR
 ========================================================= */
 
-.error {
+#login-screen #error-message {
 
-    min-height: 25px;
+    min-height:
+        25px !important;
 
     margin:
-        18px 0 0;
+        18px 0 0 !important;
 
     color:
-        #8d3c2e;
+        #8a3425 !important;
+
+    font-family:
+        "IM Fell English",
+        Georgia,
+        serif !important;
 
     font-size:
-        15px !important;
+        16px !important;
 
     font-style:
-        italic;
+        italic !important;
+
+}
+
+
+/* =========================================================
+   BOTTOM ORNAMENT
+========================================================= */
+
+#login-screen .gate-bottom-ornament {
+
+    display:
+        flex !important;
+
+    align-items:
+        center !important;
+
+    justify-content:
+        center !important;
+
+    gap:
+        16px !important;
+
+    margin-top:
+        28px !important;
+
+}
+
+
+#login-screen .gate-bottom-ornament span {
+
+    width:
+        100px !important;
+
+    height:
+        1px !important;
+
+    background:
+        #9a753c !important;
+
+}
+
+
+#login-screen .gate-bottom-ornament b {
+
+    color:
+        #795321 !important;
+
+    font-size:
+        18px !important;
+
 }
 
 
@@ -959,314 +942,119 @@ body {
    FOOTER
 ========================================================= */
 
-.gate-footer {
+#login-screen .gate-footer {
 
     margin-top:
-        28px;
+        12px !important;
 
     color:
-        #a18d6e;
-
-    font-size:
-        13px !important;
-
-    letter-spacing:
-        1px;
-}
-
-
-/* =========================================================
-   OTHER GAME SCREENS
-========================================================= */
-
-section:not(.gate-screen) {
-
-    width: 100%;
-
-    text-align: center;
-}
-
-
-section:not(.gate-screen) h2 {
-
-    color:
-        #4a3520;
-
-    font-size: 36px;
-
-    margin-bottom:
-        20px;
-}
-
-
-section:not(.gate-screen) p {
-
-    font-size: 20px;
-
-    line-height: 1.6;
-}
-
-
-/* =========================================================
-   FORM GROUP
-========================================================= */
-
-.form-group {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 14px;
-
-    margin-top: 30px;
-
-    flex-wrap: wrap;
-}
-
-
-.form-group input {
-
-    width: 350px;
-
-    padding:
-        17px 20px;
-
-    border:
-        1px solid
-        #c8b797;
-
-    border-radius:
-        10px;
-
-    font-size: 18px;
-
-    outline: none;
-
-    background:
-        #fffdf7;
-}
-
-
-.form-group button,
-.button-group button,
-section:not(.gate-screen) button {
-
-    padding:
-        15px 25px;
-
-    border:
-        2px solid
-        #a37a3c;
-
-    border-radius:
-        10px;
-
-    background:
-        #5a3c25;
-
-    color:
-        #fff3d5;
+        #8d7655 !important;
 
     font-family:
+        "IM Fell English",
         Georgia,
-        "Times New Roman",
-        serif;
+        serif !important;
 
-    font-size: 17px;
+    font-size:
+        14px !important;
 
-    cursor: pointer;
+    font-style:
+        italic !important;
 
-    transition:
-        transform .15s ease,
-        filter .15s ease;
-}
+    letter-spacing:
+        1px !important;
 
-
-.form-group button:hover,
-.button-group button:hover,
-section:not(.gate-screen) button:hover {
-
-    filter:
-        brightness(1.08);
-
-    transform:
-        translateY(-2px);
 }
 
 
 /* =========================================================
-   HIDDEN
+   MOBILE
 ========================================================= */
 
-.hidden {
+@media (max-width: 720px) {
 
-    display:
-        none !important;
-}
-
-
-/* =========================================================
-   LORE
-========================================================= */
-
-.lore-text {
-
-    max-width:
-        650px;
-
-    margin:
-        0 auto 30px;
-}
-
-
-.lore-text p {
-
-    margin:
-        18px 0;
-}
-
-
-/* =========================================================
-   GAME STATUS
-========================================================= */
-
-.game-status {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    padding:
-        15px 20px;
-
-    margin-bottom:
-        30px;
-
-    border:
-        1px solid
-        #c8b797;
-
-    border-radius:
-        10px;
-
-    background:
-        #eee2cd;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .intro-content {
+    #login-screen .gate-content {
 
         width:
-            94vw;
-    }
-
-
-    .intro-enter-button {
-
-        width:
-            245px;
-
-        min-height:
-            55px;
-
-        margin-top:
-            -12px;
-
-        font-size:
-            16px;
-    }
-
-
-    .gate-screen {
-
-        min-height:
-            calc(100vh - 40px);
-    }
-
-
-    .gate-content {
-
-        width:
-            94%;
+            94vw !important;
 
         padding:
-            35px 15px;
+            45px 15px 35px !important;
+
     }
 
 
-    .gate-title {
+    #login-screen .gate-heading {
+
+        gap:
+            5px !important;
+
+    }
+
+
+    #login-screen .medieval-lock {
+
+        transform:
+            scale(.72) !important;
+
+        margin-right:
+            -8px !important;
+
+    }
+
+
+    #login-screen .gate-title {
 
         font-size:
-            36px;
+            34px !important;
 
         letter-spacing:
-            2px;
+            3px !important;
+
     }
 
 
-    .gate-subtitle {
+    #login-screen .gate-subtitle {
 
         font-size:
-            16px;
+            18px !important;
+
     }
 
 
-    .gate-form {
+    #login-screen .gate-form {
 
         flex-direction:
-            column;
+            column !important;
 
         align-items:
-            center;
+            center !important;
+
+        gap:
+            10px !important;
+
     }
 
 
-    .gate-form input,
-    #start-button {
+    #login-screen .gate-form input {
 
         width:
-            min(100%, 350px);
+            min(100%, 380px) !important;
+
+        border-right:
+            2px solid #8d6a38 !important;
+
+        border-radius:
+            4px !important;
+
     }
 
 
-    .gate-ghost {
+    #login-screen #start-button {
 
         width:
-            300px;
+            min(100%, 380px) !important;
 
-        height:
-            500px;
-    }
-
-
-    .seal-label {
-
-        font-size:
-            11px;
-
-        letter-spacing:
-            2px;
-    }
-
-
-    .seal-label span {
-
-        width:
-            35px;
     }
 
 }
