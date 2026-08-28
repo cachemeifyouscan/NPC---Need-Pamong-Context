@@ -1277,6 +1277,40 @@ const SUPABASE_URL = "https://wfrhomvhehsglmohshxl.supabase.co";
 const SUPABASE_PUBLIC_KEY = "sb_publishable_9sG5BElCAe9t99f0kwSkCw_RUbvl4x6";
 
 const SUPABASE_REST_URL = `${SUPABASE_URL}/rest/v1`;
+const SUPABASE_PHOTO_BUCKET = "pengasuh-foto";
+
+// Supabase client is used ONLY for Storage signed URLs.
+// Database reads below still use the REST API directly.
+const supabaseStorageClient =
+    window.supabase && SUPABASE_PUBLIC_KEY
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
+        : null;
+
+async function getPamongPhotoUrl(path){
+    if(!path) return "";
+
+    const cleanPath = String(path).replace(/^\/+/, "");
+
+    // First try a signed URL. This works even if the Storage bucket is private,
+    // provided the anon role has SELECT access to storage.objects.
+    if(supabaseStorageClient){
+        try{
+            const { data, error } = await supabaseStorageClient
+                .storage
+                .from(SUPABASE_PHOTO_BUCKET)
+                .createSignedUrl(cleanPath, 60 * 60);
+
+            if(!error && data && data.signedUrl){
+                return data.signedUrl;
+            }
+        }catch(error){
+            console.warn("Signed photo URL failed:", error);
+        }
+    }
+
+    // Fallback for a public bucket.
+    return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_PHOTO_BUCKET}/${cleanPath.split("/").map(encodeURIComponent).join("/")}`;
+}
 
 async function loadTeamAPamongs(){
     const endpoint =
@@ -1295,9 +1329,9 @@ async function loadTeamAPamongs(){
     const raw = await response.text();
 
     let body = null;
-    try {
+    try{
         body = raw ? JSON.parse(raw) : null;
-    } catch (_) {
+    }catch(_){
         body = raw;
     }
 
@@ -1306,18 +1340,22 @@ async function loadTeamAPamongs(){
             body && typeof body === "object" && body.message
                 ? body.message
                 : `HTTP ${response.status}: ${raw}`;
+
         const error = new Error(message);
         error.status = response.status;
         error.supabase = body;
         throw error;
     }
 
-    return (Array.isArray(body) ? body : []).map(person => ({
+    const rows = Array.isArray(body) ? body : [];
+
+    // Resolve Storage URLs one by one without changing the database structure.
+    return await Promise.all(rows.map(async person => ({
         id: person.id,
         full_name: person.nama,
         nickname: person.panggilan,
-        photo_url: person.foto
-    }));
+        photo_url: await getPamongPhotoUrl(person.foto)
+    })));
 }
 
 function teamAText(value){
@@ -1325,10 +1363,21 @@ function teamAText(value){
 }
 
 function teamAPhoto(person, alt){
-    if(person.photo_url){
-        return `<img src="${teamAText(person.photo_url)}" alt="${teamAText(alt || "Pamong Team A")}">`;
+    const src = teamAText(person.photo_url);
+
+    if(src){
+        return `
+            <img
+                src="${src}"
+                alt="${teamAText(alt || "Pamong Team A")}"
+                loading="eager"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+            >
+            <div class="team-a-placeholder" style="display:none">PHOTO UNAVAILABLE</div>
+        `;
     }
-    return `<div class="team-a-placeholder">PHOTO</div>`;
+
+    return `<div class="team-a-placeholder">PHOTO UNAVAILABLE</div>`;
 }
 
 function updateTeamAProgress(stage){
