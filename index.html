@@ -1273,8 +1273,8 @@ let teamAIndex = 0;
 // Paste your Project URL and PUBLIC client key here.
 // NEVER use the service_role key in this HTML/GitHub Pages.
 // =========================================================
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_PUBLIC_KEY = "YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY";
+const SUPABASE_URL = "https://wfrhomvhehsglmohshxl.supabase.co";
+const SUPABASE_PUBLIC_KEY = "sb_publishable_9sG5BElCAe9t99f0kwSkCw_RUbvl4x6";
 
 const supabaseClient =
     (window.supabase &&
@@ -1290,7 +1290,7 @@ async function loadTeamAPamongs(){
 
     const { data, error } = await supabaseClient
         .from("Pengasuh")
-        .select("id, nama, panggilan, foto")
+        .select("id, nama, panggilan, foto, foto_url")
         .eq("tim", "A")
         .order("id", { ascending: true });
 
@@ -1300,7 +1300,7 @@ async function loadTeamAPamongs(){
         id: person.id,
         full_name: person.nama,
         nickname: person.panggilan,
-        photo_url: person.foto
+        photo_url: person.foto_url || person.foto
     }));
 }
 
