@@ -1,497 +1,1590 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPC — Need Pamong Context</title>
 
-    <title>Supabase Team A Test</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Georgia,"Times New Roman",serif;color:#3d2d1c;background:#eee2cc}
+body{overflow-x:hidden}
+button,input{font:inherit}
+.hidden{display:none!important}
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+/* =========================================================
+   OPENING
+========================================================= */
+#intro-screen{
+    position:fixed;inset:0;z-index:99999;
+    width:100vw;height:100vh;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(circle at 50% 45%,rgba(255,248,221,.25),transparent 42%),
+      linear-gradient(rgba(88,55,23,.07) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(88,55,23,.05) 1px,transparent 1px),
+      #e6d0a1;
+    background-size:auto,32px 32px,32px 32px;
+    transition:opacity .8s ease,visibility .8s ease;
+}
+#intro-screen.intro-hidden{opacity:0;visibility:hidden;pointer-events:none}
+#intro-screen:before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse at center,transparent 45%,rgba(59,36,14,.28) 100%),
+      repeating-linear-gradient(0deg,rgba(75,47,19,.025) 0 1px,transparent 1px 5px);
+}
+.map-decoration{position:absolute;inset:0;opacity:.42;pointer-events:none}
+.map-decoration svg{width:100%;height:100%}
+.map-labels{fill:#6c4d29;font-family:Georgia,serif;font-size:20px;letter-spacing:4px}
+.map-title{font-size:28px;letter-spacing:8px;font-weight:bold}
+.compass{fill:none;stroke:#795a31;stroke-width:3}
+.compass text{fill:#6c4b25;stroke:none;font-size:22px;font-weight:bold}
 
-        body {
-            margin: 0;
-            padding: 40px 20px;
-            font-family: Arial, sans-serif;
-            background:
-                radial-gradient(circle at center, #fff8e5, #ead4a2);
-            color: #3d2818;
-        }
+.intro-content{
+    position:relative;z-index:5;
+    width:min(760px,92vw);height:92vh;
+    display:flex;align-items:center;justify-content:center;
+}
+.intro-mascot{
+    width:min(680px,82vw);max-height:88vh;
+    object-fit:contain;filter:drop-shadow(0 25px 25px rgba(58,37,17,.22));
+    animation:floatMascot 4.5s ease-in-out infinite;
+    user-select:none;-webkit-user-drag:none;
+}
+#intro-start-button{
+    position:absolute;
+    left:50%;
+    bottom:10%;
+    transform:translateX(-50%);
+    width:230px;
+    height:58px;
+    border:2px solid #573516;
+    border-radius:6px;
+    background:
+      repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),
+      linear-gradient(180deg,#80532b 0%,#633d20 52%,#4b2c17 100%);
+    color:#f5dfb1;
+    font-family:"Palatino Linotype",Palatino,Georgia,serif;
+    font-size:16px;
+    font-weight:bold;
+    letter-spacing:1.8px;
+    text-shadow:1px 1px 0 #2c180a;
+    cursor:pointer;
+    z-index:10;
+    box-shadow:
+      inset 0 2px 0 rgba(255,223,161,.22),
+      0 4px 0 #2a180b,
+      0 9px 17px rgba(54,31,11,.22);
+    transition:transform .15s ease,filter .15s ease;
+}
+#intro-start-button::before{
+    content:"";
+    position:absolute;
+    inset:6px;
+    border:1px solid rgba(230,188,112,.38);
+    border-radius:2px;
+    pointer-events:none;
+}
+#intro-start-button::after{
+    content:"✦";
+    position:absolute;
+    right:20px;
+    color:#e0b65b;
+}
+#intro-start-button:hover{
+    filter:brightness(1.1);
+    transform:translateX(-50%) translateY(-2px);
+}
+#intro-start-button:active{
+    transform:translateX(-50%) translateY(3px);
+}
+@keyframes floatMascot{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-        .container {
-            width: min(900px, 100%);
-            margin: auto;
-        }
+/* =========================================================
+   MEDIEVAL GATE — PARCHMENT / MANUSCRIPT
+========================================================= */
+.gate-screen{
+    position:fixed;inset:0;width:100vw;height:100vh;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    padding:40px 20px;
+    background:
+      radial-gradient(ellipse at center,#fff8df 0%,#f0dfba 58%,#d1b27a 100%);
+}
+.gate-screen:before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      repeating-linear-gradient(0deg,rgba(82,51,18,.035) 0 1px,transparent 1px 5px),
+      repeating-linear-gradient(90deg,rgba(82,51,18,.018) 0 1px,transparent 1px 8px),
+      radial-gradient(ellipse at center,transparent 42%,rgba(67,40,12,.30) 100%);
+}
+.gate-screen:after{
+    content:"";position:absolute;inset:24px;pointer-events:none;z-index:5;
+    border:1px solid rgba(105,72,31,.48);
+    box-shadow:inset 0 0 0 7px rgba(111,76,32,.045),inset 0 0 30px rgba(72,43,13,.13);
+}
+.gate-map{position:absolute;inset:0;opacity:.23;pointer-events:none;filter:sepia(.8)}
+.gate-map svg{width:100%;height:100%}
 
-        h1 {
-            font-family: Georgia, serif;
-            margin-bottom: 5px;
-        }
+/* parchment sheet — deliberately NOT a modern rounded card */
+.gate-panel{
+    position:relative;z-index:10;width:min(760px,90vw);
+    padding:68px 76px 58px;text-align:center;
+    background:
+      radial-gradient(ellipse at 50% 45%,rgba(255,250,229,.98),rgba(244,226,188,.97)),
+      #f2dfb7;
+    border:0;
+    border-radius:0;
+    clip-path:polygon(
+      1% 2%, 7% 1%, 15% 2%, 24% 1%, 33% 2%, 42% 1%, 51% 2%, 60% 1%,
+      70% 2%, 80% 1%, 91% 2%, 99% 1%,
+      98% 12%,99% 25%,98% 39%,99% 52%,98% 65%,99% 79%,98% 91%,99% 98%,
+      90% 97%,80% 98%,69% 97%,58% 98%,47% 97%,36% 98%,25% 97%,14% 98%,2% 97%,
+      3% 87%,2% 74%,3% 61%,2% 48%,3% 35%,2% 22%,3% 10%
+    );
+    box-shadow:0 22px 45px rgba(67,42,15,.24);
+}
+.gate-panel:before{
+    content:"";position:absolute;inset:24px;pointer-events:none;
+    border:1px solid rgba(123,87,40,.45);
+    box-shadow:inset 0 0 18px rgba(106,72,29,.09);
+    clip-path:polygon(1% 3%,50% 1%,99% 3%,97% 50%,99% 97%,50% 99%,1% 97%,3% 50%);
+}
+.gate-panel:after{
+    content:"✦     ❦     ✦";position:absolute;left:0;right:0;bottom:19px;
+    color:rgba(111,76,31,.55);font-size:15px;letter-spacing:8px;
+}
 
-        .subtitle {
-            color: #76552d;
-            margin-bottom: 25px;
-        }
+/* map labels */
+.map-labels{fill:#73532d;font-family:Georgia,"Times New Roman",serif;font-size:19px;letter-spacing:3px}
+.map-title{font-size:27px;letter-spacing:7px;font-weight:bold}
+.gate-compass{fill:none;stroke:#76562d;stroke-width:3;opacity:.72}
+.gate-compass text{fill:#65471f;stroke:none;font-size:22px;font-weight:bold}
 
-        button {
-            padding: 13px 24px;
-            border: 2px solid #573516;
-            border-radius: 4px;
-            background: linear-gradient(
-                #80532b,
-                #633d20
-            );
-            color: #f5dfb1;
-            font-weight: bold;
-            letter-spacing: 1px;
-            cursor: pointer;
-        }
+/* ornament */
+.gate-ornament{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:23px;color:#8a672f}
+.gate-ornament span{width:115px;height:1px;background:linear-gradient(90deg,transparent,#8a672f,transparent)}
+.gate-ornament b{font-size:24px;font-weight:normal}
 
-        button:hover {
-            filter: brightness(1.1);
-        }
+/* title */
+.gate-title-row{display:flex;align-items:center;justify-content:center;gap:19px}
+.gate-title-row h2{
+    margin:0;color:#422916;
+    font-family:"Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    font-size:clamp(40px,5vw,59px);font-weight:700;letter-spacing:1px;
+    text-shadow:1px 1px 0 #fff4d2,2px 3px 0 rgba(77,46,15,.10);
+}
+.old-key-icon{
+    position:relative;
+    width:54px;
+    height:76px;
+    flex:0 0 54px;
+    transform:rotate(-22deg);
+    filter:drop-shadow(2px 3px 2px rgba(59,35,10,.22));
+}
+.old-key-head{
+    position:absolute;
+    top:0;
+    left:9px;
+    width:42px;
+    height:42px;
+    border:6px solid #a87629;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#f0ce73,#b37b25 58%,#6d4515 100%);
+    box-shadow:inset 2px 2px 3px rgba(255,244,178,.65),inset -3px -3px 4px rgba(63,35,8,.3);
+}
+.old-key-head:after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:9px;
+    height:15px;
+    transform:translate(-50%,-50%);
+    background:#624016;
+    border-radius:50% 50% 35% 35%;
+}
+.old-key-shaft{
+    position:absolute;
+    left:26px;
+    top:35px;
+    width:11px;
+    height:36px;
+    border-radius:5px;
+    background:linear-gradient(90deg,#6c4517,#e1b64f,#81551b,#e6bd58,#684217);
+}
+.old-key-teeth{
+    position:absolute;
+    left:20px;
+    bottom:0;
+    width:29px;
+    height:20px;
+    background:linear-gradient(90deg,#704817,#d3a33e,#7b5019);
+    clip-path:polygon(0 0,100% 0,100% 35%,72% 35%,72% 65%,100% 65%,100% 100%,0 100%);
+}
 
-        #status {
-            margin: 20px 0;
-            padding: 16px;
-            background: rgba(255, 248, 230, .9);
-            border: 1px solid #b18a51;
-            line-height: 1.6;
-        }
+/* hand-drawn antique lock */
+.ancient-lock{position:relative;width:53px;height:66px;flex-shrink:0;filter:drop-shadow(2px 3px 2px rgba(59,35,10,.22))}
+.lock-shackle{
+    position:absolute;top:0;left:12px;width:29px;height:33px;
+    border:5px solid #765321;border-bottom:0;border-radius:19px 19px 0 0;
+    background:transparent;
+}
+.lock-body{
+    position:absolute;left:2px;bottom:0;width:49px;height:43px;
+    background:linear-gradient(135deg,#e5c66d 0%,#b17b22 35%,#775016 68%,#d6ad50 100%);
+    border:2px solid #57370e;border-radius:4px;
+    box-shadow:inset 2px 2px 0 rgba(255,244,184,.7),inset -3px -3px 0 rgba(63,35,8,.28);
+}
+.keyhole{
+    position:absolute;left:50%;top:48%;width:10px;height:14px;
+    transform:translate(-50%,-25%);background:#3e220b;border-radius:50% 50% 2px 2px;
+}
+.keyhole:after{content:"";position:absolute;left:50%;top:9px;width:5px;height:8px;transform:translateX(-50%);background:#3e220b}
 
-        .success {
-            border-color: #65703c !important;
-        }
+/* subtitle */
+.gate-subtitle{
+    margin:22px auto 24px;max-width:570px;color:#674b2c;
+    font-size:19px;line-height:1.65;font-style:italic;
+}
 
-        .error {
-            border-color: #9a4738 !important;
-        }
+/* decorative divider */
+.gate-divider{display:flex;align-items:center;justify-content:center;gap:13px;margin:7px 0 27px}
+.gate-divider div{width:210px;height:1px;background:linear-gradient(90deg,transparent,#96713b,transparent)}
+.gate-divider span{color:#80602d;font-size:17px}
 
-        .person {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            padding: 18px;
-            margin: 12px 0;
-            background: rgba(255, 248, 230, .9);
-            border: 1px solid #b18a51;
-            box-shadow: 0 4px 12px rgba(60, 35, 10, .1);
-        }
+/* seal label */
+.seal-title{
+    margin-bottom:13px;color:#513719;font-size:13px;font-weight:bold;
+    letter-spacing:4px;
+}
 
-        .person-photo {
-            width: 110px;
-            height: 130px;
-            flex-shrink: 0;
-            background: #d9c091;
-            border: 2px solid #87602d;
-            overflow: hidden;
-        }
+/* input */
+.gate-input-wrap{position:relative;width:410px;max-width:100%;margin:0 auto}
+#access-code,.medieval-input{
+    width:100%;height:60px;padding:0 22px;box-sizing:border-box;
+    border:1px solid #a9824d;border-radius:1px;outline:0;
+    background:linear-gradient(180deg,#fffdf5,#f1dfbb);
+    color:#432b18;font-family:Georgia,"Times New Roman",serif;font-size:18px;font-style:italic;
+    box-shadow:inset 0 2px 8px rgba(71,43,15,.10),0 1px 0 rgba(255,255,255,.65);
+}
+#access-code::placeholder,.medieval-input::placeholder{color:#947b59}
+#access-code:focus,.medieval-input:focus{
+    border-color:#74501f;box-shadow:0 0 0 3px rgba(126,91,40,.10),inset 0 2px 8px rgba(71,43,15,.10);
+}
 
-        .person-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+/* wooden button — lighter, carved, not chunky */
+#start-button,.wood-button{
+    position:relative;display:flex;align-items:center;justify-content:center;gap:12px;
+    width:238px;height:58px;margin:25px auto 0;
+    border:2px solid #573516;border-radius:5px;
+    background:
+      repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),
+      linear-gradient(180deg,#80532b 0%,#633d20 52%,#4b2c17 100%);
+    color:#f5dfb1;font-family:"Palatino Linotype",Palatino,Georgia,serif;
+    font-size:16px;font-weight:bold;letter-spacing:1.5px;text-shadow:1px 1px 0 #2c180a;
+    cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,223,161,.22),0 4px 0 #2a180b,0 9px 17px rgba(54,31,11,.22);
+    transition:transform .15s ease,filter .15s ease;
+}
+#start-button:before{
+    content:"";position:absolute;inset:6px;border:1px solid rgba(230,188,112,.38);
+    border-radius:2px;pointer-events:none;
+}
+#start-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+#start-button:active{transform:translateY(3px);box-shadow:inset 0 2px 0 rgba(255,220,155,.12),0 1px 0 #29170b}
+.error{min-height:23px;margin:15px 0 0;color:#87392a;font-size:14px;font-style:italic}
+.gate-footer{margin-top:22px;color:#907655;font-size:13px;font-style:italic;letter-spacing:1px}
 
-        .no-photo {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #76552d;
-            font-size: 11px;
-            letter-spacing: 2px;
-        }
+/* responsive */
+@media(max-width:700px){
+    .gate-screen{padding:25px 12px}
+    .gate-panel{width:94vw;padding:50px 25px 46px}
+    .gate-title-row h2{font-size:34px}
+    .old-key-icon{transform:rotate(-22deg) scale(.76);margin-right:-8px}
+    .gate-subtitle{font-size:16px}
+    .gate-map{opacity:.14}
+    .gate-divider div{width:90px}
+}
 
-        .person h3 {
-            margin: 0 0 7px;
-            font-family: Georgia, serif;
-            font-size: 22px;
-        }
+/* =========================================================
+   COMMON SCREENS
+========================================================= */
+.screen{
+    min-height:100vh;padding:45px 24px;display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(circle at 50% 30%,rgba(255,250,229,.8),transparent 45%),
+      repeating-linear-gradient(0deg,rgba(91,57,21,.025) 0 1px,transparent 1px 5px),
+      #ead6ad;
+}
+.manuscript-card{
+    width:min(780px,94vw);padding:48px 55px;position:relative;text-align:center;
+    background:linear-gradient(135deg,#fff8e6,#ead5a8);
+    border:1px solid #9c7745;box-shadow:0 15px 40px rgba(61,39,17,.18),inset 0 0 30px rgba(112,76,26,.08);
+}
+.manuscript-card:before{content:"";position:absolute;inset:12px;border:1px solid rgba(113,77,31,.3);pointer-events:none}
+.screen-kicker{color:#8b6632;font-size:13px;letter-spacing:4px;font-weight:bold}
+.screen-title{margin:12px 0;color:#422b18;font-size:42px;letter-spacing:2px}
+.screen-text{max-width:570px;margin:0 auto 28px;color:#684d2d;font-size:18px;line-height:1.7}
+.field-label{display:block;margin:0 0 9px;color:#684a25;font-size:13px;letter-spacing:3px;font-weight:bold}
+.form-stack{max-width:420px;margin:auto}
+.form-stack .medieval-input{margin-bottom:14px}
+.form-stack .wood-button{width:100%;margin-top:8px}
+.mascot-small{width:150px;height:150px;object-fit:contain;margin-bottom:8px;filter:drop-shadow(0 10px 10px rgba(60,40,15,.18))}
+.pin-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pin-row input{text-align:center;letter-spacing:8px}
 
-        .person p {
-            margin: 5px 0;
-        }
+/* =========================================================
+   WELCOME / LORE
+========================================================= */
+.welcome-layout,.lore-layout{display:grid;grid-template-columns:190px 1fr;gap:25px;align-items:center}
+.welcome-layout .mascot-side,.lore-layout .mascot-side{display:flex;align-items:center;justify-content:center}
+.lore-quote{font-size:25px;font-style:italic;color:#4e321b;margin:20px 0}
+.lore-book{font-size:54px;margin-bottom:5px}
 
-        .person small {
-            color: #76552d;
-        }
+/* =========================================================
+   GAME HOME
+========================================================= */
+#game-screen{min-height:100vh;padding:24px;background:#e9d6ac;color:#432b18}
+.game-shell{width:min(1180px,96vw);margin:auto}
+.game-topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:15px 20px;margin-bottom:22px;
+    background:linear-gradient(#fff8e7,#ead4a7);border:1px solid #9c7745;
+    box-shadow:0 5px 18px rgba(67,42,15,.12)
+}
+.player-info{display:flex;align-items:center;gap:12px}
+.player-avatar{width:44px;height:44px;border:1px solid #876334;background:#d9c08c;display:grid;place-items:center;font-size:23px}
+.player-name{font-weight:bold}
+.level-badge{padding:5px 10px;border:1px solid #9a7440;background:#f3e4c1;font-size:12px;letter-spacing:1px}
+.top-actions{display:flex;align-items:center;gap:12px;font-size:18px}
+.game-main{display:grid;grid-template-columns:1.45fr .75fr;gap:22px}
+.mission-card,.journey-card,.side-card{
+    background:linear-gradient(135deg,#fff8e6,#e9d2a2);border:1px solid #9c7745;
+    box-shadow:0 10px 25px rgba(65,42,16,.12)
+}
+.mission-card{padding:42px}
+.milestone{font-size:13px;color:#896532;letter-spacing:4px;font-weight:bold}
+.team-title{font-size:62px;margin:8px 0;color:#412916}
+.team-subtitle{font-size:19px;color:#6d5030;margin-bottom:28px}
+.team-emblem{
+    width:155px;height:155px;margin:5px auto 25px;border:3px double #87612e;
+    border-radius:50%;display:grid;place-items:center;font-size:75px;font-weight:bold;color:#765323;
+    background:radial-gradient(circle,#fff5d6,#d6b879)
+}
+.start-mission{width:220px}
+.side-card{padding:25px}
+.side-title{margin:0 0 15px;font-size:20px}
+.progress-list{list-style:none;padding:0;margin:0}
+.progress-list li{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(109,75,35,.2);font-size:14px}
+.check{color:#6c552e;font-weight:bold}
+.locked{opacity:.45}
+.journey-card{margin-top:22px;padding:22px}
+.journey-title{margin:0 0 16px;font-size:17px;letter-spacing:2px}
+.journey{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.journey-node{height:55px;border:1px solid #9a7543;background:#ead6ad;display:grid;place-items:center;position:relative;font-weight:bold}
+.journey-node.active{background:#8a5d2b;color:#fff0c8;border-color:#5d3919}
+.journey-node.locked{background:#d5bf91}
+.journey-node:after{content:"";position:absolute;left:100%;top:50%;width:8px;height:1px;background:#9a7543}
+.journey-node:last-child:after{display:none}
 
-        pre {
-            margin-top: 20px;
-            padding: 15px;
-            background: #21180f;
-            color: #f2dfb5;
-            white-space: pre-wrap;
-            word-break: break-word;
-            overflow-x: auto;
-            border-radius: 4px;
-        }
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:760px){
+    #intro-start-button{
+        width:210px;
+        bottom:8%;
+    }
+    .gate-panel{padding:42px 25px}
+    .gate-title-row h2{font-size:34px}
+    .old-key-icon{transform:rotate(-22deg) scale(.75);margin-right:-8px}
+    .gate-subtitle{font-size:16px}
+    .welcome-layout,.lore-layout{grid-template-columns:1fr}
+    .mascot-small{width:120px;height:120px}
+    .game-main{grid-template-columns:1fr}
+    .mission-card{padding:28px 20px}
+    .journey{grid-template-columns:repeat(4,1fr)}
+    .journey-node:after{display:none}
+}
 
-        code {
-            background: rgba(100, 65, 25, .12);
-            padding: 2px 5px;
-        }
-    </style>
+.gate-screen .gate-panel .gate-sparkle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:#e4bb58;
+    box-shadow:0 0 6px #f5d783,0 0 12px rgba(238,190,65,.55);
+    animation:gateSparkle 2.6s ease-in-out infinite;
+    pointer-events:none;
+}
+.gate-screen .gate-panel .gate-sparkle::before,
+.gate-screen .gate-panel .gate-sparkle::after{
+    content:"";
+    position:absolute;
+    background:#f2d47d;
+}
+.gate-screen .gate-panel .gate-sparkle::before{
+    width:2px;height:14px;left:1px;top:-5px;
+}
+.gate-screen .gate-panel .gate-sparkle::after{
+    width:14px;height:2px;left:-5px;top:1px;
+}
+@keyframes gateSparkle{
+    0%,100%{opacity:.12;transform:scale(.65)}
+    50%{opacity:.9;transform:scale(1.05)}
+}
+.gate-s1{top:18%;left:19%}
+.gate-s2{top:27%;right:21%;animation-delay:.7s}
+.gate-s3{bottom:25%;left:24%;animation-delay:1.2s}
+.gate-s4{bottom:19%;right:20%;animation-delay:1.8s}
+
+
+/* =========================================================
+   SANAPATI MAP — SIMPLE / NORMAL
+========================================================= */
+
+.sanapati-map-wrap{
+    position:relative;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    overflow:hidden;
+    background:#ead6aa;
+    border:1px solid #9c7745;
+    box-shadow:
+        0 8px 18px rgba(65,42,16,.16),
+        inset 0 0 0 4px rgba(255,248,224,.28);
+}
+
+.sanapati-map-art{
+    width:92%;
+    max-width:980px;
+    line-height:0;
+    position:relative;
+    z-index:1;
+}
+
+.sanapati-map-art img{
+    display:block;
+    width:100%;
+    height:auto;
+    max-width:100%;
+    object-fit:contain;
+    object-position:center;
+    user-select:none;
+    -webkit-user-drag:none;
+    filter:drop-shadow(0 5px 7px rgba(40,24,9,.20));
+    animation:map-breathe 8s ease-in-out infinite;
+}
+
+@keyframes map-breathe{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.003)}
+}
+
+@media(max-width:760px){
+    .sanapati-map-wrap{
+        padding:0;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    .sanapati-map-art img{animation:none}
+}
+
+
+/* =========================================================
+   MILESTONE PANEL — CLASSIC MEDIEVAL
+========================================================= */
+.milestone-overlay{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(42,27,12,.68);backdrop-filter:blur(2px)}
+.milestone-overlay.hidden{display:none!important}
+.milestone-modal{position:relative;width:min(720px,94vw);max-height:90vh;overflow:auto;padding:68px 64px 54px;color:#422817;background:radial-gradient(ellipse at 50% 40%,rgba(255,249,225,.99),rgba(243,222,178,.98) 60%,rgba(211,176,109,.98)),repeating-linear-gradient(0deg,rgba(91,57,21,.025) 0 1px,transparent 1px 5px);border:2px solid #80602f;border-radius:3px;box-shadow:0 25px 55px rgba(31,18,7,.42),0 4px 0 #4d2e13,inset 0 0 0 5px rgba(255,239,194,.34),inset 0 0 25px rgba(79,47,14,.15)}
+.milestone-modal:before{content:"";position:absolute;inset:16px;pointer-events:none;border:1px solid rgba(111,77,31,.52);box-shadow:inset 0 0 0 2px rgba(255,236,188,.30),inset 0 0 16px rgba(91,56,17,.10)}
+.milestone-modal:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.38;background:radial-gradient(ellipse at center,transparent 52%,rgba(84,51,16,.17) 100%),repeating-linear-gradient(90deg,rgba(90,56,18,.025) 0 1px,transparent 1px 8px)}
+.milestone-content{position:relative;z-index:2;text-align:center}
+.milestone-ornament{color:#8b642c;font-size:22px;letter-spacing:7px;margin-bottom:8px}
+.milestone-kicker{color:#896331;font-size:12px;font-weight:bold;letter-spacing:4px}
+.milestone-title{margin:8px 0 4px;color:#412714;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:clamp(42px,6vw,62px);line-height:1;letter-spacing:2px;text-shadow:1px 1px 0 #fff0ce,2px 3px 0 rgba(72,42,13,.10)}
+.milestone-subtitle{margin:8px 0 18px;color:#684a29;font-size:18px;font-style:italic}
+.milestone-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 24px}
+.milestone-divider i{display:block;width:125px;height:1px;background:linear-gradient(90deg,transparent,#96703a,transparent)}
+.milestone-divider span{color:#85602d}
+.milestone-number{position:absolute;top:-32px;left:50%;transform:translateX(-50%);width:72px;height:72px;display:grid;place-items:center;border-radius:50%;color:#f4dca7;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:31px;font-weight:bold;border:3px double #9a702e;background:radial-gradient(circle at 34% 28%,#d8ad58,#8d5e20 55%,#4c2c12);box-shadow:0 5px 9px rgba(53,31,10,.32),inset 2px 2px 3px rgba(255,241,180,.45),inset -3px -3px 5px rgba(42,22,7,.38)}
+.milestone-photo{width:min(260px,72vw);aspect-ratio:4/3;margin:0 auto 20px;padding:9px;background:repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),linear-gradient(180deg,#80532b,#603a1e 55%,#472914);border:2px solid #5b3718;box-shadow:0 8px 14px rgba(54,31,10,.27),inset 0 2px 0 rgba(255,226,159,.24),inset 0 -3px 0 rgba(31,15,5,.32)}
+.milestone-photo-inner{width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#fff2c9,#d0b57d);border:1px solid #9b7137;box-shadow:inset 0 0 18px rgba(75,45,14,.18);color:#78562d;font-size:13px;letter-spacing:2px}
+.milestone-description{max-width:500px;margin:0 auto 24px;color:#5e4224;font-size:16px;line-height:1.65}
+.milestone-button{position:relative;width:min(310px,88%);height:56px;border:2px solid #573516;border-radius:5px;background:repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),linear-gradient(180deg,#80532b,#633d20 52%,#4b2c17);color:#f5dfb1;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:15px;font-weight:bold;letter-spacing:1.4px;text-shadow:1px 1px 0 #2c180a;cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,223,161,.22),0 4px 0 #2a180b,0 9px 17px rgba(54,31,11,.20);transition:transform .15s ease,filter .15s ease}
+.milestone-button:before{content:"";position:absolute;inset:6px;border:1px solid rgba(230,188,112,.38);pointer-events:none}
+.milestone-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.milestone-close{position:absolute;top:24px;right:28px;z-index:4;width:36px;height:36px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:22px;cursor:pointer;box-shadow:0 3px 5px rgba(49,27,8,.25)}
+@media(max-width:760px){.milestone-overlay{padding:12px}.milestone-modal{padding:58px 28px 42px}.milestone-modal:before{inset:11px}.milestone-divider i{width:65px}.milestone-close{top:19px;right:20px}}
+
+
+.journey-button{
+    width:100%;
+    padding:0;
+    font:inherit;
+    cursor:pointer;
+    color:inherit;
+}
+.journey-button:hover{
+    filter:brightness(1.08);
+    transform:translateY(-1px);
+}
+.journey-button:active{
+    transform:translateY(1px);
+}
+.journey-button:focus-visible{
+    outline:2px solid #9a7543;
+    outline-offset:2px;
+}
+
+
+/* =========================================================
+   TEAM A IDENTITY GAME
+   Scope: PHOTO + FULL NAME + NICKNAME
+========================================================= */
+.team-a-game{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(42,27,12,.70);backdrop-filter:blur(2px)}
+.team-a-game.hidden{display:none!important}
+.team-a-panel{position:relative;width:min(820px,94vw);max-height:92vh;overflow:auto;padding:54px 50px 42px;color:#422817;background:radial-gradient(ellipse at 50% 40%,#fff9e4 0%,#f1dfb9 62%,#d5b477 100%);border:2px solid #80602f;border-radius:3px;box-shadow:0 25px 55px rgba(31,18,7,.42),0 4px 0 #4d2e13,inset 0 0 0 5px rgba(255,239,194,.34),inset 0 0 25px rgba(79,47,14,.15)}
+.team-a-panel:before{content:"";position:absolute;inset:16px;border:1px solid rgba(111,77,31,.52);box-shadow:inset 0 0 0 2px rgba(255,236,188,.30);pointer-events:none}
+.team-a-panel:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.38;background:radial-gradient(ellipse at center,transparent 52%,rgba(84,51,16,.17) 100%),repeating-linear-gradient(90deg,rgba(90,56,18,.025) 0 1px,transparent 1px 8px)}
+.team-a-inner{position:relative;z-index:2;text-align:center}
+.team-a-close{position:absolute;right:28px;top:24px;z-index:4;width:34px;height:34px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:20px;cursor:pointer}
+.team-a-kicker{color:#896331;font-size:11px;font-weight:bold;letter-spacing:4px}
+.team-a-title{margin:7px 0 4px;color:#412714;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:clamp(34px,5vw,52px);line-height:1}
+.team-a-subtitle{margin:8px auto 20px;color:#684a29;font-size:17px;font-style:italic}
+.team-a-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px}
+.team-a-divider i{display:block;width:125px;height:1px;background:linear-gradient(90deg,transparent,#96703a,transparent)}
+.team-a-divider span{color:#85602d}
+.team-a-progress{display:flex;justify-content:center;gap:6px;margin-bottom:20px}
+.team-a-progress span{width:30px;height:5px;background:#c1a675;border-radius:2px}
+.team-a-progress span.current{background:#805321}.team-a-progress span.done{background:#9b7335}
+.team-a-card{width:min(650px,100%);margin:auto;padding:20px;background:linear-gradient(135deg,#fff8e6,#ead3a4);border:1px solid #9c7745;box-shadow:0 10px 22px rgba(65,42,16,.14),inset 0 0 20px rgba(112,76,26,.07)}
+.team-a-photo{width:min(270px,70vw);aspect-ratio:3/4;margin:0 auto 18px;padding:8px;background:linear-gradient(180deg,#80532b,#603a1e 55%,#472914);border:2px solid #5b3718;box-shadow:0 8px 14px rgba(54,31,10,.27),inset 0 2px rgba(255,226,159,.24)}
+.team-a-photo img{display:block;width:100%;height:100%;object-fit:cover;border:1px solid #9b7137;background:#d0b57d}
+.team-a-placeholder{height:100%;display:grid;place-items:center;background:#ead3a4;color:#78562d;font-size:12px;letter-spacing:2px}
+.team-a-question{font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:21px;font-weight:bold;margin:7px 0 18px}
+.team-a-label{color:#8b652f;font-size:10px;letter-spacing:3px;font-weight:bold;margin-top:8px}
+.team-a-name{font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:28px;font-weight:bold;color:#3f2715;margin:3px 0}
+.team-a-nickname{font-size:18px;color:#805a2b;font-style:italic;margin-bottom:18px}
+.team-a-btn{min-width:190px;height:52px;border:2px solid #573516;border-radius:5px;background:repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),linear-gradient(180deg,#80532b,#633d20 52%,#4b2c17);color:#f5dfb1;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:14px;font-weight:bold;letter-spacing:1.3px;cursor:pointer;box-shadow:inset 0 2px rgba(255,223,161,.22),0 4px 0 #2a180b;transition:.15s}
+.team-a-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.team-a-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 auto 15px}
+.team-a-option{min-height:64px;padding:9px;border:1px solid #9a7543;background:#f5e5c2;color:#49311c;cursor:pointer;font-family:Georgia,serif;box-shadow:inset 0 0 10px rgba(91,57,21,.07)}
+.team-a-option:hover{background:#fff1ca}.team-a-option.correct{background:#dbe3c5;border:2px solid #55713c}.team-a-option.wrong{background:#efd0c4;border:2px solid #9a4738}
+.team-a-feedback{min-height:23px;color:#76512a;font-weight:bold;margin-bottom:8px}
+.team-a-reward{padding:18px 20px;margin-bottom:18px;background:radial-gradient(ellipse,#fff8df,#e8ca8e);border:2px solid #8a622d}
+.team-a-reward-title{color:#815c2b;font-size:10px;letter-spacing:4px;font-weight:bold}
+@media(max-width:650px){.team-a-panel{padding:50px 24px 35px}.team-a-options{grid-template-columns:1fr}.team-a-divider i{width:65px}}
+
+</style>
+<link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-<div class="container">
+<!-- =========================================================
+     OPENING
+========================================================= -->
+<section id="intro-screen">
 
-    <h1>Supabase — Team A Test</h1>
+    <div class="map-decoration">
+        <svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+            <rect x="30" y="30" width="1340" height="840" fill="none" stroke="#704b25" stroke-width="3"/>
+            <rect x="45" y="45" width="1310" height="810" fill="none" stroke="#9b743f"/>
 
-    <div class="subtitle">
-        Testing REST API → Pengasuh → Team A
+            <g fill="none" stroke="#668d89" stroke-width="8" opacity=".55">
+                <path d="M130 -30 C220 80 160 190 260 300 C350 405 270 500 355 610 C430 710 360 800 440 930"/>
+                <path d="M1270 -30 C1180 80 1240 190 1140 300 C1050 405 1130 500 1045 610 C970 710 1040 800 960 930"/>
+            </g>
+
+            <g fill="none" stroke="#805d31" stroke-width="3" stroke-dasharray="14 13">
+                <path d="M55 690 C250 590 400 660 555 570 C700 490 820 540 975 620 C1120 690 1240 600 1345 700"/>
+                <path d="M115 180 C290 255 430 330 600 350 C800 380 990 300 1285 175"/>
+            </g>
+
+            <g fill="none" stroke="#746b50" stroke-width="4">
+                <path d="M60 650 L120 535 L180 650 Z"/>
+                <path d="M140 680 L205 545 L270 680 Z"/>
+                <path d="M235 650 L300 525 L365 650 Z"/>
+                <path d="M1080 650 L1140 535 L1200 650 Z"/>
+                <path d="M1160 680 L1225 545 L1290 680 Z"/>
+                <path d="M1250 650 L1310 525 L1370 650 Z"/>
+            </g>
+
+            <g fill="none" stroke="#75684d" stroke-width="4">
+                <path d="M55 345 L145 180 L235 345 Z"/>
+                <path d="M185 345 L285 145 L385 345 Z"/>
+                <path d="M1010 345 L1100 180 L1190 345 Z"/>
+                <path d="M1130 345 L1230 145 L1330 345 Z"/>
+            </g>
+
+            <g fill="none" stroke="#75542c" stroke-width="4">
+                <path d="M95 470 L95 395 L135 350 L175 395 L175 470 Z"/>
+                <path d="M90 395 L135 325 L180 395"/>
+                <path d="M1225 470 L1225 395 L1265 350 L1305 395 L1305 470 Z"/>
+                <path d="M1220 395 L1265 325 L1310 395"/>
+            </g>
+
+            <g transform="translate(700 450)" class="compass">
+                <circle r="145"/><circle r="125"/>
+                <path d="M0 -125 L18 0 L0 125 L-18 0 Z"/>
+                <path d="M-125 0 L0 18 L125 0 L0 -18 Z"/>
+                <circle r="9"/>
+                <text x="0" y="-160" text-anchor="middle">N</text>
+                <text x="0" y="180" text-anchor="middle">S</text>
+                <text x="-160" y="7" text-anchor="middle">W</text>
+                <text x="160" y="7" text-anchor="middle">E</text>
+            </g>
+
+            <g class="map-labels">
+                <text x="700" y="82" text-anchor="middle" class="map-title">SANAPATI LAND</text>
+                <text x="80" y="120">WESTERN WOODS</text>
+                <text x="1090" y="120">NORTHERN PEAKS</text>
+                <text x="80" y="820">WESTERN COAST</text>
+                <text x="1090" y="820">EASTERN KINGDOM</text>
+            </g>
+        </svg>
     </div>
 
-    <button id="test-button" type="button">
-        TEST TEAM A
-    </button>
+    <div class="intro-content">
+        <img src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png"
+             class="intro-mascot" alt="NPC Mascot">
+        <button id="intro-start-button" type="button" aria-label="Mulai Petualangan">
+    CLICK HERE
+</button>
+    </div>
+</section>
 
-    <div id="status">
-        Belum melakukan test.
+
+<!-- =========================================================
+     MAIN GAME CONTAINER
+========================================================= -->
+<main id="main-game">
+
+
+<!-- =========================================================
+     LOGIN / GATE
+========================================================= -->
+<section id="login-screen" class="gate-screen hidden">
+
+    <div class="gate-map">
+        <svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+            <g fill="none" stroke="#806943" stroke-width="3" stroke-dasharray="12 12">
+                <path d="M80 700 C280 600 400 660 560 570 C700 490 820 560 980 620 C1100 660 1230 600 1340 700"/>
+                <path d="M140 180 C300 260 420 330 600 350 C800 380 980 300 1240 180"/>
+            </g>
+            <g transform="translate(700 450)" fill="none" stroke="#806943" stroke-width="3">
+                <circle r="150"/><circle r="125"/>
+                <path d="M0 -150 L20 0 L0 150 L-20 0 Z"/>
+                <path d="M-150 0 L0 20 L150 0 L0 -20 Z"/>
+                <circle r="15"/>
+            </g>
+        </svg>
     </div>
 
-    <div id="result"></div>
+    <div class="gate-panel">
+        <span class="gate-sparkle gate-s1"></span>
+        <span class="gate-sparkle gate-s2"></span>
+        <span class="gate-sparkle gate-s3"></span>
+        <span class="gate-sparkle gate-s4"></span>
 
+        <div class="gate-ornament"><span></span><b>✦</b><span></span></div>
+
+        <div class="gate-title-row">
+            <div class="old-key-icon" aria-hidden="true">
+                <span class="old-key-head"></span>
+                <span class="old-key-shaft"></span>
+                <span class="old-key-teeth"></span>
+            </div>
+            <h2>The Gate Awaits</h2>
+        </div>
+
+        <p class="gate-subtitle">A sealed passage awaits those who know the way.</p>
+
+        <div class="gate-divider"><span>❧</span><div></div><span>❧</span></div>
+
+        <div class="seal-title">ENTER YOUR SEAL</div>
+
+        <div class="gate-input-wrap">
+            <input id="access-code" type="text" placeholder="Enter your seal..." autocomplete="off" spellcheck="false">
+        </div>
+
+        <button id="start-button" type="button">
+            <span>✦</span><span>UNLOCK GATE</span><span>✦</span>
+        </button>
+
+        <p id="error-message" class="error"></p>
+        <div class="gate-footer">The realm beyond is waiting.</div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     USERNAME
+========================================================= -->
+<section id="username-screen" class="screen hidden">
+    <div class="manuscript-card">
+        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+        <div class="screen-kicker">THE CHRONICLE BEGINS</div>
+        <h1 class="screen-title">Who Are You?</h1>
+        <p class="screen-text">Every adventurer needs a name. Tell the realm what it should call you.</p>
+
+        <div class="form-stack">
+            <label class="field-label" for="username">YOUR NAME</label>
+            <input id="username" class="medieval-input" type="text" placeholder="Enter your name..." maxlength="24">
+            <button id="username-button" class="wood-button" type="button">✦ CONTINUE ✦</button>
+            <p id="username-error" class="error"></p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     CREATE PIN
+========================================================= -->
+<section id="pin-setup-screen" class="screen hidden">
+    <div class="manuscript-card">
+        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+        <div class="screen-kicker">KEEPER'S SEAL</div>
+        <h1 class="screen-title">Create Your PIN</h1>
+        <p class="screen-text">A four-digit seal will protect your progress through Sanapati Land.</p>
+
+        <div class="form-stack">
+            <div class="pin-row">
+                <input id="pin-input" class="medieval-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+                <input id="pin-confirm-input" class="medieval-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+            </div>
+            <button id="pin-button" class="wood-button" type="button">🔒 SAVE SEAL</button>
+            <p id="pin-error" class="error"></p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     PIN LOGIN
+========================================================= -->
+<section id="pin-login-screen" class="screen hidden">
+    <div class="manuscript-card">
+        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+        <div class="screen-kicker">THE GATE REMEMBERS YOU</div>
+        <h1 class="screen-title">Welcome Back</h1>
+        <p id="pin-login-message" class="screen-text">Masukkan PIN untuk melanjutkan progressmu.</p>
+
+        <div class="form-stack">
+            <label class="field-label" for="login-pin-input">YOUR FOUR-DIGIT SEAL</label>
+            <input id="login-pin-input" class="medieval-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;letter-spacing:8px">
+            <button id="pin-login-button" class="wood-button" type="button">▶ ENTER REALM</button>
+            <p id="pin-login-error" class="error"></p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     WELCOME
+========================================================= -->
+<section id="welcome-screen" class="screen hidden">
+    <div class="manuscript-card">
+        <div class="welcome-layout">
+            <div class="mascot-side">
+                <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+            </div>
+            <div>
+                <div class="screen-kicker">SANAPATI LAND</div>
+                <h1 class="screen-title">Welcome, Adventurer.</h1>
+                <p id="welcome-message" class="screen-text">Your adventure awaits.</p>
+                <button id="continue-button" class="wood-button" type="button">✦ CONTINUE ✦</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     LORE
+========================================================= -->
+<section id="lore-screen" class="screen hidden">
+    <div class="manuscript-card">
+        <div class="lore-layout">
+            <div class="mascot-side">
+                <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+            </div>
+            <div>
+                <div class="lore-book">📜</div>
+                <div class="screen-kicker">BEFORE WE BEGIN</div>
+                <h1 class="screen-title">The Chronicle</h1>
+                <p class="screen-text">
+                    Every realm has its keepers.<br>
+                    Every keeper has a name.<br>
+                    And every name has a story.<br>
+
+                    You may have seen their faces.<br> 
+                    You may have heard their names.<br> 
+                    But do you truly know who they are?
+                  
+                </p>
+                <div class="lore-quote">“Your quest begins with a simple task:”</div>
+                <p class="screen-text">
+                    <strong>Discover who they are</strong><br>
+                </p>
+                <button id="lore-button" class="wood-button" type="button">LET'S GO</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     GAME HOME
+========================================================= -->
+<section id="game-screen" class="hidden">
+    <div class="game-shell">
+
+        <header class="game-topbar">
+            <div class="player-info">
+                <div class="player-avatar">♙</div>
+                <div>
+                    <div id="player-label" class="player-name">👤 Taruna</div>
+                    <div class="level-badge">Lv.1 PAMONG EXPLORER</div>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <span>✦ 0</span>
+                <span>⚙</span>
+            </div>
+        </header>
+
+        <div class="game-main">
+
+            <div>
+                <article class="mission-card" style="padding:0;overflow:hidden;">
+                    <div class="sanapati-map-wrap">
+                        <div class="sanapati-map-art">
+                            <img
+                                src="sanapati-map.png"
+                                alt="Sanapati Land"
+                                decoding="async"
+                                fetchpriority="high"
+                            >
+</div>
+                    </div>
+                </article>
+
+                <article class="journey-card">
+                    <h3 class="journey-title">YOUR JOURNEY</h3>
+                    <div class="journey">
+                        <button id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1">1</button>
+                        <div class="journey-node locked">2</div>
+                        <div class="journey-node locked">3</div>
+                        <div class="journey-node locked">4</div>
+                        <div class="journey-node locked">5</div>
+                        <div class="journey-node locked">6</div>
+                        <div class="journey-node locked">7</div>
+                        <div class="journey-node locked">8</div>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="side-card">
+                <h3 class="side-title">CONTEXT PROGRESS</h3>
+                <ul class="progress-list">
+                    <li><span>FACE</span><span class="check">✓</span></li>
+                    <li><span>NAME</span><span class="check">✓</span></li>
+                    <li><span>TEAM</span><span class="locked">○ ○ ○</span></li>
+                    <li><span>ROLE</span><span class="locked">○ ○ ○</span></li>
+                    <li><span>FUN FACT</span><span class="locked">○ ○ ○</span></li>
+                </ul>
+
+                <div style="text-align:center;margin-top:30px">
+                    <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+                    <p style="font-style:italic;color:#725636">“Let's find the context, Taruna!”</p>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</section>
+
+</main>
+
+
+
+<div id="team-a-game" class="team-a-game hidden" aria-hidden="true">
+    <div class="team-a-panel" role="dialog" aria-modal="true" aria-labelledby="team-a-title">
+        <button id="team-a-close" class="team-a-close" type="button" aria-label="Close">×</button>
+        <div class="team-a-inner">
+            <div id="team-a-kicker" class="team-a-kicker">TEAM A · DISCOVERY</div>
+            <h2 id="team-a-title" class="team-a-title">Meet Your Pamong</h2>
+            <p id="team-a-subtitle" class="team-a-subtitle">Learn the face, full name, and nickname.</p>
+            <div id="team-a-divider" class="team-a-divider"><i></i><span>✦</span><i></i></div>
+            <div id="team-a-progress" class="team-a-progress"><span class="current"></span><span></span><span></span><span></span></div>
+            <div id="team-a-content"></div>
+        </div>
+    </div>
 </div>
 
+<div id="milestone-overlay" class="milestone-overlay hidden" aria-hidden="true">
+    <div class="milestone-modal" role="dialog" aria-modal="true">
+        <div class="milestone-number">I</div>
+        <button id="milestone-close" class="milestone-close" type="button" aria-label="Close">×</button>
+        <div class="milestone-content">
+            <div class="milestone-ornament">✦ ❦ ✦</div>
+            <div class="milestone-kicker">MILESTONE I</div>
+            <h2 class="milestone-title">TEAM A</h2>
+            <div class="milestone-subtitle">Kenali Pamong di Team A</div>
+            <div class="milestone-divider"><i></i><span>✦</span><i></i></div>
+            <div class="milestone-photo"><div class="milestone-photo-inner">FOTO PAMONG</div></div>
+            <p class="milestone-description">Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri.</p>
+            <button id="milestone-button" class="milestone-button" type="button">⚔&nbsp;&nbsp; BEGIN EXPEDITION</button>
+        </div>
+    </div>
+</div>
 
 <script>
-
-    // =========================================================
-    // SUPABASE CONFIG
-    // =========================================================
-
-    const SUPABASE_URL =
-        "https://wfrhomvhehsglmohshxl.supabase.co";
-
-    const SUPABASE_API_URL =
-        `${SUPABASE_URL}/rest/v1/`;
-
-    const SUPABASE_PUBLIC_KEY =
-        "sb_publishable_9sG5BElCAe9t99f0kwSkCw_RUbvl4x6";
-
-
-    // =========================================================
-    // ELEMENTS
-    // =========================================================
-
-    const testButton =
-        document.getElementById("test-button");
-
-    const status =
-        document.getElementById("status");
-
-    const result =
-        document.getElementById("result");
-
-
-    // =========================================================
-    // TEST
-    // =========================================================
-
-    async function testSupabase() {
-
-        status.className = "";
-        status.innerHTML =
-            "⏳ Menghubungkan ke Supabase...";
-
-        result.innerHTML = "";
-
-        /*
-         * REST API:
-         *
-         * /rest/v1/Pengasuh
-         *
-         * Kita hanya mengambil:
-         * id
-         * nama
-         * panggilan
-         * foto
-         *
-         * tim = A hanya digunakan sebagai
-         * filter belakang layar.
-         */
-
-        const url =
-            `${SUPABASE_API_URL}` +
-            `Pengasuh` +
-            `?select=id,nama,panggilan,foto` +
-            `&tim=eq.A`;
-
-
-        console.log(
-            "REQUEST URL:",
-            url
-        );
-
-
-        try {
-
-            // =================================================
-            // IMPORTANT:
-            // HANYA APIKEY
-            //
-            // Tidak menggunakan:
-            // Authorization: Bearer ...
-            // =================================================
-
-            const response =
-                await fetch(url, {
-
-                    method: "GET",
-
-                    headers: {
-                        "apikey":
-                            SUPABASE_PUBLIC_KEY
-                    }
-
-                });
-
-
-            console.log(
-                "HTTP STATUS:",
-                response.status
-            );
-
-
-            const rawText =
-                await response.text();
-
-
-            console.log(
-                "RAW RESPONSE:",
-                rawText
-            );
-
-
-            // =================================================
-            // ERROR
-            // =================================================
-
-            if (!response.ok) {
-
-                status.className = "error";
-
-                status.innerHTML = `
-                    ❌ <strong>Supabase Error</strong><br><br>
-
-                    HTTP Status:
-                    <strong>${response.status}</strong>
-                `;
-
-                result.innerHTML = `
-                    <pre>${escapeHTML(rawText)}</pre>
-                `;
-
-                return;
-            }
-
-
-            // =================================================
-            // SUCCESS
-            // =================================================
-
-            let data;
-
-            try {
-
-                data = JSON.parse(rawText);
-
-            } catch (parseError) {
-
-                status.className = "error";
-
-                status.innerHTML = `
-                    ❌ Supabase mengembalikan response
-                    yang bukan JSON.
-                `;
-
-                result.innerHTML = `
-                    <pre>${escapeHTML(rawText)}</pre>
-                `;
-
-                return;
-            }
-
-
-            // =================================================
-            // SUCCESS MESSAGE
-            // =================================================
-
-            status.className = "success";
-
-            status.innerHTML = `
-                ✅ <strong>SUPABASE BERHASIL!</strong><br><br>
-
-                HTTP Status:
-                <strong>${response.status}</strong><br>
-
-                Data Team A ditemukan:
-                <strong>${data.length}</strong> orang.
-            `;
-
-
-            // =================================================
-            // NO DATA
-            // =================================================
-
-            if (data.length === 0) {
-
-                result.innerHTML = `
-                    <div class="person">
-                        <div>
-                            Query berhasil,
-                            tetapi tidak ada data dengan
-                            <code>tim = A</code>.
-                        </div>
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            // =================================================
-            // DISPLAY DATA
-            // =================================================
-
-            result.innerHTML =
-                data.map(person => {
-
-                    const photo =
-                        person.foto
-                        ? `
-                            <img
-                                src="${escapeHTML(person.foto)}"
-                                alt="Foto Pamong"
-                                onerror="this.parentElement.innerHTML =
-                                    '<div class=&quot;no-photo&quot;>
-                                        PHOTO BROKEN
-                                    </div>'"
-                            >
-                          `
-                        : `
-                            <div class="no-photo">
-                                NO PHOTO
-                            </div>
-                          `;
-
-
-                    return `
-
-                        <div class="person">
-
-                            <div class="person-photo">
-                                ${photo}
-                            </div>
-
-                            <div>
-
-                                <h3>
-                                    ${escapeHTML(
-                                        person.nama
-                                    )}
-                                </h3>
-
-                                <p>
-                                    <strong>
-                                        Panggilan:
-                                    </strong>
-
-                                    ${escapeHTML(
-                                        person.panggilan || "-"
-                                    )}
-                                </p>
-
-                                <small>
-                                    ID:
-                                    ${escapeHTML(
-                                        person.id
-                                    )}
-                                </small>
-
-                                <br>
-
-                                <small>
-                                    Foto:
-                                    ${escapeHTML(
-                                        person.foto || "-"
-                                    )}
-                                </small>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }).join("");
-
+/* =========================================================
+   NPC — NEED PAMONG CONTEXT
+========================================================= */
+
+const introScreen = document.getElementById("intro-screen");
+const introStartButton = document.getElementById("intro-start-button");
+const mainGame = document.getElementById("main-game");
+
+/* Opening: no timer. User controls the transition. */
+if (introStartButton) {
+    introStartButton.addEventListener("click", function () {
+        introScreen.classList.add("intro-hidden");
+        mainGame.classList.add("game-visible");
+        showScreen("login-screen");
+    });
+}
+
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
+function showScreen(screenId) {
+    const screens = [
+        "login-screen",
+        "username-screen",
+        "pin-setup-screen",
+        "pin-login-screen",
+        "welcome-screen",
+        "lore-screen",
+        "game-screen"
+    ];
+
+    screens.forEach(function(id) {
+        const element = document.getElementById(id);
+        if (element) element.classList.add("hidden");
+    });
+
+    const target = document.getElementById(screenId);
+    if (target) target.classList.remove("hidden");
+}
+
+/* =========================================================
+   PLAYER STORAGE
+========================================================= */
+function savePlayerData(data) {
+    localStorage.setItem("npcPlayer", JSON.stringify(data));
+}
+
+function getPlayerData() {
+    const saved = localStorage.getItem("npcPlayer");
+    if (!saved) return null;
+
+    try {
+        return JSON.parse(saved);
+    } catch (error) {
+        return null;
+    }
+}
+
+/* =========================================================
+   ACCESS CODE
+========================================================= */
+const accessInput = document.getElementById("access-code");
+const startButton = document.getElementById("start-button");
+const accessError = document.getElementById("error-message");
+
+if (startButton) {
+    startButton.addEventListener("click", function () {
+        const code = accessInput.value.trim();
+
+        if (!code) {
+            accessError.textContent = "The gate awaits your seal.";
+            return;
         }
 
+        const correctCode = "SANAPATI";
 
-        // =====================================================
-        // CATCH NETWORK ERROR
-        // =====================================================
-
-        catch (error) {
-
-            console.error(
-                "FETCH ERROR:",
-                error
-            );
-
-            status.className = "error";
-
-            status.innerHTML = `
-                ❌ <strong>Network / JavaScript Error</strong>
-            `;
-
-            result.innerHTML = `
-                <pre>${escapeHTML(
-                    error.message
-                )}</pre>
-            `;
-
+        if (code.toUpperCase() !== correctCode.toUpperCase()) {
+            accessError.textContent = "The gate remains sealed. Try again.";
+            return;
         }
 
+        accessError.textContent = "";
+
+        const player = getPlayerData();
+
+        if (player) {
+            document.getElementById("pin-login-message").textContent =
+                `Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
+
+            showScreen("pin-login-screen");
+            return;
+        }
+
+        showScreen("username-screen");
+    });
+}
+
+/* =========================================================
+   USERNAME
+========================================================= */
+const usernameInput = document.getElementById("username");
+const usernameButton = document.getElementById("username-button");
+const usernameError = document.getElementById("username-error");
+
+if (usernameButton) {
+    usernameButton.addEventListener("click", function () {
+        const username = usernameInput.value.trim();
+
+        if (!username) {
+            usernameError.textContent = "Username tidak boleh kosong.";
+            return;
+        }
+
+        if (username.length < 3) {
+            usernameError.textContent = "Username minimal 3 karakter.";
+            return;
+        }
+
+        usernameError.textContent = "";
+        sessionStorage.setItem("npcUsername", username);
+        showScreen("pin-setup-screen");
+    });
+}
+
+/* =========================================================
+   CREATE PIN
+========================================================= */
+const pinInput = document.getElementById("pin-input");
+const pinConfirmInput = document.getElementById("pin-confirm-input");
+const pinButton = document.getElementById("pin-button");
+const pinError = document.getElementById("pin-error");
+
+if (pinButton) {
+    pinButton.addEventListener("click", function () {
+        const pin = pinInput.value.trim();
+        const confirmPin = pinConfirmInput.value.trim();
+
+        if (!/^\d{4}$/.test(pin)) {
+            pinError.textContent = "PIN harus terdiri dari 4 angka.";
+            return;
+        }
+
+        if (pin !== confirmPin) {
+            pinError.textContent = "PIN dan konfirmasi PIN tidak sama.";
+            return;
+        }
+
+        const username = sessionStorage.getItem("npcUsername");
+
+        if (!username) {
+            pinError.textContent = "Username tidak ditemukan.";
+            return;
+        }
+
+        const player = {
+            username: username,
+            pin: pin,
+            milestone: 1
+        };
+
+        savePlayerData(player);
+        sessionStorage.removeItem("npcUsername");
+
+        document.getElementById("welcome-message").textContent =
+            `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
+
+        showScreen("welcome-screen");
+    });
+}
+
+/* =========================================================
+   PIN LOGIN
+========================================================= */
+const loginPinInput = document.getElementById("login-pin-input");
+const pinLoginButton = document.getElementById("pin-login-button");
+const pinLoginError = document.getElementById("pin-login-error");
+
+if (pinLoginButton) {
+    pinLoginButton.addEventListener("click", function () {
+        const enteredPin = loginPinInput.value.trim();
+        const player = getPlayerData();
+
+        if (!player) {
+            pinLoginError.textContent = "Data player tidak ditemukan.";
+            return;
+        }
+
+        if (enteredPin !== player.pin) {
+            pinLoginError.textContent = "PIN salah. Coba lagi.";
+            return;
+        }
+
+        pinLoginError.textContent = "";
+
+        document.getElementById("welcome-message").textContent =
+            `Welcome back, ${player.username}! Your adventure awaits.`;
+
+        showScreen("welcome-screen");
+    });
+}
+
+/* =========================================================
+   WELCOME → LORE
+========================================================= */
+const continueButton = document.getElementById("continue-button");
+
+if (continueButton) {
+    continueButton.addEventListener("click", function () {
+        showScreen("lore-screen");
+    });
+}
+
+/* =========================================================
+   LORE → GAME
+========================================================= */
+const loreButton = document.getElementById("lore-button");
+
+if (loreButton) {
+    loreButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        showScreen("game-screen");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+}
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+if (accessInput) {
+    accessInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") startButton.click();
+    });
+}
+
+if (usernameInput) {
+    usernameInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") usernameButton.click();
+    });
+}
+
+if (pinInput) {
+    pinInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") pinButton.click();
+    });
+}
+
+if (pinConfirmInput) {
+    pinConfirmInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") pinButton.click();
+    });
+}
+
+if (loginPinInput) {
+    loginPinInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") pinLoginButton.click();
+    });
+}
+
+/* Initial state */
+document.addEventListener("DOMContentLoaded", function() {
+    showScreen("login-screen");
+});
+
+/* =========================================================
+   MILESTONE 1 INTERACTION
+========================================================= */
+const milestoneOverlay=document.getElementById("milestone-overlay");
+const milestoneClose=document.getElementById("milestone-close");
+const milestoneButton=document.getElementById("milestone-button");
+
+function openMilestoneOne(){
+    if(!milestoneOverlay)return;
+    milestoneOverlay.classList.remove("hidden");
+    milestoneOverlay.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+}
+function closeMilestoneOne(){
+    if(!milestoneOverlay)return;
+    milestoneOverlay.classList.add("hidden");
+    milestoneOverlay.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+}
+
+if(milestoneClose) milestoneClose.addEventListener("click",closeMilestoneOne);
+if(milestoneButton) milestoneButton.addEventListener("click",function(){ closeMilestoneOne(); openTeamAGame(); });
+if(milestoneOverlay) milestoneOverlay.addEventListener("click",function(e){if(e.target===milestoneOverlay)closeMilestoneOne()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMilestoneOne()});
+
+
+const journeyNodeOne = document.getElementById("journey-node-1");
+
+if(journeyNodeOne){
+    journeyNodeOne.addEventListener("click", function(event){
+        event.preventDefault();
+        openMilestoneOne();
+    });
+}
+
+
+/* =========================================================
+   TEAM A IDENTITY GAME
+   Data source adapter:
+   window.TEAM_A_PAMONGS = [
+       { id, full_name, nickname, photo_url }
+   ];
+
+   Supabase connection can be added here later without
+   changing the gameplay UI.
+========================================================= */
+const teamAGame = document.getElementById("team-a-game");
+const teamAContent = document.getElementById("team-a-content");
+const teamAKicker = document.getElementById("team-a-kicker");
+const teamATitle = document.getElementById("team-a-title");
+const teamASubtitle = document.getElementById("team-a-subtitle");
+const teamAProgress = document.getElementById("team-a-progress");
+const teamAClose = document.getElementById("team-a-close");
+
+let teamAPamongs = [];
+let teamAIndex = 0;
+
+// =========================================================
+// SUPABASE CONFIG
+// Paste your Project URL and PUBLIC client key here.
+// NEVER use the service_role key in this HTML/GitHub Pages.
+// =========================================================
+const SUPABASE_URL = "https://wfrhomvhehsglmohshxl.supabase.co";
+const SUPABASE_PUBLIC_KEY = "sb_publishable_9sG5BElCAe9t99f0kwSkCw_RUbvl4x6";
+
+const SUPABASE_REST_URL = `${SUPABASE_URL}/rest/v1`;
+
+async function loadTeamAPamongs(){
+    const endpoint =
+        `${SUPABASE_REST_URL}/Pengasuh` +
+        `?select=id,nama,panggilan,foto` +
+        `&tim=eq.A` +
+        `&order=id.asc`;
+
+    const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+            "apikey": SUPABASE_PUBLIC_KEY
+        }
+    });
+
+    const raw = await response.text();
+
+    let body = null;
+    try {
+        body = raw ? JSON.parse(raw) : null;
+    } catch (_) {
+        body = raw;
     }
 
-
-    // =========================================================
-    // ESCAPE HTML
-    // =========================================================
-
-    function escapeHTML(value) {
-
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
+    if(!response.ok){
+        const message =
+            body && typeof body === "object" && body.message
+                ? body.message
+                : `HTTP ${response.status}: ${raw}`;
+        const error = new Error(message);
+        error.status = response.status;
+        error.supabase = body;
+        throw error;
     }
 
+    return (Array.isArray(body) ? body : []).map(person => ({
+        id: person.id,
+        full_name: person.nama,
+        nickname: person.panggilan,
+        photo_url: person.foto
+    }));
+}
 
-    // =========================================================
-    // BUTTON
-    // =========================================================
+function teamAText(value){
+    return value == null ? "" : String(value);
+}
 
-    testButton.addEventListener(
-        "click",
-        testSupabase
-    );
+function teamAPhoto(person, alt){
+    if(person.photo_url){
+        return `<img src="${teamAText(person.photo_url)}" alt="${teamAText(alt || "Pamong Team A")}">`;
+    }
+    return `<div class="team-a-placeholder">PHOTO</div>`;
+}
 
+function updateTeamAProgress(stage){
+    if(!teamAProgress) return;
+    [...teamAProgress.children].forEach((dot,i)=>{
+        dot.classList.toggle("done", i < stage);
+        dot.classList.toggle("current", i === stage);
+    });
+}
+
+function openTeamAGame(){
+    teamAGame.classList.remove("hidden");
+    teamAGame.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+    teamAIndex=0;
+    teamAPamongs = [];
+    updateTeamAProgress(0);
+    loadTeamAPamongs().then(data=>{
+        teamAPamongs = data;
+        renderTeamADiscover();
+    }).catch(error=>{
+        console.error("Team A / Supabase:", error);
+        renderTeamAError(error);
+    });
+}
+
+function closeTeamAGame(){
+    if(!teamAGame) return;
+    teamAGame.classList.add("hidden");
+    teamAGame.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+}
+
+if(teamAClose) teamAClose.addEventListener("click",closeTeamAGame);
+
+function renderTeamAError(error){
+    teamAKicker.textContent="TEAM A · CONNECTION";
+    teamATitle.textContent="Unable to Load Team A";
+    teamASubtitle.textContent="The game is connected to Supabase, but the data could not be loaded.";
+    updateTeamAProgress(0);
+
+    const message = error && error.message ? error.message : String(error || "Unknown error");
+
+    teamAContent.innerHTML=`
+        <div class="team-a-card">
+            <div class="team-a-question">Supabase returned an error.</div>
+            <p style="color:#684d2d;line-height:1.6;margin-bottom:8px">
+                Check the Project URL, public client key, table name <strong>Pengasuh</strong>,
+                and the table's read (SELECT) policy.
+            </p>
+            <p style="font-family:monospace;font-size:12px;color:#76512a;word-break:break-word">${message}</p>
+        </div>`;
+}
+
+function currentTeamAPamong(){
+    return teamAPamongs[teamAIndex] || null;
+}
+
+function renderTeamADiscover(){
+    const p=currentTeamAPamong();
+
+    if(!p){
+        teamAKicker.textContent="TEAM A · DISCOVERY";
+        teamATitle.textContent="Team A Awaits";
+        teamASubtitle.textContent="The gameplay is ready. Pamong data will be loaded from Supabase.";
+        updateTeamAProgress(0);
+
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-question">No Pamong data loaded yet.</div>
+                <p style="color:#684d2d;line-height:1.6">
+                    Connect the Team A table through the data adapter,
+                    then this screen will automatically show the Pamong's photo,
+                    full name, and nickname.
+                </p>
+            </div>
+        `;
+        return;
+    }
+
+    teamAKicker.textContent=`TEAM A · ${teamAIndex+1}/${teamAPamongs.length}`;
+    teamATitle.textContent="Who Is This?";
+    teamASubtitle.textContent="Take a good look. Remember the face.";
+
+    teamAContent.innerHTML=`
+        <div class="team-a-card">
+            <div class="team-a-photo">${teamAPhoto(p,"Pamong Team A")}</div>
+            <div class="team-a-question">Remember this face.</div>
+            <button id="team-a-reveal" class="team-a-btn" type="button">✦ REVEAL IDENTITY ✦</button>
+        </div>
+    `;
+
+    document.getElementById("team-a-reveal").onclick=()=>renderTeamAReveal(p);
+}
+
+function renderTeamAReveal(p){
+    updateTeamAProgress(1);
+    teamAKicker.textContent=`TEAM A · ${teamAIndex+1}/${teamAPamongs.length}`;
+    teamATitle.textContent="Pamong Identified";
+    teamASubtitle.textContent="Remember the face, full name, and nickname.";
+
+    teamAContent.innerHTML=`
+        <div class="team-a-card">
+            <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+            <div class="team-a-label">FULL NAME</div>
+            <div class="team-a-name">${teamAText(p.full_name)}</div>
+            <div class="team-a-label">NICKNAME</div>
+            <div class="team-a-nickname">"${teamAText(p.nickname)}"</div>
+            <button id="team-a-got-it" class="team-a-btn" type="button">GOT IT</button>
+        </div>
+    `;
+
+    document.getElementById("team-a-got-it").onclick=renderTeamAMatch;
+}
+
+function renderTeamAMatch(){
+    const p=currentTeamAPamong();
+    updateTeamAProgress(2);
+    teamAKicker.textContent="TEAM A · MATCH";
+    teamATitle.textContent="Match the Identity";
+    teamASubtitle.textContent="Which name belongs to this face?";
+
+    const distractors=teamAPamongs
+        .filter((_,i)=>i!==teamAIndex)
+        .sort(()=>Math.random()-.5)
+        .slice(0,3);
+
+    const options=[p,...distractors].sort(()=>Math.random()-.5);
+
+    teamAContent.innerHTML=`
+        <div class="team-a-card">
+            <div class="team-a-photo">${teamAPhoto(p,"Who is this?")}</div>
+            <div class="team-a-question">Choose the correct identity.</div>
+            <div class="team-a-options">
+                ${options.map(x=>`
+                    <button type="button" class="team-a-option" data-id="${teamAText(x.id)}">
+                        <strong>${teamAText(x.full_name)}</strong><br>
+                        <small>"${teamAText(x.nickname)}"</small>
+                    </button>
+                `).join("")}
+            </div>
+            <div id="team-a-match-feedback" class="team-a-feedback"></div>
+        </div>
+    `;
+
+    document.querySelectorAll(".team-a-option").forEach(button=>{
+        button.addEventListener("click",()=>{
+            const feedback=document.getElementById("team-a-match-feedback");
+            const correct=String(button.dataset.id)===String(p.id);
+
+            if(correct){
+                button.classList.add("correct");
+                feedback.textContent="✦ Correct. You know the face.";
+                document.querySelectorAll(".team-a-option").forEach(x=>x.disabled=true);
+                setTimeout(renderTeamARecall,650);
+            }else{
+                button.classList.add("wrong");
+                feedback.textContent="Not quite. Try again.";
+                setTimeout(()=>{
+                    button.classList.remove("wrong");
+                    feedback.textContent="";
+                },600);
+            }
+        });
+    });
+}
+
+function renderTeamARecall(){
+    const p=currentTeamAPamong();
+    updateTeamAProgress(3);
+    teamAKicker.textContent="TEAM A · RECALL";
+    teamATitle.textContent="Who Is This?";
+    teamASubtitle.textContent="No hints. Trust your memory.";
+
+    const distractors=teamAPamongs
+        .filter((_,i)=>i!==teamAIndex)
+        .sort(()=>Math.random()-.5)
+        .slice(0,3);
+
+    const options=[p,...distractors].sort(()=>Math.random()-.5);
+
+    teamAContent.innerHTML=`
+        <div class="team-a-card">
+            <div class="team-a-photo">${teamAPhoto(p,"Who is this?")}</div>
+            <div class="team-a-question">Who is this Pamong?</div>
+            <div class="team-a-options">
+                ${options.map(x=>`
+                    <button type="button" class="team-a-option" data-id="${teamAText(x.id)}">
+                        <strong>${teamAText(x.full_name)}</strong><br>
+                        <small>"${teamAText(x.nickname)}"</small>
+                    </button>
+                `).join("")}
+            </div>
+            <div id="team-a-recall-feedback" class="team-a-feedback"></div>
+        </div>
+    `;
+
+    document.querySelectorAll(".team-a-option").forEach(button=>{
+        button.addEventListener("click",()=>{
+            const feedback=document.getElementById("team-a-recall-feedback");
+            const correct=String(button.dataset.id)===String(p.id);
+
+            if(correct){
+                button.classList.add("correct");
+                feedback.textContent="✦ Pamong discovered.";
+                document.querySelectorAll(".team-a-option").forEach(x=>x.disabled=true);
+                setTimeout(renderTeamAReward,650);
+            }else{
+                button.classList.add("wrong");
+                feedback.textContent="Not quite. Try again.";
+                setTimeout(()=>button.classList.remove("wrong"),600);
+            }
+        });
+    });
+}
+
+function renderTeamAReward(){
+    const p=currentTeamAPamong();
+
+    teamAKicker.textContent="TEAM A · DISCOVERED";
+    teamATitle.textContent="Identity Unlocked";
+    teamASubtitle.textContent="Another Pamong has been added to your context.";
+    updateTeamAProgress(4);
+
+    teamAContent.innerHTML=`
+        <div class="team-a-reward">
+            <div class="team-a-reward-title">✦ IDENTITY CARD UNLOCKED ✦</div>
+            <div class="team-a-photo" style="margin-top:16px">${teamAPhoto(p,p.full_name)}</div>
+            <div class="team-a-name">${teamAText(p.full_name)}</div>
+            <div class="team-a-nickname">"${teamAText(p.nickname)}"</div>
+        </div>
+        <button id="team-a-next" class="team-a-btn" type="button">
+            ${teamAIndex < teamAPamongs.length-1 ? "NEXT PAMONG" : "COMPLETE TEAM A"}
+        </button>
+    `;
+
+    document.getElementById("team-a-next").onclick=()=>{
+        if(teamAIndex < teamAPamongs.length-1){
+            teamAIndex++;
+            updateTeamAProgress(0);
+            renderTeamADiscover();
+        }else{
+            closeTeamAGame();
+        }
+    };
+}
+
+document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"){
+        if(teamAGame && !teamAGame.classList.contains("hidden")) closeTeamAGame();
+        else closeMilestoneOne();
+    }
+});
 
 </script>
 
 </body>
 </html>
+<!-- Team A hotspot fix: wider transparent click target -->
