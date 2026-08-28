@@ -494,6 +494,34 @@ button,input{font:inherit}
     .sanapati-map-art img{animation:none}
 }
 
+
+/* =========================================================
+   MILESTONE PANEL — CLASSIC MEDIEVAL
+========================================================= */
+.milestone-overlay{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(42,27,12,.68);backdrop-filter:blur(2px)}
+.milestone-overlay.hidden{display:none!important}
+.milestone-modal{position:relative;width:min(720px,94vw);max-height:90vh;overflow:auto;padding:68px 64px 54px;color:#422817;background:radial-gradient(ellipse at 50% 40%,rgba(255,249,225,.99),rgba(243,222,178,.98) 60%,rgba(211,176,109,.98)),repeating-linear-gradient(0deg,rgba(91,57,21,.025) 0 1px,transparent 1px 5px);border:2px solid #80602f;border-radius:3px;box-shadow:0 25px 55px rgba(31,18,7,.42),0 4px 0 #4d2e13,inset 0 0 0 5px rgba(255,239,194,.34),inset 0 0 25px rgba(79,47,14,.15)}
+.milestone-modal:before{content:"";position:absolute;inset:16px;pointer-events:none;border:1px solid rgba(111,77,31,.52);box-shadow:inset 0 0 0 2px rgba(255,236,188,.30),inset 0 0 16px rgba(91,56,17,.10)}
+.milestone-modal:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.38;background:radial-gradient(ellipse at center,transparent 52%,rgba(84,51,16,.17) 100%),repeating-linear-gradient(90deg,rgba(90,56,18,.025) 0 1px,transparent 1px 8px)}
+.milestone-content{position:relative;z-index:2;text-align:center}
+.milestone-ornament{color:#8b642c;font-size:22px;letter-spacing:7px;margin-bottom:8px}
+.milestone-kicker{color:#896331;font-size:12px;font-weight:bold;letter-spacing:4px}
+.milestone-title{margin:8px 0 4px;color:#412714;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:clamp(42px,6vw,62px);line-height:1;letter-spacing:2px;text-shadow:1px 1px 0 #fff0ce,2px 3px 0 rgba(72,42,13,.10)}
+.milestone-subtitle{margin:8px 0 18px;color:#684a29;font-size:18px;font-style:italic}
+.milestone-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 24px}
+.milestone-divider i{display:block;width:125px;height:1px;background:linear-gradient(90deg,transparent,#96703a,transparent)}
+.milestone-divider span{color:#85602d}
+.milestone-number{position:absolute;top:-32px;left:50%;transform:translateX(-50%);width:72px;height:72px;display:grid;place-items:center;border-radius:50%;color:#f4dca7;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:31px;font-weight:bold;border:3px double #9a702e;background:radial-gradient(circle at 34% 28%,#d8ad58,#8d5e20 55%,#4c2c12);box-shadow:0 5px 9px rgba(53,31,10,.32),inset 2px 2px 3px rgba(255,241,180,.45),inset -3px -3px 5px rgba(42,22,7,.38)}
+.milestone-photo{width:min(260px,72vw);aspect-ratio:4/3;margin:0 auto 20px;padding:9px;background:repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),linear-gradient(180deg,#80532b,#603a1e 55%,#472914);border:2px solid #5b3718;box-shadow:0 8px 14px rgba(54,31,10,.27),inset 0 2px 0 rgba(255,226,159,.24),inset 0 -3px 0 rgba(31,15,5,.32)}
+.milestone-photo-inner{width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#fff2c9,#d0b57d);border:1px solid #9b7137;box-shadow:inset 0 0 18px rgba(75,45,14,.18);color:#78562d;font-size:13px;letter-spacing:2px}
+.milestone-description{max-width:500px;margin:0 auto 24px;color:#5e4224;font-size:16px;line-height:1.65}
+.milestone-button{position:relative;width:min(310px,88%);height:56px;border:2px solid #573516;border-radius:5px;background:repeating-linear-gradient(7deg,rgba(255,213,139,.08) 0 2px,rgba(47,25,10,.10) 3px 8px),linear-gradient(180deg,#80532b,#633d20 52%,#4b2c17);color:#f5dfb1;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:15px;font-weight:bold;letter-spacing:1.4px;text-shadow:1px 1px 0 #2c180a;cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,223,161,.22),0 4px 0 #2a180b,0 9px 17px rgba(54,31,11,.20);transition:transform .15s ease,filter .15s ease}
+.milestone-button:before{content:"";position:absolute;inset:6px;border:1px solid rgba(230,188,112,.38);pointer-events:none}
+.milestone-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.milestone-close{position:absolute;top:24px;right:28px;z-index:4;width:36px;height:36px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:22px;cursor:pointer;box-shadow:0 3px 5px rgba(49,27,8,.25)}
+.team-a-hotspot{position:absolute!important;left:24%!important;top:13%!important;width:18%!important;height:23%!important;z-index:50!important;display:block!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;opacity:.01!important;cursor:pointer!important;pointer-events:auto!important;appearance:none!important}
+@media(max-width:760px){.milestone-overlay{padding:12px}.milestone-modal{padding:58px 28px 42px}.milestone-modal:before{inset:11px}.milestone-divider i{width:65px}.milestone-close{top:19px;right:20px}}
+
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 </head>
@@ -786,7 +814,8 @@ button,input{font:inherit}
                                 decoding="async"
                                 fetchpriority="high"
                             >
-                        </div>
+                                                    <button id="team-a-hotspot" class="team-a-hotspot" type="button" aria-label="Team A Camp — Milestone 1"></button>
+</div>
                     </div>
                 </article>
 
@@ -826,6 +855,24 @@ button,input{font:inherit}
 </section>
 
 </main>
+
+
+<div id="milestone-overlay" class="milestone-overlay hidden" aria-hidden="true">
+    <div class="milestone-modal" role="dialog" aria-modal="true">
+        <div class="milestone-number">I</div>
+        <button id="milestone-close" class="milestone-close" type="button" aria-label="Close">×</button>
+        <div class="milestone-content">
+            <div class="milestone-ornament">✦ ❦ ✦</div>
+            <div class="milestone-kicker">MILESTONE I</div>
+            <h2 class="milestone-title">TEAM A</h2>
+            <div class="milestone-subtitle">Kenali Pamong di Team A</div>
+            <div class="milestone-divider"><i></i><span>✦</span><i></i></div>
+            <div class="milestone-photo"><div class="milestone-photo-inner">FOTO PAMONG</div></div>
+            <p class="milestone-description">Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri.</p>
+            <button id="milestone-button" class="milestone-button" type="button">⚔&nbsp;&nbsp; BEGIN EXPEDITION</button>
+        </div>
+    </div>
+</div>
 
 <script>
 /* =========================================================
@@ -1090,6 +1137,33 @@ if (loginPinInput) {
 document.addEventListener("DOMContentLoaded", function() {
     showScreen("login-screen");
 });
+
+/* =========================================================
+   MILESTONE 1 INTERACTION
+========================================================= */
+const teamAHotspot=document.getElementById("team-a-hotspot");
+const milestoneOverlay=document.getElementById("milestone-overlay");
+const milestoneClose=document.getElementById("milestone-close");
+const milestoneButton=document.getElementById("milestone-button");
+
+function openMilestoneOne(){
+    if(!milestoneOverlay)return;
+    milestoneOverlay.classList.remove("hidden");
+    milestoneOverlay.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+}
+function closeMilestoneOne(){
+    if(!milestoneOverlay)return;
+    milestoneOverlay.classList.add("hidden");
+    milestoneOverlay.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+}
+if(teamAHotspot) teamAHotspot.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();openMilestoneOne()});
+if(milestoneClose) milestoneClose.addEventListener("click",closeMilestoneOne);
+if(milestoneButton) milestoneButton.addEventListener("click",closeMilestoneOne);
+if(milestoneOverlay) milestoneOverlay.addEventListener("click",function(e){if(e.target===milestoneOverlay)closeMilestoneOne()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMilestoneOne()});
+
 </script>
 
 </body>
