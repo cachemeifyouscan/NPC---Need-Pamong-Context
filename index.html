@@ -696,6 +696,14 @@ button,input{font:inherit}
 .endgame-score{font-size:54px;font-weight:bold;font-family:"Palatino Linotype",Palatino,Georgia,serif}
 @media(max-width:650px){.endgame-options,.endgame-face-grid{grid-template-columns:1fr}}
 
+
+/* Hide the redundant identity-game header. The roster screen remains intact. */
+.team-a-game .team-a-kicker,
+.team-a-game .team-a-title,
+.team-a-game .team-a-subtitle,
+.team-a-game .team-a-divider,
+.team-a-game .team-a-progress{display:none!important}
+.team-a-game .team-a-inner{padding-top:8px}
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1623,6 +1631,22 @@ function openMilestone(teamKey="A"){
 }
 function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow="";}
 if(milestoneClose)milestoneClose.addEventListener("click",closeMilestoneOne);
+
+if(milestoneButton){
+    milestoneButton.addEventListener("click",function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const selectedTeam=String(currentTeamKey||"").trim().toUpperCase();
+        if(!TEAM_CONFIG[selectedTeam]){
+            console.warn("No valid team selected.");
+            return;
+        }
+
+        closeMilestoneOne();
+        openTeamGame(selectedTeam);
+    });
+}
 if(milestoneButton)if(milestoneOverlay)milestoneOverlay.addEventListener("click",e=>{if(e.target===milestoneOverlay)closeMilestoneOne()});
 PLAYABLE_TEAMS.forEach(key=>{
     const node=document.querySelector(`[data-team="${key}"]`);
@@ -1819,6 +1843,8 @@ function showTeamGameReviewMenu(){
 }
 
 function openTeamGame(teamKey=currentTeamKey){
+    teamKey=String(teamKey||"").trim().toUpperCase();
+    if(!TEAM_CONFIG[teamKey]) return;
     currentTeamKey=teamKey;
     teamGameGame.classList.remove("hidden");
     teamGameGame.setAttribute("aria-hidden","false");
