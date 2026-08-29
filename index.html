@@ -564,7 +564,7 @@ button,input{font:inherit}
 .team-a-progress span.current{background:#805321}.team-a-progress span.done{background:#9b7335}
 .team-a-card{width:min(650px,100%);margin:auto;padding:20px;background:linear-gradient(135deg,#fff8e6,#ead3a4);border:1px solid #9c7745;box-shadow:0 10px 22px rgba(65,42,16,.14),inset 0 0 20px rgba(112,76,26,.07)}
 .team-a-photo{width:min(270px,70vw);aspect-ratio:3/4;margin:0 auto 18px;padding:8px;background:linear-gradient(180deg,#80532b,#603a1e 55%,#472914);border:2px solid #5b3718;box-shadow:0 8px 14px rgba(54,31,10,.27),inset 0 2px rgba(255,226,159,.24)}
-.team-a-photo img{display:block;width:100%;height:100%;object-fit:cover;border:1px solid #9b7137;background:#d0b57d}
+.team-a-photo img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;border:1px solid #9b7137;background:#d0b57d}
 .team-a-placeholder{height:100%;display:grid;place-items:center;background:#ead3a4;color:#78562d;font-size:12px;letter-spacing:2px}
 .team-a-question{font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:21px;font-weight:bold;margin:7px 0 18px}
 .team-a-label{color:#8b652f;font-size:10px;letter-spacing:3px;font-weight:bold;margin-top:8px}
@@ -588,7 +588,7 @@ button,input{font:inherit}
 .endgame-option.wrong{background:#efd0c4;border:2px solid #9a4738}
 .endgame-face-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .endgame-face-grid button{padding:8px}
-.endgame-face-grid img{display:block;width:100%;height:180px;object-fit:cover;margin-bottom:7px}
+.endgame-face-grid img{display:block;width:100%;height:180px;object-fit:contain;object-position:center;background:#d0b57d;margin-bottom:7px}
 .endgame-feedback{min-height:24px;color:#76512a;font-weight:bold;margin:10px 0}
 .endgame-score{font-size:54px;font-weight:bold;font-family:"Palatino Linotype",Palatino,Georgia,serif}
 @media(max-width:650px){.endgame-options,.endgame-face-grid{grid-template-columns:1fr}}
@@ -596,6 +596,13 @@ button,input{font:inherit}
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+/* Endgame image/typing refinements */
+.team-a-photo img{object-fit:contain !important;object-position:center !important;}
+.endgame-face-grid img{object-fit:contain !important;object-position:center !important;background:#d0b57d;}
+.team-a-btn:disabled{opacity:.65;cursor:wait;transform:none !important;filter:none !important;}
+</style>
 </head>
 
 <body>
@@ -1662,6 +1669,36 @@ const ENDGAME_TYPES=[
     "FINAL_RECALL"
 ];
 
+function teamANormalize(value){
+    return String(value == null ? "" : value)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s]/g, "")
+        .replace(/\s+/g, " ");
+}
+
+/* For typed full names, academic/professional titles are optional.
+   Example: "Arif Bagus Al Budin, S.Tr.Kom" and
+   "Arif Bagus Al Budin" are both accepted. */
+function teamANameForAnswer(value){
+    let name=teamANormalize(value);
+    name=name
+        .replace(/\b(s ?tr ?kom|s ?tr ?kom ?sos|s ?t|s ?kom|m ?kom|dr|prof)\b/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+    return name;
+}
+
+function teamAAnswerMatchesFullName(typed, correct){
+    return teamANameForAnswer(typed) === teamANameForAnswer(correct);
+}
+
+function teamAAnswerMatchesNickname(typed, correct){
+    return teamANormalize(typed) === teamANormalize(correct);
+}
+
 function shuffleTeamA(arr){
     const a=[...arr];
     for(let i=a.length-1;i>0;i--){
@@ -1793,26 +1830,57 @@ function renderEndgameQuestion(){
 
     if(q.type==="FACE_TO_NICKNAME_TYPING"){
         teamATitle.textContent="FACE → NICKNAME";
-        teamASubtitle.textContent="Type the nickname from memory.";
+        teamASubtitle.textContent="Type the nickname from memory. Capitalization does not matter.";
         teamAContent.innerHTML=`
             <div class="team-a-card">
                 <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
                 <div class="team-a-question">TYPE THEIR NICKNAME</div>
                 <input id="eg-input" class="medieval-input" type="text" autocomplete="off" placeholder="Nickname...">
-                <button id="eg-submit" class="team-a-btn" type="button">SUBMIT</button>
+                <div style="font-size:12px;color:#76512a;margin:8px 0 2px">Capital letters and small differences in spacing are okay.</div>
+                <button id="eg-submit" class="team-a-btn" type="button" style="margin-top:12px">SUBMIT</button>
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
-        const submit=()=>{
+
+        const input=document.getElementById("eg-input");
+        const submit=document.getElementById("eg-submit");
+        const feedback=document.getElementById("eg-feedback");
+
+        const submitAnswer=()=>{
             if(endgameLocked)return;
+
+            const raw=input ? input.value : "";
+            if(!teamANormalize(raw)){
+                feedback.textContent="Please enter an answer first.";
+                if(input) input.focus();
+                return;
+            }
+
             endgameLocked=true;
-            const value=teamANormalize(document.getElementById("eg-input").value);
-            const correct=value===teamANormalize(p.nickname);
+            const correct=teamAAnswerMatchesNickname(raw,p.nickname);
             if(correct)endgameScore++;
-            document.getElementById("eg-feedback").textContent=correct?"✦ CORRECT — MEMORY CONFIRMED.":"✕ NOT QUITE.";
-            setTimeout(()=>{endgameIndex++;endgameLocked=false;renderEndgameQuestion();},650);
+
+            feedback.textContent=correct
+                ? "✦ CORRECT — MEMORY CONFIRMED."
+                : `✕ NOT QUITE. The correct nickname is "${teamAText(p.nickname)}".`;
+
+            if(submit)submit.disabled=true;
+
+            setTimeout(()=>{
+                endgameIndex++;
+                endgameLocked=false;
+                renderEndgameQuestion();
+            },900);
         };
-        document.getElementById("eg-submit").onclick=submit;
-        document.getElementById("eg-input").addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
+
+        if(submit)submit.addEventListener("click",submitAnswer);
+        if(input)input.addEventListener("keydown",event=>{
+            if(event.key==="Enter"){
+                event.preventDefault();
+                submitAnswer();
+            }
+        });
+
+        if(input) setTimeout(()=>input.focus(),50);
         return;
     }
 
@@ -1857,24 +1925,56 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="WHO_IS_MISSING"){
-        const visible=shuffleTeamA(teamAPamongs).slice(0,Math.min(4,teamAPamongs.length));
-        const missing=visible[0];
-        const shown=visible.filter(x=>String(x.id)!==String(missing.id));
-        const names=shuffleTeamA([missing,...endgameOthers(missing)]).slice(0,4);
+        /*
+           Three nicknames are shown. One full name does not correspond
+           to any of those nicknames. The answer is therefore the full
+           identity that is genuinely absent, not a random missing row.
+        */
+        const group=shuffleTeamA(teamAPamongs).slice(0,3);
+        const missing=shuffleTeamA(
+            teamAPamongs.filter(person=>
+                !group.some(x=>String(x.id)===String(person.id))
+            )
+        )[0];
 
-        teamATitle.textContent="WHO IS MISSING?";
-        teamASubtitle.textContent="One identity is absent. Which one?";
+        const names=shuffleTeamA([
+            missing,
+            ...group
+        ]);
+
+        teamATitle.textContent="THE MISSING IDENTITY";
+        teamASubtitle.textContent="Three nicknames are remembered. Which full name does NOT belong?";
+
         teamAContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-question">WHICH NAME IS MISSING?</div>
-                <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px">
-                    ${shown.map(x=>`<span style="padding:8px 11px;border:1px solid #9a7543;background:#f5e5c2">${teamAText(x.nickname||x.full_name)}</span>`).join("")}
+                <div class="team-a-question">NICKNAMES REMEMBERED FROM THIS GROUP:</div>
+
+                <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:0 auto 22px">
+                    ${group.map(x=>`
+                        <span style="
+                            padding:9px 14px;
+                            border:1px solid #9a7543;
+                            background:#f5e5c2;
+                            color:#49311c;
+                            font-family:Georgia,serif;
+                        ">
+                            ${teamAText(x.nickname||x.full_name)}
+                        </span>
+                    `).join("")}
                 </div>
+
+                <div class="team-a-question">WHICH FULL NAME DOES NOT BELONG?</div>
+
                 <div class="endgame-options">
-                    ${endgameOptions(names.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
+                    ${endgameOptions(names.map(x=>({
+                        id:x.id,
+                        html:`<strong>${teamAText(x.full_name)}</strong>`
+                    })))}
                 </div>
+
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
+
         bindEndgameChoice(missing.id,"eg-feedback");
         return;
     }
@@ -1891,16 +1991,53 @@ function renderEndgameQuestion(){
                 <button id="eg-submit" class="team-a-btn" type="button" style="margin-top:12px">SUBMIT</button>
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
-        document.getElementById("eg-submit").onclick=()=>{
+        const finalSubmit=document.getElementById("eg-submit");
+        const finalName=document.getElementById("eg-name");
+        const finalNick=document.getElementById("eg-nick");
+        const finalFeedback=document.getElementById("eg-feedback");
+
+        const submitFinal=()=>{
             if(endgameLocked)return;
+
+            const typedName=finalName ? finalName.value : "";
+            const typedNick=finalNick ? finalNick.value : "";
+
+            if(!teamANameForAnswer(typedName) || !teamANormalize(typedNick)){
+                finalFeedback.textContent="Please fill in both the full name and nickname.";
+                if(finalName && !teamANameForAnswer(typedName)) finalName.focus();
+                else if(finalNick) finalNick.focus();
+                return;
+            }
+
             endgameLocked=true;
-            const name=teamANormalize(document.getElementById("eg-name").value);
-            const nick=teamANormalize(document.getElementById("eg-nick").value);
-            const correct=name===teamANormalize(p.full_name)&&nick===teamANormalize(p.nickname);
+
+            const nameCorrect=teamAAnswerMatchesFullName(typedName,p.full_name);
+            const nickCorrect=teamAAnswerMatchesNickname(typedNick,p.nickname);
+            const correct=nameCorrect && nickCorrect;
+
             if(correct)endgameScore++;
-            document.getElementById("eg-feedback").textContent=correct?"✦ PERFECT RECALL.":"✕ THE IDENTITY DID NOT MATCH.";
-            setTimeout(()=>{endgameIndex++;endgameLocked=false;renderEndgameQuestion();},700);
+
+            finalFeedback.textContent=correct
+                ? "✦ PERFECT RECALL."
+                : "✕ NOT QUITE — CHECK THE IDENTITY DETAILS.";
+
+            if(finalSubmit)finalSubmit.disabled=true;
+
+            setTimeout(()=>{
+                endgameIndex++;
+                endgameLocked=false;
+                renderEndgameQuestion();
+            },900);
         };
+
+        if(finalSubmit)finalSubmit.addEventListener("click",submitFinal);
+        if(finalName)finalName.addEventListener("keydown",event=>{
+            if(event.key==="Enter"){event.preventDefault();finalNick.focus();}
+        });
+        if(finalNick)finalNick.addEventListener("keydown",event=>{
+            if(event.key==="Enter"){event.preventDefault();submitFinal();}
+        });
+
     }
 }
 
