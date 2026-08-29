@@ -498,6 +498,95 @@ button,input{font:inherit}
 /* =========================================================
    MILESTONE PANEL — CLASSIC MEDIEVAL
 ========================================================= */
+
+/* =========================================================
+   TEAM ROSTER — MEDIEVAL TEAM A / B / C / D
+   ========================================================= */
+.milestone-roster{
+    width:min(760px,100%);
+    margin:0 auto 18px;
+}
+.milestone-roster-art-wrap{
+    width:100%;
+    padding:9px;
+    background:linear-gradient(180deg,#80532b,#603a1e 55%,#472914);
+    border:2px solid #5b3718;
+    box-shadow:0 8px 14px rgba(54,31,10,.25),inset 0 2px rgba(255,226,159,.24);
+}
+.milestone-roster-art{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:310px;
+    object-fit:contain;
+    object-position:center;
+    border:1px solid #9b7137;
+    background:#ead3a4;
+}
+.milestone-roster-stats{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin:16px auto 8px;
+}
+.roster-stat{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#4a301c;
+}
+.roster-stat strong{
+    font-family:"Palatino Linotype",Palatino,Georgia,serif;
+    font-size:31px;
+    line-height:1;
+}
+.roster-stat > span:last-child{
+    font-size:12px;
+    letter-spacing:3px;
+    font-weight:bold;
+}
+.roster-stat-icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    color:#f6dfad;
+    font-size:17px;
+    border:2px double #a47b35;
+    background:#31506a;
+}
+.roster-stat-icon.female{background:#70413d}
+.roster-stat-separator{color:#8a672f;font-size:18px}
+.milestone-roster-total{
+    color:#76512a;
+    font-size:13px;
+    font-style:italic;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+.milestone-resume-note{
+    display:none;
+    margin:0 auto 16px;
+    color:#76512a;
+    font-size:13px;
+    font-style:italic;
+}
+.milestone-overlay.returning-player .milestone-resume-note{display:block}
+
+@media(max-height:820px) and (min-width:651px){
+    .milestone-modal{padding-top:52px;padding-bottom:38px}
+    .milestone-roster-art{max-height:235px}
+    .milestone-roster-stats{margin:10px auto 5px}
+}
+@media(max-width:650px){
+    .milestone-roster-stats{gap:10px}
+    .roster-stat strong{font-size:26px}
+    .roster-stat > span:last-child{font-size:10px;letter-spacing:2px}
+    .milestone-roster-art{max-height:240px}
+}
+
 .milestone-overlay{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(42,27,12,.68);backdrop-filter:blur(2px)}
 .milestone-overlay.hidden{display:none!important}
 .milestone-modal{position:relative;width:min(720px,94vw);max-height:90vh;overflow:auto;padding:68px 64px 54px;color:#422817;background:radial-gradient(ellipse at 50% 40%,rgba(255,249,225,.99),rgba(243,222,178,.98) 60%,rgba(211,176,109,.98)),repeating-linear-gradient(0deg,rgba(91,57,21,.025) 0 1px,transparent 1px 5px);border:2px solid #80602f;border-radius:3px;box-shadow:0 25px 55px rgba(31,18,7,.42),0 4px 0 #4d2e13,inset 0 0 0 5px rgba(255,239,194,.34),inset 0 0 25px rgba(79,47,14,.15)}
@@ -1112,12 +1201,43 @@ button,input{font:inherit}
             <div class="milestone-ornament">✦ ❦ ✦</div>
             <div id="milestone-kicker" class="milestone-kicker">MILESTONE I</div>
             <h2 id="milestone-title" class="milestone-title">TEAM A</h2>
-            <div id="milestone-subtitle" class="milestone-subtitle">Kenali Pamong di Team A</div>
+            <div id="milestone-subtitle" class="milestone-subtitle">Meet the Pamong of Team A</div>
             <div class="milestone-divider"><i></i><span>✦</span><i></i></div>
-            <div id="milestone-resume-note">Phase 1 complete — continue directly to the Endgame.</div>
-            <div class="milestone-photo"><div class="milestone-photo-inner">FOTO PAMONG</div></div>
-            <p id="milestone-description" class="milestone-description">Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri.</p>
-            <button id="milestone-button" class="milestone-button" type="button">⚔&nbsp;&nbsp; BEGIN EXPEDITION</button>
+
+            <div class="milestone-roster">
+                <div class="milestone-roster-art-wrap">
+                    <img id="milestone-roster-art"
+                         class="milestone-roster-art"
+                         src="team-a-roster-art.png"
+                         alt="Team A roster">
+                </div>
+
+                <div class="milestone-roster-stats">
+                    <div class="roster-stat">
+                        <span class="roster-stat-icon male">⚔</span>
+                        <strong id="milestone-male-count">6</strong>
+                        <span>MALE</span>
+                    </div>
+                    <span class="roster-stat-separator">✦</span>
+                    <div class="roster-stat">
+                        <span class="roster-stat-icon female">♧</span>
+                        <strong id="milestone-female-count">4</strong>
+                        <span>FEMALE</span>
+                    </div>
+                </div>
+
+                <div id="milestone-roster-total" class="milestone-roster-total">
+                    10 IDENTITIES AWAIT DISCOVERY
+                </div>
+            </div>
+
+            <div id="milestone-resume-note" class="milestone-resume-note">
+                Start with Identity Discovery, then prove your recall in the Endgame.
+            </div>
+
+            <button id="milestone-button" class="milestone-button" type="button">
+                ⚔&nbsp;&nbsp; BEGIN EXPEDITION
+            </button>
         </div>
     </div>
 </div>
@@ -1408,12 +1528,11 @@ const milestoneNumber=document.getElementById("milestone-number");
 const milestoneKicker=document.getElementById("milestone-kicker");
 const milestoneTitle=document.getElementById("milestone-title");
 const milestoneSubtitle=document.getElementById("milestone-subtitle");
-const milestoneDescription=document.getElementById("milestone-description");
 const TEAM_CONFIG={
- A:{roman:"I",label:"TEAM A",title:"Kenali Pamong di Team A",description:"Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."},
- B:{roman:"II",label:"TEAM B",title:"Kenali Pamong di Team B",description:"Temui dan pahami Pamong di Team B. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."},
- C:{roman:"III",label:"TEAM C",title:"Kenali Pamong di Team C",description:"Temui dan pahami Pamong di Team C. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."},
- D:{roman:"IV",label:"TEAM D",title:"Kenali Pamong di Team D",description:"Temui dan pahami Pamong di Team D. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."}
+ A:{roman:"I",label:"TEAM A",subtitle:"Meet the Pamong of Team A",rosterArt:"team-a-roster-art.png",male:6,female:4},
+ B:{roman:"II",label:"TEAM B",subtitle:"Meet the Pamong of Team B",rosterArt:"team-b-roster-art.png",male:7,female:3},
+ C:{roman:"III",label:"TEAM C",subtitle:"Meet the Pamong of Team C",rosterArt:"team-c-roster-art.png",male:6,female:3},
+ D:{roman:"IV",label:"TEAM D",subtitle:"Meet the Pamong of Team D",rosterArt:"team-d-roster-art.png",male:7,female:3}
 };
 const PLAYABLE_TEAMS=["A","B","C","D"];
 let currentTeamKey="A";
@@ -1445,11 +1564,47 @@ function refreshJourney(){
 }
 function openMilestone(teamKey="A"){
  if(!milestoneOverlay||!TEAM_CONFIG[teamKey]||!isTeamUnlocked(teamKey))return;
- currentTeamKey=teamKey;const cfg=TEAM_CONFIG[teamKey],complete=isTeamGamePhase1Complete(teamKey);
- milestoneNumber.textContent=cfg.roman;milestoneKicker.textContent=`MILESTONE ${cfg.roman}`;milestoneTitle.textContent=cfg.label;milestoneSubtitle.textContent=cfg.title;milestoneDescription.textContent=cfg.description;
- const note=document.getElementById("milestone-resume-note");if(note)note.textContent=complete?"Phase 1 complete — continue directly to the Endgame, or review either phase.":"Start with Identity Discovery, then prove your recall in the Endgame.";
- if(milestoneButton)milestoneButton.innerHTML=complete?"⚔&nbsp;&nbsp; CONTINUE":"⚔&nbsp;&nbsp; BEGIN EXPEDITION";
- milestoneOverlay.classList.toggle("returning-player",complete);milestoneOverlay.classList.remove("hidden");milestoneOverlay.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+
+ currentTeamKey=teamKey;
+ const cfg=TEAM_CONFIG[teamKey];
+ const complete=isTeamGamePhase1Complete(teamKey);
+
+ milestoneNumber.textContent=cfg.roman;
+ milestoneKicker.textContent=`MILESTONE ${cfg.roman}`;
+ milestoneTitle.textContent=cfg.label;
+ milestoneSubtitle.textContent=cfg.subtitle;
+
+ const rosterArt=document.getElementById("milestone-roster-art");
+ if(rosterArt){
+     rosterArt.src=cfg.rosterArt;
+     rosterArt.alt=`${cfg.label} roster`;
+ }
+
+ const maleCount=document.getElementById("milestone-male-count");
+ const femaleCount=document.getElementById("milestone-female-count");
+ const totalLabel=document.getElementById("milestone-roster-total");
+
+ if(maleCount)maleCount.textContent=cfg.male;
+ if(femaleCount)femaleCount.textContent=cfg.female;
+ if(totalLabel)totalLabel.textContent=`${cfg.male+cfg.female} IDENTITIES AWAIT DISCOVERY`;
+
+ const note=document.getElementById("milestone-resume-note");
+ if(note){
+     note.textContent=complete
+         ?"Phase 1 complete — continue directly to the Endgame, or review either phase."
+         :"Start with Identity Discovery, then prove your recall in the Endgame.";
+ }
+
+ if(milestoneButton){
+     milestoneButton.innerHTML=complete
+         ?"⚔&nbsp;&nbsp; CONTINUE"
+         :"⚔&nbsp;&nbsp; BEGIN EXPEDITION";
+ }
+
+ milestoneOverlay.classList.toggle("returning-player",complete);
+ milestoneOverlay.classList.remove("hidden");
+ milestoneOverlay.setAttribute("aria-hidden","false");
+ document.body.style.overflow="hidden";
 }
 function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow="";}
 if(milestoneClose)milestoneClose.addEventListener("click",closeMilestoneOne);
