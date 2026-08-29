@@ -548,23 +548,23 @@ button,input{font:inherit}
 ========================================================= */
 .team-a-game{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(42,27,12,.70);backdrop-filter:blur(2px)}
 .team-a-game.hidden{display:none!important}
-.team-a-panel{position:relative;width:min(820px,94vw);max-height:92vh;overflow:auto;padding:54px 50px 42px;color:#422817;background:radial-gradient(ellipse at 50% 40%,#fff9e4 0%,#f1dfb9 62%,#d5b477 100%);border:2px solid #80602f;border-radius:3px;box-shadow:0 25px 55px rgba(31,18,7,.42),0 4px 0 #4d2e13,inset 0 0 0 5px rgba(255,239,194,.34),inset 0 0 25px rgba(79,47,14,.15)}
+.team-a-panel{position:relative;width:min(1040px,96vw);max-height:calc(100vh - 24px);overflow:auto;padding:28px 36px 24px;color:#422817;background:radial-gradient(ellipse at 50% 40%,#fff9e4 0%,#f1dfb9 62%,#d5b477 100%);border:2px solid #80602f;border-radius:3px;box-shadow:0 25px 55px rgba(31,18,7,.42),0 4px 0 #4d2e13,inset 0 0 0 5px rgba(255,239,194,.34),inset 0 0 25px rgba(79,47,14,.15)}
 .team-a-panel:before{content:"";position:absolute;inset:16px;border:1px solid rgba(111,77,31,.52);box-shadow:inset 0 0 0 2px rgba(255,236,188,.30);pointer-events:none}
 .team-a-panel:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.38;background:radial-gradient(ellipse at center,transparent 52%,rgba(84,51,16,.17) 100%),repeating-linear-gradient(90deg,rgba(90,56,18,.025) 0 1px,transparent 1px 8px)}
 .team-a-inner{position:relative;z-index:2;text-align:center}
 .team-a-close{position:absolute;right:28px;top:24px;z-index:4;width:34px;height:34px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:20px;cursor:pointer}
 .team-a-kicker{color:#896331;font-size:11px;font-weight:bold;letter-spacing:4px}
 .team-a-title{margin:7px 0 4px;color:#412714;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:clamp(34px,5vw,52px);line-height:1}
-.team-a-subtitle{margin:8px auto 20px;color:#684a29;font-size:17px;font-style:italic}
-.team-a-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px}
+.team-a-subtitle{margin:6px auto 14px;color:#684a29;font-size:17px;font-style:italic}
+.team-a-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px}
 .team-a-divider i{display:block;width:125px;height:1px;background:linear-gradient(90deg,transparent,#96703a,transparent)}
 .team-a-divider span{color:#85602d}
-.team-a-progress{display:flex;justify-content:center;gap:6px;margin-bottom:20px}
+.team-a-progress{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
 .team-a-progress span{width:30px;height:5px;background:#c1a675;border-radius:2px}
 .team-a-progress span.current{background:#805321}.team-a-progress span.done{background:#9b7335}
-.team-a-card{width:min(650px,100%);margin:auto;padding:20px;background:linear-gradient(135deg,#fff8e6,#ead3a4);border:1px solid #9c7745;box-shadow:0 10px 22px rgba(65,42,16,.14),inset 0 0 20px rgba(112,76,26,.07)}
-.team-a-photo{width:min(270px,70vw);aspect-ratio:3/4;margin:0 auto 18px;padding:8px;background:linear-gradient(180deg,#80532b,#603a1e 55%,#472914);border:2px solid #5b3718;box-shadow:0 8px 14px rgba(54,31,10,.27),inset 0 2px rgba(255,226,159,.24)}
-.team-a-photo img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;border:1px solid #9b7137;background:#d0b57d}
+.team-a-card{width:min(760px,100%);margin:auto;padding:18px;background:linear-gradient(135deg,#fff8e6,#ead3a4);border:1px solid #9c7745;box-shadow:0 10px 22px rgba(65,42,16,.14),inset 0 0 20px rgba(112,76,26,.07)}
+.team-a-photo{width:min(250px,58vw);aspect-ratio:3/4;margin:0 auto 18px;padding:8px;background:linear-gradient(180deg,#80532b,#603a1e 55%,#472914);border:2px solid #5b3718;box-shadow:0 8px 14px rgba(54,31,10,.27),inset 0 2px rgba(255,226,159,.24)}
+.team-a-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border:1px solid #9b7137;background:#d0b57d}
 .team-a-placeholder{height:100%;display:grid;place-items:center;background:#ead3a4;color:#78562d;font-size:12px;letter-spacing:2px}
 .team-a-question{font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:21px;font-weight:bold;margin:7px 0 18px}
 .team-a-label{color:#8b652f;font-size:10px;letter-spacing:3px;font-weight:bold;margin-top:8px}
@@ -587,8 +587,8 @@ button,input{font:inherit}
 .endgame-option.correct{background:#dbe3c5;border:2px solid #55713c}
 .endgame-option.wrong{background:#efd0c4;border:2px solid #9a4738}
 .endgame-face-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.endgame-face-grid button{padding:8px}
-.endgame-face-grid img{display:block;width:100%;height:180px;object-fit:contain;object-position:center;background:#d0b57d;margin-bottom:7px}
+.endgame-face-grid button{padding:8px;display:flex;align-items:center;justify-content:center}
+.endgame-face-grid img{display:block;width:100%;height:210px;object-fit:contain;object-position:center;background:#d0b57d;margin-bottom:7px}
 .endgame-feedback{min-height:24px;color:#76512a;font-weight:bold;margin:10px 0}
 .endgame-score{font-size:54px;font-weight:bold;font-family:"Palatino Linotype",Palatino,Georgia,serif}
 @media(max-width:650px){.endgame-options,.endgame-face-grid{grid-template-columns:1fr}}
@@ -599,10 +599,151 @@ button,input{font:inherit}
 
 <style>
 /* Endgame image/typing refinements */
-.team-a-photo img{object-fit:contain !important;object-position:center !important;}
+.team-a-photo img{object-fit:cover !important;object-position:center !important;}
+.phase2-photo img{object-fit:contain !important;object-position:center !important;}
 .endgame-face-grid img{object-fit:contain !important;object-position:center !important;background:#d0b57d;}
 .team-a-btn:disabled{opacity:.65;cursor:wait;transform:none !important;filter:none !important;}
 </style>
+
+<style>
+#milestone-resume-note{
+    display:none;
+    margin:-8px auto 16px;
+    color:#76512a;
+    font-size:13px;
+    font-style:italic;
+}
+.returning-player #milestone-resume-note{display:block}
+@media(max-height:820px) and (min-width:651px){
+    .team-a-panel{padding-top:28px;padding-bottom:22px}
+    .team-a-card{padding:16px}
+    .team-a-photo{margin-bottom:12px}
+    .team-a-question{margin:5px 0 12px}
+}
+</style>
+
+
+<style>
+/* Team A responsive polish */
+.team-a-panel{scrollbar-gutter:stable;}
+.team-a-card{box-sizing:border-box;}
+.team-a-photo.phase2-photo{width:min(230px,48vw);max-height:250px;}
+.phase2-photo img{object-fit:contain !important;object-position:center !important;}
+.endgame-face-grid button{min-height:220px;background:#f5e5c2;}
+.endgame-face-grid img{height:205px !important;object-fit:contain !important;}
+.team-a-review-menu{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    width:min(760px,100%);
+    margin:0 auto;
+}
+.team-a-review-card{
+    padding:20px 18px;
+    border:1px solid #9a7543;
+    background:linear-gradient(135deg,#fff8e6,#ead3a4);
+    color:#49311c;
+    cursor:pointer;
+    text-align:left;
+    box-shadow:inset 0 0 12px rgba(91,57,21,.07);
+}
+.team-a-review-card:hover{background:#fff1ca;transform:translateY(-2px);}
+.team-a-review-card strong{
+    display:block;
+    font-family:"Palatino Linotype",Palatino,Georgia,serif;
+    font-size:21px;
+    margin-bottom:7px;
+}
+.team-a-review-card span{font-size:13px;color:#76512a;line-height:1.5;}
+.team-a-review-badge{
+    display:inline-block;
+    margin-bottom:10px;
+    color:#896331;
+    font-size:10px;
+    letter-spacing:3px;
+    font-weight:bold;
+}
+@media(max-height:820px) and (min-width:651px){
+    .team-a-panel{padding-top:20px;padding-bottom:16px;}
+    .team-a-card{padding:14px;}
+    .team-a-photo{width:min(220px,45vw);margin-bottom:10px;}
+    .team-a-question{margin:4px 0 10px;}
+    .team-a-subtitle{margin:4px auto 8px;}
+    .team-a-divider{margin-bottom:9px;}
+    .team-a-progress{margin-bottom:9px;}
+    .endgame-face-grid img{height:175px !important;}
+    .endgame-face-grid button{min-height:190px;}
+}
+@media(max-width:650px){
+    .team-a-panel{width:96vw;max-height:calc(100vh - 10px);padding:44px 18px 20px;}
+    .team-a-review-menu{grid-template-columns:1fr;}
+    .team-a-photo{width:min(240px,72vw);}
+}
+</style>
+
+
+<style>
+/* ENDGAME / PHASE 2 PHOTO AESTHETIC
+   Phase 1 keeps the original framed portrait.
+   Phase 2 uses clean, borderless photos so the frame doesn't compete
+   with the question or answer choices. */
+.team-a-photo.phase2-photo{
+    width:min(250px,48vw);
+    height:auto;
+    aspect-ratio:auto;
+    margin:0 auto 14px;
+    padding:0;
+    background:transparent;
+    border:0;
+    box-shadow:none;
+}
+.team-a-photo.phase2-photo img{
+    display:block;
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:270px;
+    margin:0 auto;
+    object-fit:contain !important;
+    object-position:center;
+    border:0;
+    background:transparent;
+}
+.team-a-card .phase2-photo + .team-a-question{
+    margin-top:6px;
+}
+.endgame-face-grid{
+    gap:12px;
+}
+.endgame-face-grid button{
+    min-height:220px;
+    padding:10px;
+    background:#f5e5c2;
+}
+.endgame-face-grid img{
+    width:100%;
+    height:205px !important;
+    object-fit:contain !important;
+    object-position:center;
+    background:transparent;
+    margin:0;
+}
+@media(max-height:820px) and (min-width:651px){
+    .team-a-photo.phase2-photo{
+        width:min(220px,42vw);
+        margin-bottom:9px;
+    }
+    .team-a-photo.phase2-photo img{
+        max-height:220px;
+    }
+    .endgame-face-grid button{min-height:190px;}
+    .endgame-face-grid img{height:175px !important;}
+}
+@media(max-width:650px){
+    .team-a-photo.phase2-photo{width:min(240px,70vw);}
+}
+</style>
+
 </head>
 
 <body>
@@ -960,6 +1101,7 @@ button,input{font:inherit}
             <h2 class="milestone-title">TEAM A</h2>
             <div class="milestone-subtitle">Kenali Pamong di Team A</div>
             <div class="milestone-divider"><i></i><span>✦</span><i></i></div>
+            <div id="milestone-resume-note">Phase 1 complete — continue directly to the Endgame.</div>
             <div class="milestone-photo"><div class="milestone-photo-inner">FOTO PAMONG</div></div>
             <p class="milestone-description">Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri.</p>
             <button id="milestone-button" class="milestone-button" type="button">⚔&nbsp;&nbsp; BEGIN EXPEDITION</button>
@@ -1024,6 +1166,20 @@ function getPlayerData() {
     } catch (error) {
         return null;
     }
+}
+
+function isTeamAPhase1Complete() {
+    const player = getPlayerData();
+    return !!(player && player.teamA_phase1_complete === true);
+}
+
+function markTeamAPhase1Complete() {
+    const player = getPlayerData();
+    if (!player) return;
+
+    player.teamA_phase1_complete = true;
+    player.milestone = Math.max(Number(player.milestone || 1), 1);
+    savePlayerData(player);
 }
 
 /* =========================================================
@@ -1240,6 +1396,16 @@ const milestoneButton=document.getElementById("milestone-button");
 
 function openMilestoneOne(){
     if(!milestoneOverlay)return;
+
+    milestoneOverlay.classList.toggle("returning-player", isTeamAPhase1Complete());
+
+    const button = document.getElementById("milestone-button");
+    if (button && isTeamAPhase1Complete()) {
+        button.innerHTML = "⚔&nbsp;&nbsp; CONTINUE TO ENDGAME";
+    } else if (button) {
+        button.innerHTML = "⚔&nbsp;&nbsp; BEGIN EXPEDITION";
+    }
+
     milestoneOverlay.classList.remove("hidden");
     milestoneOverlay.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
@@ -1408,6 +1574,49 @@ function updateTeamAProgress(stage){
     });
 }
 
+
+let teamAReviewMode = false;
+
+function showTeamAReviewMenu(){
+    teamAReviewMode = false;
+    teamAKicker.textContent = "TEAM A · TRAINING GROUNDS";
+    teamATitle.textContent = "Choose Your Path";
+    teamASubtitle.textContent = "Revisit what you have learned, or test your recognition again.";
+    updateTeamAProgress(0);
+
+    teamAContent.innerHTML = `
+        <div class="team-a-review-menu">
+            <button type="button" class="team-a-review-card" id="team-a-review-phase1">
+                <span class="team-a-review-badge">PHASE 1 · REVIEW</span>
+                <strong>Identity Discovery</strong>
+                <span>Revisit every Pamong, reveal their identities, and practice the recognition sequence again.</span>
+            </button>
+
+            <button type="button" class="team-a-review-card" id="team-a-review-phase2">
+                <span class="team-a-review-badge">PHASE 2 · PRACTICE</span>
+                <strong>Endgame</strong>
+                <span>Play another randomized set of 10 challenges. Your milestone completion is already saved.</span>
+            </button>
+        </div>
+        <div style="margin-top:16px">
+            <button type="button" class="team-a-btn" id="team-a-review-close">RETURN TO MAP</button>
+        </div>
+    `;
+
+    document.getElementById("team-a-review-close").onclick = closeTeamAGame;
+
+    document.getElementById("team-a-review-phase1").onclick = () => {
+        teamAReviewMode = true;
+        teamAIndex = 0;
+        updateTeamAProgress(0);
+        renderTeamADiscover();
+    };
+
+    document.getElementById("team-a-review-phase2").onclick = () => {
+        startTeamAEndgame();
+    };
+}
+
 function openTeamAGame(){
     teamAGame.classList.remove("hidden");
     teamAGame.setAttribute("aria-hidden","false");
@@ -1415,8 +1624,17 @@ function openTeamAGame(){
     teamAIndex=0;
     teamAPamongs = [];
     updateTeamAProgress(0);
+
     loadTeamAPamongs().then(data=>{
         teamAPamongs = data;
+
+        // Returning player: let them choose whether to review Phase 1
+        // or practice Phase 2. Progress remains intact.
+        if (isTeamAPhase1Complete()) {
+            showTeamAReviewMenu();
+            return;
+        }
+
         renderTeamADiscover();
     }).catch(error=>{
         console.error("Team A / Supabase:", error);
@@ -1501,7 +1719,7 @@ function renderTeamAReveal(p){
 
     teamAContent.innerHTML=`
         <div class="team-a-card">
-            <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+            <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
             <div class="team-a-label">FULL NAME</div>
             <div class="team-a-name">${teamAText(p.full_name)}</div>
             <div class="team-a-label">NICKNAME</div>
@@ -1640,6 +1858,9 @@ function renderTeamAReward(){
             updateTeamAProgress(0);
             renderTeamADiscover();
         }else{
+            // Persist this milestone so the next time the player opens the
+            // game, Team A can go straight to Phase 2 / Endgame.
+            markTeamAPhase1Complete();
             startTeamAEndgame();
         }
     };
@@ -1781,7 +2002,7 @@ function renderEndgameQuestion(){
         teamASubtitle.textContent="Choose the full name belonging to this face.";
         teamAContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
                 <div class="team-a-question">WHO IS THIS PAMONG?</div>
                 <div class="endgame-options">
                     ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
@@ -1797,7 +2018,7 @@ function renderEndgameQuestion(){
         teamASubtitle.textContent="Choose the nickname belonging to this face.";
         teamAContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
                 <div class="team-a-question">WHAT DO PEOPLE CALL THEM?</div>
                 <div class="endgame-options">
                     ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamAText(x.nickname)}"`})))}
@@ -1833,7 +2054,7 @@ function renderEndgameQuestion(){
         teamASubtitle.textContent="Type the nickname from memory. Capitalization does not matter.";
         teamAContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
                 <div class="team-a-question">TYPE THEIR NICKNAME</div>
                 <input id="eg-input" class="medieval-input" type="text" autocomplete="off" placeholder="Nickname...">
                 <div style="font-size:12px;color:#76512a;margin:8px 0 2px">Capital letters and small differences in spacing are okay.</div>
@@ -1909,7 +2130,7 @@ function renderEndgameQuestion(){
         teamASubtitle.textContent="Memorize the face. It disappears.";
         teamAContent.innerHTML=`
             <div class="team-a-card">
-                <div id="eg-speed-photo" class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div id="eg-speed-photo" class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
                 <div id="eg-speed-message" class="endgame-feedback">Memorize the face...</div>
                 <div id="eg-speed-options" class="endgame-options"></div>
             </div>`;
@@ -1984,7 +2205,7 @@ function renderEndgameQuestion(){
         teamASubtitle.textContent="No choices. Give us the identity.";
         teamAContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
                 <div class="team-a-question">IDENTIFY THIS PAMONG</div>
                 <input id="eg-name" class="medieval-input" type="text" placeholder="Full name..." autocomplete="off">
                 <input id="eg-nick" class="medieval-input" type="text" placeholder="Nickname..." autocomplete="off" style="margin-top:10px">
@@ -2052,9 +2273,8 @@ function renderEndgameFaceChoice(person,prompt){
                 ${choices.map(x=>`
                     <button type="button" class="endgame-option" data-id="${teamAText(x.id)}">
                         ${x.photo_url
-                            ? `<img src="${teamAText(x.photo_url)}" alt="${teamAText(x.full_name)}">`
-                            : `<div class="team-a-placeholder" style="height:180px">PHOTO UNAVAILABLE</div>`}
-                        <strong>${teamAText(x.nickname||"")}</strong>
+                            ? `<img src="${teamAText(x.photo_url)}" alt="Pamong face">`
+                            : `<div class="team-a-placeholder" style="height:205px">PHOTO UNAVAILABLE</div>`}
                     </button>`).join("")}
             </div>
             <div id="eg-feedback" class="endgame-feedback"></div>
@@ -2083,12 +2303,12 @@ function renderEndgameResult(){
 
     document.getElementById("eg-result-btn").onclick=()=>{
         if(passed){
-            closeTeamAGame();
             const player=getPlayerData();
             if(player){
                 player.milestone=Math.max(Number(player.milestone||1),2);
                 savePlayerData(player);
             }
+            showTeamAReviewMenu();
         }else{
             startTeamAEndgame();
         }
