@@ -744,6 +744,19 @@ button,input{font:inherit}
 }
 </style>
 
+<style>#journey-path .journey-button{cursor:pointer;}#journey-path .journey-button.locked{cursor:not-allowed;opacity:.45;}</style>
+
+<style>
+.journey-node.locked[title="Coming soon"]{
+    opacity:.38;
+    cursor:not-allowed;
+    background:#d5bf91;
+}
+@media(max-width:760px){
+    .journey{grid-template-columns:repeat(4,1fr);}
+}
+</style>
+
 </head>
 
 <body>
@@ -1040,15 +1053,15 @@ button,input{font:inherit}
 
                 <article class="journey-card">
                     <h3 class="journey-title">YOUR JOURNEY</h3>
-                    <div class="journey">
+                    <div class="journey" id="journey-path">
                         <button id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1">1</button>
-                        <div class="journey-node locked">2</div>
-                        <div class="journey-node locked">3</div>
-                        <div class="journey-node locked">4</div>
-                        <div class="journey-node locked">5</div>
-                        <div class="journey-node locked">6</div>
-                        <div class="journey-node locked">7</div>
-                        <div class="journey-node locked">8</div>
+                        <button id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2">2</button>
+                        <button id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3">3</button>
+                        <button id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4">4</button>
+                        <button id="journey-node-5" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 5">5</button>
+                        <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">6</button>
+                        <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">7</button>
+                        <button id="journey-node-8" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 8">8</button>
                     </div>
                 </article>
             </div>
@@ -1093,17 +1106,17 @@ button,input{font:inherit}
 
 <div id="milestone-overlay" class="milestone-overlay hidden" aria-hidden="true">
     <div class="milestone-modal" role="dialog" aria-modal="true">
-        <div class="milestone-number">I</div>
+        <div id="milestone-number" class="milestone-number">I</div>
         <button id="milestone-close" class="milestone-close" type="button" aria-label="Close">×</button>
         <div class="milestone-content">
             <div class="milestone-ornament">✦ ❦ ✦</div>
-            <div class="milestone-kicker">MILESTONE I</div>
-            <h2 class="milestone-title">TEAM A</h2>
-            <div class="milestone-subtitle">Kenali Pamong di Team A</div>
+            <div id="milestone-kicker" class="milestone-kicker">MILESTONE I</div>
+            <h2 id="milestone-title" class="milestone-title">TEAM A</h2>
+            <div id="milestone-subtitle" class="milestone-subtitle">Kenali Pamong di Team A</div>
             <div class="milestone-divider"><i></i><span>✦</span><i></i></div>
             <div id="milestone-resume-note">Phase 1 complete — continue directly to the Endgame.</div>
             <div class="milestone-photo"><div class="milestone-photo-inner">FOTO PAMONG</div></div>
-            <p class="milestone-description">Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri.</p>
+            <p id="milestone-description" class="milestone-description">Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri.</p>
             <button id="milestone-button" class="milestone-button" type="button">⚔&nbsp;&nbsp; BEGIN EXPEDITION</button>
         </div>
     </div>
@@ -1168,18 +1181,15 @@ function getPlayerData() {
     }
 }
 
-function isTeamAPhase1Complete() {
-    const player = getPlayerData();
-    return !!(player && player.teamA_phase1_complete === true);
+function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
+    const player=getPlayerData();
+    return !!(player && player[`team${teamKey}_phase1_complete`]===true);
 }
-
-function markTeamAPhase1Complete() {
-    const player = getPlayerData();
-    if (!player) return;
-
-    player.teamA_phase1_complete = true;
-    player.milestone = Math.max(Number(player.milestone || 1), 1);
-    savePlayerData(player);
+function markTeamGamePhase1Complete(teamKey=currentTeamKey) {
+    const player=getPlayerData(); if(!player)return;
+    player[`team${teamKey}_phase1_complete`]=true;
+    player.milestone=Math.max(Number(player.milestone||1),teamMilestoneNumber(teamKey));
+    savePlayerData(player); refreshJourney();
 }
 
 /* =========================================================
@@ -1345,6 +1355,7 @@ if (loreButton) {
     loreButton.addEventListener("click", function (event) {
         event.preventDefault();
         showScreen("game-screen");
+        refreshJourney();
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
@@ -1388,50 +1399,70 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 /* =========================================================
-   MILESTONE 1 INTERACTION
+   MILESTONES I–IV
 ========================================================= */
 const milestoneOverlay=document.getElementById("milestone-overlay");
 const milestoneClose=document.getElementById("milestone-close");
 const milestoneButton=document.getElementById("milestone-button");
+const milestoneNumber=document.getElementById("milestone-number");
+const milestoneKicker=document.getElementById("milestone-kicker");
+const milestoneTitle=document.getElementById("milestone-title");
+const milestoneSubtitle=document.getElementById("milestone-subtitle");
+const milestoneDescription=document.getElementById("milestone-description");
+const TEAM_CONFIG={
+ A:{roman:"I",label:"TEAM A",title:"Kenali Pamong di Team A",description:"Temui dan pahami Pamong di Team A. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."},
+ B:{roman:"II",label:"TEAM B",title:"Kenali Pamong di Team B",description:"Temui dan pahami Pamong di Team B. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."},
+ C:{roman:"III",label:"TEAM C",title:"Kenali Pamong di Team C",description:"Temui dan pahami Pamong di Team C. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."},
+ D:{roman:"IV",label:"TEAM D",title:"Kenali Pamong di Team D",description:"Temui dan pahami Pamong di Team D. Setiap Pamong memiliki peran, cerita, dan tanggung jawabnya sendiri."}
+};
+const PLAYABLE_TEAMS=["A","B","C","D"];
+let currentTeamKey="A";
+function teamMilestoneNumber(key){return ({A:1,B:2,C:3,D:4})[key]||1;}
+function isTeamUnlocked(key){
+    return PLAYABLE_TEAMS.includes(key) && Number(getPlayerData()?.milestone||1)>=teamMilestoneNumber(key);
+}
+function refreshJourney(){
+    const progress=Number(getPlayerData()?.milestone||1);
+    for(let i=1;i<=8;i++){
+        const n=document.getElementById(`journey-node-${i}`);
+        if(!n) continue;
 
-function openMilestoneOne(){
-    if(!milestoneOverlay)return;
+        // Teams A-D are implemented in this build; milestones 5-8 are reserved.
+        const unlocked=i<=Math.min(progress,4);
+        n.classList.toggle("locked",!unlocked);
+        n.classList.toggle("active",unlocked);
+        n.disabled=!unlocked;
 
-    milestoneOverlay.classList.toggle("returning-player", isTeamAPhase1Complete());
-
-    const button = document.getElementById("milestone-button");
-    if (button && isTeamAPhase1Complete()) {
-        button.innerHTML = "⚔&nbsp;&nbsp; CONTINUE TO ENDGAME";
-    } else if (button) {
-        button.innerHTML = "⚔&nbsp;&nbsp; BEGIN EXPEDITION";
+        if(i>=5){
+            n.classList.add("locked");
+            n.classList.remove("active");
+            n.disabled=true;
+            n.title="Coming soon";
+        } else {
+            n.removeAttribute("title");
+        }
     }
-
-    milestoneOverlay.classList.remove("hidden");
-    milestoneOverlay.setAttribute("aria-hidden","false");
-    document.body.style.overflow="hidden";
 }
-function closeMilestoneOne(){
-    if(!milestoneOverlay)return;
-    milestoneOverlay.classList.add("hidden");
-    milestoneOverlay.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
+function openMilestone(teamKey="A"){
+ if(!milestoneOverlay||!TEAM_CONFIG[teamKey]||!isTeamUnlocked(teamKey))return;
+ currentTeamKey=teamKey;const cfg=TEAM_CONFIG[teamKey],complete=isTeamGamePhase1Complete(teamKey);
+ milestoneNumber.textContent=cfg.roman;milestoneKicker.textContent=`MILESTONE ${cfg.roman}`;milestoneTitle.textContent=cfg.label;milestoneSubtitle.textContent=cfg.title;milestoneDescription.textContent=cfg.description;
+ const note=document.getElementById("milestone-resume-note");if(note)note.textContent=complete?"Phase 1 complete — continue directly to the Endgame, or review either phase.":"Start with Identity Discovery, then prove your recall in the Endgame.";
+ if(milestoneButton)milestoneButton.innerHTML=complete?"⚔&nbsp;&nbsp; CONTINUE":"⚔&nbsp;&nbsp; BEGIN EXPEDITION";
+ milestoneOverlay.classList.toggle("returning-player",complete);milestoneOverlay.classList.remove("hidden");milestoneOverlay.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
 }
-
-if(milestoneClose) milestoneClose.addEventListener("click",closeMilestoneOne);
-if(milestoneButton) milestoneButton.addEventListener("click",function(){ closeMilestoneOne(); openTeamAGame(); });
-if(milestoneOverlay) milestoneOverlay.addEventListener("click",function(e){if(e.target===milestoneOverlay)closeMilestoneOne()});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMilestoneOne()});
-
-
-const journeyNodeOne = document.getElementById("journey-node-1");
-
-if(journeyNodeOne){
-    journeyNodeOne.addEventListener("click", function(event){
-        event.preventDefault();
-        openMilestoneOne();
+function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+if(milestoneClose)milestoneClose.addEventListener("click",closeMilestoneOne);
+if(milestoneButton)milestoneButton.addEventListener("click",function(){closeMilestoneOne();openTeamGame(currentTeamKey);});
+if(milestoneOverlay)milestoneOverlay.addEventListener("click",e=>{if(e.target===milestoneOverlay)closeMilestoneOne()});
+PLAYABLE_TEAMS.forEach((key,i)=>{
+    const node=document.getElementById(`journey-node-${i+1}`);
+    if(node) node.addEventListener("click",e=>{
+        e.preventDefault();
+        openMilestone(key);
     });
-}
-
+});
+refreshJourney();
 
 /* =========================================================
    TEAM A IDENTITY GAME
@@ -1443,16 +1474,16 @@ if(journeyNodeOne){
    Supabase connection can be added here later without
    changing the gameplay UI.
 ========================================================= */
-const teamAGame = document.getElementById("team-a-game");
-const teamAContent = document.getElementById("team-a-content");
-const teamAKicker = document.getElementById("team-a-kicker");
-const teamATitle = document.getElementById("team-a-title");
-const teamASubtitle = document.getElementById("team-a-subtitle");
-const teamAProgress = document.getElementById("team-a-progress");
-const teamAClose = document.getElementById("team-a-close");
+const teamGameGame = document.getElementById("team-a-game");
+const teamGameContent = document.getElementById("team-a-content");
+const teamGameKicker = document.getElementById("team-a-kicker");
+const teamGameTitle = document.getElementById("team-a-title");
+const teamGameSubtitle = document.getElementById("team-a-subtitle");
+const teamGameProgress = document.getElementById("team-a-progress");
+const teamGameClose = document.getElementById("team-a-close");
 
-let teamAPamongs = [];
-let teamAIndex = 0;
+let teamGamePamongs = [];
+let teamGameIndex = 0;
 
 // =========================================================
 // SUPABASE CONFIG
@@ -1498,11 +1529,11 @@ async function getPamongPhotoUrl(path){
     return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_PHOTO_BUCKET}/${cleanPath.split("/").map(encodeURIComponent).join("/")}`;
 }
 
-async function loadTeamAPamongs(){
+async function loadTeamGamePamongs(){
     const endpoint =
         `${SUPABASE_REST_URL}/Pengasuh` +
         `?select=id,nama,panggilan,foto` +
-        `&tim=eq.A` +
+        `&tim=eq.${currentTeamKey}` +
         `&order=id.asc`;
 
     const response = await fetch(endpoint, {
@@ -1544,18 +1575,18 @@ async function loadTeamAPamongs(){
     })));
 }
 
-function teamAText(value){
+function teamGameText(value){
     return value == null ? "" : String(value);
 }
 
-function teamAPhoto(person, alt){
-    const src = teamAText(person.photo_url);
+function teamGamePhoto(person, alt){
+    const src = teamGameText(person.photo_url);
 
     if(src){
         return `
             <img
                 src="${src}"
-                alt="${teamAText(alt || "Pamong Team A")}"
+                alt="${teamGameText(alt || "Pamong")}"
                 loading="eager"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
             >
@@ -1566,25 +1597,25 @@ function teamAPhoto(person, alt){
     return `<div class="team-a-placeholder">PHOTO UNAVAILABLE</div>`;
 }
 
-function updateTeamAProgress(stage){
-    if(!teamAProgress) return;
-    [...teamAProgress.children].forEach((dot,i)=>{
+function updateTeamGameProgress(stage){
+    if(!teamGameProgress) return;
+    [...teamGameProgress.children].forEach((dot,i)=>{
         dot.classList.toggle("done", i < stage);
         dot.classList.toggle("current", i === stage);
     });
 }
 
 
-let teamAReviewMode = false;
+let teamGameReviewMode = false;
 
-function showTeamAReviewMenu(){
-    teamAReviewMode = false;
-    teamAKicker.textContent = "TEAM A · TRAINING GROUNDS";
-    teamATitle.textContent = "Choose Your Path";
-    teamASubtitle.textContent = "Revisit what you have learned, or test your recognition again.";
-    updateTeamAProgress(0);
+function showTeamGameReviewMenu(){
+    teamGameReviewMode = false;
+    teamGameKicker.textContent = `${TEAM_CONFIG[currentTeamKey].label} · TRAINING GROUNDS`;
+    teamGameTitle.textContent = "Choose Your Path";
+    teamGameSubtitle.textContent = "Revisit what you have learned, or test your recognition again.";
+    updateTeamGameProgress(0);
 
-    teamAContent.innerHTML = `
+    teamGameContent.innerHTML = `
         <div class="team-a-review-menu">
             <button type="button" class="team-a-review-card" id="team-a-review-phase1">
                 <span class="team-a-review-badge">PHASE 1 · REVIEW</span>
@@ -1603,63 +1634,64 @@ function showTeamAReviewMenu(){
         </div>
     `;
 
-    document.getElementById("team-a-review-close").onclick = closeTeamAGame;
+    document.getElementById("team-a-review-close").onclick = closeTeamGame;
 
     document.getElementById("team-a-review-phase1").onclick = () => {
-        teamAReviewMode = true;
-        teamAIndex = 0;
-        updateTeamAProgress(0);
-        renderTeamADiscover();
+        teamGameReviewMode = true;
+        teamGameIndex = 0;
+        updateTeamGameProgress(0);
+        renderTeamGameDiscover();
     };
 
     document.getElementById("team-a-review-phase2").onclick = () => {
-        startTeamAEndgame();
+        startTeamGameEndgame();
     };
 }
 
-function openTeamAGame(){
-    teamAGame.classList.remove("hidden");
-    teamAGame.setAttribute("aria-hidden","false");
+function openTeamGame(teamKey=currentTeamKey){
+    currentTeamKey=teamKey;
+    teamGameGame.classList.remove("hidden");
+    teamGameGame.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
-    teamAIndex=0;
-    teamAPamongs = [];
-    updateTeamAProgress(0);
+    teamGameIndex=0;
+    teamGamePamongs = [];
+    updateTeamGameProgress(0);
 
-    loadTeamAPamongs().then(data=>{
-        teamAPamongs = data;
+    loadTeamGamePamongs().then(data=>{
+        teamGamePamongs = data;
 
         // Returning player: let them choose whether to review Phase 1
         // or practice Phase 2. Progress remains intact.
-        if (isTeamAPhase1Complete()) {
-            showTeamAReviewMenu();
+        if (isTeamGamePhase1Complete(currentTeamKey)) {
+            showTeamGameReviewMenu();
             return;
         }
 
-        renderTeamADiscover();
+        renderTeamGameDiscover();
     }).catch(error=>{
-        console.error("Team A / Supabase:", error);
-        renderTeamAError(error);
+        console.error(`${TEAM_CONFIG[currentTeamKey].label} / Supabase:`, error);
+        renderTeamGameError(error);
     });
 }
 
-function closeTeamAGame(){
-    if(!teamAGame) return;
-    teamAGame.classList.add("hidden");
-    teamAGame.setAttribute("aria-hidden","true");
+function closeTeamGame(){
+    if(!teamGameGame) return;
+    teamGameGame.classList.add("hidden");
+    teamGameGame.setAttribute("aria-hidden","true");
     document.body.style.overflow="";
 }
 
-if(teamAClose) teamAClose.addEventListener("click",closeTeamAGame);
+if(teamGameClose) teamGameClose.addEventListener("click",closeTeamGame);
 
-function renderTeamAError(error){
-    teamAKicker.textContent="TEAM A · CONNECTION";
-    teamATitle.textContent="Unable to Load Team A";
-    teamASubtitle.textContent="The game is connected to Supabase, but the data could not be loaded.";
-    updateTeamAProgress(0);
+function renderTeamGameError(error){
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · CONNECTION`;
+    teamGameTitle.textContent="Unable to Load ${TEAM_CONFIG[currentTeamKey].label}";
+    teamGameSubtitle.textContent=`The game is connected to Supabase, but the data could not be loaded.`;
+    updateTeamGameProgress(0);
 
     const message = error && error.message ? error.message : String(error || "Unknown error");
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-card">
             <div class="team-a-question">Supabase returned an error.</div>
             <p style="color:#684d2d;line-height:1.6;margin-bottom:8px">
@@ -1670,24 +1702,24 @@ function renderTeamAError(error){
         </div>`;
 }
 
-function currentTeamAPamong(){
-    return teamAPamongs[teamAIndex] || null;
+function currentTeamGamePamong(){
+    return teamGamePamongs[teamGameIndex] || null;
 }
 
-function renderTeamADiscover(){
-    const p=currentTeamAPamong();
+function renderTeamGameDiscover(){
+    const p=currentTeamGamePamong();
 
     if(!p){
-        teamAKicker.textContent="TEAM A · DISCOVERY";
-        teamATitle.textContent="Team A Awaits";
-        teamASubtitle.textContent="The gameplay is ready. Pamong data will be loaded from Supabase.";
-        updateTeamAProgress(0);
+        teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · DISCOVERY`;
+        teamGameTitle.textContent=`${TEAM_CONFIG[currentTeamKey].label} Awaits`;
+        teamGameSubtitle.textContent="The gameplay is ready. Pamong data will be loaded from Supabase.";
+        updateTeamGameProgress(0);
 
-        teamAContent.innerHTML=`
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
                 <div class="team-a-question">No Pamong data loaded yet.</div>
                 <p style="color:#684d2d;line-height:1.6">
-                    Connect the Team A table through the data adapter,
+                    Connect the selected Team table through the data adapter,
                     then this screen will automatically show the Pamong's photo,
                     full name, and nickname.
                 </p>
@@ -1696,64 +1728,64 @@ function renderTeamADiscover(){
         return;
     }
 
-    teamAKicker.textContent=`TEAM A · ${teamAIndex+1}/${teamAPamongs.length}`;
-    teamATitle.textContent="Who Is This?";
-    teamASubtitle.textContent="Take a good look. Remember the face.";
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · ${teamGameIndex+1}/${teamGamePamongs.length}`;
+    teamGameTitle.textContent="Who Is This?";
+    teamGameSubtitle.textContent="Take a good look. Remember the face.";
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-card">
-            <div class="team-a-photo">${teamAPhoto(p,"Pamong Team A")}</div>
+            <div class="team-a-photo">${teamGamePhoto(p,"Pamong")}</div>
             <div class="team-a-question">Remember this face.</div>
             <button id="team-a-reveal" class="team-a-btn" type="button">✦ REVEAL IDENTITY ✦</button>
         </div>
     `;
 
-    document.getElementById("team-a-reveal").onclick=()=>renderTeamAReveal(p);
+    document.getElementById("team-a-reveal").onclick=()=>renderTeamGameReveal(p);
 }
 
-function renderTeamAReveal(p){
-    updateTeamAProgress(1);
-    teamAKicker.textContent=`TEAM A · ${teamAIndex+1}/${teamAPamongs.length}`;
-    teamATitle.textContent="Pamong Identified";
-    teamASubtitle.textContent="Remember the face, full name, and nickname.";
+function renderTeamGameReveal(p){
+    updateTeamGameProgress(1);
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · ${teamGameIndex+1}/${teamGamePamongs.length}`;
+    teamGameTitle.textContent="Pamong Identified";
+    teamGameSubtitle.textContent="Remember the face, full name, and nickname.";
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-card">
-            <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
+            <div class="team-a-photo phase2-photo">${teamGamePhoto(p,p.full_name)}</div>
             <div class="team-a-label">FULL NAME</div>
-            <div class="team-a-name">${teamAText(p.full_name)}</div>
+            <div class="team-a-name">${teamGameText(p.full_name)}</div>
             <div class="team-a-label">NICKNAME</div>
-            <div class="team-a-nickname">"${teamAText(p.nickname)}"</div>
+            <div class="team-a-nickname">"${teamGameText(p.nickname)}"</div>
             <button id="team-a-got-it" class="team-a-btn" type="button">GOT IT</button>
         </div>
     `;
 
-    document.getElementById("team-a-got-it").onclick=renderTeamAMatch;
+    document.getElementById("team-a-got-it").onclick=renderTeamGameMatch;
 }
 
-function renderTeamAMatch(){
-    const p=currentTeamAPamong();
-    updateTeamAProgress(2);
-    teamAKicker.textContent="TEAM A · MATCH";
-    teamATitle.textContent="Match the Identity";
-    teamASubtitle.textContent="Which name belongs to this face?";
+function renderTeamGameMatch(){
+    const p=currentTeamGamePamong();
+    updateTeamGameProgress(2);
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · MATCH`;
+    teamGameTitle.textContent="Match the Identity";
+    teamGameSubtitle.textContent="Which name belongs to this face?";
 
-    const distractors=teamAPamongs
-        .filter((_,i)=>i!==teamAIndex)
+    const distractors=teamGamePamongs
+        .filter((_,i)=>i!==teamGameIndex)
         .sort(()=>Math.random()-.5)
         .slice(0,3);
 
     const options=[p,...distractors].sort(()=>Math.random()-.5);
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-card">
-            <div class="team-a-photo">${teamAPhoto(p,"Who is this?")}</div>
+            <div class="team-a-photo">${teamGamePhoto(p,"Who is this?")}</div>
             <div class="team-a-question">Choose the correct identity.</div>
             <div class="team-a-options">
                 ${options.map(x=>`
-                    <button type="button" class="team-a-option" data-id="${teamAText(x.id)}">
-                        <strong>${teamAText(x.full_name)}</strong><br>
-                        <small>"${teamAText(x.nickname)}"</small>
+                    <button type="button" class="team-a-option" data-id="${teamGameText(x.id)}">
+                        <strong>${teamGameText(x.full_name)}</strong><br>
+                        <small>"${teamGameText(x.nickname)}"</small>
                     </button>
                 `).join("")}
             </div>
@@ -1770,7 +1802,7 @@ function renderTeamAMatch(){
                 button.classList.add("correct");
                 feedback.textContent="✦ Correct. You know the face.";
                 document.querySelectorAll(".team-a-option").forEach(x=>x.disabled=true);
-                setTimeout(renderTeamARecall,650);
+                setTimeout(renderTeamGameRecall,650);
             }else{
                 button.classList.add("wrong");
                 feedback.textContent="Not quite. Try again.";
@@ -1783,29 +1815,29 @@ function renderTeamAMatch(){
     });
 }
 
-function renderTeamARecall(){
-    const p=currentTeamAPamong();
-    updateTeamAProgress(3);
-    teamAKicker.textContent="TEAM A · RECALL";
-    teamATitle.textContent="Who Is This?";
-    teamASubtitle.textContent="No hints. Trust your memory.";
+function renderTeamGameRecall(){
+    const p=currentTeamGamePamong();
+    updateTeamGameProgress(3);
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · RECALL`;
+    teamGameTitle.textContent="Who Is This?";
+    teamGameSubtitle.textContent="No hints. Trust your memory.";
 
-    const distractors=teamAPamongs
-        .filter((_,i)=>i!==teamAIndex)
+    const distractors=teamGamePamongs
+        .filter((_,i)=>i!==teamGameIndex)
         .sort(()=>Math.random()-.5)
         .slice(0,3);
 
     const options=[p,...distractors].sort(()=>Math.random()-.5);
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-card">
-            <div class="team-a-photo">${teamAPhoto(p,"Who is this?")}</div>
+            <div class="team-a-photo">${teamGamePhoto(p,"Who is this?")}</div>
             <div class="team-a-question">Who is this Pamong?</div>
             <div class="team-a-options">
                 ${options.map(x=>`
-                    <button type="button" class="team-a-option" data-id="${teamAText(x.id)}">
-                        <strong>${teamAText(x.full_name)}</strong><br>
-                        <small>"${teamAText(x.nickname)}"</small>
+                    <button type="button" class="team-a-option" data-id="${teamGameText(x.id)}">
+                        <strong>${teamGameText(x.full_name)}</strong><br>
+                        <small>"${teamGameText(x.nickname)}"</small>
                     </button>
                 `).join("")}
             </div>
@@ -1822,7 +1854,7 @@ function renderTeamARecall(){
                 button.classList.add("correct");
                 feedback.textContent="✦ Pamong discovered.";
                 document.querySelectorAll(".team-a-option").forEach(x=>x.disabled=true);
-                setTimeout(renderTeamAReward,650);
+                setTimeout(renderTeamGameReward,650);
             }else{
                 button.classList.add("wrong");
                 feedback.textContent="Not quite. Try again.";
@@ -1832,36 +1864,36 @@ function renderTeamARecall(){
     });
 }
 
-function renderTeamAReward(){
-    const p=currentTeamAPamong();
+function renderTeamGameReward(){
+    const p=currentTeamGamePamong();
 
-    teamAKicker.textContent="TEAM A · DISCOVERED";
-    teamATitle.textContent="Identity Unlocked";
-    teamASubtitle.textContent="Another Pamong has been added to your context.";
-    updateTeamAProgress(4);
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · DISCOVERED`;
+    teamGameTitle.textContent="Identity Unlocked";
+    teamGameSubtitle.textContent="Another Pamong has been added to your context.";
+    updateTeamGameProgress(4);
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-reward">
             <div class="team-a-reward-title">✦ IDENTITY CARD UNLOCKED ✦</div>
-            <div class="team-a-photo" style="margin-top:16px">${teamAPhoto(p,p.full_name)}</div>
-            <div class="team-a-name">${teamAText(p.full_name)}</div>
-            <div class="team-a-nickname">"${teamAText(p.nickname)}"</div>
+            <div class="team-a-photo" style="margin-top:16px">${teamGamePhoto(p,p.full_name)}</div>
+            <div class="team-a-name">${teamGameText(p.full_name)}</div>
+            <div class="team-a-nickname">"${teamGameText(p.nickname)}"</div>
         </div>
         <button id="team-a-next" class="team-a-btn" type="button">
-            ${teamAIndex < teamAPamongs.length-1 ? "NEXT PAMONG" : "COMPLETE TEAM A"}
+            ${teamGameIndex < teamGamePamongs.length-1 ? "NEXT PAMONG" : "COMPLETE ${TEAM_CONFIG[currentTeamKey].label}"}
         </button>
     `;
 
     document.getElementById("team-a-next").onclick=()=>{
-        if(teamAIndex < teamAPamongs.length-1){
-            teamAIndex++;
-            updateTeamAProgress(0);
-            renderTeamADiscover();
+        if(teamGameIndex < teamGamePamongs.length-1){
+            teamGameIndex++;
+            updateTeamGameProgress(0);
+            renderTeamGameDiscover();
         }else{
             // Persist this milestone so the next time the player opens the
             // game, Team A can go straight to Phase 2 / Endgame.
-            markTeamAPhase1Complete();
-            startTeamAEndgame();
+            markTeamGamePhase1Complete(currentTeamKey);
+            startTeamGameEndgame();
         }
     };
 }
@@ -1890,7 +1922,7 @@ const ENDGAME_TYPES=[
     "FINAL_RECALL"
 ];
 
-function teamANormalize(value){
+function teamGameNormalize(value){
     return String(value == null ? "" : value)
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -1903,8 +1935,8 @@ function teamANormalize(value){
 /* For typed full names, academic/professional titles are optional.
    Example: "Arif Bagus Al Budin, S.Tr.Kom" and
    "Arif Bagus Al Budin" are both accepted. */
-function teamANameForAnswer(value){
-    let name=teamANormalize(value);
+function teamGameNameForAnswer(value){
+    let name=teamGameNormalize(value);
     name=name
         .replace(/\b(s ?tr ?kom|s ?tr ?kom ?sos|s ?t|s ?kom|m ?kom|dr|prof)\b/g," ")
         .replace(/\s+/g," ")
@@ -1912,15 +1944,15 @@ function teamANameForAnswer(value){
     return name;
 }
 
-function teamAAnswerMatchesFullName(typed, correct){
-    return teamANameForAnswer(typed) === teamANameForAnswer(correct);
+function teamGameAnswerMatchesFullName(typed, correct){
+    return teamGameNameForAnswer(typed) === teamGameNameForAnswer(correct);
 }
 
-function teamAAnswerMatchesNickname(typed, correct){
-    return teamANormalize(typed) === teamANormalize(correct);
+function teamGameAnswerMatchesNickname(typed, correct){
+    return teamGameNormalize(typed) === teamGameNormalize(correct);
 }
 
-function shuffleTeamA(arr){
+function shuffleTeamGame(arr){
     const a=[...arr];
     for(let i=a.length-1;i>0;i--){
         const j=Math.floor(Math.random()*(i+1));
@@ -1929,39 +1961,39 @@ function shuffleTeamA(arr){
     return a;
 }
 
-function startTeamAEndgame(){
-    if(teamAPamongs.length<2){
-        renderTeamAError(new Error("Team A membutuhkan minimal 2 Pamong untuk Endgame."));
+function startTeamGameEndgame(){
+    if(teamGamePamongs.length<2){
+        renderTeamGameError(new Error(`${TEAM_CONFIG[currentTeamKey].label} membutuhkan minimal 2 Pamong untuk Endgame.`));
         return;
     }
-    endgameQuestions=shuffleTeamA(ENDGAME_TYPES).map(type=>({
+    endgameQuestions=shuffleTeamGame(ENDGAME_TYPES).map(type=>({
         type,
-        person:shuffleTeamA(teamAPamongs)[0]
+        person:shuffleTeamGame(teamGamePamongs)[0]
     }));
     endgameIndex=0;
     endgameScore=0;
     endgameLocked=false;
-    teamAKicker.textContent="TEAM A · ENDGAME";
-    teamATitle.textContent="THE FINAL TRIAL";
-    teamASubtitle.textContent="Ten challenges. Prove that you remember Team A.";
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · ENDGAME`;
+    teamGameTitle.textContent="THE FINAL TRIAL";
+    teamGameSubtitle.textContent=`Ten challenges. Prove that you remember ${TEAM_CONFIG[currentTeamKey].label}.`;
     renderEndgameQuestion();
 }
 
 function endgameProgress(){
-    if(!teamAProgress)return;
-    teamAProgress.innerHTML=Array.from({length:10},(_,i)=>{
+    if(!teamGameProgress)return;
+    teamGameProgress.innerHTML=Array.from({length:10},(_,i)=>{
         const c=i<endgameIndex?"done":i===endgameIndex?"current":"";
         return `<span class="${c}"></span>`;
     }).join("");
 }
 
 function endgameOthers(correct){
-    return shuffleTeamA(teamAPamongs.filter(x=>String(x.id)!==String(correct.id))).slice(0,3);
+    return shuffleTeamGame(teamGamePamongs.filter(x=>String(x.id)!==String(correct.id))).slice(0,3);
 }
 
 function endgameOptions(options){
     return options.map(x=>`
-        <button type="button" class="endgame-option" data-id="${teamAText(x.id)}">${x.html}</button>
+        <button type="button" class="endgame-option" data-id="${teamGameText(x.id)}">${x.html}</button>
     `).join("");
 }
 
@@ -1993,19 +2025,19 @@ function renderEndgameQuestion(){
 
     const q=endgameQuestions[endgameIndex];
     const p=q.person;
-    const choices=shuffleTeamA([p,...endgameOthers(p)]);
+    const choices=shuffleTeamGame([p,...endgameOthers(p)]);
 
-    teamAKicker.textContent=`TEAM A · ENDGAME · ${endgameIndex+1}/10`;
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · ENDGAME · ${endgameIndex+1}/10`;
 
     if(q.type==="FACE_TO_NAME"){
-        teamATitle.textContent="FACE → NAME";
-        teamASubtitle.textContent="Choose the full name belonging to this face.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="FACE → NAME";
+        teamGameSubtitle.textContent="Choose the full name belonging to this face.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamGamePhoto(p,p.full_name)}</div>
                 <div class="team-a-question">WHO IS THIS PAMONG?</div>
                 <div class="endgame-options">
-                    ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})))}
                 </div>
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
@@ -2014,14 +2046,14 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="FACE_TO_NICKNAME"){
-        teamATitle.textContent="FACE → NICKNAME";
-        teamASubtitle.textContent="Choose the nickname belonging to this face.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="FACE → NICKNAME";
+        teamGameSubtitle.textContent="Choose the nickname belonging to this face.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamGamePhoto(p,p.full_name)}</div>
                 <div class="team-a-question">WHAT DO PEOPLE CALL THEM?</div>
                 <div class="endgame-options">
-                    ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamAText(x.nickname)}"`})))}
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamGameText(x.nickname)}"`})))}
                 </div>
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
@@ -2030,18 +2062,18 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="NAME_TO_FACE"){
-        renderEndgameFaceChoice(p,`WHO IS ${teamAText(p.full_name)}?`);
+        renderEndgameFaceChoice(p,`WHO IS ${teamGameText(p.full_name)}?`);
         return;
     }
 
     if(q.type==="NICKNAME_TO_NAME"){
-        teamATitle.textContent="NICKNAME → NAME";
-        teamASubtitle.textContent="Turn the nickname back into the full identity.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="NICKNAME → NAME";
+        teamGameSubtitle.textContent="Turn the nickname back into the full identity.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-question">WHO IS "${teamAText(p.nickname)}"?</div>
+                <div class="team-a-question">WHO IS "${teamGameText(p.nickname)}"?</div>
                 <div class="endgame-options">
-                    ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})))}
                 </div>
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
@@ -2050,11 +2082,11 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="FACE_TO_NICKNAME_TYPING"){
-        teamATitle.textContent="FACE → NICKNAME";
-        teamASubtitle.textContent="Type the nickname from memory. Capitalization does not matter.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="FACE → NICKNAME";
+        teamGameSubtitle.textContent="Type the nickname from memory. Capitalization does not matter.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamGamePhoto(p,p.full_name)}</div>
                 <div class="team-a-question">TYPE THEIR NICKNAME</div>
                 <input id="eg-input" class="medieval-input" type="text" autocomplete="off" placeholder="Nickname...">
                 <div style="font-size:12px;color:#76512a;margin:8px 0 2px">Capital letters and small differences in spacing are okay.</div>
@@ -2070,19 +2102,19 @@ function renderEndgameQuestion(){
             if(endgameLocked)return;
 
             const raw=input ? input.value : "";
-            if(!teamANormalize(raw)){
+            if(!teamGameNormalize(raw)){
                 feedback.textContent="Please enter an answer first.";
                 if(input) input.focus();
                 return;
             }
 
             endgameLocked=true;
-            const correct=teamAAnswerMatchesNickname(raw,p.nickname);
+            const correct=teamGameAnswerMatchesNickname(raw,p.nickname);
             if(correct)endgameScore++;
 
             feedback.textContent=correct
                 ? "✦ CORRECT — MEMORY CONFIRMED."
-                : `✕ NOT QUITE. The correct nickname is "${teamAText(p.nickname)}".`;
+                : `✕ NOT QUITE. The correct nickname is "${teamGameText(p.nickname)}".`;
 
             if(submit)submit.disabled=true;
 
@@ -2106,13 +2138,13 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="NAME_TO_NICKNAME"){
-        teamATitle.textContent="NAME → NICKNAME";
-        teamASubtitle.textContent="Choose what people call this Pamong.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="NAME → NICKNAME";
+        teamGameSubtitle.textContent="Choose what people call this Pamong.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-question">${teamAText(p.full_name)}</div>
+                <div class="team-a-question">${teamGameText(p.full_name)}</div>
                 <div class="endgame-options">
-                    ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamAText(x.nickname)}"`})))}
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamGameText(x.nickname)}"`})))}
                 </div>
                 <div id="eg-feedback" class="endgame-feedback"></div>
             </div>`;
@@ -2121,16 +2153,16 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="NICKNAME_TO_FACE"){
-        renderEndgameFaceChoice(p,`FIND THE FACE OF "${teamAText(p.nickname)}"`);
+        renderEndgameFaceChoice(p,`FIND THE FACE OF "${teamGameText(p.nickname)}"`);
         return;
     }
 
     if(q.type==="SPEED_RECOGNITION"){
-        teamATitle.textContent="SPEED RECOGNITION";
-        teamASubtitle.textContent="Memorize the face. It disappears.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="SPEED RECOGNITION";
+        teamGameSubtitle.textContent="Memorize the face. It disappears.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div id="eg-speed-photo" class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div id="eg-speed-photo" class="team-a-photo phase2-photo">${teamGamePhoto(p,p.full_name)}</div>
                 <div id="eg-speed-message" class="endgame-feedback">Memorize the face...</div>
                 <div id="eg-speed-options" class="endgame-options"></div>
             </div>`;
@@ -2139,7 +2171,7 @@ function renderEndgameQuestion(){
             const area=document.getElementById("eg-speed-options");
             if(!photo||!area)return;
             photo.innerHTML='<div class="team-a-placeholder">WHO WAS THAT?</div>';
-            area.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})));
+            area.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})));
             bindEndgameChoice(p.id,"eg-speed-message");
         },1800);
         return;
@@ -2151,22 +2183,22 @@ function renderEndgameQuestion(){
            to any of those nicknames. The answer is therefore the full
            identity that is genuinely absent, not a random missing row.
         */
-        const group=shuffleTeamA(teamAPamongs).slice(0,3);
-        const missing=shuffleTeamA(
-            teamAPamongs.filter(person=>
+        const group=shuffleTeamGame(teamGamePamongs).slice(0,3);
+        const missing=shuffleTeamGame(
+            teamGamePamongs.filter(person=>
                 !group.some(x=>String(x.id)===String(person.id))
             )
         )[0];
 
-        const names=shuffleTeamA([
+        const names=shuffleTeamGame([
             missing,
             ...group
         ]);
 
-        teamATitle.textContent="THE MISSING IDENTITY";
-        teamASubtitle.textContent="Three nicknames are remembered. Which full name does NOT belong?";
+        teamGameTitle.textContent="THE MISSING IDENTITY";
+        teamGameSubtitle.textContent="Three nicknames are remembered. Which full name does NOT belong?";
 
-        teamAContent.innerHTML=`
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
                 <div class="team-a-question">NICKNAMES REMEMBERED FROM THIS GROUP:</div>
 
@@ -2179,7 +2211,7 @@ function renderEndgameQuestion(){
                             color:#49311c;
                             font-family:Georgia,serif;
                         ">
-                            ${teamAText(x.nickname||x.full_name)}
+                            ${teamGameText(x.nickname||x.full_name)}
                         </span>
                     `).join("")}
                 </div>
@@ -2189,7 +2221,7 @@ function renderEndgameQuestion(){
                 <div class="endgame-options">
                     ${endgameOptions(names.map(x=>({
                         id:x.id,
-                        html:`<strong>${teamAText(x.full_name)}</strong>`
+                        html:`<strong>${teamGameText(x.full_name)}</strong>`
                     })))}
                 </div>
 
@@ -2201,11 +2233,11 @@ function renderEndgameQuestion(){
     }
 
     if(q.type==="FINAL_RECALL"){
-        teamATitle.textContent="FINAL RECALL";
-        teamASubtitle.textContent="No choices. Give us the identity.";
-        teamAContent.innerHTML=`
+        teamGameTitle.textContent="FINAL RECALL";
+        teamGameSubtitle.textContent="No choices. Give us the identity.";
+        teamGameContent.innerHTML=`
             <div class="team-a-card">
-                <div class="team-a-photo phase2-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-photo phase2-photo">${teamGamePhoto(p,p.full_name)}</div>
                 <div class="team-a-question">IDENTIFY THIS PAMONG</div>
                 <input id="eg-name" class="medieval-input" type="text" placeholder="Full name..." autocomplete="off">
                 <input id="eg-nick" class="medieval-input" type="text" placeholder="Nickname..." autocomplete="off" style="margin-top:10px">
@@ -2223,17 +2255,17 @@ function renderEndgameQuestion(){
             const typedName=finalName ? finalName.value : "";
             const typedNick=finalNick ? finalNick.value : "";
 
-            if(!teamANameForAnswer(typedName) || !teamANormalize(typedNick)){
+            if(!teamGameNameForAnswer(typedName) || !teamGameNormalize(typedNick)){
                 finalFeedback.textContent="Please fill in both the full name and nickname.";
-                if(finalName && !teamANameForAnswer(typedName)) finalName.focus();
+                if(finalName && !teamGameNameForAnswer(typedName)) finalName.focus();
                 else if(finalNick) finalNick.focus();
                 return;
             }
 
             endgameLocked=true;
 
-            const nameCorrect=teamAAnswerMatchesFullName(typedName,p.full_name);
-            const nickCorrect=teamAAnswerMatchesNickname(typedNick,p.nickname);
+            const nameCorrect=teamGameAnswerMatchesFullName(typedName,p.full_name);
+            const nickCorrect=teamGameAnswerMatchesNickname(typedNick,p.nickname);
             const correct=nameCorrect && nickCorrect;
 
             if(correct)endgameScore++;
@@ -2263,17 +2295,17 @@ function renderEndgameQuestion(){
 }
 
 function renderEndgameFaceChoice(person,prompt){
-    const choices=shuffleTeamA([person,...endgameOthers(person)]);
-    teamATitle.textContent="FIND THE FACE";
-    teamASubtitle.textContent=prompt;
-    teamAContent.innerHTML=`
+    const choices=shuffleTeamGame([person,...endgameOthers(person)]);
+    teamGameTitle.textContent="FIND THE FACE";
+    teamGameSubtitle.textContent=prompt;
+    teamGameContent.innerHTML=`
         <div class="team-a-card">
             <div class="team-a-question">${prompt}</div>
             <div class="endgame-face-grid">
                 ${choices.map(x=>`
-                    <button type="button" class="endgame-option" data-id="${teamAText(x.id)}">
+                    <button type="button" class="endgame-option" data-id="${teamGameText(x.id)}">
                         ${x.photo_url
-                            ? `<img src="${teamAText(x.photo_url)}" alt="Pamong face">`
+                            ? `<img src="${teamGameText(x.photo_url)}" alt="Pamong face">`
                             : `<div class="team-a-placeholder" style="height:205px">PHOTO UNAVAILABLE</div>`}
                     </button>`).join("")}
             </div>
@@ -2285,38 +2317,38 @@ function renderEndgameFaceChoice(person,prompt){
 function renderEndgameResult(){
     endgameProgress();
     const passed=endgameScore>=7;
-    teamAKicker.textContent="TEAM A · ENDGAME COMPLETE";
-    teamATitle.textContent=passed?"FAMILIARITY ESTABLISHED":"TRY AGAIN";
-    teamASubtitle.textContent=passed?"Team A is now part of your context.":"Seven correct answers are required to pass.";
+    teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · ENDGAME COMPLETE`;
+    teamGameTitle.textContent=passed?"FAMILIARITY ESTABLISHED":"TRY AGAIN";
+    teamGameSubtitle.textContent=passed?`${TEAM_CONFIG[currentTeamKey].label} is now part of your context.`:"Seven correct answers are required to pass.";
 
-    teamAContent.innerHTML=`
+    teamGameContent.innerHTML=`
         <div class="team-a-reward">
             <div class="team-a-reward-title">✦ FINAL SCORE ✦</div>
             <div class="endgame-score">${endgameScore}/10</div>
             <p style="color:#684d2d;line-height:1.6">
-                ${passed?"You successfully completed the Team A Endgame.":"Retry the Endgame and strengthen your recall."}
+                ${passed?"You successfully completed the ${TEAM_CONFIG[currentTeamKey].label} Endgame.":"Retry the Endgame and strengthen your recall."}
             </p>
         </div>
         <button id="eg-result-btn" class="team-a-btn" type="button">
-            ${passed?"COMPLETE MILESTONE I":"RETRY ENDGAME"}
+            ${passed?`COMPLETE MILESTONE ${TEAM_CONFIG[currentTeamKey].roman}`:"RETRY ENDGAME"}
         </button>`;
 
     document.getElementById("eg-result-btn").onclick=()=>{
         if(passed){
             const player=getPlayerData();
             if(player){
-                player.milestone=Math.max(Number(player.milestone||1),2);
+                player.milestone=Math.min(5,Math.max(Number(player.milestone||1),teamMilestoneNumber(currentTeamKey)+1));
                 savePlayerData(player);
             }
-            showTeamAReviewMenu();
+            showTeamGameReviewMenu();
         }else{
-            startTeamAEndgame();
+            startTeamGameEndgame();
         }
     };
 }
 document.addEventListener("keydown",function(e){
     if(e.key==="Escape"){
-        if(teamAGame && !teamAGame.classList.contains("hidden")) closeTeamAGame();
+        if(teamGameGame && !teamGameGame.classList.contains("hidden")) closeTeamGame();
         else closeMilestoneOne();
     }
 });
@@ -2325,4 +2357,4 @@ document.addEventListener("keydown",function(e){
 
 </body>
 </html>
-<!-- Team A hotspot fix: wider transparent click target -->
+<!-- Teams A–D journey -->
