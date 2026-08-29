@@ -580,6 +580,19 @@ button,input{font:inherit}
 .team-a-reward-title{color:#815c2b;font-size:10px;letter-spacing:4px;font-weight:bold}
 @media(max-width:650px){.team-a-panel{padding:50px 24px 35px}.team-a-options{grid-template-columns:1fr}.team-a-divider i{width:65px}}
 
+
+.endgame-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 auto 15px}
+.endgame-option{min-height:58px;padding:10px;border:1px solid #9a7543;background:#f5e5c2;color:#49311c;cursor:pointer}
+.endgame-option:hover{background:#fff1ca}
+.endgame-option.correct{background:#dbe3c5;border:2px solid #55713c}
+.endgame-option.wrong{background:#efd0c4;border:2px solid #9a4738}
+.endgame-face-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.endgame-face-grid button{padding:8px}
+.endgame-face-grid img{display:block;width:100%;height:180px;object-fit:cover;margin-bottom:7px}
+.endgame-feedback{min-height:24px;color:#76512a;font-weight:bold;margin:10px 0}
+.endgame-score{font-size:54px;font-weight:bold;font-family:"Palatino Linotype",Palatino,Georgia,serif}
+@media(max-width:650px){.endgame-options,.endgame-face-grid{grid-template-columns:1fr}}
+
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1620,11 +1633,330 @@ function renderTeamAReward(){
             updateTeamAProgress(0);
             renderTeamADiscover();
         }else{
-            closeTeamAGame();
+            startTeamAEndgame();
         }
     };
 }
 
+
+/* =========================================================
+   PHASE 2 — ENDGAME
+   Exactly 10 questions. Every mechanic appears once.
+   The order and target Pamong are randomized.
+========================================================= */
+let endgameQuestions=[];
+let endgameIndex=0;
+let endgameScore=0;
+let endgameLocked=false;
+
+const ENDGAME_TYPES=[
+    "FACE_TO_NAME",
+    "FACE_TO_NICKNAME",
+    "NAME_TO_FACE",
+    "NICKNAME_TO_NAME",
+    "FACE_TO_NICKNAME_TYPING",
+    "NAME_TO_NICKNAME",
+    "NICKNAME_TO_FACE",
+    "SPEED_RECOGNITION",
+    "WHO_IS_MISSING",
+    "FINAL_RECALL"
+];
+
+function shuffleTeamA(arr){
+    const a=[...arr];
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+}
+
+function startTeamAEndgame(){
+    if(teamAPamongs.length<2){
+        renderTeamAError(new Error("Team A membutuhkan minimal 2 Pamong untuk Endgame."));
+        return;
+    }
+    endgameQuestions=shuffleTeamA(ENDGAME_TYPES).map(type=>({
+        type,
+        person:shuffleTeamA(teamAPamongs)[0]
+    }));
+    endgameIndex=0;
+    endgameScore=0;
+    endgameLocked=false;
+    teamAKicker.textContent="TEAM A · ENDGAME";
+    teamATitle.textContent="THE FINAL TRIAL";
+    teamASubtitle.textContent="Ten challenges. Prove that you remember Team A.";
+    renderEndgameQuestion();
+}
+
+function endgameProgress(){
+    if(!teamAProgress)return;
+    teamAProgress.innerHTML=Array.from({length:10},(_,i)=>{
+        const c=i<endgameIndex?"done":i===endgameIndex?"current":"";
+        return `<span class="${c}"></span>`;
+    }).join("");
+}
+
+function endgameOthers(correct){
+    return shuffleTeamA(teamAPamongs.filter(x=>String(x.id)!==String(correct.id))).slice(0,3);
+}
+
+function endgameOptions(options){
+    return options.map(x=>`
+        <button type="button" class="endgame-option" data-id="${teamAText(x.id)}">${x.html}</button>
+    `).join("");
+}
+
+function bindEndgameChoice(correctId,feedbackId){
+    document.querySelectorAll(".endgame-option").forEach(btn=>{
+        btn.onclick=()=>{
+            if(endgameLocked)return;
+            endgameLocked=true;
+            const correct=String(btn.dataset.id)===String(correctId);
+            if(correct){
+                endgameScore++;
+                btn.classList.add("correct");
+            }else btn.classList.add("wrong");
+            const f=document.getElementById(feedbackId);
+            if(f)f.textContent=correct?"✦ CORRECT — MEMORY CONFIRMED.":"✕ NOT QUITE.";
+            document.querySelectorAll(".endgame-option").forEach(x=>x.disabled=true);
+            setTimeout(()=>{
+                endgameIndex++;
+                endgameLocked=false;
+                renderEndgameQuestion();
+            },650);
+        };
+    });
+}
+
+function renderEndgameQuestion(){
+    if(endgameIndex>=10){renderEndgameResult();return;}
+    endgameProgress();
+
+    const q=endgameQuestions[endgameIndex];
+    const p=q.person;
+    const choices=shuffleTeamA([p,...endgameOthers(p)]);
+
+    teamAKicker.textContent=`TEAM A · ENDGAME · ${endgameIndex+1}/10`;
+
+    if(q.type==="FACE_TO_NAME"){
+        teamATitle.textContent="FACE → NAME";
+        teamASubtitle.textContent="Choose the full name belonging to this face.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-question">WHO IS THIS PAMONG?</div>
+                <div class="endgame-options">
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
+                </div>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        bindEndgameChoice(p.id,"eg-feedback");
+        return;
+    }
+
+    if(q.type==="FACE_TO_NICKNAME"){
+        teamATitle.textContent="FACE → NICKNAME";
+        teamASubtitle.textContent="Choose the nickname belonging to this face.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-question">WHAT DO PEOPLE CALL THEM?</div>
+                <div class="endgame-options">
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamAText(x.nickname)}"`})))}
+                </div>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        bindEndgameChoice(p.id,"eg-feedback");
+        return;
+    }
+
+    if(q.type==="NAME_TO_FACE"){
+        renderEndgameFaceChoice(p,`WHO IS ${teamAText(p.full_name)}?`);
+        return;
+    }
+
+    if(q.type==="NICKNAME_TO_NAME"){
+        teamATitle.textContent="NICKNAME → NAME";
+        teamASubtitle.textContent="Turn the nickname back into the full identity.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-question">WHO IS "${teamAText(p.nickname)}"?</div>
+                <div class="endgame-options">
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
+                </div>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        bindEndgameChoice(p.id,"eg-feedback");
+        return;
+    }
+
+    if(q.type==="FACE_TO_NICKNAME_TYPING"){
+        teamATitle.textContent="FACE → NICKNAME";
+        teamASubtitle.textContent="Type the nickname from memory.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-question">TYPE THEIR NICKNAME</div>
+                <input id="eg-input" class="medieval-input" type="text" autocomplete="off" placeholder="Nickname...">
+                <button id="eg-submit" class="team-a-btn" type="button">SUBMIT</button>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        const submit=()=>{
+            if(endgameLocked)return;
+            endgameLocked=true;
+            const value=teamANormalize(document.getElementById("eg-input").value);
+            const correct=value===teamANormalize(p.nickname);
+            if(correct)endgameScore++;
+            document.getElementById("eg-feedback").textContent=correct?"✦ CORRECT — MEMORY CONFIRMED.":"✕ NOT QUITE.";
+            setTimeout(()=>{endgameIndex++;endgameLocked=false;renderEndgameQuestion();},650);
+        };
+        document.getElementById("eg-submit").onclick=submit;
+        document.getElementById("eg-input").addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
+        return;
+    }
+
+    if(q.type==="NAME_TO_NICKNAME"){
+        teamATitle.textContent="NAME → NICKNAME";
+        teamASubtitle.textContent="Choose what people call this Pamong.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-question">${teamAText(p.full_name)}</div>
+                <div class="endgame-options">
+                    ${endgameOptions(choices.map(x=>({id:x.id,html:`"${teamAText(x.nickname)}"`})))}
+                </div>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        bindEndgameChoice(p.id,"eg-feedback");
+        return;
+    }
+
+    if(q.type==="NICKNAME_TO_FACE"){
+        renderEndgameFaceChoice(p,`FIND THE FACE OF "${teamAText(p.nickname)}"`);
+        return;
+    }
+
+    if(q.type==="SPEED_RECOGNITION"){
+        teamATitle.textContent="SPEED RECOGNITION";
+        teamASubtitle.textContent="Memorize the face. It disappears.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div id="eg-speed-photo" class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div id="eg-speed-message" class="endgame-feedback">Memorize the face...</div>
+                <div id="eg-speed-options" class="endgame-options"></div>
+            </div>`;
+        setTimeout(()=>{
+            const photo=document.getElementById("eg-speed-photo");
+            const area=document.getElementById("eg-speed-options");
+            if(!photo||!area)return;
+            photo.innerHTML='<div class="team-a-placeholder">WHO WAS THAT?</div>';
+            area.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})));
+            bindEndgameChoice(p.id,"eg-speed-message");
+        },1800);
+        return;
+    }
+
+    if(q.type==="WHO_IS_MISSING"){
+        const visible=shuffleTeamA(teamAPamongs).slice(0,Math.min(4,teamAPamongs.length));
+        const missing=visible[0];
+        const shown=visible.filter(x=>String(x.id)!==String(missing.id));
+        const names=shuffleTeamA([missing,...endgameOthers(missing)]).slice(0,4);
+
+        teamATitle.textContent="WHO IS MISSING?";
+        teamASubtitle.textContent="One identity is absent. Which one?";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-question">WHICH NAME IS MISSING?</div>
+                <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px">
+                    ${shown.map(x=>`<span style="padding:8px 11px;border:1px solid #9a7543;background:#f5e5c2">${teamAText(x.nickname||x.full_name)}</span>`).join("")}
+                </div>
+                <div class="endgame-options">
+                    ${endgameOptions(names.map(x=>({id:x.id,html:`<strong>${teamAText(x.full_name)}</strong>`})))}
+                </div>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        bindEndgameChoice(missing.id,"eg-feedback");
+        return;
+    }
+
+    if(q.type==="FINAL_RECALL"){
+        teamATitle.textContent="FINAL RECALL";
+        teamASubtitle.textContent="No choices. Give us the identity.";
+        teamAContent.innerHTML=`
+            <div class="team-a-card">
+                <div class="team-a-photo">${teamAPhoto(p,p.full_name)}</div>
+                <div class="team-a-question">IDENTIFY THIS PAMONG</div>
+                <input id="eg-name" class="medieval-input" type="text" placeholder="Full name..." autocomplete="off">
+                <input id="eg-nick" class="medieval-input" type="text" placeholder="Nickname..." autocomplete="off" style="margin-top:10px">
+                <button id="eg-submit" class="team-a-btn" type="button" style="margin-top:12px">SUBMIT</button>
+                <div id="eg-feedback" class="endgame-feedback"></div>
+            </div>`;
+        document.getElementById("eg-submit").onclick=()=>{
+            if(endgameLocked)return;
+            endgameLocked=true;
+            const name=teamANormalize(document.getElementById("eg-name").value);
+            const nick=teamANormalize(document.getElementById("eg-nick").value);
+            const correct=name===teamANormalize(p.full_name)&&nick===teamANormalize(p.nickname);
+            if(correct)endgameScore++;
+            document.getElementById("eg-feedback").textContent=correct?"✦ PERFECT RECALL.":"✕ THE IDENTITY DID NOT MATCH.";
+            setTimeout(()=>{endgameIndex++;endgameLocked=false;renderEndgameQuestion();},700);
+        };
+    }
+}
+
+function renderEndgameFaceChoice(person,prompt){
+    const choices=shuffleTeamA([person,...endgameOthers(person)]);
+    teamATitle.textContent="FIND THE FACE";
+    teamASubtitle.textContent=prompt;
+    teamAContent.innerHTML=`
+        <div class="team-a-card">
+            <div class="team-a-question">${prompt}</div>
+            <div class="endgame-face-grid">
+                ${choices.map(x=>`
+                    <button type="button" class="endgame-option" data-id="${teamAText(x.id)}">
+                        ${x.photo_url
+                            ? `<img src="${teamAText(x.photo_url)}" alt="${teamAText(x.full_name)}">`
+                            : `<div class="team-a-placeholder" style="height:180px">PHOTO UNAVAILABLE</div>`}
+                        <strong>${teamAText(x.nickname||"")}</strong>
+                    </button>`).join("")}
+            </div>
+            <div id="eg-feedback" class="endgame-feedback"></div>
+        </div>`;
+    bindEndgameChoice(person.id,"eg-feedback");
+}
+
+function renderEndgameResult(){
+    endgameProgress();
+    const passed=endgameScore>=7;
+    teamAKicker.textContent="TEAM A · ENDGAME COMPLETE";
+    teamATitle.textContent=passed?"FAMILIARITY ESTABLISHED":"TRY AGAIN";
+    teamASubtitle.textContent=passed?"Team A is now part of your context.":"Seven correct answers are required to pass.";
+
+    teamAContent.innerHTML=`
+        <div class="team-a-reward">
+            <div class="team-a-reward-title">✦ FINAL SCORE ✦</div>
+            <div class="endgame-score">${endgameScore}/10</div>
+            <p style="color:#684d2d;line-height:1.6">
+                ${passed?"You successfully completed the Team A Endgame.":"Retry the Endgame and strengthen your recall."}
+            </p>
+        </div>
+        <button id="eg-result-btn" class="team-a-btn" type="button">
+            ${passed?"COMPLETE MILESTONE I":"RETRY ENDGAME"}
+        </button>`;
+
+    document.getElementById("eg-result-btn").onclick=()=>{
+        if(passed){
+            closeTeamAGame();
+            const player=getPlayerData();
+            if(player){
+                player.milestone=Math.max(Number(player.milestone||1),2);
+                savePlayerData(player);
+            }
+        }else{
+            startTeamAEndgame();
+        }
+    };
+}
 document.addEventListener("keydown",function(e){
     if(e.key==="Escape"){
         if(teamAGame && !teamAGame.classList.contains("hidden")) closeTeamAGame();
