@@ -910,28 +910,6 @@ button,input{font:inherit}
     to{background-position:-220% 0}
 }
 </style>
-
-<style id="pamong-no-broken-images">
-.team-a-photo-loading img{
-    display:block;
-    color:transparent;
-    font-size:0;
-}
-.team-a-photo-loading img::before,
-.team-a-photo-loading img::after{
-    display:none !important;
-}
-.endgame-face-grid .team-a-photo-loading{
-    width:100%;
-    height:205px;
-    min-height:205px;
-}
-.endgame-face-grid .team-a-photo-loading img{
-    width:100%;
-    height:205px;
-    object-fit:cover;
-}
-</style>
 </head>
 
 <body>
@@ -2587,56 +2565,14 @@ function renderEndgameQuestion(){
                 <div id="eg-speed-message" class="endgame-feedback">Memorize the face...</div>
                 <div id="eg-speed-options" class="endgame-options"></div>
             </div>`;
-        (async()=>{
+        setTimeout(()=>{
             const photo=document.getElementById("eg-speed-photo");
             const area=document.getElementById("eg-speed-options");
             if(!photo||!area)return;
-
-            // Do NOT start the disappearance timer until the face has
-            // actually loaded. This prevents the player from losing the
-            // face while the network is still fetching it.
-            const img=photo.querySelector("img");
-            const waitForFace=()=>new Promise(resolve=>{
-                if(!img){ resolve(false); return; }
-
-                let finished=false;
-                const finish=ok=>{
-                    if(finished)return;
-                    finished=true;
-                    clearInterval(poll);
-                    clearTimeout(timeout);
-                    resolve(ok);
-                };
-
-                const poll=setInterval(()=>{
-                    if(img.complete && img.naturalWidth>0) finish(true);
-                },60);
-
-                const timeout=setTimeout(()=>finish(false),8000);
-
-                if(img.complete && img.naturalWidth>0){
-                    finish(true);
-                    return;
-                }
-
-                img.addEventListener("load",()=>finish(true),{once:true});
-            });
-
-            const loaded=await waitForFace();
-
-            // Give the learner a consistent viewing window AFTER the image
-            // is ready. If the photo genuinely cannot be loaded, still don't
-            // expose a browser broken-image icon.
-            await new Promise(r=>setTimeout(r,loaded ? 1800 : 500));
-
-            const livePhoto=document.getElementById("eg-speed-photo");
-            const liveArea=document.getElementById("eg-speed-options");
-            if(!livePhoto||!liveArea)return;
-
-            livePhoto.innerHTML='<div class="team-a-placeholder">WHO WAS THAT?</div>';
-            liveArea.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})));
+            photo.innerHTML='<div class="team-a-placeholder">WHO WAS THAT?</div>';
+            area.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})));
             bindEndgameChoice(p.id,"eg-speed-message");
-        })();
+        },1800);
         return;
     }
 
@@ -2767,7 +2703,9 @@ function renderEndgameFaceChoice(person,prompt){
             <div class="endgame-face-grid">
                 ${choices.map(x=>`
                     <button type="button" class="endgame-option" data-id="${teamGameText(x.id)}">
-                        ${teamGamePhoto(x,"Pamong face")}
+                        ${x.photo_url
+                            ? `<img src="${teamGameText(x.photo_url)}" alt="Pamong face">`
+                            : `<div class="team-a-placeholder" style="height:205px">PHOTO UNAVAILABLE</div>`}
                     </button>`).join("")}
             </div>
             <div id="eg-feedback" class="endgame-feedback"></div>
@@ -4416,10 +4354,11 @@ document.addEventListener("keydown",function(e){
   async function loadPeople(){
     if(allPeople.length)return allPeople;
     try{
-      const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,foto,foto_url&order=id.asc`;
+      const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,foto&order=id.asc`;
       const res=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
       if(!res.ok)throw new Error(`HTTP ${res.status}`);
       allPeople=await res.json();
+      if(!Array.isArray(allPeople)) throw new Error("Unexpected Supabase response.");
     }catch(err){
       console.error("Milestone V data load failed:",err);
       allPeople=[];
@@ -4463,7 +4402,7 @@ document.addEventListener("keydown",function(e){
       <button class="generation-tab ${selected===x.g?"active ":""}${discovered.has(x.g)?"discovered":""}"
               type="button" data-generation="${esc(x.g)}" aria-label="Open ${esc(x.g)}">
         <strong>${esc(x.g)}</strong>
-        <small>${x.total} identities${discovered.has(x.g)?" · ✓":""}</small>
+        <small>${x.total} IDENTITIES${discovered.has(x.g)?" · ✓":""}</small>
       </button>`).join("");
     timeline.querySelectorAll("[data-generation]").forEach(btn=>{
       btn.addEventListener("click",()=>openGeneration(btn.dataset.g));
