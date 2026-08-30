@@ -4606,3 +4606,42 @@ document.addEventListener("click", function(e){
   setTimeout(sync,1200);
 })();
 </script>
+
+<style id="milestone5-clickable-override">
+#journey-node-5{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+}
+#journey-node-5:disabled{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+  opacity:1 !important;
+}
+</style>
+
+<script id="milestone5-open-final">
+document.addEventListener("click",function(e){
+  const node=e.target.closest("#journey-node-5");
+  if(!node) return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  if(typeof window.openGenerationMilestone==="function"){
+    window.openGenerationMilestone();
+  }else{
+    const modal=document.getElementById("generation-game");
+    if(modal){
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow="hidden";
+    }
+  }
+},true);
+
+window.addEventListener("load",function(){
+  const n=document.getElementById("journey-node-5");
+  if(n){
+    n.disabled=false;
+    n.removeAttribute("disabled");
+  }
+});
+</script>
