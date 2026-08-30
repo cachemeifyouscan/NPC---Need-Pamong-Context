@@ -1169,7 +1169,8 @@ button,input{font:inherit}
                         <button data-team="B" id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2">2</button>
                         <button data-team="C" id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3">3</button>
                         <button data-team="D" id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4">4</button>
-                        <button id="journey-node-5" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 5">5</button>
+                        <button id="journey-node-5" class="journey-node locked journey-button" type="button"
+ aria-label="Open Milestone 5" onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}">5</button>
                         <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">6</button>
                         <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">7</button>
                         <button id="journey-node-8" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 8">8</button>
@@ -1200,6 +1201,41 @@ button,input{font:inherit}
 </main>
 
 
+
+
+<!-- =========================================================
+     MILESTONE 5 — THE CHRONICLES / ANGKATAN
+========================================================= -->
+<div id="generation-game" class="generation-game hidden" aria-hidden="true">
+  <div class="generation-panel" role="dialog" aria-modal="true" aria-labelledby="generation-title">
+    <button id="generation-close" class="generation-close" type="button" aria-label="Close">×</button>
+
+    <div class="generation-inner">
+      <div class="generation-kicker">MILESTONE V</div>
+      <h2 id="generation-title">THE CHRONICLES</h2>
+      <p id="generation-subtitle">Discover the generations before the trial begins.</p>
+
+      <div class="generation-stage">
+        <div id="generation-timeline" class="generation-timeline"></div>
+
+        <section id="generation-discovery" class="generation-discovery">
+          <div class="generation-empty">
+            <div class="generation-seal">V</div>
+            <h3>THE CHRONICLES OF ANGKATAN</h3>
+            <p>Select a generation to uncover its identities.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="generation-footer">
+        <div id="generation-status" class="generation-status">0 / 7 CHRONICLES DISCOVERED</div>
+        <button id="generation-next" class="generation-action" type="button" disabled>
+          BEGIN THE CHRONICLES
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="team-a-game" class="team-a-game hidden" aria-hidden="true">
     <div class="team-a-panel" role="dialog" aria-modal="true" aria-labelledby="team-a-title">
@@ -1562,24 +1598,39 @@ function isTeamUnlocked(key){
 }
 function refreshJourney(){
     const progress=Number(getPlayerData()?.milestone||1);
+
+    // Milestones 1–4 = Team A–D.
+    // Milestone 5 unlocks after all four team identity phases are complete.
+    let milestone5Unlocked = false;
+    try{
+        milestone5Unlocked =
+            typeof isTeamGamePhase1Complete === "function" &&
+            ["A","B","C","D"].every(k => isTeamGamePhase1Complete(k));
+    }catch(e){
+        milestone5Unlocked = progress >= 5;
+    }
+
     for(let i=1;i<=8;i++){
         const n=document.getElementById(`journey-node-${i}`);
         if(!n) continue;
 
-        // Teams A-D are implemented in this build; milestones 5-8 are reserved.
-        const unlocked=i<=Math.min(progress,4);
+        let unlocked = false;
+
+        if(i <= 4){
+            unlocked = i <= Math.min(progress,4);
+        }else if(i === 5){
+            unlocked = milestone5Unlocked || progress >= 5;
+        }else{
+            // 6–8 remain reserved until their mechanics are implemented.
+            unlocked = progress >= i;
+        }
+
         n.classList.toggle("locked",!unlocked);
         n.classList.toggle("active",unlocked);
         n.disabled=!unlocked;
 
-        if(i>=5){
-            n.classList.add("locked");
-            n.classList.remove("active");
-            n.disabled=true;
-            n.title="Coming soon";
-        } else {
-            n.removeAttribute("title");
-        }
+        if(unlocked) n.removeAttribute("title");
+        else n.title = i === 5 ? "Complete Teams A–D first" : "Coming soon";
     }
 }
 function openMilestone(teamKey="A"){
@@ -4079,3 +4130,479 @@ document.addEventListener("keydown",function(e){
     .team-a-card .team-a-question{margin-bottom:12px !important;}
 }
 </style>
+
+
+<style id="generation-game-css">
+/* =========================================================
+   MILESTONE V — THE CHRONICLES
+   Quiet medieval: parchment, deep maroon, antique brass.
+   No sparkle / decorative scribbles.
+========================================================= */
+.generation-game{
+  position:fixed;inset:0;z-index:2147483004;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;background:rgba(38,23,13,.72);
+  backdrop-filter:blur(2px);
+}
+.generation-game.hidden{display:none!important}
+.generation-panel{
+  position:relative;width:min(1100px,94vw);height:min(780px,92vh);
+  box-sizing:border-box;overflow:auto;
+  padding:48px 48px 32px;color:#3d281b;
+  background:linear-gradient(145deg,#fbefd2,#ead3a0);
+  border:2px solid #80602f;border-radius:4px;
+  box-shadow:
+    0 25px 55px rgba(31,18,7,.42),
+    inset 0 1px 0 rgba(255,250,232,.9),
+    inset 0 -2px 0 rgba(116,75,30,.18);
+}
+.generation-inner{
+  min-height:100%;display:flex;flex-direction:column;
+  justify-content:center;
+}
+.generation-close{
+  position:absolute;right:18px;top:14px;z-index:4;
+  width:36px;height:36px;border:1px solid #9c7543;
+  background:#ead3a5;color:#51331c;font-size:24px;
+  cursor:pointer;border-radius:3px;
+}
+.generation-kicker{
+  text-align:center;color:#673333;letter-spacing:4px;
+  font-size:12px;font-weight:bold;margin-bottom:4px;
+}
+#generation-title{
+  margin:0;text-align:center;color:#3d281b;
+  font-family:"Palatino Linotype",Palatino,Georgia,serif;
+  font-size:34px;letter-spacing:1.5px;
+}
+#generation-subtitle{
+  margin:7px 0 20px;text-align:center;color:#725338;
+  font-style:italic;font-size:14px;
+}
+.generation-timeline{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:8px;width:100%;margin:0 auto 20px;
+}
+.generation-tab{
+  min-height:55px;padding:7px 4px;border:1px solid #ad8550;
+  border-radius:3px;background:#e4c894;color:#5a3b22;
+  cursor:pointer;box-shadow:0 2px 4px rgba(57,34,15,.08);
+  font-family:"Palatino Linotype",Palatino,Georgia,serif;
+}
+.generation-tab strong{display:block;font-size:14px}
+.generation-tab small{display:block;margin-top:3px;color:#7d6040;font-size:10px}
+.generation-tab.active{
+  background:#673333;color:#f5e4bf;border-color:#482124;
+  box-shadow:0 5px 10px rgba(57,31,26,.18),
+             inset 0 1px rgba(255,225,185,.15);
+}
+.generation-tab.active small{color:#e6c995}
+.generation-tab.discovered:not(.active){
+  background:#f1dfb7;border-color:#98713c;
+}
+.generation-discovery{
+  flex:1;min-height:340px;padding:20px;
+  background:rgba(255,248,229,.38);
+  border:1px solid rgba(139,101,52,.48);
+  border-radius:4px;
+  box-shadow:inset 0 0 22px rgba(107,71,27,.035);
+  overflow:auto;
+}
+.generation-empty{
+  height:100%;min-height:300px;display:flex;
+  align-items:center;justify-content:center;flex-direction:column;
+  text-align:center;color:#6e5035;
+}
+.generation-seal{
+  width:64px;height:64px;border-radius:50%;
+  display:grid;place-items:center;margin-bottom:13px;
+  color:#f1dfb8;background:#673333;border:2px solid #a77c45;
+  box-shadow:0 5px 10px rgba(54,30,24,.16);
+  font-family:Georgia,serif;font-size:27px;
+}
+.generation-empty h3{margin:0 0 6px;font-size:20px;color:#4a2d1e}
+.generation-empty p{margin:0;font-size:13px}
+.generation-chapter-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:12px;margin-bottom:16px;
+}
+.generation-chapter-head h3{
+  margin:0;color:#4b2928;font-family:Georgia,serif;font-size:22px;
+}
+.generation-chapter-head span{
+  color:#79593b;font-size:12px;letter-spacing:1px;
+}
+.generation-group{
+  margin-bottom:18px;
+}
+.generation-group-title{
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  color:#673333;font-size:11px;font-weight:bold;letter-spacing:2px;
+}
+.generation-group-title::after{
+  content:"";height:1px;flex:1;background:#b28a55;opacity:.55;
+}
+.generation-people{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+}
+.generation-person{
+  min-height:145px;padding:8px;
+  background:linear-gradient(145deg,#fbefd3,#ead1a0);
+  border:1px solid #ae8450;border-radius:3px;
+  box-shadow:0 4px 8px rgba(57,34,15,.09),
+             inset 0 1px rgba(255,250,232,.85);
+  cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;
+}
+.generation-person:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 12px rgba(57,34,15,.13),
+             inset 0 1px rgba(255,250,232,.9);
+}
+.generation-person img{
+  width:100%;height:92px;object-fit:cover;
+  display:block;background:#d3b57c;
+  border:1px solid rgba(128,91,43,.35);
+}
+.generation-person .gp-name{
+  margin-top:7px;text-align:center;font-weight:bold;
+  color:#43281b;font-family:Georgia,serif;font-size:13px;
+}
+.generation-person .gp-full{
+  margin-top:3px;text-align:center;color:#795b3e;
+  font-size:10px;line-height:1.2;
+}
+.generation-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;margin-top:18px;
+}
+.generation-status{
+  color:#725238;font-size:11px;letter-spacing:1.5px;font-weight:bold;
+}
+.generation-action{
+  min-width:230px;height:48px;border:1px solid #412511;
+  border-radius:4px;color:#f4dfb2;
+  background:linear-gradient(180deg,#7d512a,#5c371d 55%,#492a17);
+  box-shadow:0 4px 0 #2a180b,inset 0 1px rgba(255,221,163,.2);
+  font-family:Georgia,serif;font-weight:bold;letter-spacing:1px;
+  cursor:pointer;
+}
+.generation-action:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+.generation-action:not(:disabled):hover{transform:translateY(-1px)}
+@media(max-width:850px){
+  .generation-timeline{grid-template-columns:repeat(4,1fr)}
+  .generation-people{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:650px){
+  .generation-panel{width:96vw;height:92vh;padding:44px 18px 24px}
+  .generation-timeline{grid-template-columns:repeat(2,1fr)}
+  .generation-people{grid-template-columns:repeat(2,1fr)}
+  .generation-footer{flex-direction:column;align-items:stretch}
+  .generation-action{width:100%}
+}
+</style>
+
+
+<script id="generation-game-js">
+/* =========================================================
+   MILESTONE V — ANGKATAN
+   Discovery first. Gameplay follows after all 7 generations
+   have been opened at least once.
+========================================================= */
+(function(){
+  const overlay=document.getElementById("generation-game");
+  const closeBtn=document.getElementById("generation-close");
+  const timeline=document.getElementById("generation-timeline");
+  const discovery=document.getElementById("generation-discovery");
+  const status=document.getElementById("generation-status");
+  const nextBtn=document.getElementById("generation-next");
+  const node5=document.getElementById("journey-node-5");
+
+  if(!overlay||!timeline||!discovery) return;
+
+  const GENERATIONS=["STSN12","STSN13","STSN14","STSN15","STSN16","STSN17","STSN18"];
+
+  /* Gender is intentionally kept as a small UI mapping here because
+     the current Pengasuh table has no gender column. STSN14 therefore
+     resolves to 10 male + 5 female, matching the agreed breakdown. */
+  const GENDER_MAP={
+    "Morez":"male","Afi":"female",
+    "Budin":"male","Nia":"female",
+    "Edy":"male","Nabel":"female","Danu":"male","Imas":"female",
+    "Rizal":"male","Heading":"male","Hadyan":"male","Monike":"female",
+    "Yaji":"male","Ilham":"male","Adhli":"male","Wening":"female",
+    "Onal":"male","Yoland":"female","Kadek":"male",
+    "Bio":"male","Sasa":"female","Yota":"male","Yunik":"female",
+    "Wira":"male","Fahmi":"male","Hiday":"female","Lolita":"female",
+    "Naya":"female","Agil":"male","Gara":"male","Yahya":"male",
+    "Kacha":"male","Aqil":"male","Izar":"male","Fajar":"male",
+    "Dhyo":"male","Dendi":"male","Atha":"female","Agan":"male"
+  };
+
+  let allPeople=[];
+  let discovered=new Set();
+  let selected=null;
+
+  function photoUrl(path){
+    if(!path) return "";
+    const clean=String(path).replace(/^\\/+/, "");
+    return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_PHOTO_BUCKET}/${clean.split("/").map(encodeURIComponent).join("/")}`;
+  }
+
+  function getPersonPhoto(p){
+    // The database already contains a signed foto_url. Using it avoids
+    // creating a separate Storage request for every card.
+    return p.foto_url || photoUrl(p.foto);
+  }
+
+  function esc(v){
+    return String(v??"").replace(/[&<>"']/g,s=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[s]));
+  }
+
+  async function loadPeople(){
+    if(allPeople.length) return allPeople;
+    try{
+      const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,foto,foto_url&order=id.asc`;
+      const res=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      allPeople=await res.json();
+    }catch(err){
+      console.error("Milestone V data load failed:",err);
+      allPeople=[];
+    }
+    return allPeople;
+  }
+
+  function counts(){
+    return GENERATIONS.map(g=>{
+      const rows=allPeople.filter(p=>p.angkatan===g);
+      return {g,total:rows.length,male:rows.filter(p=>GENDER_MAP[p.panggilan]==="male").length,
+              female:rows.filter(p=>GENDER_MAP[p.panggilan]==="female").length};
+    });
+  }
+
+  function renderTimeline(){
+    const cs=counts();
+    timeline.innerHTML=cs.map(x=>`
+      <button class="generation-tab ${selected===x.g?"active ":""} ${discovered.has(x.g)?"discovered":""}"
+              type="button" data-generation="${esc(x.g)}">
+        <strong>${esc(x.g)}</strong>
+        <small>${x.total} identities</small>
+      </button>
+    `).join("");
+    timeline.querySelectorAll("[data-generation]").forEach(btn=>{
+      btn.addEventListener("click",()=>openGeneration(btn.dataset.g));
+    });
+  }
+
+  function personCard(p){
+    const url=getPersonPhoto(p);
+    return `<button class="generation-person" type="button">
+      ${url?`<img src="${esc(url)}" alt="${esc(p.panggilan||"Pamong")}" loading="lazy" decoding="async"
+              onerror="this.style.display='none'">`:""}
+      <div class="gp-name">${esc(p.panggilan||p.nama)}</div>
+      <div class="gp-full">${esc(p.nama||"")}</div>
+    </button>`;
+  }
+
+  function openGeneration(g){
+    selected=g;
+    discovered.add(g);
+    const rows=allPeople.filter(p=>p.angkatan===g);
+    const male=rows.filter(p=>GENDER_MAP[p.panggilan]==="male");
+    const female=rows.filter(p=>GENDER_MAP[p.panggilan]==="female");
+    const unknown=rows.filter(p=>!GENDER_MAP[p.panggilan]);
+
+    const parts=[];
+    if(male.length) parts.push(`
+      <section class="generation-group">
+        <div class="generation-group-title">MALE · ${male.length} IDENTITIES</div>
+        <div class="generation-people">${male.map(personCard).join("")}</div>
+      </section>`);
+    if(female.length) parts.push(`
+      <section class="generation-group">
+        <div class="generation-group-title">FEMALE · ${female.length} IDENTITIES</div>
+        <div class="generation-people">${female.map(personCard).join("")}</div>
+      </section>`);
+    if(unknown.length) parts.push(`
+      <section class="generation-group">
+        <div class="generation-group-title">IDENTITIES</div>
+        <div class="generation-people">${unknown.map(personCard).join("")}</div>
+      </section>`);
+
+    discovery.innerHTML=`
+      <div class="generation-chapter-head">
+        <h3>${esc(g)}</h3>
+        <span>${rows.length} IDENTITIES IN THIS CHRONICLE</span>
+      </div>
+      ${parts.join("")}
+    `;
+    renderTimeline();
+    updateStatus();
+  }
+
+  function updateStatus(){
+    status.textContent=`${discovered.size} / ${GENERATIONS.length} CHRONICLES DISCOVERED`;
+    nextBtn.disabled=discovered.size<GENERATIONS.length;
+    nextBtn.textContent=discovered.size===GENERATIONS.length
+      ?"CONTINUE TO THE TRIAL"
+      :"DISCOVER ALL CHRONICLES";
+  }
+
+  async function open(){
+    await loadPeople();
+    selected=null;discovered=new Set();
+    renderTimeline();
+    discovery.innerHTML=`<div class="generation-empty">
+      <div class="generation-seal">V</div>
+      <h3>THE CHRONICLES OF ANGKATAN</h3>
+      <p>Select a generation to uncover its identities.</p>
+    </div>`;
+    updateStatus();
+    overlay.classList.remove("hidden");
+    overlay.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
+
+  function close(){
+    overlay.classList.add("hidden");
+    overlay.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
+  async function continueToTrial(){
+    if(discovered.size<GENERATIONS.length) return;
+    close();
+    /*
+      Phase 2/Endgame is deliberately left as the next implementation layer.
+      For now completion of Discovery marks Milestone V as unlocked.
+    */
+    try{
+      const pd=getPlayerData?.()||{};
+      const current=Number(pd.milestone||1);
+      if(current<6){
+        pd.milestone=6;
+        localStorage.setItem("npc_player",JSON.stringify(pd));
+      }
+    }catch(e){}
+    if(typeof refreshJourney==="function") refreshJourney();
+  }
+
+  if(closeBtn) closeBtn.addEventListener("click",close);
+  nextBtn.addEventListener("click",continueToTrial);
+  overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
+
+  /* Unlock Milestone V once Teams A-D have all been completed. */
+  function allTeamsDone(){
+    try{
+      return ["A","B","C","D"].every(k=>typeof isTeamGamePhase1Complete==="function" && isTeamGamePhase1Complete(k));
+    }catch(e){return false}
+  }
+
+  function syncNode5(){
+    if(!node5) return;
+
+    let unlocked = Number(getPlayerData?.()?.milestone||1) >= 5;
+
+    try{
+      unlocked = unlocked || allTeamsDone();
+    }catch(e){}
+
+    node5.classList.toggle("locked",!unlocked);
+    node5.classList.toggle("active",unlocked);
+    node5.disabled=!unlocked;
+    node5.setAttribute("aria-disabled", unlocked ? "false" : "true");
+
+    if(unlocked) node5.removeAttribute("title");
+    else node5.title="Complete Teams A–D first";
+  }
+
+  if(node5){
+    node5.addEventListener("click",e=>{
+      e.preventDefault();
+      e.stopPropagation();
+
+      const unlocked =
+        Number(getPlayerData?.()?.milestone||1) >= 5 ||
+        (() => { try { return allTeamsDone(); } catch(e) { return false; } })();
+
+      if(unlocked) open();
+      else syncNode5();
+    });
+  }
+
+  /* Do not change the existing milestones 1–4 logic. */
+  syncNode5();
+  window.openGenerationMilestone=open;
+})();
+</script>
+
+<style id="generation-loading-css">
+.generation-person{position:relative;overflow:hidden}
+.generation-person img{object-fit:cover;content-visibility:auto}
+.generation-person img[src]{background:linear-gradient(135deg,#d6bb88,#b99560)}
+</style>
+
+
+<script id="generation-node5-fallback">
+document.addEventListener("click", function(e){
+  const node=e.target.closest("#journey-node-5");
+  if(!node) return;
+
+  const player=(typeof getPlayerData==="function") ? getPlayerData() : null;
+  let unlocked=Number(player?.milestone||1)>=5;
+
+  if(!unlocked && typeof isTeamGamePhase1Complete==="function"){
+    try{
+      unlocked=["A","B","C","D"].every(k=>isTeamGamePhase1Complete(k));
+    }catch(err){}
+  }
+
+  if(unlocked && typeof window.openGenerationMilestone==="function"){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    window.openGenerationMilestone();
+  }
+}, true);
+</script>
+
+<style id="milestone5-hard-unlock">
+#journey-node-5.milestone5-ready{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+#journey-node-5.milestone5-ready.locked{
+  pointer-events:auto !important;
+}
+</style>
+
+<script id="milestone5-final-sync">
+(function(){
+  function sync(){
+    const n=document.getElementById("journey-node-5");
+    if(!n) return;
+    let unlocked=false;
+    try{
+      const p=typeof getPlayerData==="function"?getPlayerData():null;
+      unlocked=Number(p?.milestone||1)>=5;
+      if(!unlocked && typeof isTeamGamePhase1Complete==="function"){
+        unlocked=["A","B","C","D"].every(k=>isTeamGamePhase1Complete(k));
+      }
+    }catch(e){}
+    if(unlocked){
+      n.disabled=false;
+      n.removeAttribute("disabled");
+      n.classList.add("milestone5-ready");
+      n.setAttribute("aria-disabled","false");
+    }
+  }
+  sync();
+  window.addEventListener("load",sync);
+  setTimeout(sync,100);
+  setTimeout(sync,500);
+  setTimeout(sync,1200);
+})();
+</script>
