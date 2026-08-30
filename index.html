@@ -910,6 +910,24 @@ button,input{font:inherit}
     to{background-position:-220% 0}
 }
 </style>
+
+<style id="tower-photo-fix">
+.tower-person-photo{
+    position:relative;width:100%;height:180px;overflow:hidden;
+    background:linear-gradient(135deg,#d9bd82,#ead6a8);
+}
+.tower-person-photo img{
+    display:block;width:100%;height:100%;object-fit:cover;
+    transition:opacity .18s ease;
+}
+.tower-person-photo .team-a-photo-skeleton{
+    position:absolute;inset:0;
+    background:linear-gradient(90deg,#d8bd83 0%,#ead7aa 50%,#d8bd83 100%);
+}
+.tower-person-photo .team-a-placeholder{
+    position:absolute;inset:0;display:grid;place-items:center;
+}
+</style>
 </head>
 
 <body>
@@ -4332,7 +4350,7 @@ document.addEventListener("keydown",function(e){
     Hadyan:"male",Monike:"female",Yaji:"male",Ilham:"male",Adhli:"male",
     Wening:"female",Onal:"male",Yoland:"female",Kadek:"male",Bio:"male",
     Sasa:"female",Yota:"male",Yunik:"female",Wira:"male",Fahmi:"male",
-    Hiday:"female",Lolita:"female",Naya:"female",Agil:"male",Gara:"male",
+    Hiday:"female",Lolita:"female",Naya:"female",Nurul:"female",Agil:"male",Gara:"male",
     Yahya:"male",Kacha:"male",Aqil:"male",Izar:"male",Fajar:"male",
     Dhyo:"male",Dendi:"male",Atha:"female",Agan:"male"
   };
@@ -4410,17 +4428,30 @@ document.addEventListener("keydown",function(e){
   }
 
   function personCard(p){
-    const url=getPersonPhoto(p);
-    return `<button class="generation-person" type="button"
-      data-person-id="${esc(p.id)}" aria-label="Reveal ${esc(p.panggilan||p.nama)}">
-      ${url?`<img src="${esc(url)}" alt="${esc(p.panggilan||"Pamong")}" loading="lazy" decoding="async"
-        onerror="this.style.opacity='.35'">`:""}
+    const publicSrc=getPersonPhoto(p);
+    const path=String(p.foto||"").replace(/^\/+/, "");
+    const safePath=esc(path);
+    const safeSrc=esc(publicSrc);
+    const safeAlt=esc(p.panggilan||p.nama||"Pamong");
+    const photo=(publicSrc||path)
+      ? `<div class="tower-person-photo team-a-photo-loading" data-photo-wrapper>
+           <img src="${safeSrc}" alt="${safeAlt}" loading="eager" decoding="async"
+                fetchpriority="high" data-photo-path="${safePath}"
+                data-public-src="${safeSrc}" style="opacity:0"
+                onload="handlePamongImageLoad(this)"
+                onerror="handlePamongImageError(this)">
+           <div class="team-a-photo-skeleton" aria-hidden="true"></div>
+           <div class="team-a-placeholder" style="display:none">PHOTO UNAVAILABLE</div>
+         </div>`
+      : `<div class="tower-person-photo"><div class="team-a-placeholder">PHOTO UNAVAILABLE</div></div>`;
+    return `<button class="generation-person" type="button" data-person-id="${esc(p.id)}"
+      aria-label="Reveal ${safeAlt}">
+      ${photo}
       <div class="gp-name">${esc(p.panggilan||p.nama)}</div>
       <div class="gp-full">Tap to reveal identity</div>
     </button>`;
-  }
-
-  function showPerson(p){
+}
+function showPerson(p){
     let modal=document.getElementById("generation-person-reveal");
     if(!modal){
       modal=document.createElement("div");
