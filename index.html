@@ -2472,7 +2472,7 @@ async function submitMilestoneScore(milestone,score){
 
     try{
         const response=await fetch(`${SUPABASE_REST_URL}/rpc/submit_npc_score`,{
-            method:"POST",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json"},
+            method:"POST",cache:"no-store",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json"},
             body:JSON.stringify({p_player_id:p.playerId,p_username:p.username,p_milestone:Number(m),p_score:cleanScore})
         });
         if(!response.ok)throw new Error(`HTTP ${response.status}: ${await response.text()}`);
@@ -2480,8 +2480,8 @@ async function submitMilestoneScore(milestone,score){
 }
 
 async function fetchLeaderboard(){
-    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}?select=player_id,username,total_score,updated_at&order=total_score.desc,updated_at.asc&limit=${LEADERBOARD_MAX_ROWS}`;
-    const response=await fetch(endpoint,{headers:{"apikey":SUPABASE_PUBLIC_KEY}});
+    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}?select=player_id,username,total_score,updated_at&order=total_score.desc,updated_at.asc&limit=${LEADERBOARD_MAX_ROWS}&_=${Date.now()}`;
+    const response=await fetch(endpoint,{cache:"no-store",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache"}});
     const body=await response.json().catch(()=>[]);
     if(!response.ok)throw new Error(body?.message||`HTTP ${response.status}`);
     return Array.isArray(body)?body:[];
@@ -2511,9 +2511,22 @@ async function syncCurrentLeaderboardScore(){
     try{
         const p=ensurePlayerIdentity(getPlayerData()||{});
         if(!p.username)return;
-        const m8=Number(p.revivalTotal||0);
-        // Re-send the complete current Revival total before displaying rankings.
-        await submitMilestoneScore(8,m8);
+        // Send the COMPLETE local score state, not only M8. This makes the
+        // leaderboard authoritative for the current player and fixes stale
+        // totals when earlier milestones were completed before a later login.
+        const scores={};
+        Object.keys(p.milestoneScores||{}).forEach(k=>{
+            const n=Number(p.milestoneScores[k]||0);
+            if(Number.isFinite(n)&&n>0)scores[String(k)]=Math.floor(n);
+        });
+        scores["8"]=Math.floor(Number(p.revivalTotal||0));
+        const response=await fetch(`${SUPABASE_REST_URL}/rpc/sync_npc_leaderboard`,{
+            method:"POST",
+            cache:"no-store",
+            headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
+            body:JSON.stringify({p_player_id:p.playerId,p_username:p.username,p_milestone_scores:scores})
+        });
+        if(!response.ok)throw new Error(`HTTP ${response.status}: ${await response.text()}`);
     }catch(e){console.warn("Leaderboard live sync failed:",e)}
 }
 async function openLeaderboard(){
