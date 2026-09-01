@@ -1370,6 +1370,22 @@ button,input{font:inherit}
 }
 
 
+
+/* Avatar picker */
+.avatar-picker-card{width:min(920px,94vw)}
+.avatar-picker{margin:20px auto 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;max-height:58vh;overflow:auto;padding:8px;scrollbar-width:thin}
+.avatar-option{position:relative;border:2px solid #b28b52;background:linear-gradient(145deg,#fff8e8,#ead3a4);padding:5px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;box-shadow:0 3px 8px rgba(65,42,16,.10)}
+.avatar-option:hover{transform:translateY(-2px);box-shadow:0 6px 13px rgba(65,42,16,.18)}
+.avatar-option.selected{border-color:#6d421b;box-shadow:0 0 0 3px #d4aa63,0 7px 16px rgba(65,42,16,.22);transform:translateY(-2px)}
+.avatar-option img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#d8c08c}
+.avatar-number{display:block;margin:4px 0 1px;font:700 10px/1 Georgia,"Times New Roman",serif;letter-spacing:1px;color:#69461f;text-align:center}
+.avatar-check{position:absolute;top:6px;right:6px;width:22px;height:22px;display:none;place-items:center;border-radius:50%;background:#6d421b;color:#fff5dc;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,.25)}
+.avatar-option.selected .avatar-check{display:grid}
+.avatar-picker-actions{display:flex;justify-content:center;gap:12px;margin-top:16px}
+.avatar-picker-note{margin:7px 0 0;font-size:12px;color:#80613a;text-align:center}
+.player-avatar-img{width:44px;height:44px;display:block;object-fit:cover;border:1px solid #876334;background:#d9c08c}
+@media(max-width:760px){.avatar-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-height:55vh}}
+@media(max-width:520px){.avatar-picker{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.avatar-picker-card{padding:20px 14px}}
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2425,6 +2441,24 @@ button,input{font:inherit}
 <!-- =========================================================
      CREATE PIN
 ========================================================= -->
+<section id="avatar-screen" class="screen hidden">
+    <div class="manuscript-card avatar-picker-card">
+        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+        <div class="screen-kicker">CHOOSE YOUR PORTRAIT</div>
+        <h1 class="screen-title">Who Will You Be?</h1>
+        <p class="screen-text">Choose the portrait that shall represent you across Sanapati Land.</p>
+        <div id="avatar-picker" class="avatar-picker" aria-label="Choose your avatar"></div>
+        <p class="avatar-picker-note">50 portraits await. Choose wisely, adventurer.</p>
+        <div class="avatar-picker-actions">
+            <button id="avatar-button" class="wood-button" type="button">✦ CHOOSE THIS PORTRAIT ✦</button>
+        </div>
+        <p id="avatar-error" class="error"></p>
+    </div>
+</section>
+
+<!-- =========================================================
+     CREATE PIN
+========================================================= -->
 <section id="pin-setup-screen" class="screen hidden">
     <div class="manuscript-card">
         <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
@@ -2526,7 +2560,7 @@ button,input{font:inherit}
 
         <header class="game-topbar">
             <div class="player-info">
-                <div class="player-avatar">♙</div>
+                <img id="player-avatar" class="player-avatar-img" src="avatars/avatar-01.webp" alt="Player portrait" decoding="async">
                 <div>
                     <div id="player-label" class="player-name">👤 Taruna</div>
                     <div class="level-badge">Lv.1 PAMONG EXPLORER</div>
@@ -2825,6 +2859,14 @@ function ensurePlayerIdentity(player){
     return p;
 }
 
+
+function updatePlayerAvatarUI(player){
+    const el=document.getElementById("player-avatar");
+    if(!el)return;
+    const avatar=(player&&player.avatar)||"avatar-01.webp";
+    el.src=`avatars/${avatar}`;
+}
+
 function updatePlayerScoreUI(){
     const el=document.getElementById("player-total-score");
     if(!el)return;
@@ -3033,6 +3075,52 @@ if (usernameButton) {
 
         usernameError.textContent = "";
         sessionStorage.setItem("npcUsername", username);
+        selectedAvatar = "";
+        sessionStorage.removeItem("npcAvatar");
+        renderAvatarPicker();
+        showScreen("avatar-screen");
+    });
+}
+
+/* =========================================================
+   AVATAR SELECTION
+========================================================= */
+const avatarPicker = document.getElementById("avatar-picker");
+const avatarButton = document.getElementById("avatar-button");
+const avatarError = document.getElementById("avatar-error");
+let selectedAvatar = sessionStorage.getItem("npcAvatar") || "";
+
+function renderAvatarPicker(){
+    if(!avatarPicker) return;
+    avatarPicker.innerHTML = Array.from({length:50},(_,i)=>{
+        const n=String(i+1).padStart(2,"0");
+        const file=`avatar-${n}.webp`;
+        const selected=selectedAvatar===file;
+        return `<button type="button" class="avatar-option${selected?" selected":""}" data-avatar="${file}" aria-label="Choose avatar ${i+1}" aria-pressed="${selected}">
+            <img src="avatars/${file}" alt="Medieval avatar ${i+1}" loading="lazy" decoding="async">
+            <span class="avatar-number">PORTRAIT ${i+1}</span>
+            <span class="avatar-check">✓</span>
+        </button>`;
+    }).join("");
+    avatarPicker.querySelectorAll(".avatar-option").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+            selectedAvatar=btn.dataset.avatar;
+            avatarPicker.querySelectorAll(".avatar-option").forEach(x=>{
+                const on=x.dataset.avatar===selectedAvatar;
+                x.classList.toggle("selected",on);
+                x.setAttribute("aria-pressed",String(on));
+            });
+            if(avatarError) avatarError.textContent="";
+        });
+    });
+}
+if(avatarButton){
+    avatarButton.addEventListener("click",()=>{
+        if(!selectedAvatar){
+            avatarError.textContent="Choose a portrait before continuing.";
+            return;
+        }
+        sessionStorage.setItem("npcAvatar",selectedAvatar);
         showScreen("pin-setup-screen");
     });
 }
@@ -3069,7 +3157,8 @@ if (pinButton) {
 
         const player = {
             playerId: npcUuid(),
-            username: username,
+                        username: username,
+            avatar: sessionStorage.getItem("npcAvatar") || "avatar-01.webp",
             pin: pin,
             milestone: 1,
             milestoneScores: {},
@@ -3078,6 +3167,7 @@ if (pinButton) {
 
         savePlayerData(player);
         sessionStorage.removeItem("npcUsername");
+        sessionStorage.removeItem("npcAvatar");
 
         document.getElementById("welcome-message").textContent =
             `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
@@ -3149,7 +3239,8 @@ const loreButton = document.getElementById("lore-button");
 if (loreButton) {
     loreButton.addEventListener("click", function (event) {
         event.preventDefault();
-        showScreen("game-screen");
+        updatePlayerAvatarUI(getPlayerData());
+    showScreen("game-screen");
         refreshJourney();
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
