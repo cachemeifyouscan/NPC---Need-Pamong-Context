@@ -1172,6 +1172,53 @@ button,input{font:inherit}
   background:radial-gradient(circle,#e0b65b 0 13%,#8a5a20 14% 45%,#2a1609 46% 100%);
   border:2px solid #a87629;
 }
+.bard-ad-warning{
+  position:absolute;
+  left:-8px;
+  bottom:2px;
+  z-index:5;
+  width:128px;
+  padding:7px 9px 6px;
+  transform:rotate(-6deg);
+  background:#ead09a;
+  border:1px solid #9a7043;
+  box-shadow:2px 3px 5px rgba(57,31,10,.25);
+  color:#4a2a17;
+  text-align:center;
+  font-family:Georgia,"Times New Roman",serif;
+  line-height:1.05;
+  pointer-events:none;
+}
+.bard-ad-warning::before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border:1px dashed rgba(111,70,31,.42);
+  pointer-events:none;
+}
+.bard-ad-warning strong{
+  display:block;
+  position:relative;
+  font-size:12px;
+  letter-spacing:1.5px;
+  color:#7d3023;
+}
+.bard-ad-warning span{
+  display:block;
+  position:relative;
+  margin-top:2px;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:.7px;
+}
+.bard-ad-warning small{
+  display:block;
+  position:relative;
+  margin-top:3px;
+  font-size:7px;
+  font-style:italic;
+  letter-spacing:.2px;
+}
 .bard-vinyl::after{
   content:"";
   position:absolute;
@@ -1305,6 +1352,16 @@ button,input{font:inherit}
   .bard-vinyl-stage{width:94px;height:94px}
   .bard-vinyl{width:88px;height:88px}
   .bard-vinyl::before{width:31px;height:31px}
+  .bard-ad-warning{
+    width:104px;
+    left:-4px;
+    bottom:0;
+    padding:5px 6px 5px;
+  }
+  .bard-ad-warning strong{font-size:10px}
+  .bard-ad-warning span{font-size:8px}
+  .bard-ad-warning small{font-size:6px}
+
   .bard-progress,.bard-controls{padding-left:14px;padding-right:14px}
   #bard-playlist{max-height:240px}
 }
@@ -2169,7 +2226,14 @@ button,input{font:inherit}
   </header>
 
   <div class="bard-now">
-    <div class="bard-vinyl-stage"><div class="bard-vinyl"></div></div>
+    <div class="bard-vinyl-stage">
+      <div class="bard-vinyl"></div>
+      <div class="bard-ad-warning" aria-label="YouTube ads may appear">
+        <strong>BEWARE!</strong>
+        <span>ADS MAY APPEAR</span>
+        <small>Skip like a true warrior.</small>
+      </div>
+    </div>
     <div class="bard-current-label">
       <div class="bard-current-kicker">NOW PLAYING</div>
       <h3 id="bard-current-title">Choose a tale...</h3>
@@ -8700,7 +8764,8 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
     "w0RFw0B8ivs","XbigmX35ICQ","IXsoTeTW4hc","rByh6Zj5zQ8",
     "cRIfsFefatg","zLXkKWGH4_w","VSewYsf3uDs","TeFiIjMIlRw",
     "aztyXsLc9p0","Kcc7GXSwhdU","LrtDIhEFFWQ","2vsG0iN7rDA",
-    "skXyvLQif5g","EGkV6JttDFs","Jn4h13tfivo","eaMTIQylEd0"
+    "skXyvLQif5g","EGkV6JttDFs","Jn4h13tfivo","eaMTIQylEd0",
+    "WIx4srqU3BE","Ch1aVmjvYTI","qgA5IvJURZs","I3av7YtqISo"
   ];
 
   const launcher = document.getElementById("bardcore-launcher");
@@ -8728,11 +8793,39 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
   let progressTimer = null;
   let apiLoading = false;
 
-  const tracks = suppliedVideoIds.map((videoId,i)=>({
-    videoId,
-    title:"Bardcore Track " + String(i+1).padStart(2,"0"),
-    author:"YouTube Bardcore"
-  }));
+  /* Known titles from the supplied links. Any title not listed here
+     is filled automatically from YouTube once the IFrame API is ready. */
+  const knownTitles = {
+    "w0RFw0B8ivs": {title:"Birds of a Feather", artist:"Billie Eilish"},
+    "XbigmX35ICQ": {title:"Blinding Lights", artist:"The Weeknd"},
+    "IXsoTeTW4hc": {title:"Save Your Tears", artist:"The Weeknd"},
+    "rByh6Zj5zQ8": {title:"Bardcore Track 04", artist:"YouTube Bardcore"},
+    "cRIfsFefatg": {title:"Pumped Up Kicks", artist:"Foster The People"},
+    "zLXkKWGH4_w": {title:"Love Story", artist:"Taylor Swift"},
+    "VSewYsf3uDs": {title:"Summertime Sadness", artist:"Lana Del Rey"},
+    "TeFiIjMIlRw": {title:"Creep", artist:"Radiohead"},
+    "aztyXsLc9p0": {title:"Bardcore Track 09", artist:"YouTube Bardcore"},
+    "Kcc7GXSwhdU": {title:"Closer", artist:"The Chainsmokers"},
+    "LrtDIhEFFWQ": {title:"Bardcore Track 11", artist:"YouTube Bardcore"},
+    "2vsG0iN7rDA": {title:"Bardcore Track 12", artist:"YouTube Bardcore"},
+    "skXyvLQif5g": {title:"Manchild", artist:"Sabrina Carpenter"},
+    "EGkV6JttDFs": {title:"Can't Help Falling in Love", artist:"Elvis Presley"},
+    "Jn4h13tfivo": {title:"Bardcore Track 15", artist:"YouTube Bardcore"},
+    "eaMTIQylEd0": {title:"Bardcore Track 16", artist:"YouTube Bardcore"},
+    "WIx4srqU3BE": {title:"Hips Don't Lie", artist:"Shakira"},
+    "Ch1aVmjvYTI": {title:"Somebody That I Used to Know", artist:"Gotye"},
+    "qgA5IvJURZs": {title:"Bardcore Track 19", artist:"YouTube Bardcore"},
+    "I3av7YtqISo": {title:"The Fate of Ophelia", artist:"Taylor Swift"}
+  };
+
+  const tracks = suppliedVideoIds.map((videoId,i)=>{
+    const known = knownTitles[videoId];
+    return {
+      videoId,
+      title: known ? known.title : ("Bardcore Track " + String(i+1).padStart(2,"0")),
+      author: known ? known.artist : "YouTube Bardcore"
+    };
+  });
 
   function esc(s){
     return String(s ?? "").replace(/[&<>"']/g,m=>({
@@ -8818,6 +8911,55 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
     });
   }
 
+  let metadataHydrating = false;
+
+  function hydrateYouTubeTitles(){
+    if(metadataHydrating || !player) return;
+    metadataHydrating = true;
+
+    let i = 0;
+    const originalIndex = currentIndex < 0 ? 0 : currentIndex;
+
+    function step(){
+      if(i >= tracks.length){
+        metadataHydrating = false;
+        try{
+          player.cueVideoById(tracks[originalIndex].videoId);
+        }catch(e){}
+        currentIndex = originalIndex;
+        highlightCurrent();
+        updateNowPlaying();
+        return;
+      }
+
+      const t = tracks[i];
+      try{
+        player.cueVideoById(t.videoId);
+        setTimeout(()=>{
+          try{
+            const data = player.getVideoData();
+            if(data && data.title){
+              t.title = data.title;
+              t.author = data.author || t.author;
+              const row = list.querySelector(`[data-index="${i}"]`);
+              if(row){
+                row.querySelector(".bard-track-title").textContent = t.title;
+                row.querySelector(".bard-track-meta").textContent = t.author;
+              }
+            }
+          }catch(e){}
+          i++;
+          setTimeout(step,120);
+        },220);
+      }catch(e){
+        i++;
+        setTimeout(step,80);
+      }
+    }
+
+    step();
+  }
+
   function onPlayerReady(){
     player.setVolume(Number(volume.value)||65);
     /* Don't touch the rendered list here. It is already available. */
@@ -8826,6 +8968,10 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
       highlightCurrent();
     }
     updateNowPlaying();
+
+    /* Fill the remaining playlist titles from YouTube in the background.
+       The UI is already visible, so there is no LOADING state. */
+    setTimeout(hydrateYouTubeTitles, 250);
   }
 
   function selectTrack(index,autoplay){
@@ -8958,6 +9104,16 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 
   /* IMPORTANT: render immediately, before YouTube loads. */
   renderTrackList();
+
+  /* Show the first track title immediately.
+     YouTube is only used for playback/metadata hydration afterward. */
+  if(tracks.length){
+    currentIndex = 0;
+    titleEl.textContent = tracks[0].title;
+    metaEl.textContent = tracks[0].author;
+    highlightCurrent();
+  }
+
   loadYouTubeAPI();
 
   document.addEventListener("keydown",e=>{
