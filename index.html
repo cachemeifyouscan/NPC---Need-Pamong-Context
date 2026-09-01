@@ -8166,18 +8166,30 @@ function renderWager(){
  $('m8-content').innerHTML=`<div class="m8-wager-intro"><b>How much do you remember?</b><br>Choose how many memories you are willing to challenge. The longer the trial, the greater the reward — and the greater the risk.</div><div class="m8-wager-grid">${Object.entries(TRIALS).map(([n,t])=>`<button type="button" class="m8-wager" data-wager="${n}"><strong>${t.label}</strong><b>${n} MEMORIES</b><small>${t.name}</small><span>${n* t.correct + t.completion} MAX</span><span class="m8-wager-risk">${t.risk}</span></button>`).join("")}</div>`;
 }
 function startTrial(total){
- const cfg=TRIALS[total];state={total,index:0,score:0,correct:0,wrong:0,streak:0,bestStreak:0,selected:null,locked:false,current:null,questions:buildQuestions(total)};
+ const cfg=TRIALS[total];
+ state={total,index:0,score:0,correct:0,wrong:0,streak:0,bestStreak:0,selected:null,locked:false,current:null,questions:buildQuestions(total)};
  if(state.questions.length<total){state.total=state.questions.length}
- $('m8-counter').textContent=`MEMORY 1 / ${state.total}`;$('m8-score').textContent="SCORE 0";$('m8-feedback').textContent="";render();
+ if(!state.total){$('m8-content').innerHTML='<div style="padding:60px">No memories are available for this trial.</div>';return}
+ $('m8-counter').textContent=`MEMORY 1 / ${state.total}`;
+ $('m8-score').textContent="SCORE 0";
+ $('m8-feedback').textContent="";
+ $('m8-actions').innerHTML="";
+ render();
 }
 function render(){
  const q=state.questions[state.index];state.current=q;state.selected=null;state.locked=false;
- $('m8-counter').textContent=`MEMORY ${state.index+1} / ${state.total}`;$('m8-score').textContent=`SCORE ${state.score}`;$('m8-lock').disabled=true;$('m8-next').disabled=true;$('m8-feedback').textContent="";
+ $('m8-counter').textContent=`MEMORY ${state.index+1} / ${state.total}`;
+ $('m8-score').textContent=`SCORE ${state.score}`;
+ $('m8-feedback').textContent="";
  let html=`<div class="m8-runbar"><span class="m8-runstat">TRIAL ${state.total}</span><span class="m8-runstat">CORRECT ${state.correct}</span><span class="m8-runstat m8-streak">🔥 STREAK ${state.streak}</span></div><div class="m8-question">${q.prompt}<small>${q.sub}</small></div>`;
  if(q.photo)html+=photoBox(q.target);
  if(q.people)html+=`<div class="m8-options">${q.people.map(p=>`<button type="button" class="m8-option" data-person="${esc(p.id)}">${photoBox(p)}</button>`).join("")}</div>`;
  else html+=`<div class="m8-options">${q.options.map(o=>`<button type="button" class="m8-option" data-choice="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
- $('m8-content').innerHTML=html;$('m8-actions').innerHTML='<button id="m8-lock" class="m8-btn" type="button" disabled>LOCK IN ANSWER</button><button id="m8-next" class="m8-btn secondary" type="button" disabled>NEXT MEMORY</button>';hydratePhotos();
+ $('m8-content').innerHTML=html;
+ $('m8-actions').innerHTML='<button id="m8-lock" class="m8-btn" type="button" disabled>LOCK IN ANSWER</button><button id="m8-next" class="m8-btn secondary" type="button" disabled>NEXT MEMORY</button>';
+ $('m8-lock').disabled=true;
+ $('m8-next').disabled=true;
+ hydratePhotos();
 }
 function choose(el){if(state.locked)return;state.selected=el.dataset.person??el.dataset.choice;root.querySelectorAll(".m8-option").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");$('m8-lock').disabled=false}
 function lock(){
