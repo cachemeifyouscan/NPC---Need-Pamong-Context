@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NPC — Need Pamong Context</title>
+<title>NPC — Need Pamong Context · The Leader & Revival</title>
 
 <style>
 *{box-sizing:border-box}
@@ -2383,16 +2383,21 @@ function savePlayerData(data) {
     let existing={};
     try{existing=JSON.parse(localStorage.getItem("npcPlayer")||"{}");}catch(e){}
 
-    // Never let an older snapshot overwrite newer milestone scores.
     const merged=ensurePlayerIdentity({...existing,...incoming});
     const oldScores=(existing&&typeof existing.milestoneScores==="object")?existing.milestoneScores:{};
     const newScores=(incoming&&typeof incoming.milestoneScores==="object")?incoming.milestoneScores:{};
     merged.milestoneScores={...oldScores,...newScores};
     Object.keys(merged.milestoneScores).forEach(k=>{
-        merged.milestoneScores[k]=Math.max(Number(oldScores[k]||0),Number(newScores[k]||0));
+        // Milestones I–VII keep only their best score.
+        if(String(k)!=="8") merged.milestoneScores[k]=Math.max(Number(oldScores[k]||0),Number(newScores[k]||0));
     });
-    merged.revivalBest=Math.max(Number(existing.revivalBest||0),Number(incoming.revivalBest||0));
-    merged.totalScore=Object.values(merged.milestoneScores).reduce((sum,v)=>sum+Number(v||0),0);
+    // Migration from the previous Revival implementation: milestone 8 used to store a best run.
+    const legacyRevival=Number(existing.revivalTotal||0)||Math.max(Number(existing.revivalBest||0),Number(oldScores[8]||0));
+    merged.revivalTotal=Math.max(Number(existing.revivalTotal||0),Number(incoming.revivalTotal||0),legacyRevival);
+    merged.revivalBest=Math.max(Number(existing.revivalBest||0),Number(incoming.revivalBest||0),Number(merged.revivalTotal||0));
+    // Keep milestone 8 mirrored as the cumulative Revival value for the server leaderboard.
+    merged.milestoneScores[8]=Number(merged.revivalTotal||0);
+    merged.totalScore=Object.keys(merged.milestoneScores).filter(k=>k!=="8").reduce((sum,k)=>sum+Number(merged.milestoneScores[k]||0),0)+Number(merged.revivalTotal||0);
 
     localStorage.setItem("npcPlayer", JSON.stringify(merged));
     updatePlayerScoreUI();
@@ -2417,7 +2422,7 @@ function getPlayerData() {
 ========================================================= */
 const LEADERBOARD_TABLE = "npc_leaderboard";
 const LEADERBOARD_MAX_ROWS = 20;
-const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:7000};
+const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:999999999};
 
 function npcUuid(){
     if(window.crypto?.randomUUID) return window.crypto.randomUUID();
@@ -2430,8 +2435,11 @@ function ensurePlayerIdentity(player){
     const p=player||{};
     if(!p.playerId)p.playerId=npcUuid();
     if(!p.milestoneScores||typeof p.milestoneScores!=="object")p.milestoneScores={};
-    // Total score is always derived from milestone bests; never trust a stale cached total.
-    p.totalScore=Object.values(p.milestoneScores).reduce((sum,v)=>sum+Number(v||0),0);
+    // Revival is cumulative: every completed trial adds to revivalTotal.
+    if(!Number.isFinite(Number(p.revivalTotal))) p.revivalTotal=Math.max(Number(p.revivalBest||0),Number(p.milestoneScores[8]||0));
+    p.revivalTotal=Math.max(0,Math.floor(Number(p.revivalTotal)||0));
+    p.milestoneScores[8]=p.revivalTotal;
+    p.totalScore=Object.keys(p.milestoneScores).filter(k=>k!=="8").reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+p.revivalTotal;
     return p;
 }
 
@@ -2448,11 +2456,20 @@ async function submitMilestoneScore(milestone,score){
     const m=String(Number(milestone));
     const max=Number(LEADERBOARD_MAX_SCORE[m]||0);
     const cleanScore=Math.max(0,Math.min(max,Math.floor(Number(score)||0)));
-    const previous=Math.max(0,Math.min(max,Math.floor(Number(p.milestoneScores[m]||0))));
-    if(cleanScore<=previous){updatePlayerScoreUI();return;}
 
-    p.milestoneScores[m]=cleanScore;
-    p.totalScore=Object.values(p.milestoneScores).reduce((sum,v)=>sum+Number(v||0),0);
+    if(m==="8"){
+        // Revival is additive. The submitted M8 value is the cumulative Revival total.
+        // Even when the local value is already current, still sync it to Supabase.
+        if(cleanScore>Number(p.revivalTotal||0)){
+            p.revivalTotal=cleanScore;
+            p.milestoneScores[8]=cleanScore;
+            savePlayerData(p);
+        }
+    }else{
+        const previous=Math.max(0,Math.min(max,Math.floor(Number(p.milestoneScores[m]||0))));
+        if(cleanScore<=previous){updatePlayerScoreUI();return;}
+        p.milestoneScores[m]=cleanScore;
+    }
     savePlayerData(p);
     updatePlayerScoreUI();
 
@@ -8079,14 +8096,14 @@ window.addEventListener("load",function(){
 .m8-progress{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-bottom:18px}.m8-pill{display:inline-block;padding:8px 15px;border:1px solid rgba(111,77,31,.34);border-radius:18px;background:rgba(255,248,224,.72);color:#62442a;font:bold 11px Georgia,serif;letter-spacing:1px}
 .m8-card{min-height:220px;padding:20px;border:1px solid rgba(111,77,31,.28);background:rgba(255,249,232,.62);border-radius:4px}.m8-question{font:700 24px/1.25 Georgia,serif;color:#4b2d1b;margin-bottom:16px}.m8-question small{display:block;margin-top:8px;font:italic 13px/1.4 Georgia,serif;color:#76512a}
 .m8-photo{width:min(300px,75vw);height:265px;margin:0 auto 14px;border:1px solid rgba(111,77,31,.34);border-radius:12px;background:#d8c19a;display:flex;align-items:center;justify-content:center;overflow:hidden}.m8-photo img{width:100%;height:100%;object-fit:contain;object-position:center;background:#d8c19a}.m8-photo-placeholder{font:11px Arial,sans-serif;letter-spacing:1px;color:#876e50}
-.m8-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:820px;margin:0 auto}.m8-option{min-height:54px;padding:12px 14px;border:1px solid #a88758;border-radius:8px;background:rgba(255,248,224,.82);color:#54351f;font:700 14px Georgia,serif;cursor:pointer;transition:.15s}.m8-option:hover{transform:translateY(-1px);background:#f4e3bd}.m8-option.selected{border:2px solid #70452a;background:#dfc48f}.m8-option.correct{background:#d6c18e;border-color:#5e4327}.m8-option.wrong{opacity:.58;background:#ead0c4}.m8-option:disabled{cursor:default}
-.m8-option:has(.m8-photo){padding:7px}.m8-option .m8-photo{width:100%;height:220px;margin:0;border-radius:7px;border:0}.m8-option .m8-photo-placeholder{font-size:10px}
+.m8-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:700px;margin:0 auto}.m8-option{min-height:54px;padding:12px 14px;border:1px solid #a88758;border-radius:8px;background:rgba(255,248,224,.82);color:#54351f;font:700 14px Georgia,serif;cursor:pointer;transition:.15s}.m8-option:hover{transform:translateY(-1px);background:#f4e3bd}.m8-option.selected{border:2px solid #70452a;background:#dfc48f}.m8-option.correct{background:#d6c18e;border-color:#5e4327}.m8-option.wrong{opacity:.58;background:#ead0c4}.m8-option:disabled{cursor:default}
+.m8-option:has(.m8-photo){padding:6px}.m8-option .m8-photo{width:100%;height:250px;aspect-ratio:3/4;margin:0;border-radius:7px;border:0}.m8-option .m8-photo-placeholder{font-size:10px}
 .m8-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}.m8-btn{min-width:210px;height:50px;border:1px solid #412511;background:linear-gradient(#7c502a,#603b20 55%,#4b2c18);color:#f5dfb1;font:bold 13px Georgia,serif;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 0 #2c190d}.m8-btn:disabled{opacity:.45;cursor:not-allowed}.m8-btn.secondary{background:#ead6ad;color:#553720;border-color:#8d6535;box-shadow:0 3px 0 #9a7543}
 .m8-feedback{min-height:24px;margin:12px auto 0;color:#76512a;font-weight:bold;font-size:12px;line-height:1.5}.m8-complete{padding:35px 15px}.m8-complete h2{margin:0 0 10px;font:700 38px Georgia,serif;color:#43281b}.m8-complete p{margin:0 auto 20px;max-width:700px;font:16px/1.6 Georgia,serif;color:#684a29}
 .m8-wager-intro{max-width:720px;margin:0 auto 18px;font:15px/1.55 Georgia,serif;color:#684a29}.m8-wager-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:920px;margin:0 auto}.m8-wager{padding:18px 12px 16px;border:1px solid rgba(111,77,31,.4);border-radius:10px;background:rgba(255,248,224,.76);cursor:pointer;color:#4d2f1e;box-shadow:0 5px 12px rgba(71,41,21,.08);transition:.16s}.m8-wager:hover{transform:translateY(-3px);background:#f5e3bd}.m8-wager.selected{border:2px solid #70452a;background:#dfc48f;transform:translateY(-3px)}.m8-wager strong{display:block;font:700 21px Georgia,serif}.m8-wager b{display:block;margin:6px 0;font:700 12px Arial,sans-serif;letter-spacing:1px}.m8-wager small{display:block;min-height:34px;font:italic 12px/1.35 Georgia,serif;color:#76512a}.m8-wager span{display:block;margin-top:9px;font:700 12px Georgia,serif;color:#70452a}.m8-wager-risk{display:block!important;margin-top:5px!important;font:700 9px Arial,sans-serif!important;letter-spacing:1px;color:#8a6229!important}
 .m8-runbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 14px}.m8-runstat{padding:7px 12px;background:rgba(255,248,224,.72);border:1px solid rgba(111,77,31,.25);border-radius:14px;font:bold 10px Arial,sans-serif;letter-spacing:1px;color:#73502a}.m8-streak{color:#8a6229}.m8-new-record{margin:0 auto 15px;padding:11px 14px;border:1px solid #9a6b2d;background:#ead4a6;font:bold 11px Arial,sans-serif;letter-spacing:1.4px;color:#68401f;max-width:650px}
 @media(max-width:850px){.m8-wager-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){#milestone8-revival.active{padding:7px}.m8-panel{width:97vw;height:95vh;padding:45px 15px 22px}.m8-options{grid-template-columns:1fr}.m8-photo{height:225px}.m8-wager-grid{grid-template-columns:1fr}.m8-wager{padding:14px}.m8-close{right:12px;top:12px}}
+@media(max-width:650px){#milestone8-revival.active{padding:7px}.m8-panel{width:97vw;height:95vh;padding:45px 15px 22px}.m8-options{grid-template-columns:1fr}.m8-photo{height:240px}.m8-wager-grid{grid-template-columns:1fr}.m8-wager{padding:14px}.m8-close{right:12px;top:12px}}
 </style>
 
 <div id="milestone8-revival" aria-hidden="true">
@@ -8175,11 +8192,12 @@ function buildQuestions(total){
 }
 function photoBox(p,cls=""){return `<div class="m8-photo ${cls}" data-m8-photo="${esc(p.id)}"><div class="m8-photo-placeholder">LOADING PORTRAIT</div></div>`}
 async function hydratePhotos(){const boxes=[...root.querySelectorAll("[data-m8-photo]")];await Promise.all(boxes.map(async box=>{const p=personById(box.dataset.m8Photo);if(!p)return;const u=await photoUrl(p);if(!u){box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>';return}const img=new Image();img.alt=label(p);img.decoding="async";img.loading="eager";img.onload=()=>{box.innerHTML="";box.appendChild(img)};img.onerror=()=>{box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>'};img.src=u}))}
-function getBestRevival(){const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};return Number(p.revivalBest||0)}
+function getBestRevival(){const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};return Number(p.revivalTotal||p.revivalBest||0)}
+function getRevivalTotal(){const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};return Number(p.revivalTotal||0)}
 function renderWager(){
- state=null;$('m8-counter').textContent="CHOOSE YOUR TRIAL";$('m8-score').textContent=`BEST ${getBestRevival()}`;$('m8-feedback').textContent="";
+ state=null;$('m8-counter').textContent="CHOOSE YOUR TRIAL";$('m8-score').textContent=`REVIVAL TOTAL ${getRevivalTotal()}`;$('m8-feedback').textContent="";
  $('m8-actions').innerHTML="";$('m8-complete').style.display="none";$('m8-content').style.display="block";
- $('m8-content').innerHTML=`<div class="m8-wager-intro"><b>How much do you remember?</b><br>Choose how many memories you are willing to challenge. The longer the trial, the greater the reward — and the greater the risk.</div><div class="m8-wager-grid">${Object.entries(TRIALS).map(([n,t])=>`<button type="button" class="m8-wager" data-wager="${n}"><strong>${t.label}</strong><b>${n} MEMORIES</b><small>${t.name}</small><span>${n* t.correct + t.completion} MAX</span><span class="m8-wager-risk">${t.risk}</span></button>`).join("")}</div>`;
+ $('m8-content').innerHTML=`<div class="m8-wager-intro"><b>How much do you remember?</b><br>Choose how many memories you are willing to challenge. Each completed trial adds its earned points to your Revival total. The longer the trial, the greater the reward — and the greater the risk.</div><div class="m8-wager-grid">${Object.entries(TRIALS).map(([n,t])=>`<button type="button" class="m8-wager" data-wager="${n}"><strong>${t.label}</strong><b>${n} MEMORIES</b><small>${t.name}</small><span>${n* t.correct + t.completion} MAX</span><span class="m8-wager-risk">${t.risk}</span></button>`).join("")}</div>`;
 }
 function startTrial(total){
  const cfg=TRIALS[total];
@@ -8216,11 +8234,28 @@ function lock(){
  $('m8-feedback').innerHTML=`${correct?"✓ Correct.":"✕ Incorrect."} <span class="m8-streak">${state.streak>=5?`🔥 ${state.streak} STREAK`:""}</span><br>Correct answer: <b>${esc(answer)}</b>`;
 }
 function next(){if(!state||!state.locked)return;if(state.index>=state.questions.length-1){complete();return}state.index++;render()}
-function complete(){
- const cfg=TRIALS[state.total]||TRIALS[20];state.score=Math.max(0,state.score+cfg.completion);const best=getBestRevival(),isNew=state.score>best;
- try{const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};if(isNew){p.revivalBest=state.score;p.revivalBestQuestions=state.total;submitMilestoneScore(8,state.score||0)}if(Number(p.milestone||1)<8)p.milestone=8;if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));if(typeof refreshJourney==="function")refreshJourney()}catch(e){}
+async function complete(){
+ const cfg=TRIALS[state.total]||TRIALS[20];
+ state.score=Math.max(0,state.score+cfg.completion);
+ const before=getRevivalTotal();
+ const earned=state.score;
+ const after=before+earned;
+ try{
+  const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
+  p.revivalTotal=after;
+  p.revivalLastScore=earned;
+  p.revivalLastQuestions=state.total;
+  p.revivalAttempts=Number(p.revivalAttempts||0)+1;
+  p.revivalBest=Math.max(Number(p.revivalBest||0),earned);
+  p.milestoneScores=p.milestoneScores||{};
+  p.milestoneScores[8]=after;
+  if(Number(p.milestone||1)<8)p.milestone=8;
+  if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
+  await submitMilestoneScore(8,after);
+  if(typeof refreshJourney==="function")refreshJourney();
+ }catch(e){console.warn("Revival score save failed",e)}
  $('m8-content').style.display="none";$('m8-actions').style.display="none";$('m8-feedback').style.display="none";$('m8-complete').style.display="block";
- $('m8-complete').innerHTML=`${isNew?'<div class="m8-new-record">✦ NEW MEMORY RECORD · YOUR BEST HAS BEEN RAISED ✦</div>':''}<h2>THE REVIVAL COMPLETE</h2><p>${state.correct} / ${state.total} memories recovered · <b>${state.score.toLocaleString("en-US")} points</b>.<br>Best streak: ${state.bestStreak}. ${isNew?"The Chronicle has recorded your new memory record.":`Your current Revival best is ${Math.max(best,state.score).toLocaleString("en-US")} points.`}</p><div class="m8-actions"><button id="m8-replay" class="m8-btn" type="button">CHOOSE ANOTHER TRIAL</button><button id="m8-return" class="m8-btn secondary" type="button">RETURN TO JOURNEY</button></div>`;
+ $('m8-complete').innerHTML=`<div class="m8-new-record">✦ +${earned.toLocaleString("en-US")} ADDED TO YOUR REVIVAL SCORE ✦</div><h2>THE REVIVAL COMPLETE</h2><p>${state.correct} / ${state.total} memories recovered · <b>${earned.toLocaleString("en-US")} points earned</b>.<br>Best streak: ${state.bestStreak}.<br><strong>Revival total: ${after.toLocaleString("en-US")} points</strong></p><div class="m8-actions"><button id="m8-replay" class="m8-btn" type="button">CHOOSE A GREATER RISK</button><button id="m8-return" class="m8-btn secondary" type="button">RETURN TO JOURNEY</button></div>`;
  $('m8-replay').onclick=renderWager;$('m8-return').onclick=close;
 }
 async function start(){
