@@ -2416,129 +2416,166 @@ function getPlayerData() {
 }
 
 /* =========================================================
-   GLOBAL LEADERBOARD — SERVER AUTHORITATIVE SCORE STORE
-   The browser may cache progress locally, but the Hall of Legends
-   never trusts localStorage as the source of truth. Official score
-   is read from / written to npc_leaderboard through RPCs.
+   GLOBAL LEADERBOARD — V7 LIVE
+   Supabase is the official source for Hall of Legends.
+
+   - localStorage is only local progress/cache.
+   - The leaderboard page NEVER uploads localStorage.
+   - M1-M7 publish the current best score as points are earned.
+   - M8 / THE REVIVAL remains cumulative and is submitted on completion.
 ========================================================= */
-const LEADERBOARD_TABLE="npc_leaderboard";
-const LEADERBOARD_MAX_ROWS=20;
-const LEADERBOARD_MAX_SCORE={1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:2147483647};
+const LEADERBOARD_TABLE = "npc_leaderboard";
+const LEADERBOARD_MAX_ROWS = 20;
+const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:2147483647};
 
 function npcUuid(){
-    if(window.crypto?.randomUUID)return window.crypto.randomUUID();
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==="x"?r:(r&3|8);return v.toString(16)});
+    if(window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{
+        const r=Math.random()*16|0,v=c==="x"?r:(r&3|8);return v.toString(16);
+    });
 }
+
 function ensurePlayerIdentity(player){
     const p=player||{};
     if(!p.playerId)p.playerId=npcUuid();
     if(!p.milestoneScores||typeof p.milestoneScores!=="object")p.milestoneScores={};
-    if(!Number.isFinite(Number(p.revivalTotal)))p.revivalTotal=Math.max(Number(p.revivalBest||0),Number(p.milestoneScores[8]||0));
+    const legacy=Math.max(Number(p.revivalBest||0),Number(p.milestoneScores[8]||0));
+    if(!Number.isFinite(Number(p.revivalTotal)))p.revivalTotal=legacy;
     p.revivalTotal=Math.max(0,Math.floor(Number(p.revivalTotal)||0));
     p.milestoneScores[8]=p.revivalTotal;
-    p.totalScore=Object.keys(p.milestoneScores).filter(k=>k!=="8").reduce((s,k)=>s+Number(p.milestoneScores[k]||0),0)+p.revivalTotal;
+    p.totalScore=Object.keys(p.milestoneScores)
+        .filter(k=>k!=="8")
+        .reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+p.revivalTotal;
     return p;
 }
+
 function updatePlayerScoreUI(){
-    const el=document.getElementById("player-total-score");if(!el)return;
+    const el=document.getElementById("player-total-score");
+    if(!el)return;
     const p=ensurePlayerIdentity(getPlayerData()||{});
     el.textContent=`✦ ${Number(p.totalScore||0).toLocaleString("en-US")}`;
 }
-function leaderboardErrorMessage(prefix,error){return `${prefix} · ${String(error?.message||error||"Unknown error")}`;}
 
-/*
-  IMPORTANT: localStorage is never pushed wholesale to the server.
-  Only the score produced by a completed milestone is sent through the
-  server RPC. The RPC owns the authoritative row and total.
-*/
+function leaderboardErrorMessage(prefix,error){
+    const msg=String(error?.message||error||"Unknown error");
+    return `${prefix} · ${msg}`;
+}
+
+/* Publish a milestone's current best score immediately. */
 async function submitMilestoneScore(milestone,score){
     const p=ensurePlayerIdentity(getPlayerData()||{});
     if(!p.username)return false;
-    const m=Number(milestone);
-    const max=Number(LEADERBOARD_MAX_SCORE[String(m)]||0);
+    const m=String(Number(milestone));
+    const max=Number(LEADERBOARD_MAX_SCORE[m]||0);
     const cleanScore=Math.max(0,Math.min(max,Math.floor(Number(score)||0)));
+
+    if(m==="8"){
+        p.revivalTotal=Math.max(Number(p.revivalTotal||0),cleanScore);
+        p.milestoneScores[8]=p.revivalTotal;
+    }else{
+        const previous=Math.max(0,Math.min(max,Math.floor(Number(p.milestoneScores[m]||0))));
+        if(cleanScore<=previous){ updatePlayerScoreUI(); return true; }
+        p.milestoneScores[m]=cleanScore;
+    }
+
+    p.totalScore=Object.keys(p.milestoneScores)
+        .filter(k=>k!=="8")
+        .reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+Number(p.revivalTotal||0);
+    savePlayerData(p);
+    updatePlayerScoreUI();
+
     try{
         const response=await fetch(`${SUPABASE_REST_URL}/rpc/submit_npc_score`,{
             method:"POST",cache:"no-store",
             headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
-            body:JSON.stringify({p_player_id:p.playerId,p_username:p.username,p_milestone:m,p_score:cleanScore})
+            body:JSON.stringify({
+                p_player_id:p.playerId,
+                p_username:p.username,
+                p_milestone:Number(m),
+                p_score:m==="8"?Number(p.revivalTotal||0):cleanScore
+            })
         });
-        const raw=await response.text();
-        if(!response.ok)throw new Error(`submit_npc_score HTTP ${response.status}: ${raw}`);
-        let row=null;try{row=JSON.parse(raw)}catch(_){row=null}
-        if(row&&typeof row==="object"){
-            p.milestoneScores=row.milestone_scores||p.milestoneScores;
-            p.revivalTotal=Number(p.milestoneScores?.[8]||p.revivalTotal||0);
-            p.totalScore=Number(row.total_score||0);
-            savePlayerData(p);
-            updatePlayerScoreUI();
-        }
+        if(!response.ok)throw new Error(`submit_npc_score HTTP ${response.status}: ${await response.text()}`);
         return true;
     }catch(error){
-        console.warn("Official score submission failed:",error);
+        console.warn("Leaderboard score submission failed:",error);
         return false;
     }
 }
 
-/* Read the authoritative score for this player. Never overwrite the server
-   with localStorage when opening the leaderboard. */
-async function fetchMyAuthoritativeScore(){
-    const p=ensurePlayerIdentity(getPlayerData()||{});
-    if(!p.username)return null;
-    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}?select=player_id,username,total_score,milestone_scores,updated_at&player_id=eq.${encodeURIComponent(p.playerId)}&limit=1`;
-    const response=await fetch(endpoint,{method:"GET",cache:"no-store",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache","Pragma":"no-cache"}});
-    const raw=await response.text();
-    if(!response.ok)throw new Error(`GET my score HTTP ${response.status}: ${raw}`);
-    const rows=JSON.parse(raw);
-    if(!Array.isArray(rows)||!rows.length)return null;
-    const row=rows[0];
-    p.username=row.username||p.username;
-    p.totalScore=Number(row.total_score||0);
-    p.milestoneScores=row.milestone_scores||{};
-    p.revivalTotal=Number(p.milestoneScores?.[8]||0);
-    savePlayerData(p);
-    updatePlayerScoreUI();
-    return row;
-}
-
-async function fetchLeaderboard(){
-    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}?select=player_id,username,total_score,updated_at&order=total_score.desc,updated_at.asc&limit=${LEADERBOARD_MAX_ROWS}`;
-    const response=await fetch(endpoint,{method:"GET",cache:"no-store",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache","Pragma":"no-cache"}});
-    const raw=await response.text();
-    if(!response.ok)throw new Error(`GET ${LEADERBOARD_TABLE} HTTP ${response.status}: ${raw}`);
-    const body=JSON.parse(raw);return Array.isArray(body)?body:[];
-}
-function leaderboardEsc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+/* Read-only leaderboard refresh. It never writes localStorage to Supabase. */
 async function renderLeaderboard(){
-    const status=document.getElementById("leaderboard-status"),list=document.getElementById("leaderboard-list"),you=document.getElementById("leaderboard-you");
+    const status=document.getElementById("leaderboard-status");
+    const list=document.getElementById("leaderboard-list");
+    const you=document.getElementById("leaderboard-you");
     if(!status||!list)return;
-    status.textContent="READING THE CHRONICLES…";
-    list.innerHTML='<div class="leaderboard-loading">Reading the official score from the Hall…</div>';
+    status.textContent="READING THE HALL…";
+    list.innerHTML='<div class="leaderboard-loading">Reading the official rankings…</div>';
     if(you)you.innerHTML="";
     try{
-        await fetchMyAuthoritativeScore();
         const rows=await fetchLeaderboard();
         const p=ensurePlayerIdentity(getPlayerData()||{});
         status.textContent=`TOP ${rows.length} · UPDATED LIVE`;
-        if(!rows.length){list.innerHTML='<div class="leaderboard-loading">No scores have been recorded yet. Be the first legend.</div>';return;}
+        if(!rows.length){
+            list.innerHTML='<div class="leaderboard-loading">No scores have been recorded yet. Be the first legend.</div>';
+            return;
+        }
         list.innerHTML=rows.map((row,i)=>{
-            const rank=i+1,medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":String(rank).padStart(2,"0"),mine=String(row.player_id)===String(p.playerId);
-            return `<div class="leaderboard-row${mine?" mine":""}"><span class="leaderboard-rank">${medal}</span><span class="leaderboard-name">${leaderboardEsc(row.username)}${mine?" <em>YOU</em>":""}</span><strong class="leaderboard-score">${Number(row.total_score||0).toLocaleString("en-US")}</strong></div>`;
+            const rank=i+1;
+            const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":String(rank).padStart(2,"0");
+            const mine=String(row.player_id)===String(p.playerId);
+            return `<div class="leaderboard-row${mine?" mine":""}">`+
+                `<span class="leaderboard-rank">${medal}</span>`+
+                `<span class="leaderboard-name">${leaderboardEsc(row.username)}${mine?" <em>YOU</em>":""}</span>`+
+                `<strong class="leaderboard-score">${Number(row.total_score||0).toLocaleString("en-US")}</strong>`+
+                `</div>`;
         }).join("");
         const myRank=rows.findIndex(row=>String(row.player_id)===String(p.playerId));
-        if(you&&myRank<0&&p.username)you.innerHTML=`Your official score · <strong>${Number(p.totalScore||0).toLocaleString("en-US")}</strong>`;
+        if(you&&myRank<0&&p.username){
+            you.innerHTML=`Your score · <strong>${Number(p.totalScore||0).toLocaleString("en-US")}</strong>`;
+        }
     }catch(error){
         console.error("HALL OF LEGENDS ERROR",error);
         status.textContent="THE CHRONICLES ARE UNREACHABLE";
         list.innerHTML=`<div class="leaderboard-error">${leaderboardEsc(leaderboardErrorMessage("Leaderboard error",error))}</div>`;
-        if(you)you.innerHTML=`<div class="leaderboard-you-fallback">Local cache · <strong>${Number(ensurePlayerIdentity(getPlayerData()||{}).totalScore||0).toLocaleString("en-US")}</strong></div>`;
+        if(you)you.innerHTML=`<div class="leaderboard-you-fallback">Local score · <strong>${Number(ensurePlayerIdentity(getPlayerData()||{}).totalScore||0).toLocaleString("en-US")}</strong></div>`;
     }
 }
+
+async function fetchLeaderboard(){
+    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}`+
+        `?select=player_id,username,total_score,updated_at`+
+        `&order=total_score.desc,updated_at.asc`+
+        `&limit=${LEADERBOARD_MAX_ROWS}`;
+    const response=await fetch(endpoint,{
+        method:"GET",
+        cache:"no-store",
+        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache","Pragma":"no-cache"}
+    });
+    const raw=await response.text();
+    if(!response.ok){
+        let detail=raw;
+        try{detail=JSON.parse(raw)?.message||JSON.parse(raw)?.details||raw}catch(e){}
+        throw new Error(`GET ${LEADERBOARD_TABLE} HTTP ${response.status}: ${detail}`);
+    }
+    let body=[];
+    try{body=JSON.parse(raw)}catch(e){throw new Error("Leaderboard response bukan JSON");}
+    return Array.isArray(body)?body:[];
+}
+
+function leaderboardEsc(value){
+    return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
 async function openLeaderboard(){
-    const o=document.getElementById("leaderboard-overlay");if(!o)return;
-    o.classList.remove("hidden");o.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+    const o=document.getElementById("leaderboard-overlay");
+    if(!o)return;
+    o.classList.remove("hidden");
+    o.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
     await renderLeaderboard();
 }
+
 function closeLeaderboard(){
     const o=document.getElementById("leaderboard-overlay");
     if(!o)return;
@@ -3593,6 +3630,7 @@ function bindEndgameChoice(correctId,feedbackId){
             const correct=String(btn.dataset.id)===String(correctId);
             if(correct){
                 endgameScore++;
+                void submitMilestoneScore(teamMilestoneNumber(currentTeamKey),endgameScore);
                 btn.classList.add("correct");
             }else btn.classList.add("wrong");
             const f=document.getElementById(feedbackId);
@@ -3698,7 +3736,10 @@ function renderEndgameQuestion(){
 
             endgameLocked=true;
             const correct=teamGameAnswerMatchesNickname(raw,p.nickname);
-            if(correct)endgameScore++;
+            if(correct){
+                endgameScore++;
+                void submitMilestoneScore(teamMilestoneNumber(currentTeamKey),endgameScore);
+            }
 
             feedback.textContent=correct
                 ? "✦ CORRECT — MEMORY CONFIRMED."
@@ -3856,7 +3897,10 @@ function renderEndgameQuestion(){
             const nickCorrect=teamGameAnswerMatchesNickname(typedNick,p.nickname);
             const correct=nameCorrect && nickCorrect;
 
-            if(correct)endgameScore++;
+            if(correct){
+                endgameScore++;
+                void submitMilestoneScore(teamMilestoneNumber(currentTeamKey),endgameScore);
+            }
 
             finalFeedback.textContent=correct
                 ? "✦ PERFECT RECALL."
@@ -4942,7 +4986,7 @@ function lock(){
   });
  }
 
- if(correct)state.score+=100;
+ if(correct){state.score+=100;void submitMilestoneScore(6,state.score);}
 
  state.history.push({
   round:state.round+1,
@@ -5444,7 +5488,7 @@ function lock(){
  if([1,4,5,7].includes(q.type)){correct=state.selected[0]===q.correct;details=q.type===7?`Correct jabatan: ${q.correct}.`:`Correct answer: ${q.correct}.`;root.querySelectorAll("[data-choice]").forEach(b=>{b.disabled=true;if(b.dataset.choice===q.correct)b.classList.add("correct");if(b.dataset.choice===state.selected[0]&&!correct)b.classList.add("wrong")})}
  if([2,6].includes(q.type)){correct=String(state.selected[0])===String(q.correct);details=`Correct Pamong: ${label(people.find(p=>String(p.id)===String(q.correct))||{})}.`;root.querySelectorAll("[data-person-choice]").forEach(b=>{b.disabled=true;if(String(b.dataset.personChoice)===String(q.correct))b.classList.add("correct");if(String(b.dataset.personChoice)===String(state.selected[0])&&!correct)b.classList.add("wrong")})}
  if(q.type===3){correct=q.ids.every(id=>q.assignments[id]===people.find(p=>String(p.id)===String(id))?.penempatan);details=correct?"All four commanders are correctly placed.":"One or more commanders are in the wrong Batalyon.";root.querySelectorAll("[data-sort-person],[data-sort-unit]").forEach(b=>b.disabled=true);q.ids.forEach(id=>{const c=root.querySelector(`[data-sort-person="${id}"]`),p=people.find(x=>String(x.id)===String(id));if(c)c.classList.add(q.assignments[id]===p?.penempatan?"correct":"wrong")})}
- if(correct)state.score+=100;state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
+ if(correct){state.score+=100;void submitMilestoneScore(7,state.score);}state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
  $("m7-score").textContent=`SCORE ${state.score}`;$("m7-lock").disabled=true;$("m7-next").disabled=false;$("m7-lock").textContent="✓ ANSWER LOCKED";
  $("m7-feedback").innerHTML=`<div class="m7-feedback-note">${correct?"✓ Correct. Your answer is locked and cannot be changed.":"✕ Incorrect. Your answer is locked. No correction is allowed."}<br>${esc(details)}</div>`;
 }
@@ -7637,6 +7681,7 @@ document.addEventListener("click",function(e){
       </div>`;
 
     trial.score += correct ? 100 : 0;
+    if(correct)void submitMilestoneScore(5,trial.score);
     trial.streak = correct ? (trial.streak||0)+1 : 0;
     trial.history.push({round:trial.round,type:q.type,correct});
     trial.round++;
@@ -7708,6 +7753,7 @@ document.addEventListener("click",function(e){
 
     // IMPORTANT: revealing the correct answer never awards points.
     trial.score += allCorrect ? 100 : 0;
+    if(allCorrect)void submitMilestoneScore(5,trial.score);
     trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
     trial.history.push({
       round:trial.round,type:q.type,correct:allCorrect,
@@ -7772,6 +7818,7 @@ document.addEventListener("click",function(e){
       `).join("")}`;
 
     trial.score += allCorrect ? 100 : 0;
+    if(allCorrect)void submitMilestoneScore(5,trial.score);
     trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
     trial.history.push({
       round:trial.round,type:q.type,correct:allCorrect,
