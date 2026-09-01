@@ -432,6 +432,57 @@ button,input{font:inherit}
     .gate-divider div{width:90px}
 }
 
+
+/* =========================================================
+   RPG CHARACTER CREATOR — VISUAL
+========================================================= */
+.character-creator{
+  width:min(1180px,96vw); margin:auto; padding:28px;
+  color:#432916; background:radial-gradient(circle at 50% 15%,#fff7df,#e7c994 80%);
+  border:1px solid #8f6735; box-shadow:0 15px 40px rgba(60,37,13,.22),inset 0 0 0 5px rgba(255,248,226,.28);
+}
+.character-creator-top{display:flex;justify-content:space-between;align-items:end;gap:20px;padding-bottom:18px;border-bottom:1px solid rgba(119,79,36,.35)}
+.character-creator-top h1{margin:6px 0 3px;font:700 clamp(30px,5vw,46px) "Palatino Linotype",Palatino,Georgia,serif;letter-spacing:2px}
+.character-creator-top p{margin:0;color:#735437;font-size:14px}
+.character-step{border:1px solid #9a7441;background:#f4e3be;padding:9px 12px;font-size:10px;letter-spacing:2px}
+.character-step b{font-size:14px}
+.character-creator-grid{display:grid;grid-template-columns:180px minmax(300px,400px) 1fr;gap:18px;margin-top:18px}
+.character-tabs{border:1px solid rgba(132,92,43,.45);background:rgba(255,247,226,.58);padding:10px}
+.character-tabs-title{padding:7px;color:#76502c;font-size:10px;font-weight:bold;letter-spacing:2px}
+.character-tab{width:100%;text-align:left;border:0;border-left:3px solid transparent;background:transparent;color:#60442a;padding:12px 8px;cursor:pointer;font:700 11px Georgia,serif;letter-spacing:1px}
+.character-tab:hover{background:#ead5aa}.character-tab.active{border-left-color:#754827;background:#e3c693;color:#432916}
+.character-random{width:100%;margin-top:12px;border:1px solid #9b733e;background:#f1dfb8;color:#68472a;padding:10px;cursor:pointer;font:700 10px Georgia,serif;letter-spacing:1px}
+.character-stage-panel{border:1px solid #8f6735;background:linear-gradient(#f8ebcc,#e2c58f);display:flex;flex-direction:column;min-height:520px}
+.character-stage-label{padding:10px 13px;border-bottom:1px solid rgba(119,79,36,.3);font-size:10px;font-weight:bold;letter-spacing:2px;color:#77502e}
+.character-stage{position:relative;flex:1;min-height:420px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,rgba(255,250,231,.95),transparent 58%);overflow:hidden}
+.character-stage:after{content:"";position:absolute;bottom:30px;width:175px;height:18px;border-radius:50%;background:rgba(72,45,19,.18);filter:blur(7px)}
+#character-preview{position:relative;z-index:2;width:290px;height:410px}
+#character-preview svg{width:100%;height:100%;display:block;filter:drop-shadow(0 10px 8px rgba(63,38,15,.18))}
+.character-nameplate{text-align:center;padding:11px;background:rgba(255,248,228,.7);border-top:1px solid rgba(119,79,36,.3)}
+.character-nameplate strong{display:block;font:700 21px "Palatino Linotype",Palatino,Georgia,serif}
+.character-nameplate span{font-size:9px;color:#826141;letter-spacing:2px}
+.character-options-panel{border:1px solid rgba(132,92,43,.45);background:rgba(255,247,226,.58);padding:19px}
+.character-option-group{display:none}.character-option-group.active{display:block}
+.character-option-kicker{font-size:10px;color:#86603a;font-weight:bold;letter-spacing:3px}
+.character-option-group h2{margin:5px 0 18px;font:700 24px "Palatino Linotype",Palatino,Georgia,serif}
+.character-label{margin:14px 0 9px;color:#76502c;font-size:10px;font-weight:bold;letter-spacing:2px}
+.character-option-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.character-choice{position:relative;min-width:0;height:86px;padding:0;overflow:hidden;border:1px solid #ad8248;background:linear-gradient(#f8ebcc,#e5ca94);cursor:pointer;transition:.14s}
+.character-choice:hover{transform:translateY(-2px);box-shadow:0 5px 12px rgba(63,38,14,.15)}
+.character-choice.selected{border:2px solid #68401f;box-shadow:0 0 0 2px rgba(191,145,70,.4)}
+.character-thumb{height:62px;display:grid;place-items:center;background:radial-gradient(circle at 50% 25%,#fff8e4,#e7cb96);overflow:hidden}
+.character-thumb svg{width:100%;height:100%}
+.character-choice span:last-child{display:block;padding:4px;font:700 8px Georgia,serif;letter-spacing:.7px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.character-swatches{display:flex;flex-wrap:wrap;gap:9px}
+.character-swatch{width:43px!important;height:43px!important;border-radius:50%;padding:0!important;min-height:43px!important}
+.character-swatch .character-thumb,.character-swatch span:last-child{display:none}
+.character-swatch.selected:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:white;font-weight:bold;font-size:16px;text-shadow:0 1px 2px #3a2413}
+.character-name-field{margin-top:18px;padding-top:15px;border-top:1px solid rgba(119,79,36,.22)}
+.character-creator-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:18px;padding-top:15px;border-top:1px solid rgba(119,79,36,.35)}
+.character-creator-footer .wood-button{margin:0;min-width:250px}
+@media(max-width:950px){.character-creator-grid{grid-template-columns:150px 1fr}.character-options-panel{grid-column:1/-1}}
+@media(max-width:650px){.character-creator{padding:15px}.character-creator-top{align-items:flex-start;flex-direction:column}.character-creator-grid{grid-template-columns:1fr}.character-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.character-tabs-title,.character-random{grid-column:1/-1}.character-stage-panel{min-height:430px}.character-stage{min-height:340px}#character-preview{width:230px;height:330px}.character-option-grid{grid-template-columns:repeat(2,1fr)}.character-creator-footer{flex-direction:column;align-items:stretch}.character-creator-footer .wood-button{width:100%}}
+
 /* =========================================================
    COMMON SCREENS
 ========================================================= */
@@ -1870,6 +1921,26 @@ button,input{font:inherit}
   #placement-game .placement-three-bins { grid-template-columns:1fr !important; }
 }
 </style>
+
+<style id="home-ui-ux-improvement">
+/* =========================================================
+   HOME UI/UX — EXPLORATION HUD
+   Visual identity preserved; hierarchy and interaction improved.
+========================================================= */
+.game-shell{width:min(1240px,96vw);margin:auto;padding-bottom:34px}
+.game-topbar{padding:13px 18px;margin-bottom:20px;min-height:72px;border-radius:8px;background:linear-gradient(135deg,#fff9e9,#ead3a4);border:1px solid #9c7745;box-shadow:0 7px 22px rgba(67,42,15,.13);position:relative;overflow:hidden}
+.game-topbar:after{content:"";position:absolute;inset:5px;pointer-events:none;border:1px solid rgba(126,87,39,.16);border-radius:5px}
+.player-info{gap:12px;position:relative;z-index:1}.player-avatar{width:48px;height:48px;border-radius:5px;background:linear-gradient(145deg,#e4cb98,#c8a66b);border:1px solid #876334;box-shadow:inset 0 0 0 3px rgba(255,246,218,.25),0 2px 5px rgba(62,39,15,.12);font-size:24px}.player-copy{display:flex;flex-direction:column;gap:5px}.player-name{font-size:18px;font-weight:bold;color:#432a19}.level-badge{padding:4px 9px;border-radius:2px;border:1px solid #9a7440;background:#f3e4c1;font-size:10px;letter-spacing:1.25px;color:#765334;width:max-content}
+.top-actions{gap:10px;position:relative;z-index:1}.resource-chip{display:grid;grid-template-columns:auto auto;column-gap:5px;align-items:center;min-width:88px;padding:6px 10px;border:1px solid rgba(126,88,39,.4);background:rgba(255,247,222,.72);border-radius:4px}.resource-chip b{grid-row:span 2;color:#8b5b20}.resource-chip strong{font-size:15px;color:#4e2f1d}.resource-chip small{font-size:8px;letter-spacing:1px;color:#866547}.top-divider{width:1px;height:28px;background:rgba(113,76,37,.25)}.top-icon{width:38px;height:38px;border:1px solid transparent;background:transparent;color:#5a3923;cursor:pointer;border-radius:50%;font-size:18px}.top-icon:hover{border-color:#b18a52;background:rgba(255,248,226,.55)}
+.game-main{display:grid;grid-template-columns:minmax(0,1.68fr) minmax(300px,.72fr);gap:20px;align-items:start}.game-primary{min-width:0}.mission-card,.journey-card,.side-card{background:linear-gradient(135deg,#fff8e6,#e9d2a2);border:1px solid #9c7745;box-shadow:0 10px 25px rgba(65,42,16,.12)}.map-card{padding:0;overflow:hidden;border-radius:7px}.map-ui-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 17px 11px;border-bottom:1px solid rgba(115,76,35,.22);background:linear-gradient(180deg,rgba(255,249,232,.78),rgba(235,214,173,.42))}.map-kicker,.section-kicker{display:block;font-size:9px;letter-spacing:2.2px;font-weight:bold;color:#89643b;margin-bottom:4px}.map-ui-head h2{margin:0;font-size:20px;letter-spacing:1.3px;color:#452b1b}.map-state{display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid rgba(120,82,40,.25);background:rgba(255,249,231,.58);font-size:9px;letter-spacing:1.2px;color:#765334;white-space:nowrap}.map-state i{width:7px;height:7px;border-radius:50%;background:#6d7b4a;box-shadow:0 0 0 3px rgba(109,123,74,.12)}
+.sanapati-map-wrap{border:0;border-left:1px solid rgba(156,119,69,.35);border-right:1px solid rgba(156,119,69,.35);padding:14px;background:#ead6aa;box-shadow:inset 0 0 0 4px rgba(255,248,224,.25)}.sanapati-map-art{width:94%;max-width:980px}.sanapati-map-art img{filter:drop-shadow(0 6px 8px rgba(40,24,9,.22));animation:map-breathe 10s ease-in-out infinite}.map-hint{padding:9px 15px 11px;text-align:center;font-size:11px;line-height:1.5;color:#76563a;background:rgba(255,249,232,.38);border-top:1px solid rgba(115,76,35,.16)}.map-hint span{color:#9b6a2b;margin-right:4px}
+.journey-card{margin-top:18px;padding:17px 18px 16px;border-radius:7px}.journey-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}.journey-title{margin:0;font-size:20px;letter-spacing:1.4px;color:#452b1b}.journey-count{padding:5px 8px;border:1px solid rgba(120,82,40,.3);background:rgba(255,249,231,.62);font-size:10px;letter-spacing:1px;color:#765334}.journey{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}.journey-node{min-width:0;height:64px;border:1px solid #a17b4b;background:#ead6ad;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;font-weight:bold;cursor:pointer;color:#67482c;border-radius:4px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease,border-color .16s ease}.journey-node b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:1px solid #a17b4b;background:#f5e5c1;font-size:11px}.journey-node span{font-size:7.5px;letter-spacing:.55px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95%}.journey-node:after{content:"";position:absolute;left:100%;top:50%;width:5px;height:1px;background:#a17b4b}.journey-node:last-child:after{display:none}.journey-node.active{background:linear-gradient(180deg,#946735,#754b25);color:#fff0c8;border-color:#5d3919;box-shadow:0 4px 9px rgba(83,49,22,.2)}.journey-node.active b{background:#f1d38e;border-color:#e1b65e;color:#55331c}.journey-node.locked{background:#d8c39a;color:#7c684e;cursor:not-allowed;opacity:.68}.journey-node.locked b{background:#e4d3ae;color:#8d795d}.journey-node:hover:not(.locked){transform:translateY(-2px);box-shadow:0 5px 12px rgba(72,43,17,.18)}.journey-node.current{outline:2px solid rgba(157,105,40,.35);outline-offset:2px}.journey-node.completed{background:#e0c89a;color:#66472b;border-color:#987245}.journey-node.completed b{background:#6f4b28;color:#f5dfb1;border-color:#6f4b28}
+.side-card{padding:20px 20px 18px;border-radius:7px;position:sticky;top:16px}.side-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(109,75,35,.2)}.side-title{margin:0;font-size:21px;letter-spacing:.8px;color:#452b1b}.context-seal{width:30px;height:30px;display:grid;place-items:center;border:1px solid #a17b4b;border-radius:50%;color:#8b5c26;background:#f2dfb9;font-size:13px}.progress-list{list-style:none;padding:0;margin:3px 0 0}.progress-item{padding:12px 0;border-bottom:1px solid rgba(109,75,35,.16)}.progress-label{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;font-size:11px;letter-spacing:1px;color:#5c3c27}.progress-label b{font-size:8px;letter-spacing:.8px;font-weight:bold;color:#886846}.progress-item.complete .progress-label b{color:#6f633e}.progress-track{height:5px;background:#d9c59b;border-radius:999px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(72,42,15,.12)}.progress-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7c4e27,#a97836);border-radius:999px;transition:width .35s ease}
+.current-quest{margin-top:17px;padding:15px;border:1px solid rgba(115,76,35,.32);background:linear-gradient(145deg,rgba(255,249,231,.82),rgba(234,211,168,.68));box-shadow:inset 0 0 0 3px rgba(255,247,220,.25)}.quest-kicker{font-size:8px;letter-spacing:2px;color:#89643b;font-weight:bold;margin-bottom:6px}.quest-title{font:700 17px/1.2 Georgia,serif;color:#4a2d1d}.current-quest p{margin:6px 0 12px;font:12px/1.5 Georgia,serif;color:#755438}.quest-button{width:100%;padding:9px 11px;border:1px solid #6e451f;background:linear-gradient(180deg,#86592d,#613c1f);color:#f8e5ba;font-size:10px;font-weight:bold;letter-spacing:1.3px;cursor:pointer;box-shadow:0 2px 0 #422511;transition:filter .15s ease,transform .15s ease}.quest-button:hover{filter:brightness(1.08);transform:translateY(-1px)}.quest-button span{float:right;font-size:13px}.mascot-side{text-align:center;padding:15px 8px 0}.mascot-small{width:108px;height:108px;object-fit:contain;filter:drop-shadow(0 9px 10px rgba(67,42,15,.18))}.mascot-bubble{position:relative;display:inline-block;max-width:255px;padding:8px 11px;margin-bottom:7px;border:1px solid rgba(120,82,40,.28);border-radius:12px;background:rgba(255,249,231,.75);font:italic 12px/1.45 Georgia,serif;color:#725636}.mascot-bubble:after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;transform:translateX(-50%) rotate(45deg);border-right:1px solid rgba(120,82,40,.28);border-bottom:1px solid rgba(120,82,40,.28);background:rgba(255,249,231,.75)}
+@media(max-width:980px){.game-main{grid-template-columns:1fr}.side-card{position:relative;top:auto}.journey{grid-template-columns:repeat(4,1fr)}.journey-node:after{display:none}}
+@media(max-width:760px){.game-shell{width:min(100% - 18px,1240px)}.game-topbar{padding:11px 12px}.resource-chip{min-width:72px}.map-ui-head{align-items:flex-start}.map-state{font-size:8px}.journey{grid-template-columns:repeat(4,1fr)}.journey-node{height:60px}.journey-node span{font-size:7px}.side-card{padding:17px}.mascot-small{width:96px;height:96px}}
+</style>
+
 </head>
 
 <body>
@@ -2029,6 +2100,75 @@ button,input{font:inherit}
         </div>
     </div>
 </section>
+<!-- =========================================================
+     RPG CHARACTER CREATOR
+========================================================= -->
+<section id="character-screen" class="screen hidden">
+  <div class="character-creator">
+    <div class="character-creator-top">
+      <div>
+        <div class="screen-kicker">CHARACTER CREATION · PROLOGUE</div>
+        <h1>CREATE YOUR EXPLORER</h1>
+        <p>Shape the Taruna who will journey through Sanapati Land.</p>
+      </div>
+      <div class="character-step">STEP <b>01</b> / 02</div>
+    </div>
+
+    <div class="character-creator-grid">
+      <aside class="character-tabs">
+        <div class="character-tabs-title">CUSTOMIZE</div>
+        <button type="button" class="character-tab active" data-character-tab="appearance">◈ APPEARANCE</button>
+        <button type="button" class="character-tab" data-character-tab="hair">✦ HAIR</button>
+        <button type="button" class="character-tab" data-character-tab="outfit">⚔ OUTFIT</button>
+        <button type="button" class="character-tab" data-character-tab="accessory">◇ ACCESSORY</button>
+        <button type="button" class="character-random" id="character-random">✧ RANDOMIZE</button>
+      </aside>
+
+      <main class="character-stage-panel">
+        <div class="character-stage-label">EXPLORER PREVIEW</div>
+        <div class="character-stage"><div id="character-preview"></div></div>
+        <div class="character-nameplate">
+          <strong id="character-preview-name">Taruna</strong>
+          <span>Lv.1 · PAMONG EXPLORER</span>
+        </div>
+      </main>
+
+      <section class="character-options-panel">
+        <div id="character-group-appearance" class="character-option-group active">
+          <div class="character-option-kicker">APPEARANCE</div><h2>Choose your foundation</h2>
+          <div class="character-label">SKIN TONE</div><div id="character-skin" class="character-swatches"></div>
+          <div class="character-label">BUILD</div><div id="character-body" class="character-option-grid"></div>
+        </div>
+        <div id="character-group-hair" class="character-option-group">
+          <div class="character-option-kicker">HAIR</div><h2>Choose your style</h2>
+          <div class="character-label">STYLE</div><div id="character-hair" class="character-option-grid"></div>
+          <div class="character-label">COLOR</div><div id="character-haircolor" class="character-swatches"></div>
+        </div>
+        <div id="character-group-outfit" class="character-option-group">
+          <div class="character-option-kicker">OUTFIT</div><h2>Choose your attire</h2>
+          <div class="character-label">STYLE</div><div id="character-outfit" class="character-option-grid"></div>
+        </div>
+        <div id="character-group-accessory" class="character-option-group">
+          <div class="character-option-kicker">ACCESSORY</div><h2>Complete the look</h2>
+          <div class="character-label">EQUIPMENT</div><div id="character-accessory" class="character-option-grid"></div>
+        </div>
+        <div class="character-name-field">
+          <label class="field-label" for="character-username">YOUR NAME</label>
+          <input id="character-username" class="medieval-input" type="text" maxlength="24" placeholder="Enter your name...">
+        </div>
+      </section>
+    </div>
+
+    <div class="character-creator-footer">
+      <span style="color:#80603f;font-size:11px">Your appearance will be saved with your explorer profile.</span>
+      <div>
+        <button id="character-confirm" class="wood-button" type="button">✦ CONFIRM EXPLORER ✦</button>
+        <p id="character-error" class="error"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 
 <!-- =========================================================
@@ -2135,68 +2275,108 @@ button,input{font:inherit}
 
         <header class="game-topbar">
             <div class="player-info">
-                <div class="player-avatar">♙</div>
-                <div>
+                <div id="player-avatar-display" class="player-avatar" aria-hidden="true">♙</div>
+                <div class="player-copy">
                     <div id="player-label" class="player-name">👤 Taruna</div>
-                    <div class="level-badge">Lv.1 PAMONG EXPLORER</div>
+                    <div class="level-badge">Lv.1 · PAMONG EXPLORER</div>
                 </div>
             </div>
 
-            <div class="top-actions">
-                <span>✦ 0</span>
-                <span>⚙</span>
+            <div class="top-actions" aria-label="Player status">
+                <span class="resource-chip"><b>✦</b><strong id="context-count">0</strong><small>CONTEXT</small></span>
+                <span class="top-divider"></span>
+                <button class="top-icon" type="button" aria-label="Settings" title="Settings">⚙</button>
             </div>
         </header>
 
         <div class="game-main">
-
-            <div>
-                <article class="mission-card" style="padding:0;overflow:hidden;">
+            <div class="game-primary">
+                <article class="mission-card map-card">
+                    <div class="map-ui-head">
+                        <div>
+                            <span class="map-kicker">THE REALM OF SANAPATI</span>
+                            <h2>THE EXPLORATION MAP</h2>
+                        </div>
+                        <span class="map-state"><i></i> LIVE JOURNEY</span>
+                    </div>
                     <div class="sanapati-map-wrap">
                         <div class="sanapati-map-art">
                             <img
                                 src="sanapati-map.png"
-                                alt="Sanapati Land"
+                                alt="Sanapati Land exploration map"
                                 decoding="async"
                                 fetchpriority="high"
                             >
-</div>
+                        </div>
                     </div>
+                    <div class="map-hint"><span>✦</span> Follow the numbered milestones to uncover the context behind each Pamong.</div>
                 </article>
 
                 <article class="journey-card">
-                    <h3 class="journey-title">YOUR JOURNEY</h3>
+                    <div class="journey-head">
+                        <div>
+                            <span class="section-kicker">YOUR PROGRESSION</span>
+                            <h3 class="journey-title">YOUR JOURNEY</h3>
+                        </div>
+                        <span class="journey-count" id="journey-count">1 / 8</span>
+                    </div>
                     <div class="journey" id="journey-path">
-                        <button data-team="A" id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1">1</button>
-                        <button data-team="B" id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2">2</button>
-                        <button data-team="C" id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3">3</button>
-                        <button data-team="D" id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4">4</button>
-                        <button id="journey-node-5" class="journey-node locked journey-button" type="button"
- aria-label="Open Milestone 5" onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}">5</button>
-                        <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">6</button>
-                        <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">7</button>
-                        <button id="journey-node-8" class="journey-node locked journey-button" type="button"
- aria-label="Open Milestone 8">8</button>
+                        <button data-team="A" id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1"><b>1</b><span>TEAM A</span></button>
+                        <button data-team="B" id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2"><b>2</b><span>TEAM B</span></button>
+                        <button data-team="C" id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3"><b>3</b><span>TEAM C</span></button>
+                        <button data-team="D" id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4"><b>4</b><span>TEAM D</span></button>
+                        <button id="journey-node-5" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 5" onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}"><b>5</b><span>TOWER</span></button>
+                        <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6"><b>6</b><span>PLACEMENT</span></button>
+                        <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7"><b>7</b><span>JABATAN</span></button>
+                        <button id="journey-node-8" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 8"><b>8</b><span>REVIVAL</span></button>
                     </div>
                 </article>
             </div>
 
             <aside class="side-card">
-                <h3 class="side-title">CONTEXT PROGRESS</h3>
+                <div class="side-card-head">
+                    <div>
+                        <span class="section-kicker">MEMORY LOG</span>
+                        <h3 class="side-title">CONTEXT PROGRESS</h3>
+                    </div>
+                    <span class="context-seal" aria-hidden="true">✦</span>
+                </div>
+
                 <ul class="progress-list">
-                    <li><span>FACE</span><span class="check">✓</span></li>
-                    <li><span>NAME</span><span class="check">✓</span></li>
-                    <li><span>TEAM</span><span class="locked">○ ○ ○</span></li>
-                    <li><span>ROLE</span><span class="locked">○ ○ ○</span></li>
-                    <li><span>FUN FACT</span><span class="locked">○ ○ ○</span></li>
+                    <li class="progress-item complete" data-progress="face">
+                        <div class="progress-label"><span>FACE</span><b>DISCOVERED</b></div>
+                        <div class="progress-track"><i style="width:100%"></i></div>
+                    </li>
+                    <li class="progress-item complete" data-progress="name">
+                        <div class="progress-label"><span>NAME</span><b>DISCOVERED</b></div>
+                        <div class="progress-track"><i style="width:100%"></i></div>
+                    </li>
+                    <li class="progress-item" data-progress="team">
+                        <div class="progress-label"><span>TEAM</span><b id="team-progress-text">0 / 4</b></div>
+                        <div class="progress-track"><i id="team-progress-bar"></i></div>
+                    </li>
+                    <li class="progress-item" data-progress="role">
+                        <div class="progress-label"><span>ROLE</span><b id="role-progress-text">0 / 3</b></div>
+                        <div class="progress-track"><i id="role-progress-bar"></i></div>
+                    </li>
+                    <li class="progress-item" data-progress="funfact">
+                        <div class="progress-label"><span>FUN FACT</span><b id="funfact-progress-text">0 / 1</b></div>
+                        <div class="progress-track"><i id="funfact-progress-bar"></i></div>
+                    </li>
                 </ul>
 
-                <div style="text-align:center;margin-top:30px">
-                    <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
-                    <p style="font-style:italic;color:#725636">“Let's find the context, Taruna!”</p>
+                <div class="current-quest">
+                    <div class="quest-kicker">CURRENT OBJECTIVE</div>
+                    <div class="quest-title" id="home-objective-title">Begin your expedition.</div>
+                    <p id="home-objective-text">Open the first milestone and start building your context.</p>
+                    <button class="quest-button" id="home-objective-button" type="button">CONTINUE <span>→</span></button>
+                </div>
+
+                <div class="mascot-side">
+                    <div class="mascot-bubble" id="home-mascot-message">“Let's find the context, Taruna!”</div>
+                    <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC companion">
                 </div>
             </aside>
-
         </div>
     </div>
 </section>
@@ -2326,6 +2506,7 @@ function showScreen(screenId) {
     const screens = [
         "login-screen",
         "username-screen",
+        "character-screen",
         "pin-setup-screen",
         "pin-login-screen",
         "welcome-screen",
@@ -2358,6 +2539,17 @@ function getPlayerData() {
     } catch (error) {
         return null;
     }
+}
+
+
+function renderSavedPlayerAvatar(){
+  const box=document.getElementById("player-avatar-display");
+  const p=getPlayerData();
+  if(box && p && p.avatar){
+    box.innerHTML=characterSVG({...DEFAULT_CHARACTER,...p.avatar});
+    box.style.fontSize="0";
+    box.querySelector("svg")?.setAttribute("viewBox","0 0 210 330");
+  }
 }
 
 function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
@@ -2433,9 +2625,132 @@ if (usernameButton) {
 
         usernameError.textContent = "";
         sessionStorage.setItem("npcUsername", username);
-        showScreen("pin-setup-screen");
+        const cn=document.getElementById("character-username");
+        if(cn)cn.value=username;
+        renderCharacterCreator();
+        showScreen("character-screen");
     });
 }
+
+
+/* =========================================================
+   RPG CHARACTER CREATOR
+========================================================= */
+const DEFAULT_CHARACTER={skin:"warm",body:"average",hair:"short",hairColor:"black",outfit:"navy",accessory:"none"};
+
+const CHARACTER_OPTIONS={
+ skin:[
+  {id:"fair",label:"Fair",value:"#f2c8a5"},{id:"light",label:"Light",value:"#e7ae86"},
+  {id:"warm",label:"Warm",value:"#c98760"},{id:"tan",label:"Tan",value:"#9e6247"},{id:"deep",label:"Deep",value:"#6d4235"}],
+ body:[
+  {id:"slim",label:"Slim"},{id:"average",label:"Average"},{id:"athletic",label:"Athletic"}],
+ hair:[
+  {id:"short",label:"Short"},{id:"side",label:"Side Sweep"},{id:"curly",label:"Curly"},
+  {id:"bob",label:"Bob"},{id:"pony",label:"Ponytail"},{id:"undercut",label:"Undercut"},{id:"long",label:"Long"}],
+ hairColor:[
+  {id:"black",label:"Black",value:"#2d211b"},{id:"brown",label:"Brown",value:"#563725"},
+  {id:"chestnut",label:"Chestnut",value:"#7b442c"},{id:"gold",label:"Golden",value:"#b47a34"},{id:"silver",label:"Silver",value:"#8e8b82"}],
+ outfit:[
+  {id:"navy",label:"Navy Uniform",value:"#31506a"},{id:"forest",label:"Forest Ranger",value:"#435b3c"},
+  {id:"burgundy",label:"Burgundy Noble",value:"#713f43"},{id:"leather",label:"Leather Guard",value:"#754b2c"},
+  {id:"scholar",label:"Scholar",value:"#5b4b58"}],
+ accessory:[
+  {id:"none",label:"None"},{id:"glasses",label:"Glasses"},{id:"headband",label:"Headband"},
+  {id:"earring",label:"Earring"},{id:"cape",label:"Cape"}]
+};
+
+let characterState={...DEFAULT_CHARACTER};
+
+function charOpt(group,id){return CHARACTER_OPTIONS[group].find(x=>x.id===id)||CHARACTER_OPTIONS[group][0]}
+
+function characterSVG(a){
+  const skin=charOpt("skin",a.skin).value, hair=charOpt("hairColor",a.hairColor).value, outfit=charOpt("outfit",a.outfit).value;
+  const body=a.body||"average";
+  const hairStyle=a.hair||"short";
+  const bodyPath=body==="slim"?"M56 225 Q61 165 105 158 Q149 165 154 225Z":body==="athletic"?"M37 225 Q44 160 105 153 Q166 160 173 225Z":"M45 225 Q49 164 105 155 Q161 164 165 225Z";
+  const hairPaths={
+    short:`<path d="M66 88 Q63 43 104 34 Q145 36 148 78 L137 88 Q128 58 105 57 Q83 57 72 84Z" fill="${hair}"/>`,
+    side:`<path d="M65 91 Q63 42 106 34 Q147 36 150 78 Q130 70 107 61 Q87 55 67 67Z" fill="${hair}"/><path d="M116 40 Q138 45 146 65 L122 62Z" fill="${hair}"/>`,
+    curly:`<path d="M64 92 Q57 67 67 48 Q75 31 96 35 Q112 23 128 37 Q148 38 149 62 Q157 78 143 93 Q135 68 105 62 Q78 67 64 92Z" fill="${hair}"/><circle cx="73" cy="52" r="8" fill="${hair}"/><circle cx="88" cy="39" r="9" fill="${hair}"/><circle cx="111" cy="35" r="10" fill="${hair}"/><circle cx="134" cy="45" r="9" fill="${hair}"/>`,
+    bob:`<path d="M61 94 Q59 39 105 33 Q151 39 149 95 L140 127 Q132 109 128 91 Q105 76 78 91 L70 127Z" fill="${hair}"/>`,
+    pony:`<circle cx="150" cy="62" r="20" fill="${hair}"/><path d="M64 92 Q60 40 104 33 Q145 34 148 76 L136 88 Q128 57 105 57 Q83 57 71 84Z" fill="${hair}"/>`,
+    undercut:`<path d="M67 84 Q63 40 103 33 Q143 32 148 73 L136 85 Q127 57 106 56 Q85 56 72 75Z" fill="${hair}"/>`,
+    long:`<path d="M61 91 Q57 38 103 31 Q149 31 151 82 L145 137 Q133 114 128 91 Q105 75 78 91 L68 138Z" fill="${hair}"/>`
+  };
+  let acc="";
+  if(a.accessory==="glasses") acc=`<g fill="none" stroke="#3d2a1d" stroke-width="3"><circle cx="91" cy="92" r="11"/><circle cx="120" cy="92" r="11"/><path d="M102 92h7"/></g>`;
+  if(a.accessory==="headband") acc=`<path d="M68 72 Q105 54 143 72" fill="none" stroke="#a36d2e" stroke-width="7"/>`;
+  if(a.accessory==="earring") acc=`<circle cx="138" cy="104" r="4" fill="#d4a943"/>`;
+  const cape=a.accessory==="cape"?`<path d="${body==="athletic"?"M39 218":"M48 220"} L25 282 Q72 298 105 284 Q138 298 177 282 L162 218Z" fill="#50352b" opacity=".92"/>`:"";
+  return `<svg viewBox="0 0 210 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><linearGradient id="skinG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1d7"/><stop offset=".25" stop-color="${skin}"/><stop offset="1" stop-color="${skin}"/></linearGradient></defs>
+    ${cape}
+    <path d="${bodyPath}" fill="${outfit}"/>
+    <path d="M74 222 L69 294 L88 294 L91 231Z" fill="${outfit}"/><path d="M116 231 L122 294 L141 294 L136 222Z" fill="${outfit}"/>
+    <circle cx="105" cy="101" r="43" fill="url(#skinG)" stroke="#70472b" stroke-width="1.5"/>
+    ${hairPaths[hairStyle]}
+    <path d="M78 93 Q86 88 94 93" fill="none" stroke="#4a3020" stroke-width="3"/><path d="M116 93 Q124 88 132 93" fill="none" stroke="#4a3020" stroke-width="3"/>
+    <circle cx="88" cy="98" r="3" fill="#38271d"/><circle cx="123" cy="98" r="3" fill="#38271d"/>
+    <path d="M99 115 Q105 120 111 115" fill="none" stroke="#70472b" stroke-width="2"/>
+    <path d="M77 157 Q105 177 133 157 L136 221 Q105 237 74 221Z" fill="${outfit}" stroke="#51341e" stroke-width="1"/>
+    <path d="M91 166 L105 181 L119 166" fill="none" stroke="#d6b267" stroke-width="4"/>
+    ${a.accessory==="cape"?`<path d="M75 164 Q52 179 42 233 L69 252 L81 204Z" fill="#50352b"/>`:""}
+    ${acc}
+  </svg>`;
+}
+
+function renderCharacterCreator(){
+  const saved=JSON.parse(sessionStorage.getItem("npcAvatar")||"null");
+  if(saved)characterState={...DEFAULT_CHARACTER,...saved};
+  const name=document.getElementById("character-username")?.value.trim()||sessionStorage.getItem("npcUsername")||"Taruna";
+  const preview=document.getElementById("character-preview");
+  const previewName=document.getElementById("character-preview-name");
+  if(preview)preview.innerHTML=characterSVG(characterState);
+  if(previewName)previewName.textContent=name;
+
+  const groups=[
+    ["character-skin","skin",true],["character-body","body",false],["character-hair","hair",false],
+    ["character-haircolor","hairColor",true],["character-outfit","outfit",false],["character-accessory","accessory",false]
+  ];
+  groups.forEach(([hostId,group,swatch])=>{
+    const host=document.getElementById(hostId); if(!host)return;
+    host.innerHTML="";
+    CHARACTER_OPTIONS[group].forEach(opt=>{
+      const b=document.createElement("button"); b.type="button";
+      b.className="character-choice"+(swatch?" character-swatch":"")+(characterState[group]===opt.id?" selected":"");
+      if(swatch)b.style.background=opt.value;
+      if(!swatch)b.innerHTML=`<span class="character-thumb">${characterSVG({...characterState,[group]:opt.id})}</span><span>${opt.label}</span>`;
+      b.title=opt.label;
+      b.onclick=()=>{characterState[group]=opt.id;sessionStorage.setItem("npcAvatar",JSON.stringify(characterState));renderCharacterCreator()};
+      host.appendChild(b);
+    });
+  });
+}
+document.querySelectorAll(".character-tab").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".character-tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".character-option-group").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("character-group-"+btn.dataset.characterTab)?.classList.add("active");
+}));
+document.getElementById("character-username")?.addEventListener("input",e=>{
+  document.getElementById("character-preview-name").textContent=e.target.value.trim()||"Taruna";
+});
+document.getElementById("character-random")?.addEventListener("click",()=>{
+  Object.keys(CHARACTER_OPTIONS).forEach(g=>{
+    const list=CHARACTER_OPTIONS[g]; characterState[g]=list[Math.floor(Math.random()*list.length)].id;
+  });
+  sessionStorage.setItem("npcAvatar",JSON.stringify(characterState)); renderCharacterCreator();
+});
+document.getElementById("character-confirm")?.addEventListener("click",()=>{
+  const name=document.getElementById("character-username").value.trim();
+  const err=document.getElementById("character-error");
+  if(!name){err.textContent="Nama tidak boleh kosong.";return}
+  if(name.length<3){err.textContent="Nama minimal 3 karakter.";return}
+  err.textContent="";
+  sessionStorage.setItem("npcUsername",name);
+  sessionStorage.setItem("npcAvatar",JSON.stringify(characterState));
+  showScreen("pin-setup-screen");
+});
 
 /* =========================================================
    CREATE PIN
@@ -2467,10 +2782,12 @@ if (pinButton) {
             return;
         }
 
+        const savedAvatar = JSON.parse(sessionStorage.getItem("npcAvatar") || JSON.stringify(DEFAULT_CHARACTER));
         const player = {
             username: username,
             pin: pin,
-            milestone: 1
+            milestone: 1,
+            avatar: savedAvatar
         };
 
         savePlayerData(player);
@@ -2479,6 +2796,7 @@ if (pinButton) {
         document.getElementById("welcome-message").textContent =
             `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
 
+        renderSavedPlayerAvatar();
         showScreen("welcome-screen");
     });
 }
@@ -2533,6 +2851,7 @@ const loreButton = document.getElementById("lore-button");
 if (loreButton) {
     loreButton.addEventListener("click", function (event) {
         event.preventDefault();
+        renderSavedPlayerAvatar();
         showScreen("game-screen");
         refreshJourney();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -8184,6 +8503,49 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
  },true);
  window.addEventListener("load",()=>{sync();setTimeout(sync,100);setTimeout(sync,600)});
  setInterval(sync,800);
+})();
+</script>
+
+
+<script id="home-ui-ux-sync">
+(function(){
+  "use strict";
+  function player(){try{return typeof getPlayerData==="function"?(getPlayerData()||{}):{}}catch(e){return {}}}
+  function setBar(id,textId,value,max){
+    const bar=document.getElementById(id),txt=document.getElementById(textId);
+    if(bar)bar.style.width=Math.round((value/max)*100)+"%";
+    if(txt)txt.textContent=value+" / "+max;
+  }
+  function syncHome(){
+    const p=player();
+    const m=Math.max(1,Math.min(8,Number(p.milestone||1)));
+    const team=Math.min(Math.max(m,0),4);
+    const role=Math.min(Math.max(m-4,0),3);
+    const fun=Math.min(Math.max(m-7,0),1);
+    setBar("team-progress-bar","team-progress-text",team,4);
+    setBar("role-progress-bar","role-progress-text",role,3);
+    setBar("funfact-progress-bar","funfact-progress-text",fun,1);
+    const count=document.getElementById("context-count");if(count)count.textContent=Math.min(8,m);
+    const jc=document.getElementById("journey-count");if(jc)jc.textContent=m+" / 8";
+    const nodes=[...document.querySelectorAll(".journey-node")];
+    nodes.forEach((n,i)=>{n.classList.toggle("completed",i+1<m);n.classList.toggle("current",i+1===m&&!n.classList.contains("locked"));});
+    const title=document.getElementById("home-objective-title"),desc=document.getElementById("home-objective-text"),btn=document.getElementById("home-objective-button"),msg=document.getElementById("home-mascot-message");
+    const objectives={
+      1:["Team A awaits.","Begin with the first Pamong camp and discover the faces behind Team A.","START TEAM A","“Every journey begins with a face.”"],
+      2:["Continue to Team B.","Build your context by uncovering the next team and its Pamong.","CONTINUE TEAM B","“Another camp, another piece of the story.”"],
+      3:["Team C is next.","Keep exploring. The realm is beginning to reveal its pattern.","CONTINUE TEAM C","“You are starting to see the pattern.”"],
+      4:["Complete the four camps.","Finish Team D to unlock the Tower of Ages.","CONTINUE TEAM D","“Four camps. One larger story.”"],
+      5:["Enter the Tower of Ages.","Recall the generations and uncover the chronicles of Sanapati.","ENTER THE TOWER","“Time leaves clues. Remember them.”"],
+      6:["Restore the placements.","Connect each Pamong to the place where they serve.","ENTER PLACEMENT","“A name means more when you know where it belongs.”"],
+      7:["The Jabatan awaits.","Meet the leaders, remember their roles, and trace the chain of command.","ENTER LEADERS HALL","“The faces now have titles.”"],
+      8:["The final memory trial.","What was once revealed must now be remembered.","ENTER THE REVIVAL","“Now prove what stayed in your memory.”"]
+    };
+    const o=objectives[m]||objectives[1];
+    if(title)title.textContent=o[0];if(desc)desc.textContent=o[1];if(btn)btn.innerHTML=o[2]+' <span>→</span>';if(msg)msg.textContent=o[3];
+    if(btn){btn.onclick=function(){const n=document.getElementById("journey-node-"+m);if(n&&!n.disabled)n.click();}} 
+  }
+  window.addEventListener("load",function(){syncHome();setTimeout(syncHome,250);setTimeout(syncHome,900);});
+  setInterval(syncHome,1200);
 })();
 </script>
 
