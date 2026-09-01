@@ -2416,13 +2416,14 @@ function getPlayerData() {
 }
 
 /* =========================================================
-   GLOBAL LEADERBOARD
-   Gameplay progress remains local; completed milestone scores are
-   mirrored to Supabase for a shared Top-20 ranking.
+   GLOBAL LEADERBOARD — V5
+   The server is the source of truth for Hall of Legends.
+   Before displaying rankings, the current player's COMPLETE local
+   score state is synchronized to Supabase.
 ========================================================= */
 const LEADERBOARD_TABLE = "npc_leaderboard";
 const LEADERBOARD_MAX_ROWS = 20;
-const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:999999999};
+const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:2147483647};
 
 function npcUuid(){
     if(window.crypto?.randomUUID) return window.crypto.randomUUID();
@@ -2435,11 +2436,16 @@ function ensurePlayerIdentity(player){
     const p=player||{};
     if(!p.playerId)p.playerId=npcUuid();
     if(!p.milestoneScores||typeof p.milestoneScores!=="object")p.milestoneScores={};
-    // Revival is cumulative: every completed trial adds to revivalTotal.
-    if(!Number.isFinite(Number(p.revivalTotal))) p.revivalTotal=Math.max(Number(p.revivalBest||0),Number(p.milestoneScores[8]||0));
+
+    // Revival is cumulative: every completed Revival trial adds to revivalTotal.
+    const legacy=Math.max(Number(p.revivalBest||0),Number(p.milestoneScores[8]||0));
+    if(!Number.isFinite(Number(p.revivalTotal)))p.revivalTotal=legacy;
     p.revivalTotal=Math.max(0,Math.floor(Number(p.revivalTotal)||0));
     p.milestoneScores[8]=p.revivalTotal;
-    p.totalScore=Object.keys(p.milestoneScores).filter(k=>k!=="8").reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+p.revivalTotal;
+
+    p.totalScore=Object.keys(p.milestoneScores)
+        .filter(k=>k!=="8")
+        .reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+p.revivalTotal;
     return p;
 }
 
@@ -2450,92 +2456,186 @@ function updatePlayerScoreUI(){
     el.textContent=`✦ ${Number(p.totalScore||0).toLocaleString("en-US")}`;
 }
 
+function leaderboardErrorMessage(prefix,error){
+    const msg=String(error?.message||error||"Unknown error");
+    return `${prefix} · ${msg}`;
+}
+
 async function submitMilestoneScore(milestone,score){
     const p=ensurePlayerIdentity(getPlayerData()||{});
-    if(!p.username)return;
+    if(!p.username)return false;
+
     const m=String(Number(milestone));
     const max=Number(LEADERBOARD_MAX_SCORE[m]||0);
     const cleanScore=Math.max(0,Math.min(max,Math.floor(Number(score)||0)));
 
     if(m==="8"){
-        // Revival is cumulative. The value sent to Supabase is the player's
-        // CURRENT cumulative Revival total, not the score of one attempt.
+        // NEVER replace Revival with a lower run. Revival only grows.
         p.revivalTotal=Math.max(Number(p.revivalTotal||0),cleanScore);
         p.milestoneScores[8]=p.revivalTotal;
     }else{
         const previous=Math.max(0,Math.min(max,Math.floor(Number(p.milestoneScores[m]||0))));
-        if(cleanScore<=previous){updatePlayerScoreUI();return;}
+        if(cleanScore<=previous){
+            savePlayerData(p);
+            return true;
+        }
         p.milestoneScores[m]=cleanScore;
     }
+
+    p.totalScore=Object.keys(p.milestoneScores)
+        .filter(k=>k!=="8")
+        .reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+Number(p.revivalTotal||0);
     savePlayerData(p);
     updatePlayerScoreUI();
 
     try{
         const response=await fetch(`${SUPABASE_REST_URL}/rpc/submit_npc_score`,{
-            method:"POST",cache:"no-store",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json"},
-            body:JSON.stringify({p_player_id:p.playerId,p_username:p.username,p_milestone:Number(m),p_score:cleanScore})
+            method:"POST",
+            cache:"no-store",
+            headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
+            body:JSON.stringify({
+                p_player_id:p.playerId,
+                p_username:p.username,
+                p_milestone:Number(m),
+                p_score:m==="8"?Number(p.revivalTotal||0):cleanScore
+            })
         });
-        if(!response.ok)throw new Error(`HTTP ${response.status}: ${await response.text()}`);
-    }catch(error){console.warn("Leaderboard sync unavailable:",error);}
-}
-
-async function fetchLeaderboard(){
-    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}?select=player_id,username,total_score,updated_at&order=total_score.desc,updated_at.asc&limit=${LEADERBOARD_MAX_ROWS}&_=${Date.now()}`;
-    const response=await fetch(endpoint,{cache:"no-store",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache"}});
-    const body=await response.json().catch(()=>[]);
-    if(!response.ok)throw new Error(body?.message||`HTTP ${response.status}`);
-    return Array.isArray(body)?body:[];
-}
-
-function leaderboardEsc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
-
-async function renderLeaderboard(){
-    const status=document.getElementById("leaderboard-status"),list=document.getElementById("leaderboard-list"),you=document.getElementById("leaderboard-you");
-    if(!status||!list)return;
-    status.textContent="CALLING THE CHRONICLES…";list.innerHTML='<div class="leaderboard-loading">Loading rankings…</div>';if(you)you.innerHTML="";
-    try{
-        const rows=await fetchLeaderboard(),p=ensurePlayerIdentity(getPlayerData()||{});
-        status.textContent=`TOP ${rows.length} · UPDATED LIVE`;
-        if(!rows.length){list.innerHTML='<div class="leaderboard-loading">No scores have been recorded yet. Be the first legend.</div>';return;}
-        list.innerHTML=rows.map((row,i)=>{
-            const rank=i+1,medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":String(rank).padStart(2,"0"),mine=String(row.player_id)===String(p.playerId);
-            return `<div class="leaderboard-row${mine?" mine":""}"><span class="leaderboard-rank">${medal}</span><span class="leaderboard-name">${leaderboardEsc(row.username)}${mine?" <em>YOU</em>":""}</span><strong class="leaderboard-score">${Number(row.total_score||0).toLocaleString("en-US")}</strong></div>`;
-        }).join("");
-        if(you&&rows.findIndex(row=>String(row.player_id)===String(p.playerId))<0&&p.username)you.innerHTML=`Your score · <strong>${Number(p.totalScore||0).toLocaleString("en-US")}</strong>`;
+        if(!response.ok){
+            const detail=await response.text();
+            throw new Error(`submit_npc_score HTTP ${response.status}: ${detail}`);
+        }
+        return true;
     }catch(error){
-        status.textContent="THE CHRONICLES ARE UNREACHABLE";list.innerHTML='<div class="leaderboard-error">Leaderboard belum tersambung. Progress lokalmu tetap aman.</div>';console.warn("Leaderboard fetch failed:",error);
+        console.warn("Leaderboard milestone sync failed:",error);
+        return false;
     }
 }
 
 async function syncCurrentLeaderboardScore(){
-    try{
-        const p=ensurePlayerIdentity(getPlayerData()||{});
-        if(!p.username)return;
-        // Send the COMPLETE local score state, not only M8. This makes the
-        // leaderboard authoritative for the current player and fixes stale
-        // totals when earlier milestones were completed before a later login.
-        const scores={};
-        Object.keys(p.milestoneScores||{}).forEach(k=>{
-            const n=Number(p.milestoneScores[k]||0);
-            if(Number.isFinite(n)&&n>0)scores[String(k)]=Math.floor(n);
-        });
-        scores["8"]=Math.floor(Number(p.revivalTotal||0));
-        const response=await fetch(`${SUPABASE_REST_URL}/rpc/sync_npc_leaderboard`,{
-            method:"POST",
-            cache:"no-store",
-            headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
-            body:JSON.stringify({p_player_id:p.playerId,p_username:p.username,p_milestone_scores:scores})
-        });
-        if(!response.ok)throw new Error(`HTTP ${response.status}: ${await response.text()}`);
-    }catch(e){console.warn("Leaderboard live sync failed:",e)}
+    const p=ensurePlayerIdentity(getPlayerData()||{});
+    if(!p.username)throw new Error("Player username belum tersedia");
+
+    const scores={};
+    for(let i=1;i<=7;i++){
+        const n=Number(p.milestoneScores?.[i]||0);
+        if(Number.isFinite(n)&&n>0)scores[String(i)]=Math.floor(n);
+    }
+    // M8 is the cumulative Revival total, with no single-trial cap.
+    scores["8"]=Math.floor(Number(p.revivalTotal||0));
+
+    const response=await fetch(`${SUPABASE_REST_URL}/rpc/sync_npc_leaderboard`,{
+        method:"POST",
+        cache:"no-store",
+        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
+        body:JSON.stringify({
+            p_player_id:p.playerId,
+            p_username:p.username,
+            p_milestone_scores:scores
+        })
+    });
+
+    const raw=await response.text();
+    if(!response.ok){
+        let detail=raw;
+        try{detail=JSON.parse(raw)?.message||JSON.parse(raw)?.details||raw}catch(e){}
+        throw new Error(`sync_npc_leaderboard HTTP ${response.status}: ${detail}`);
+    }
+
+    // Recalculate local total from the same complete state sent to the server.
+    p.totalScore=Object.values(scores).reduce((sum,v)=>sum+Number(v||0),0);
+    p.milestoneScores={...p.milestoneScores,...scores,8:Number(scores[8]||0)};
+    p.revivalTotal=Number(scores[8]||0);
+    savePlayerData(p);
+    return true;
 }
+
+async function fetchLeaderboard(){
+    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}`+
+        `?select=player_id,username,total_score,updated_at`+
+        `&order=total_score.desc,updated_at.asc`+
+        `&limit=${LEADERBOARD_MAX_ROWS}`+
+        `&_=${Date.now()}`;
+    const response=await fetch(endpoint,{
+        method:"GET",
+        cache:"no-store",
+        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache"}
+    });
+    const raw=await response.text();
+    if(!response.ok){
+        let detail=raw;
+        try{detail=JSON.parse(raw)?.message||JSON.parse(raw)?.details||raw}catch(e){}
+        throw new Error(`GET ${LEADERBOARD_TABLE} HTTP ${response.status}: ${detail}`);
+    }
+    let body=[];
+    try{body=JSON.parse(raw)}catch(e){throw new Error("Leaderboard response bukan JSON");}
+    return Array.isArray(body)?body:[];
+}
+
+function leaderboardEsc(value){
+    return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+async function renderLeaderboard(){
+    const status=document.getElementById("leaderboard-status");
+    const list=document.getElementById("leaderboard-list");
+    const you=document.getElementById("leaderboard-you");
+    if(!status||!list)return;
+
+    status.textContent="SYNCING YOUR CHRONICLE…";
+    list.innerHTML='<div class="leaderboard-loading">Syncing your score with the Hall…</div>';
+    if(you)you.innerHTML="";
+
+    try{
+        await syncCurrentLeaderboardScore();
+        status.textContent="READING THE HALL…";
+        const rows=await fetchLeaderboard();
+        const p=ensurePlayerIdentity(getPlayerData()||{});
+
+        status.textContent=`TOP ${rows.length} · UPDATED LIVE`;
+        if(!rows.length){
+            list.innerHTML='<div class="leaderboard-loading">No scores have been recorded yet. Be the first legend.</div>';
+            return;
+        }
+
+        list.innerHTML=rows.map((row,i)=>{
+            const rank=i+1;
+            const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":String(rank).padStart(2,"0");
+            const mine=String(row.player_id)===String(p.playerId);
+            return `<div class="leaderboard-row${mine?" mine":""}">`+
+                `<span class="leaderboard-rank">${medal}</span>`+
+                `<span class="leaderboard-name">${leaderboardEsc(row.username)}${mine?" <em>YOU</em>":""}</span>`+
+                `<strong class="leaderboard-score">${Number(row.total_score||0).toLocaleString("en-US")}</strong>`+
+                `</div>`;
+        }).join("");
+
+        const myRank=rows.findIndex(row=>String(row.player_id)===String(p.playerId));
+        if(you&&myRank<0&&p.username){
+            you.innerHTML=`Your score · <strong>${Number(p.totalScore||0).toLocaleString("en-US")}</strong>`;
+        }
+    }catch(error){
+        console.error("HALL OF LEGENDS ERROR",error);
+        status.textContent="THE CHRONICLES ARE UNREACHABLE";
+        list.innerHTML=`<div class="leaderboard-error">${leaderboardEsc(leaderboardErrorMessage("Leaderboard error",error))}</div>`;
+        if(you)you.innerHTML=`<div class="leaderboard-you-fallback">Local score · <strong>${Number(ensurePlayerIdentity(getPlayerData()||{}).totalScore||0).toLocaleString("en-US")}</strong></div>`;
+    }
+}
+
 async function openLeaderboard(){
-    const o=document.getElementById("leaderboard-overlay");if(!o)return;
-    o.classList.remove("hidden");o.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
-    await syncCurrentLeaderboardScore();
+    const o=document.getElementById("leaderboard-overlay");
+    if(!o)return;
+    o.classList.remove("hidden");
+    o.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
     await renderLeaderboard();
 }
-function closeLeaderboard(){const o=document.getElementById("leaderboard-overlay");if(!o)return;o.classList.add("hidden");o.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+
+function closeLeaderboard(){
+    const o=document.getElementById("leaderboard-overlay");
+    if(!o)return;
+    o.classList.add("hidden");
+    o.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+}
 
 function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
     const player=getPlayerData();
