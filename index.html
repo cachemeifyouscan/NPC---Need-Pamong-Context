@@ -1386,6 +1386,18 @@ button,input{font:inherit}
 .player-avatar-img{width:44px;height:44px;display:block;object-fit:cover;border:1px solid #876334;background:#d9c08c}
 @media(max-width:760px){.avatar-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-height:55vh}}
 @media(max-width:520px){.avatar-picker{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.avatar-picker-card{padding:20px 14px}}
+
+#avatar-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 18px}
+#avatar-screen.hidden{display:none!important}
+.avatar-picker-card{max-height:calc(100vh - 56px);overflow:hidden}
+.avatar-picker{max-height:calc(100vh - 285px)}
+.avatar-option{appearance:none;border-radius:3px}
+.avatar-option:focus-visible{outline:3px solid #b88743;outline-offset:2px}
+@media(max-width:760px){
+  #avatar-screen{align-items:flex-start;padding:18px 10px}
+  .avatar-picker-card{max-height:none}
+  .avatar-picker{max-height:55vh}
+}
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2449,8 +2461,10 @@ button,input{font:inherit}
         <p class="screen-text">Choose the portrait that shall represent you across Sanapati Land.</p>
         <div id="avatar-picker" class="avatar-picker" aria-label="Choose your avatar"></div>
         <p class="avatar-picker-note">50 portraits await. Choose wisely, adventurer.</p>
+        <p id="avatar-selected-label" class="avatar-picker-note" aria-live="polite">No character selected.</p>
         <div class="avatar-picker-actions">
-            <button id="avatar-button" class="wood-button" type="button">✦ CHOOSE THIS PORTRAIT ✦</button>
+            <button id="avatar-back-button" class="wood-button" type="button">← BACK</button>
+            <button id="avatar-button" class="wood-button" type="button">✦ CHOOSE CHARACTER ✦</button>
         </div>
         <p id="avatar-error" class="error"></p>
     </div>
@@ -2769,6 +2783,7 @@ function showScreen(screenId) {
     const screens = [
         "login-screen",
         "username-screen",
+        "avatar-screen",
         "pin-setup-screen",
         "pin-login-screen",
         "welcome-screen",
@@ -3088,7 +3103,20 @@ if (usernameButton) {
 const avatarPicker = document.getElementById("avatar-picker");
 const avatarButton = document.getElementById("avatar-button");
 const avatarError = document.getElementById("avatar-error");
+const avatarSelectedLabel = document.getElementById("avatar-selected-label");
 let selectedAvatar = sessionStorage.getItem("npcAvatar") || "";
+
+function updateAvatarSelectedLabel(){
+    if(!avatarSelectedLabel) return;
+    if(!selectedAvatar){
+        avatarSelectedLabel.textContent="No character selected.";
+        return;
+    }
+    const n=selectedAvatar.match(/avatar-(\d+)\.webp/i);
+    avatarSelectedLabel.textContent=n
+        ? `Character ${Number(n[1])} selected.`
+        : "Character selected.";
+}
 
 function renderAvatarPicker(){
     if(!avatarPicker) return;
@@ -3110,8 +3138,18 @@ function renderAvatarPicker(){
                 x.classList.toggle("selected",on);
                 x.setAttribute("aria-pressed",String(on));
             });
+            updateAvatarSelectedLabel();
             if(avatarError) avatarError.textContent="";
         });
+    });
+    updateAvatarSelectedLabel();
+}
+const avatarBackButton = document.getElementById("avatar-back-button");
+if(avatarBackButton){
+    avatarBackButton.addEventListener("click",()=>{
+        showScreen("username-screen");
+        const u=document.getElementById("username");
+        if(u) u.focus();
     });
 }
 if(avatarButton){
@@ -3122,6 +3160,7 @@ if(avatarButton){
         }
         sessionStorage.setItem("npcAvatar",selectedAvatar);
         showScreen("pin-setup-screen");
+        if(pinInput) setTimeout(()=>pinInput.focus(),80);
     });
 }
 
