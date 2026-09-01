@@ -1870,6 +1870,21 @@ button,input{font:inherit}
   #placement-game .placement-three-bins { grid-template-columns:1fr !important; }
 }
 </style>
+<style id="hall-of-legends-css">
+.leaderboard-top-button{border:1px solid rgba(228,198,137,.45);background:rgba(70,39,18,.42);color:#f4dfb0;border-radius:4px;padding:8px 11px;font:700 11px Georgia,serif;letter-spacing:1px;cursor:pointer;white-space:nowrap;box-shadow:inset 0 1px rgba(255,235,184,.12)}
+.leaderboard-top-button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.leaderboard-overlay{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(32,19,9,.76);backdrop-filter:blur(3px)}
+.leaderboard-overlay.hidden{display:none!important}
+.leaderboard-panel{position:relative;width:min(760px,94vw);max-height:90vh;overflow:auto;padding:48px 38px 30px;box-sizing:border-box;color:#432816;background:radial-gradient(ellipse at 50% 35%,#fff9e5,#efd7a5 68%,#c9a66a);border:2px solid #7c592b;box-shadow:0 25px 60px rgba(0,0,0,.45),inset 0 0 0 5px rgba(255,240,198,.28);border-radius:4px;text-align:center}
+.leaderboard-panel:before{content:"";position:absolute;inset:13px;border:1px solid rgba(104,69,28,.48);pointer-events:none}
+.leaderboard-close{position:absolute;right:22px;top:18px;width:34px;height:34px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:21px;cursor:pointer;z-index:2}
+.leaderboard-ornament{color:#8a6229;font-size:20px;letter-spacing:6px}.leaderboard-kicker{margin-top:5px;color:#896331;font-size:11px;font-weight:bold;letter-spacing:4px}
+.leaderboard-panel h2{margin:7px 0 3px;font:700 clamp(30px,5vw,46px)/1 "Palatino Linotype",Palatino,Georgia,serif;letter-spacing:2px;color:#402613}.leaderboard-subtitle{margin:0 0 16px;color:#684a29;font-style:italic}.leaderboard-status{font-size:10px;font-weight:bold;letter-spacing:2px;color:#8a6229;margin-bottom:12px}
+.leaderboard-list{display:grid;gap:7px;text-align:left}.leaderboard-row{display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:12px;padding:10px 13px;background:rgba(255,248,224,.68);border:1px solid rgba(115,77,34,.23);border-radius:3px;box-shadow:inset 0 1px rgba(255,255,255,.55)}.leaderboard-row.mine{border-color:#765023;background:rgba(224,194,129,.55);box-shadow:0 0 0 2px rgba(118,80,35,.12)}
+.leaderboard-rank{font-size:19px;text-align:center;font-weight:bold;color:#73502a}.leaderboard-name{font-weight:bold;color:#4b2d1b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.leaderboard-name em{font-size:9px;font-style:normal;letter-spacing:1px;margin-left:6px;color:#8b632a}.leaderboard-score{font:700 17px Georgia,serif;color:#4b2b18}
+.leaderboard-loading,.leaderboard-error{padding:28px;color:#6a4a2b;background:rgba(255,248,224,.6);border:1px dashed rgba(115,77,34,.35)}.leaderboard-you{margin:13px 0;color:#684a29;font-size:13px}.leaderboard-refresh{margin-top:6px;border:1px solid #62401f;background:linear-gradient(#80532b,#4e2e18);color:#f6dfae;padding:11px 18px;font:700 11px Georgia,serif;letter-spacing:1.2px;cursor:pointer}
+@media(max-width:760px){.leaderboard-panel{padding:43px 18px 25px;width:96vw}.leaderboard-top-button span{display:none}.leaderboard-row{grid-template-columns:42px 1fr auto;gap:8px;padding:9px}.leaderboard-score{font-size:15px}}
+</style>
 </head>
 
 <body>
@@ -2143,7 +2158,8 @@ button,input{font:inherit}
             </div>
 
             <div class="top-actions">
-                <span>✦ 0</span>
+                <button id="leaderboard-open" class="leaderboard-top-button" type="button" title="Open Hall of Legends">🏆 <span>HALL OF LEGENDS</span></button>
+                <span id="player-total-score">✦ 0</span>
                 <span>⚙</span>
             </div>
         </header>
@@ -2205,6 +2221,23 @@ button,input{font:inherit}
 
 
 
+
+<!-- =========================================================
+     HALL OF LEGENDS — GLOBAL LEADERBOARD
+========================================================= -->
+<div id="leaderboard-overlay" class="leaderboard-overlay hidden" aria-hidden="true">
+  <div class="leaderboard-panel" role="dialog" aria-modal="true" aria-labelledby="leaderboard-title">
+    <button id="leaderboard-close" class="leaderboard-close" type="button" aria-label="Close leaderboard">×</button>
+    <div class="leaderboard-ornament">✦ ❦ ✦</div>
+    <div class="leaderboard-kicker">SANAPATI LAND</div>
+    <h2 id="leaderboard-title">HALL OF LEGENDS</h2>
+    <p class="leaderboard-subtitle">The twenty highest-scoring adventurers.</p>
+    <div id="leaderboard-status" class="leaderboard-status">CALLING THE CHRONICLES…</div>
+    <div id="leaderboard-list" class="leaderboard-list"></div>
+    <div id="leaderboard-you" class="leaderboard-you"></div>
+    <button id="leaderboard-refresh" class="leaderboard-refresh" type="button">↻ REFRESH RANKINGS</button>
+  </div>
+</div>
 
 <!-- =========================================================
      MILESTONE 5 — THE CHRONICLES / ANGKATAN
@@ -2346,7 +2379,9 @@ function showScreen(screenId) {
    PLAYER STORAGE
 ========================================================= */
 function savePlayerData(data) {
-    localStorage.setItem("npcPlayer", JSON.stringify(data));
+    const player=ensurePlayerIdentity(data);
+    localStorage.setItem("npcPlayer", JSON.stringify(player));
+    updatePlayerScoreUI();
 }
 
 function getPlayerData() {
@@ -2359,6 +2394,91 @@ function getPlayerData() {
         return null;
     }
 }
+
+/* =========================================================
+   GLOBAL LEADERBOARD
+   Gameplay progress remains local; completed milestone scores are
+   mirrored to Supabase for a shared Top-20 ranking.
+========================================================= */
+const LEADERBOARD_TABLE = "npc_leaderboard";
+const LEADERBOARD_MAX_ROWS = 20;
+const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:2000};
+
+function npcUuid(){
+    if(window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{
+        const r=Math.random()*16|0,v=c==="x"?r:(r&3|8);return v.toString(16);
+    });
+}
+
+function ensurePlayerIdentity(player){
+    const p=player||{};
+    if(!p.playerId)p.playerId=npcUuid();
+    if(!p.milestoneScores||typeof p.milestoneScores!=="object")p.milestoneScores={};
+    if(!Number.isFinite(Number(p.totalScore)))p.totalScore=Object.values(p.milestoneScores).reduce((a,b)=>a+Number(b||0),0);
+    return p;
+}
+
+function updatePlayerScoreUI(){
+    const el=document.getElementById("player-total-score");
+    if(!el)return;
+    const p=ensurePlayerIdentity(getPlayerData()||{});
+    el.textContent=`✦ ${Number(p.totalScore||0).toLocaleString("en-US")}`;
+}
+
+async function submitMilestoneScore(milestone,score){
+    const p=ensurePlayerIdentity(getPlayerData()||{});
+    if(!p.username)return;
+    const m=String(Number(milestone));
+    const max=Number(LEADERBOARD_MAX_SCORE[m]||0);
+    const cleanScore=Math.max(0,Math.min(max,Math.floor(Number(score)||0)));
+    const previous=Math.max(0,Math.min(max,Math.floor(Number(p.milestoneScores[m]||0))));
+    if(cleanScore<=previous){updatePlayerScoreUI();return;}
+
+    p.milestoneScores[m]=cleanScore;
+    p.totalScore=Object.values(p.milestoneScores).reduce((sum,v)=>sum+Number(v||0),0);
+    savePlayerData(p);
+    updatePlayerScoreUI();
+
+    try{
+        const response=await fetch(`${SUPABASE_REST_URL}/rpc/submit_npc_score`,{
+            method:"POST",headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json"},
+            body:JSON.stringify({p_player_id:p.playerId,p_username:p.username,p_milestone:Number(m),p_score:cleanScore})
+        });
+        if(!response.ok)throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }catch(error){console.warn("Leaderboard sync unavailable:",error);}
+}
+
+async function fetchLeaderboard(){
+    const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}?select=player_id,username,total_score,updated_at&order=total_score.desc,updated_at.asc&limit=${LEADERBOARD_MAX_ROWS}`;
+    const response=await fetch(endpoint,{headers:{"apikey":SUPABASE_PUBLIC_KEY}});
+    const body=await response.json().catch(()=>[]);
+    if(!response.ok)throw new Error(body?.message||`HTTP ${response.status}`);
+    return Array.isArray(body)?body:[];
+}
+
+function leaderboardEsc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+
+async function renderLeaderboard(){
+    const status=document.getElementById("leaderboard-status"),list=document.getElementById("leaderboard-list"),you=document.getElementById("leaderboard-you");
+    if(!status||!list)return;
+    status.textContent="CALLING THE CHRONICLES…";list.innerHTML='<div class="leaderboard-loading">Loading rankings…</div>';if(you)you.innerHTML="";
+    try{
+        const rows=await fetchLeaderboard(),p=ensurePlayerIdentity(getPlayerData()||{});
+        status.textContent=`TOP ${rows.length} · UPDATED LIVE`;
+        if(!rows.length){list.innerHTML='<div class="leaderboard-loading">No scores have been recorded yet. Be the first legend.</div>';return;}
+        list.innerHTML=rows.map((row,i)=>{
+            const rank=i+1,medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":String(rank).padStart(2,"0"),mine=String(row.player_id)===String(p.playerId);
+            return `<div class="leaderboard-row${mine?" mine":""}"><span class="leaderboard-rank">${medal}</span><span class="leaderboard-name">${leaderboardEsc(row.username)}${mine?" <em>YOU</em>":""}</span><strong class="leaderboard-score">${Number(row.total_score||0).toLocaleString("en-US")}</strong></div>`;
+        }).join("");
+        if(you&&rows.findIndex(row=>String(row.player_id)===String(p.playerId))<0&&p.username)you.innerHTML=`Your score · <strong>${Number(p.totalScore||0).toLocaleString("en-US")}</strong>`;
+    }catch(error){
+        status.textContent="THE CHRONICLES ARE UNREACHABLE";list.innerHTML='<div class="leaderboard-error">Leaderboard belum tersambung. Progress lokalmu tetap aman.</div>';console.warn("Leaderboard fetch failed:",error);
+    }
+}
+
+function openLeaderboard(){const o=document.getElementById("leaderboard-overlay");if(!o)return;o.classList.remove("hidden");o.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";renderLeaderboard();}
+function closeLeaderboard(){const o=document.getElementById("leaderboard-overlay");if(!o)return;o.classList.add("hidden");o.setAttribute("aria-hidden","true");document.body.style.overflow="";}
 
 function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
     const player=getPlayerData();
@@ -2468,9 +2588,12 @@ if (pinButton) {
         }
 
         const player = {
+            playerId: npcUuid(),
             username: username,
             pin: pin,
-            milestone: 1
+            milestone: 1,
+            milestoneScores: {},
+            totalScore: 0
         };
 
         savePlayerData(player);
@@ -2513,6 +2636,19 @@ if (pinLoginButton) {
         showScreen("welcome-screen");
     });
 }
+
+/* =========================================================
+   LEADERBOARD EVENTS
+========================================================= */
+(function(){
+    const openBtn=document.getElementById("leaderboard-open"),closeBtn=document.getElementById("leaderboard-close"),refreshBtn=document.getElementById("leaderboard-refresh"),overlay=document.getElementById("leaderboard-overlay");
+    if(openBtn)openBtn.addEventListener("click",openLeaderboard);
+    if(closeBtn)closeBtn.addEventListener("click",closeLeaderboard);
+    if(refreshBtn)refreshBtn.addEventListener("click",renderLeaderboard);
+    if(overlay)overlay.addEventListener("click",e=>{if(e.target===overlay)closeLeaderboard();});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLeaderboard();});
+    updatePlayerScoreUI();
+})();
 
 /* =========================================================
    WELCOME → LORE
@@ -3730,8 +3866,10 @@ function renderEndgameResult(){
         if(passed){
             const player=getPlayerData();
             if(player){
-                player.milestone=Math.min(5,Math.max(Number(player.milestone||1),teamMilestoneNumber(currentTeamKey)+1));
+                const completedMilestone=teamMilestoneNumber(currentTeamKey);
+                player.milestone=Math.min(5,Math.max(Number(player.milestone||1),completedMilestone+1));
                 savePlayerData(player);
+                submitMilestoneScore(completedMilestone,endgameScore);
             }
             showTeamGameReviewMenu();
         }else{
@@ -4803,6 +4941,7 @@ function complete(){
 
  try{
   const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
+  submitMilestoneScore(6,state.score||0);
   p.milestone=Math.max(Number(p.milestone||1),7);
 
   if(typeof savePlayerData==="function")savePlayerData(p);
@@ -5244,7 +5383,7 @@ function beginGame(){state.phase="trial";state.round=0;state.score=0;state.locke
 function next(){if(!state.locked)return;if(state.round>=6){complete();return}state.round++;renderRound()}
 function complete(){
  state.completed=true;state.phase="complete";save();
- try{const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};p.milestone=Math.max(Number(p.milestone||1),7);if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));if(typeof refreshJourney==="function")refreshJourney()}catch(e){}
+ try{const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};submitMilestoneScore(7,state.score||0);p.milestone=Math.max(Number(p.milestone||1),7);if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));if(typeof refreshJourney==="function")refreshJourney()}catch(e){}
  const correct=state.history.filter(x=>x.correct).length;
  $("m7-content").style.display="none";$("m7-actions").style.display="none";$("m7-complete").style.display="block";
  $("m7-complete").innerHTML=`<h2>THE JABATAN REMEMBERED</h2><p>${correct} / 7 rounds correct · ${state.score} / 700 points.<br>The chain of command is now part of your memory.</p><div class="m7-btnrow"><button class="m7-btn" id="m7-replay" type="button">PLAY THE JABATAN AGAIN</button><button class="m7-btn secondary" id="m7-return" type="button">RETURN TO THE JOURNEY</button></div>`;
@@ -7597,6 +7736,7 @@ document.addEventListener("click",function(e){
     close();
     try{
       const pd=getPlayerData?.()||{};
+      submitMilestoneScore(5,trial?.score||0);
       if(Number(pd.milestone||1)<6){
         pd.milestone=6;
         localStorage.setItem("npc_player",JSON.stringify(pd));
@@ -8109,6 +8249,7 @@ function complete(){
  const correct=state.score/100;
  try{
   const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
+  submitMilestoneScore(8,state.score||0);
   p.milestone=Math.max(Number(p.milestone||1),8);
   if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
   if(typeof refreshJourney==="function")refreshJourney();
@@ -8161,5 +8302,6 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 })();
 </script>
 
+<script>window.addEventListener("load",()=>{try{const p=getPlayerData();if(p)savePlayerData(p);}catch(e){}});</script>
 </body>
 </html>
