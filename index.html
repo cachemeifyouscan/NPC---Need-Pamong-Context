@@ -2402,7 +2402,7 @@ function getPlayerData() {
 ========================================================= */
 const LEADERBOARD_TABLE = "npc_leaderboard";
 const LEADERBOARD_MAX_ROWS = 20;
-const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:2000};
+const LEADERBOARD_MAX_SCORE = {1:1000,2:1000,3:1000,4:1000,5:800,6:800,7:700,8:7000};
 
 function npcUuid(){
     if(window.crypto?.randomUUID) return window.crypto.randomUUID();
@@ -5190,7 +5190,7 @@ setInterval(syncNode6,1500);
   <button id="m7-close" class="m7-close" type="button" aria-label="Close">×</button>
   <header class="m7-header">
    <div class="m7-eyebrow">LEADERS HALL · MILESTONE VII</div>
-   <h1 class="m7-title">JABATAN</h1>
+   <h1 class="m7-title">THE LEADER</h1>
    <p class="m7-subtitle">You know their faces, teams, generations, and placements. First, meet those who hold the key positions.</p>
   </header>
   <div class="m7-stagebar">
@@ -8054,41 +8054,23 @@ window.addEventListener("load",function(){
 <style id="m8-revival-css">
 #milestone8-revival{position:fixed;inset:0;z-index:2147483647;display:none;overflow:auto;background:rgba(42,27,12,.76);backdrop-filter:blur(3px)}
 #milestone8-revival.active{display:flex;align-items:center;justify-content:center;padding:16px}
-.m8-panel{position:relative;width:min(1160px,96vw);height:min(900px,94vh);overflow:auto;padding:42px 42px 30px;
-background:linear-gradient(135deg,#fff8e6,#ecd4a4 60%,#d8b87c);border:2px solid #76502a;border-radius:3px;
-box-shadow:0 25px 60px rgba(31,18,7,.45),inset 0 0 0 5px rgba(255,239,194,.3);color:#422817}
+.m8-panel{position:relative;width:min(1160px,96vw);height:min(900px,94vh);overflow:auto;padding:42px 42px 30px;background:linear-gradient(135deg,#fff8e6,#ecd4a4 60%,#d8b87c);border:2px solid #76502a;border-radius:3px;box-shadow:0 25px 60px rgba(31,18,7,.45),inset 0 0 0 5px rgba(255,239,194,.3);color:#422817}
 .m8-panel:before{content:"";position:absolute;inset:10px;border:1px solid rgba(111,77,31,.4);pointer-events:none}
 .m8-inner{position:relative;z-index:2;max-width:1000px;margin:auto;text-align:center}
-.m8-close{position:absolute;right:18px;top:16px;z-index:5;width:38px;height:38px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:23px;cursor:pointer}
-.m8-kicker{color:#6c3d32;letter-spacing:4px;font-size:11px;font-weight:bold}
-.m8-title{margin:7px 0 4px;color:#3d2418;font:700 clamp(38px,5vw,58px)/1 "Palatino Linotype",Palatino,Georgia,serif}
-.m8-subtitle{margin:7px auto 16px;color:#725238;font-size:15px;font-style:italic}
-.m8-progress{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:15px}
-.m8-pill{padding:7px 12px;border:1px solid #9a7543;background:#f2dfb9;color:#65452b;font:700 10px Georgia,serif;letter-spacing:1px}
-.m8-card{width:min(900px,100%);margin:auto;padding:20px;background:linear-gradient(145deg,#faf0d6,#e8cc98);
-border:1px solid #9a7043;box-shadow:0 8px 18px rgba(55,32,14,.12)}
-.m8-question{margin:0 auto 16px;color:#442a1b;font:700 clamp(20px,2.8vw,29px)/1.3 Georgia,serif}
-.m8-question small{display:block;margin-top:7px;color:#765238;font:italic 13px Georgia,serif}
-.m8-photo{width:min(230px,60vw);height:275px;margin:0 auto 12px;padding:7px;background:linear-gradient(#80532b,#603a1e 55%,#472914);
-border:2px solid #5b3718;box-shadow:0 7px 13px rgba(54,31,10,.22)}
-.m8-photo img{width:100%;height:100%;object-fit:contain;display:block;background:#d0b57d;border:1px solid #9b7137}
-.m8-photo-placeholder{height:100%;display:grid;place-items:center;background:#ead3a4;color:#78562d;font-size:11px;letter-spacing:1px}
-.m8-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:820px;margin:0 auto}
-.m8-option{min-height:60px;padding:10px;border:1px solid #9a7543;background:#f5e5c2;color:#49311c;cursor:pointer;font:700 13px Georgia,serif}
-.m8-option:hover:not(:disabled){transform:translateY(-2px);background:#fff1ca}
-.m8-option.selected{outline:3px solid rgba(102,60,34,.25);transform:translateY(-2px)}
-.m8-option.correct{background:#dbe3c5;border:2px solid #55713c}
-.m8-option.wrong{background:#efd0c4;border:2px solid #9a4738;opacity:.7}
-.m8-option img{display:block;width:100%;height:180px;object-fit:contain;background:#d0b57d;margin-bottom:7px}
-.m8-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
-.m8-btn{min-width:210px;height:50px;border:1px solid #412511;background:linear-gradient(#7c502a,#603b20 55%,#4b2c18);color:#f5dfb1;
-font:bold 13px Georgia,serif;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 0 #2c190d}
-.m8-btn:disabled{opacity:.45;cursor:not-allowed}
-.m8-btn.secondary{background:#ead6ad;color:#553720;border-color:#8d6535;box-shadow:0 3px 0 #9a7543}
-.m8-feedback{min-height:24px;margin:12px auto 0;color:#76512a;font-weight:bold;font-size:12px;line-height:1.5}
-.m8-complete{padding:35px 15px}.m8-complete h2{margin:0 0 10px;font:700 38px Georgia,serif;color:#43281b}
-.m8-complete p{margin:0 auto 20px;max-width:650px;font:16px/1.6 Georgia,serif;color:#684a29}
-@media(max-width:650px){#milestone8-revival.active{padding:7px}.m8-panel{width:97vw;height:95vh;padding:45px 15px 22px}.m8-options{grid-template-columns:1fr}.m8-photo{height:225px}}
+.m8-close{position:absolute;right:22px;top:18px;width:34px;height:34px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font:23px/1 Georgia,serif;cursor:pointer;z-index:4;box-shadow:0 3px 0 rgba(61,34,14,.35)}
+.m8-close:hover{filter:brightness(1.12)}
+.m8-kicker{margin-top:3px;color:#896331;font-size:11px;font-weight:bold;letter-spacing:4px}.m8-title{margin:8px 0 4px;font:700 clamp(34px,5vw,58px)/1 "Palatino Linotype",Palatino,Georgia,serif;letter-spacing:2px;color:#402613}.m8-subtitle{margin:0 0 17px;color:#684a29;font:italic 16px Georgia,serif}
+.m8-progress{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-bottom:18px}.m8-pill{display:inline-block;padding:8px 15px;border:1px solid rgba(111,77,31,.34);border-radius:18px;background:rgba(255,248,224,.72);color:#62442a;font:bold 11px Georgia,serif;letter-spacing:1px}
+.m8-card{min-height:220px;padding:20px;border:1px solid rgba(111,77,31,.28);background:rgba(255,249,232,.62);border-radius:4px}.m8-question{font:700 24px/1.25 Georgia,serif;color:#4b2d1b;margin-bottom:16px}.m8-question small{display:block;margin-top:8px;font:italic 13px/1.4 Georgia,serif;color:#76512a}
+.m8-photo{width:min(300px,75vw);height:265px;margin:0 auto 14px;border:1px solid rgba(111,77,31,.34);border-radius:12px;background:#d8c19a;display:flex;align-items:center;justify-content:center;overflow:hidden}.m8-photo img{width:100%;height:100%;object-fit:cover}.m8-photo-placeholder{font:11px Arial,sans-serif;letter-spacing:1px;color:#876e50}
+.m8-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:820px;margin:0 auto}.m8-option{min-height:54px;padding:12px 14px;border:1px solid #a88758;border-radius:8px;background:rgba(255,248,224,.82);color:#54351f;font:700 14px Georgia,serif;cursor:pointer;transition:.15s}.m8-option:hover{transform:translateY(-1px);background:#f4e3bd}.m8-option.selected{border:2px solid #70452a;background:#dfc48f}.m8-option.correct{background:#d6c18e;border-color:#5e4327}.m8-option.wrong{opacity:.58;background:#ead0c4}.m8-option:disabled{cursor:default}
+.m8-option:has(.m8-photo){padding:7px}.m8-option .m8-photo{width:100%;height:220px;margin:0;border-radius:7px;border:0}.m8-option .m8-photo-placeholder{font-size:10px}
+.m8-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}.m8-btn{min-width:210px;height:50px;border:1px solid #412511;background:linear-gradient(#7c502a,#603b20 55%,#4b2c18);color:#f5dfb1;font:bold 13px Georgia,serif;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 0 #2c190d}.m8-btn:disabled{opacity:.45;cursor:not-allowed}.m8-btn.secondary{background:#ead6ad;color:#553720;border-color:#8d6535;box-shadow:0 3px 0 #9a7543}
+.m8-feedback{min-height:24px;margin:12px auto 0;color:#76512a;font-weight:bold;font-size:12px;line-height:1.5}.m8-complete{padding:35px 15px}.m8-complete h2{margin:0 0 10px;font:700 38px Georgia,serif;color:#43281b}.m8-complete p{margin:0 auto 20px;max-width:700px;font:16px/1.6 Georgia,serif;color:#684a29}
+.m8-wager-intro{max-width:720px;margin:0 auto 18px;font:15px/1.55 Georgia,serif;color:#684a29}.m8-wager-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:920px;margin:0 auto}.m8-wager{padding:18px 12px 16px;border:1px solid rgba(111,77,31,.4);border-radius:10px;background:rgba(255,248,224,.76);cursor:pointer;color:#4d2f1e;box-shadow:0 5px 12px rgba(71,41,21,.08);transition:.16s}.m8-wager:hover{transform:translateY(-3px);background:#f5e3bd}.m8-wager.selected{border:2px solid #70452a;background:#dfc48f;transform:translateY(-3px)}.m8-wager strong{display:block;font:700 21px Georgia,serif}.m8-wager b{display:block;margin:6px 0;font:700 12px Arial,sans-serif;letter-spacing:1px}.m8-wager small{display:block;min-height:34px;font:italic 12px/1.35 Georgia,serif;color:#76512a}.m8-wager span{display:block;margin-top:9px;font:700 12px Georgia,serif;color:#70452a}.m8-wager-risk{display:block!important;margin-top:5px!important;font:700 9px Arial,sans-serif!important;letter-spacing:1px;color:#8a6229!important}
+.m8-runbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 14px}.m8-runstat{padding:7px 12px;background:rgba(255,248,224,.72);border:1px solid rgba(111,77,31,.25);border-radius:14px;font:bold 10px Arial,sans-serif;letter-spacing:1px;color:#73502a}.m8-streak{color:#8a6229}.m8-new-record{margin:0 auto 15px;padding:11px 14px;border:1px solid #9a6b2d;background:#ead4a6;font:bold 11px Arial,sans-serif;letter-spacing:1.4px;color:#68401f;max-width:650px}
+@media(max-width:850px){.m8-wager-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#milestone8-revival.active{padding:7px}.m8-panel{width:97vw;height:95vh;padding:45px 15px 22px}.m8-options{grid-template-columns:1fr}.m8-photo{height:225px}.m8-wager-grid{grid-template-columns:1fr}.m8-wager{padding:14px}.m8-close{right:12px;top:12px}}
 </style>
 
 <div id="milestone8-revival" aria-hidden="true">
@@ -8098,13 +8080,10 @@ font:bold 13px Georgia,serif;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 
    <div class="m8-kicker">MILESTONE VIII · THE FINAL MEMORY TRIAL</div>
    <h2 id="m8-title" class="m8-title">THE REVIVAL</h2>
    <p class="m8-subtitle">What was once revealed must now be remembered.</p>
-   <div class="m8-progress"><span id="m8-counter" class="m8-pill">MEMORY 1 / 20</span><span id="m8-score" class="m8-pill">SCORE 0</span></div>
+   <div class="m8-progress"><span id="m8-counter" class="m8-pill">CHOOSE YOUR TRIAL</span><span id="m8-score" class="m8-pill">SCORE 0</span></div>
    <section id="m8-content" class="m8-card"></section>
    <div id="m8-feedback" class="m8-feedback"></div>
-   <div id="m8-actions" class="m8-actions">
-    <button id="m8-lock" class="m8-btn" type="button" disabled>LOCK IN ANSWER</button>
-    <button id="m8-next" class="m8-btn secondary" type="button" disabled>NEXT MEMORY</button>
-   </div>
+   <div id="m8-actions" class="m8-actions"></div>
    <section id="m8-complete" class="m8-complete" style="display:none"></section>
   </div>
  </div>
@@ -8119,9 +8098,13 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&
 const norm=v=>String(v??"").trim().toLowerCase().replace(/\s+/g," ");
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const TYPES=["faceName","nameFace","team","generation","placement","role","batalyon","combo"];
-const TOTAL=20;
+const TRIALS={
+  10:{label:"THE SPARK",name:"A small memory.",risk:"LOW RISK",correct:50,wrong:0,completion:100},
+  20:{label:"THE TRIAL",name:"Test your memory.",risk:"MEDIUM RISK",correct:75,wrong:-25,completion:200},
+  30:{label:"THE VIGIL",name:"Commit to the recall.",risk:"HIGH RISK",correct:100,wrong:-50,completion:400},
+  50:{label:"THE ORDEAL",name:"No mercy. Remember everything.",risk:"VERY HIGH RISK",correct:125,wrong:-75,completion:750}
+};
 let people=[],state=null,photoCache=new Map();
-
 function label(p){return p?.panggilan||p?.nama||p?.name||"Pamong"}
 function team(p){return String(p?.tim??p?.team??p?.kelompok??"").trim()}
 function generation(p){return String(p?.angkatan??p?.generation??"").trim()}
@@ -8130,34 +8113,22 @@ function role(p){return String(p?.jabatan??p?.role??"").trim()}
 function uniqueVals(fn,exclude){return [...new Set(people.map(fn).filter(Boolean).filter(v=>norm(v)!==norm(exclude)))]}
 function distract(fn,correct,n=3){return shuffle(uniqueVals(fn,correct)).slice(0,n)}
 function personById(id){return people.find(p=>String(p.id)===String(id))}
-
 async function loadPeople(){
  if(people.length)return people;
  try{
   if(typeof SUPABASE_REST_URL!=="undefined"&&typeof SUPABASE_PUBLIC_KEY!=="undefined"){
    const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan&order=id.asc`;
-   const r=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
-   if(r.ok){const d=await r.json();if(Array.isArray(d))people=d}
+   const r=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});if(r.ok){const d=await r.json();if(Array.isArray(d))people=d}
   }
  }catch(e){console.warn("M8 data load failed",e)}
  return people;
 }
 async function photoUrl(p){
  const key=String(p?.id||label(p));if(photoCache.has(key))return photoCache.get(key)||"";
- const raw=String(p?.foto||p?.photo_path||p?.photo_url||"").trim();
- if(!raw)return "";
+ const raw=String(p?.foto||p?.photo_path||p?.photo_url||"").trim();if(!raw)return "";
  if(/^https?:\/\//i.test(raw)){photoCache.set(key,raw);return raw}
- try{
-  if(typeof resolvePamongPhoto==="function"){
-   const u=await resolvePamongPhoto(raw.replace(/^\/+/,""));
-   if(u){photoCache.set(key,u);return u}
-  }
- }catch(e){}
- try{
-  if(typeof getPamongPhotoUrl==="function"){
-   const u=getPamongPhotoUrl(raw);if(u){photoCache.set(key,u);return u}
-  }
- }catch(e){}
+ try{if(typeof resolvePamongPhoto==="function"){const u=await resolvePamongPhoto(raw.replace(/^\/+/,""));if(u){photoCache.set(key,u);return u}}}catch(e){}
+ try{if(typeof getPamongPhotoUrl==="function"){const u=getPamongPhotoUrl(raw);if(u){photoCache.set(key,u);return u}}}catch(e){}
  return "";
 }
 function makeQ(type,target){
@@ -8169,116 +8140,68 @@ function makeQ(type,target){
  if(type==="placement"){const c=placement(target);return {type,target,correct:c,options:shuffle([c,...distract(placement,c)]),prompt:`WHERE DID <b>${esc(label(target))}</b> SERVE?`,sub:"Person → Placement."}}
  if(type==="role"){const c=role(target);return {type,target,correct:c,options:shuffle([c,...distract(role,c)]),prompt:`WHAT IS <b>${esc(label(target))}'S</b> JABATAN?`,sub:"Person → Jabatan."}}
  if(type==="batalyon"){
-  const c=placement(target), candidates=people.filter(p=>placement(p)&&norm(placement(p))!==norm(c));
-  // Use "command" only for the actual Batalyon leaders discovered in M7.
-  // Everyone else is recalled by belonging to the Batalyon.
-  const isBatalyonLeader = typeof HOLDERS !== "undefined" && HOLDERS.some(h =>
-    String(h.id) === String(target.id) && h.type === "batalyon"
-  );
-  const prompt = isBatalyonLeader
-    ? `WHICH BATALYON DID <b>${esc(label(target))}</b> COMMAND?`
-    : `WHICH BATALYON DID <b>${esc(label(target))}</b> BELONG TO?`;
-  const sub = isBatalyonLeader
-    ? "Recall the command association."
-    : "Recall the Batalyon association.";
+  const c=placement(target),candidates=people.filter(p=>placement(p)&&norm(placement(p))!==norm(c));
+  const isBatalyonLeader=typeof HOLDERS!=="undefined"&&HOLDERS.some(h=>String(h.id)===String(target.id)&&h.type==="batalyon");
+  const prompt=isBatalyonLeader?`WHICH BATALYON DID <b>${esc(label(target))}</b> COMMAND?`:`WHICH BATALYON DID <b>${esc(label(target))}</b> BELONG TO?`;
+  const sub=isBatalyonLeader?"Recall the command association.":"Recall the Batalyon association.";
   return {type,target,correct:c,options:shuffle([c,...shuffle(candidates).slice(0,3).map(placement)]),prompt,sub}
  }
- const picks=shuffle([target,...others.slice(0,3)]);
- return {type:"combo",target,correct:String(target.id),people:picks,prompt:`WHICH IDENTITY BELONGS TO <b>${esc(label(target))}</b>?`,sub:"Recall Team · Angkatan · Placement together."}
+ const picks=shuffle([target,...others.slice(0,3)]);return {type:"combo",target,correct:String(target.id),people:picks,prompt:`WHICH IDENTITY BELONGS TO <b>${esc(label(target))}</b>?`,sub:"Recall Team · Angkatan · Placement together."}
 }
-function buildQuestions(){
+function buildQuestions(total){
  const out=[];let lastId="",lastType="",guard=0;
- while(out.length<TOTAL&&guard++<800){
-  const type=TYPES[Math.floor(Math.random()*TYPES.length)];
-  const eligible=people.filter(p=>label(p)&&String(p.id)!==lastId);
-  if(!eligible.length)break;
-  const target=shuffle(eligible)[0];
-  if(type===lastType&&out.length<3)continue;
-  const q=makeQ(type,target);
-  if(!q.correct||!q.options?.length&&type!=="nameFace"&&type!=="combo")continue;
-  out.push(q);lastId=String(target.id);lastType=type;
+ while(out.length<total&&guard++<total*80){
+  const type=TYPES[Math.floor(Math.random()*TYPES.length)];const eligible=people.filter(p=>label(p)&&String(p.id)!==lastId);if(!eligible.length)break;
+  const target=shuffle(eligible)[0];if(type===lastType&&out.length<3)continue;const q=makeQ(type,target);
+  if(!q.correct||(!q.options?.length&&type!=="nameFace"&&type!=="combo"))continue;out.push(q);lastId=String(target.id);lastType=type;
  }
  return out;
 }
 function photoBox(p,cls=""){return `<div class="m8-photo ${cls}" data-m8-photo="${esc(p.id)}"><div class="m8-photo-placeholder">LOADING PORTRAIT</div></div>`}
-async function hydratePhotos(){
- const boxes=[...root.querySelectorAll("[data-m8-photo]")];
- await Promise.all(boxes.map(async box=>{
-  const p=personById(box.dataset.m8Photo);if(!p)return;
-  const u=await photoUrl(p);if(!u){box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>';return}
-  const img=new Image();img.alt=label(p);img.decoding="async";img.loading="eager";
-  img.onload=()=>{box.innerHTML="";box.appendChild(img)};
-  img.onerror=()=>{box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>'};
-  img.src=u;
- }));
+async function hydratePhotos(){const boxes=[...root.querySelectorAll("[data-m8-photo]")];await Promise.all(boxes.map(async box=>{const p=personById(box.dataset.m8Photo);if(!p)return;const u=await photoUrl(p);if(!u){box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>';return}const img=new Image();img.alt=label(p);img.decoding="async";img.loading="eager";img.onload=()=>{box.innerHTML="";box.appendChild(img)};img.onerror=()=>{box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>'};img.src=u}))}
+function getBestRevival(){const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};return Number(p.revivalBest||0)}
+function renderWager(){
+ state=null;$('m8-counter').textContent="CHOOSE YOUR TRIAL";$('m8-score').textContent=`BEST ${getBestRevival()}`;$('m8-feedback').textContent="";
+ $('m8-actions').innerHTML="";$('m8-complete').style.display="none";$('m8-content').style.display="block";
+ $('m8-content').innerHTML=`<div class="m8-wager-intro"><b>How much do you remember?</b><br>Choose how many memories you are willing to challenge. The longer the trial, the greater the reward — and the greater the risk.</div><div class="m8-wager-grid">${Object.entries(TRIALS).map(([n,t])=>`<button type="button" class="m8-wager" data-wager="${n}"><strong>${t.label}</strong><b>${n} MEMORIES</b><small>${t.name}</small><span>${n* t.correct + t.completion} MAX</span><span class="m8-wager-risk">${t.risk}</span></button>`).join("")}</div>`;
+}
+function startTrial(total){
+ const cfg=TRIALS[total];state={total,index:0,score:0,correct:0,wrong:0,streak:0,bestStreak:0,selected:null,locked:false,current:null,questions:buildQuestions(total)};
+ if(state.questions.length<total){state.total=state.questions.length}
+ $('m8-counter').textContent=`MEMORY 1 / ${state.total}`;$('m8-score').textContent="SCORE 0";$('m8-feedback').textContent="";render();
 }
 function render(){
  const q=state.questions[state.index];state.current=q;state.selected=null;state.locked=false;
- $("m8-counter").textContent=`MEMORY ${state.index+1} / ${state.questions.length}`;
- $("m8-score").textContent=`SCORE ${state.score}`;
- $("m8-lock").disabled=true;$("m8-next").disabled=true;$("m8-feedback").textContent="";
- let html=`<div class="m8-question">${q.prompt}<small>${q.sub}</small></div>`;
+ $('m8-counter').textContent=`MEMORY ${state.index+1} / ${state.total}`;$('m8-score').textContent=`SCORE ${state.score}`;$('m8-lock').disabled=true;$('m8-next').disabled=true;$('m8-feedback').textContent="";
+ let html=`<div class="m8-runbar"><span class="m8-runstat">TRIAL ${state.total}</span><span class="m8-runstat">CORRECT ${state.correct}</span><span class="m8-runstat m8-streak">🔥 STREAK ${state.streak}</span></div><div class="m8-question">${q.prompt}<small>${q.sub}</small></div>`;
  if(q.photo)html+=photoBox(q.target);
  if(q.people)html+=`<div class="m8-options">${q.people.map(p=>`<button type="button" class="m8-option" data-person="${esc(p.id)}">${photoBox(p)}</button>`).join("")}</div>`;
  else html+=`<div class="m8-options">${q.options.map(o=>`<button type="button" class="m8-option" data-choice="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
- $("m8-content").innerHTML=html;hydratePhotos();
+ $('m8-content').innerHTML=html;$('m8-actions').innerHTML='<button id="m8-lock" class="m8-btn" type="button" disabled>LOCK IN ANSWER</button><button id="m8-next" class="m8-btn secondary" type="button" disabled>NEXT MEMORY</button>';hydratePhotos();
 }
-function choose(el){
- if(state.locked)return;
- state.selected=el.dataset.person??el.dataset.choice;
- root.querySelectorAll(".m8-option").forEach(b=>b.classList.remove("selected"));
- el.classList.add("selected");$("m8-lock").disabled=false;
-}
+function choose(el){if(state.locked)return;state.selected=el.dataset.person??el.dataset.choice;root.querySelectorAll(".m8-option").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");$('m8-lock').disabled=false}
 function lock(){
- if(state.locked||state.selected==null)return;
- state.locked=true;const q=state.current,correct=String(state.selected)===String(q.correct);
- if(correct)state.score+=100;
- root.querySelectorAll(".m8-option").forEach(b=>{
-  b.disabled=true;const v=b.dataset.person??b.dataset.choice;
-  if(String(v)===String(q.correct))b.classList.add("correct");
-  if(String(v)===String(state.selected)&&!correct)b.classList.add("wrong");
- });
- $("m8-score").textContent=`SCORE ${state.score}`;
- $("m8-lock").disabled=true;$("m8-next").disabled=false;
- let answer=q.type==="nameFace"||q.type==="combo"?label(personById(q.correct)||q.target):q.correct;
- $("m8-feedback").innerHTML=`${correct?"✓ Correct.":"✕ Incorrect. Your answer is locked."}<br>Correct answer: <b>${esc(answer)}</b>`;
+ if(!state||state.locked||state.selected==null)return;state.locked=true;const cfg=TRIALS[state.total]||TRIALS[20],q=state.current,correct=String(state.selected)===String(q.correct);
+ if(correct){state.correct++;state.streak++;state.bestStreak=Math.max(state.bestStreak,state.streak);state.score+=cfg.correct}else{state.wrong++;state.streak=0;state.score=Math.max(0,state.score+cfg.wrong)}
+ root.querySelectorAll(".m8-option").forEach(b=>{b.disabled=true;const v=b.dataset.person??b.dataset.choice;if(String(v)===String(q.correct))b.classList.add("correct");if(String(v)===String(state.selected)&&!correct)b.classList.add("wrong")});
+ $('m8-score').textContent=`SCORE ${state.score}`;$('m8-lock').disabled=true;$('m8-next').disabled=false;let answer=q.type==="nameFace"||q.type==="combo"?label(personById(q.correct)||q.target):q.correct;
+ $('m8-feedback').innerHTML=`${correct?"✓ Correct.":"✕ Incorrect."} <span class="m8-streak">${state.streak>=5?`🔥 ${state.streak} STREAK`:""}</span><br>Correct answer: <b>${esc(answer)}</b>`;
 }
-function next(){
- if(!state.locked)return;
- if(state.index>=state.questions.length-1){complete();return}
- state.index++;render();
-}
+function next(){if(!state||!state.locked)return;if(state.index>=state.questions.length-1){complete();return}state.index++;render()}
 function complete(){
- const correct=state.score/100;
- try{
-  const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
-  submitMilestoneScore(8,state.score||0);
-  p.milestone=Math.max(Number(p.milestone||1),8);
-  if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
-  if(typeof refreshJourney==="function")refreshJourney();
- }catch(e){}
- $("m8-content").style.display="none";$("m8-actions").style.display="none";$("m8-feedback").style.display="none";
- $("m8-complete").style.display="block";
- $("m8-complete").innerHTML=`<h2>THE REVIVAL COMPLETE</h2><p>${correct} / ${state.questions.length} memories recovered · ${state.score} / ${state.questions.length*100} points.</p><div class="m8-actions"><button id="m8-replay" class="m8-btn" type="button">REVIVE AGAIN</button><button id="m8-return" class="m8-btn secondary" type="button">RETURN TO JOURNEY</button></div>`;
- $("m8-replay").onclick=restart;$("m8-return").onclick=close;
+ const cfg=TRIALS[state.total]||TRIALS[20];state.score=Math.max(0,state.score+cfg.completion);const best=getBestRevival(),isNew=state.score>best;
+ try{const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};if(isNew){p.revivalBest=state.score;p.revivalBestQuestions=state.total;submitMilestoneScore(8,state.score||0)}if(Number(p.milestone||1)<8)p.milestone=8;if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));if(typeof refreshJourney==="function")refreshJourney()}catch(e){}
+ $('m8-content').style.display="none";$('m8-actions').style.display="none";$('m8-feedback').style.display="none";$('m8-complete').style.display="block";
+ $('m8-complete').innerHTML=`${isNew?'<div class="m8-new-record">✦ NEW MEMORY RECORD · YOUR BEST HAS BEEN RAISED ✦</div>':''}<h2>THE REVIVAL COMPLETE</h2><p>${state.correct} / ${state.total} memories recovered · <b>${state.score.toLocaleString("en-US")} points</b>.<br>Best streak: ${state.bestStreak}. ${isNew?"The Chronicle has recorded your new memory record.":`Your current Revival best is ${Math.max(best,state.score).toLocaleString("en-US")} points.`}</p><div class="m8-actions"><button id="m8-replay" class="m8-btn" type="button">CHOOSE ANOTHER TRIAL</button><button id="m8-return" class="m8-btn secondary" type="button">RETURN TO JOURNEY</button></div>`;
+ $('m8-replay').onclick=renderWager;$('m8-return').onclick=close;
 }
 async function start(){
- $("m8-complete").style.display="none";$("m8-content").style.display="block";$("m8-actions").style.display="flex";$("m8-feedback").style.display="";
- $("m8-content").innerHTML='<div style="padding:60px">GATHERING THE MEMORIES OF SANAPATI…</div>';
- await loadPeople();
- if(people.length<4){$("m8-content").innerHTML='<div style="padding:60px">Not enough identity data is available for the Revival.</div>';return}
- state={index:0,score:0,selected:null,locked:false,current:null,questions:buildQuestions()};
- render();
+ $('m8-complete').style.display="none";$('m8-content').style.display="block";$('m8-actions').style.display="flex";$('m8-feedback').style.display="";$('m8-content').innerHTML='<div style="padding:60px">GATHERING THE MEMORIES OF SANAPATI…</div>';
+ await loadPeople();if(people.length<4){$('m8-content').innerHTML='<div style="padding:60px">Not enough identity data is available for the Revival.</div>';return}renderWager();
 }
-function restart(){start()}
 function close(){root.classList.remove("active");root.setAttribute("aria-hidden","true");document.body.style.overflow=""}
 async function open(){root.classList.add("active");root.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";await start()}
-root.addEventListener("click",e=>{
- const o=e.target.closest(".m8-option");if(o){choose(o);return}
- if(e.target.id==="m8-lock"){lock();return}
- if(e.target.id==="m8-next"){next();return}
- if(e.target.id==="m8-close"){close();return}
-});
+root.addEventListener("click",e=>{const w=e.target.closest("[data-wager]");if(w){startTrial(Number(w.dataset.wager));return}const o=e.target.closest(".m8-option");if(o){choose(o);return}if(e.target.id==="m8-lock"){lock();return}if(e.target.id==="m8-next"){next();return}if(e.target.id==="m8-close"){close();return}});
 window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 })();
 </script>
