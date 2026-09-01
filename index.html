@@ -483,6 +483,282 @@ button,input{font:inherit}
 @media(max-width:950px){.character-creator-grid{grid-template-columns:150px 1fr}.character-options-panel{grid-column:1/-1}}
 @media(max-width:650px){.character-creator{padding:15px}.character-creator-top{align-items:flex-start;flex-direction:column}.character-creator-grid{grid-template-columns:1fr}.character-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.character-tabs-title,.character-random{grid-column:1/-1}.character-stage-panel{min-height:430px}.character-stage{min-height:340px}#character-preview{width:230px;height:330px}.character-option-grid{grid-template-columns:repeat(2,1fr)}.character-creator-footer{flex-direction:column;align-items:stretch}.character-creator-footer .wood-button{width:100%}}
 
+
+/* =========================================================
+   RPG CHARACTER CREATOR — VISUAL FINAL PASS
+========================================================= */
+.rpg-final-creator{
+  width:min(1320px,97vw);
+  padding:25px 26px 20px;
+  background:
+    radial-gradient(circle at 50% 16%,rgba(255,249,227,.95),rgba(231,201,148,.92) 72%),
+    #e6c894;
+  border:1px solid #80572c;
+  box-shadow:0 18px 45px rgba(58,35,13,.24),inset 0 0 0 4px rgba(255,247,220,.3);
+}
+.rpg-final-layout{
+  display:grid;
+  grid-template-columns:160px minmax(330px,390px) minmax(560px,1fr);
+  gap:16px;
+  margin-top:17px;
+  align-items:stretch;
+}
+.rpg-final-sidebar{
+  border:1px solid #896033;
+  background:linear-gradient(180deg,#4a321f,#302117);
+  padding:10px;
+  color:#ead4a3;
+  box-shadow:inset 0 0 0 2px rgba(224,181,103,.08);
+}
+.rpg-final-sidebar .character-tabs-title{
+  color:#d9b46f;
+  padding:8px 8px 12px;
+  font-size:10px;
+  letter-spacing:2px;
+}
+.rpg-side-current{
+  margin:0 6px 9px;
+  padding:7px 6px;
+  border-top:1px solid rgba(218,178,105,.25);
+  border-bottom:1px solid rgba(218,178,105,.25);
+  color:#f1d79e;
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+.rpg-final-sidebar .character-tab{
+  color:#d9c49d;
+  border-left:3px solid transparent;
+  padding:12px 8px;
+  margin:2px 0;
+}
+.rpg-final-sidebar .character-tab:hover{background:rgba(220,180,104,.10)}
+.rpg-final-sidebar .character-tab.active{
+  color:#fff0c9;
+  background:linear-gradient(90deg,rgba(190,140,62,.38),rgba(190,140,62,.08));
+  border-left-color:#d6a04b;
+}
+.rpg-final-sidebar .character-random{
+  margin-top:14px;
+  background:#5a3b22;
+  color:#f0d59e;
+  border:1px solid #a5783b;
+}
+.rpg-side-tip{
+  margin:15px 5px 4px;
+  padding-top:12px;
+  border-top:1px solid rgba(218,178,105,.2);
+  color:#bca37c;
+  font-size:9px;
+  line-height:1.55;
+}
+.rpg-final-stage{
+  min-height:650px;
+  border-color:#80572c;
+  background:linear-gradient(180deg,#f5e3bc,#d8b777);
+  box-shadow:inset 0 0 0 4px rgba(125,83,34,.07);
+}
+.rpg-final-stage .character-stage{
+  min-height:540px;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,251,235,.98),rgba(255,247,220,.4) 37%,transparent 67%),
+    linear-gradient(90deg,transparent 49.8%,rgba(126,87,39,.07) 50%,transparent 50.2%);
+}
+.rpg-final-stage .character-stage:before{
+  content:"";
+  position:absolute;
+  inset:30px;
+  border:1px solid rgba(126,87,39,.12);
+  border-radius:50%;
+  width:360px;height:360px;
+  left:50%;top:48%;
+  transform:translate(-50%,-50%);
+}
+.rpg-stage-decoration{
+  position:absolute;
+  color:#98713e;
+  opacity:.6;
+  z-index:1;
+}
+.rpg-stage-decoration-a{top:25px;left:28px;font-size:22px}
+.rpg-stage-decoration-b{right:28px;bottom:30px;font-size:19px}
+#character-preview{width:310px;height:480px}
+#character-preview svg{filter:drop-shadow(0 13px 10px rgba(62,39,15,.22))}
+.rpg-final-options{
+  max-height:650px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:#9b713a #ead5aa;
+  padding:17px 18px 20px;
+  border-color:#896033;
+}
+.rpg-final-options::-webkit-scrollbar{width:8px}
+.rpg-final-options::-webkit-scrollbar-track{background:#ead5aa}
+.rpg-final-options::-webkit-scrollbar-thumb{background:#9b713a;border:2px solid #ead5aa}
+.rpg-option-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(119,79,36,.28);
+}
+.rpg-option-heading span{
+  font:700 17px "Palatino Linotype",Palatino,Georgia,serif;
+  letter-spacing:2px;
+}
+.rpg-option-heading small{
+  color:#896542;
+  font-size:8px;
+  letter-spacing:1.5px;
+}
+.rpg-option-section{
+  padding:11px 0 12px;
+  border-bottom:1px solid rgba(119,79,36,.19);
+}
+.rpg-option-section .character-label{
+  margin:0 0 8px;
+}
+.rpg-final-options .character-option-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.rpg-final-options .character-choice{
+  height:105px;
+  border:1px solid #ae824a;
+  background:linear-gradient(180deg,#f8eacb,#e0bf80);
+  box-shadow:inset 0 0 0 1px rgba(255,249,224,.32);
+}
+.rpg-final-options .character-choice:hover{
+  transform:translateY(-2px);
+  border-color:#8d5e2d;
+}
+.rpg-final-options .character-choice.selected{
+  border:2px solid #6e421e;
+  box-shadow:0 0 0 2px rgba(205,157,74,.55),0 5px 12px rgba(63,38,14,.15);
+}
+.rpg-final-options .character-thumb{
+  height:78px;
+  background:
+    radial-gradient(circle at 50% 20%,#fff9e7,#e8cb96 75%);
+}
+.rpg-final-options .character-thumb svg{
+  width:100%;
+  height:100%;
+}
+.rpg-final-options .character-choice span:last-child{
+  height:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:3px 5px;
+  font-size:8px;
+  color:#55341d;
+}
+.rpg-final-options .character-swatches{
+  gap:8px;
+}
+.rpg-final-options .character-swatch{
+  width:40px!important;
+  height:40px!important;
+  min-height:40px!important;
+  border-radius:50%;
+  border:2px solid rgba(91,57,25,.3);
+  box-shadow:inset 0 0 0 2px rgba(255,248,224,.35);
+}
+.rpg-final-options .character-swatch.selected{
+  border:2px solid #6e421e!important;
+  box-shadow:0 0 0 2px #d3a052, inset 0 0 0 2px rgba(255,248,224,.35);
+}
+.rpg-final-options .character-swatch.selected:after{
+  color:#fff;
+  font-size:15px;
+}
+.rpg-final-options .rpg-build-grid .character-choice{
+  height:98px;
+}
+.rpg-final-options .rpg-hair-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.rpg-final-options .rpg-hair-grid .character-choice{
+  height:112px;
+}
+.rpg-final-options .rpg-hair-grid .character-thumb{
+  height:84px;
+}
+.rpg-final-options .rpg-outfit-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.rpg-final-options .rpg-outfit-grid .character-choice{
+  height:128px;
+}
+.rpg-final-options .rpg-outfit-grid .character-thumb{
+  height:99px;
+}
+.rpg-final-options .rpg-accessory-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.rpg-final-options .rpg-accessory-grid .character-choice{
+  height:105px;
+}
+.rpg-final-options .rpg-accessory-grid .character-thumb{
+  height:77px;
+}
+.rpg-name-field{
+  margin-top:13px;
+  padding-top:13px;
+  border-top:0;
+}
+.rpg-name-field .medieval-input{
+  width:100%;
+  box-sizing:border-box;
+  background:#fff8e7;
+}
+.rpg-final-footer{
+  margin-top:15px;
+  padding-top:13px;
+}
+.rpg-save-note{
+  color:#684a29;
+  font-size:11px;
+  font-weight:bold;
+}
+.rpg-save-subnote{
+  color:#8a6948;
+  font-size:9px;
+  margin-top:3px;
+}
+.rpg-confirm{
+  min-width:260px!important;
+  box-shadow:0 5px 0 #4c2f18,0 8px 14px rgba(58,35,13,.18);
+}
+.rpg-confirm:active{transform:translateY(3px);box-shadow:0 2px 0 #4c2f18}
+@media(max-width:1120px){
+  .rpg-final-layout{grid-template-columns:145px 330px minmax(480px,1fr)}
+  .rpg-final-options .rpg-outfit-grid,
+  .rpg-final-options .rpg-accessory-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .rpg-final-layout{grid-template-columns:145px 1fr}
+  .rpg-final-options{grid-column:1/-1;max-height:none}
+  .rpg-final-stage{min-height:500px}
+}
+@media(max-width:650px){
+  .rpg-final-creator{padding:15px}
+  .rpg-final-layout{grid-template-columns:1fr}
+  .rpg-final-sidebar{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+  .rpg-final-sidebar .character-tabs-title,
+  .rpg-side-current,.rpg-side-tip{grid-column:1/-1}
+  .rpg-final-sidebar .character-random{margin-top:6px}
+  .rpg-final-stage{min-height:440px}
+  .rpg-final-stage .character-stage{min-height:350px}
+  #character-preview{width:235px;height:350px}
+  .rpg-final-options .rpg-hair-grid,
+  .rpg-final-options .rpg-outfit-grid,
+  .rpg-final-options .rpg-accessory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rpg-final-footer{flex-direction:column;align-items:stretch}
+  .rpg-confirm{width:100%}
+}
+
 /* =========================================================
    COMMON SCREENS
 ========================================================= */
@@ -2104,7 +2380,7 @@ button,input{font:inherit}
      RPG CHARACTER CREATOR
 ========================================================= -->
 <section id="character-screen" class="screen hidden">
-  <div class="character-creator">
+  <div class="character-creator rpg-final-creator">
     <div class="character-creator-top">
       <div>
         <div class="screen-kicker">CHARACTER CREATION · PROLOGUE</div>
@@ -2114,49 +2390,86 @@ button,input{font:inherit}
       <div class="character-step">STEP <b>01</b> / 02</div>
     </div>
 
-    <div class="character-creator-grid">
-      <aside class="character-tabs">
+    <div class="rpg-final-layout">
+      <aside class="rpg-final-sidebar">
         <div class="character-tabs-title">CUSTOMIZE</div>
+        <div class="rpg-side-current">YOUR EXPLORER</div>
         <button type="button" class="character-tab active" data-character-tab="appearance">◈ APPEARANCE</button>
         <button type="button" class="character-tab" data-character-tab="hair">✦ HAIR</button>
         <button type="button" class="character-tab" data-character-tab="outfit">⚔ OUTFIT</button>
         <button type="button" class="character-tab" data-character-tab="accessory">◇ ACCESSORY</button>
         <button type="button" class="character-random" id="character-random">✧ RANDOMIZE</button>
+        <div class="rpg-side-tip">Click any card to preview it instantly.</div>
       </aside>
 
-      <main class="character-stage-panel">
+      <main class="character-stage-panel rpg-final-stage">
         <div class="character-stage-label">EXPLORER PREVIEW</div>
-        <div class="character-stage"><div id="character-preview"></div></div>
+        <div class="character-stage">
+          <div class="rpg-stage-decoration rpg-stage-decoration-a">✦</div>
+          <div class="rpg-stage-decoration rpg-stage-decoration-b">✧</div>
+          <div id="character-preview"></div>
+        </div>
         <div class="character-nameplate">
           <strong id="character-preview-name">Taruna</strong>
           <span>Lv.1 · PAMONG EXPLORER</span>
         </div>
       </main>
 
-      <section class="character-options-panel">
-        <div id="character-group-appearance" class="character-option-group active">
-          <div class="character-option-kicker">APPEARANCE</div><h2>Choose your foundation</h2>
-          <div class="character-label">SKIN TONE</div><div id="character-skin" class="character-swatches"></div>
-          <div class="character-label">BUILD</div><div id="character-body" class="character-option-grid"></div>
+      <section class="character-options-panel rpg-final-options">
+        <div class="rpg-option-heading">
+          <span>APPEARANCE</span>
+          <small>CHOOSE YOUR LOOK</small>
         </div>
-        <div id="character-group-hair" class="character-option-group">
-          <div class="character-option-kicker">HAIR</div><h2>Choose your style</h2>
-          <div class="character-label">STYLE</div><div id="character-hair" class="character-option-grid"></div>
-          <div class="character-label">COLOR</div><div id="character-haircolor" class="character-swatches"></div>
+
+        <div class="rpg-option-section">
+          <div class="character-label">SKIN TONE</div>
+          <div id="character-skin" class="character-swatches"></div>
         </div>
-        <div id="character-group-outfit" class="character-option-group">
-          <div class="character-option-kicker">OUTFIT</div><h2>Choose your attire</h2>
-          <div class="character-label">STYLE</div><div id="character-outfit" class="character-option-grid"></div>
+
+        <div class="rpg-option-section">
+          <div class="character-label">BUILD</div>
+          <div id="character-body" class="character-option-grid rpg-build-grid"></div>
         </div>
-        <div id="character-group-accessory" class="character-option-group">
-          <div class="character-option-kicker">ACCESSORY</div><h2>Complete the look</h2>
-          <div class="character-label">EQUIPMENT</div><div id="character-accessory" class="character-option-grid"></div>
+
+        <div class="rpg-option-section">
+          <div class="character-label">HAIR STYLE</div>
+          <div id="character-hair" class="character-option-grid rpg-hair-grid"></div>
         </div>
-        <div class="character-name-field">
+
+        <div class="rpg-option-section">
+          <div class="character-label">HAIR COLOR</div>
+          <div id="character-haircolor" class="character-swatches"></div>
+        </div>
+
+        <div class="rpg-option-section">
+          <div class="character-label">OUTFIT</div>
+          <div id="character-outfit" class="character-option-grid rpg-outfit-grid"></div>
+        </div>
+
+        <div class="rpg-option-section">
+          <div class="character-label">ACCESSORY</div>
+          <div id="character-accessory" class="character-option-grid rpg-accessory-grid"></div>
+        </div>
+
+        <div class="character-name-field rpg-name-field">
           <label class="field-label" for="character-username">YOUR NAME</label>
           <input id="character-username" class="medieval-input" type="text" maxlength="24" placeholder="Enter your name...">
         </div>
       </section>
+    </div>
+
+    <div class="character-creator-footer rpg-final-footer">
+      <div>
+        <div class="rpg-save-note">✦ Your appearance will be saved with your explorer profile.</div>
+        <div class="rpg-save-subnote">You can change your appearance later from your profile.</div>
+      </div>
+      <div>
+        <button id="character-confirm" class="wood-button rpg-confirm" type="button">✦ CONFIRM EXPLORER ✦</button>
+        <p id="character-error" class="error"></p>
+      </div>
+    </div>
+  </div>
+</section>
     </div>
 
     <div class="character-creator-footer">
@@ -2663,7 +2976,7 @@ let characterState={...DEFAULT_CHARACTER};
 
 function charOpt(group,id){return CHARACTER_OPTIONS[group].find(x=>x.id===id)||CHARACTER_OPTIONS[group][0]}
 
-function characterSVG(a){
+function characterSVG(a, focus){
   const skin=charOpt("skin",a.skin).value, hair=charOpt("hairColor",a.hairColor).value, outfit=charOpt("outfit",a.outfit).value;
   const body=a.body||"average";
   const hairStyle=a.hair||"short";
@@ -2682,7 +2995,12 @@ function characterSVG(a){
   if(a.accessory==="headband") acc=`<path d="M68 72 Q105 54 143 72" fill="none" stroke="#a36d2e" stroke-width="7"/>`;
   if(a.accessory==="earring") acc=`<circle cx="138" cy="104" r="4" fill="#d4a943"/>`;
   const cape=a.accessory==="cape"?`<path d="${body==="athletic"?"M39 218":"M48 220"} L25 282 Q72 298 105 284 Q138 298 177 282 L162 218Z" fill="#50352b" opacity=".92"/>`:"";
-  return `<svg viewBox="0 0 210 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  const vb = focus==="hair" || focus==="skin" || focus==="hairColor" || focus==="accessory"
+    ? "35 20 140 170"
+    : focus==="outfit" || focus==="body"
+    ? "18 125 174 180"
+    : "0 0 210 330";
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs><linearGradient id="skinG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1d7"/><stop offset=".25" stop-color="${skin}"/><stop offset="1" stop-color="${skin}"/></linearGradient></defs>
     ${cape}
     <path d="${bodyPath}" fill="${outfit}"/>
@@ -2719,7 +3037,7 @@ function renderCharacterCreator(){
       const b=document.createElement("button"); b.type="button";
       b.className="character-choice"+(swatch?" character-swatch":"")+(characterState[group]===opt.id?" selected":"");
       if(swatch)b.style.background=opt.value;
-      if(!swatch)b.innerHTML=`<span class="character-thumb">${characterSVG({...characterState,[group]:opt.id})}</span><span>${opt.label}</span>`;
+      if(!swatch)b.innerHTML=`<span class="character-thumb">${characterSVG({...characterState,[group]:opt.id},group)}</span><span>${opt.label}</span>`;
       b.title=opt.label;
       b.onclick=()=>{characterState[group]=opt.id;sessionStorage.setItem("npcAvatar",JSON.stringify(characterState));renderCharacterCreator()};
       host.appendChild(b);
