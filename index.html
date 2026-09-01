@@ -5001,7 +5001,32 @@ setInterval(syncNode6,1500);
 #milestone7-jabatan{position:fixed;inset:0;z-index:99999;display:none;overflow:auto;background:radial-gradient(circle at center,rgba(255,250,235,.94),rgba(217,190,143,.97));color:#3f2a1d}
 #milestone7-jabatan.active{display:block}
 .m7-shell{width:min(1120px,calc(100% - 34px));min-height:100%;margin:0 auto;padding:28px 0 42px}
-.m7-frame{width:100%;margin:0 auto;padding:24px;border:1px solid rgba(90,55,33,.35);border-radius:18px;background:linear-gradient(145deg,#f6e9ca,#ead5aa 55%,#dfc392);box-shadow:0 18px 55px rgba(62,38,20,.22),inset 0 0 0 4px rgba(255,248,225,.34)}
+.m7-close{
+  position:absolute;
+  top:18px;
+  right:20px;
+  z-index:20;
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid #81531f;
+  border-radius:50%;
+  background:linear-gradient(180deg,#9c6b29,#603815);
+  color:#f4d99e;
+  font:700 25px/1 Georgia,serif;
+  cursor:pointer;
+  box-shadow:0 3px 6px rgba(49,27,8,.25);
+  transition:transform .15s ease,filter .15s ease;
+}
+.m7-close:hover{
+  filter:brightness(1.1);
+  transform:scale(1.06);
+}
+.m7-close:active{transform:scale(.96)}
+
+.m7-frame{position:relative;width:100%;margin:0 auto;padding:24px;border:1px solid rgba(90,55,33,.35);border-radius:18px;background:linear-gradient(145deg,#f6e9ca,#ead5aa 55%,#dfc392);box-shadow:0 18px 55px rgba(62,38,20,.22),inset 0 0 0 4px rgba(255,248,225,.34)}
 .m7-header{text-align:center;margin-bottom:18px}
 .m7-eyebrow{font:700 12px/1.2 Georgia,serif;letter-spacing:4px;color:#75462e;margin-bottom:7px}
 .m7-title{margin:0;font:700 clamp(30px,4vw,48px)/1 Georgia,serif;letter-spacing:2px;color:#4d2c20}
@@ -5044,9 +5069,10 @@ setInterval(syncNode6,1500);
 .m7-chain{width:min(720px,100%);margin:0 auto;display:grid;gap:9px}.m7-chain-row{display:grid;grid-template-columns:145px 1fr;align-items:center;border:1px solid rgba(84,51,31,.25);border-radius:10px;background:rgba(255,249,232,.7);overflow:hidden}.m7-chain-row span{padding:11px;background:rgba(119,73,47,.08);font:700 10px/1 Arial,sans-serif;letter-spacing:1.3px;color:#76523a}.m7-chain-row strong{padding:11px 14px;text-align:left;font:700 15px/1.3 Georgia,serif;color:#4e3022}
 .m7-feedback{width:min(720px,100%);margin:16px auto 0}.m7-feedback-note{padding:11px 14px;border-radius:10px;background:rgba(255,249,231,.78);border:1px solid rgba(84,51,31,.25);font:700 12px/1.5 Arial,sans-serif;color:#5b3a28}
 .m7-complete{padding:28px 18px;text-align:center}.m7-complete h2{margin:0 0 8px;font:700 34px/1 Georgia,serif;color:#4e2e21}.m7-complete p{margin:0 auto 20px;font:15px/1.6 Georgia,serif;color:#6e4b34}
-@media(max-width:760px){.m7-shell{width:min(100% - 18px,1120px);padding:10px 0 24px}.m7-frame{padding:18px 12px 22px;border-radius:13px}.m7-discovery-card{width:145px}.m7-discovery-photo{height:145px}.m7-option{width:150px}.m7-chain-row{grid-template-columns:105px 1fr}}
+@media(max-width:760px){.m7-shell{width:min(100% - 18px,1120px);padding:10px 0 24px}.m7-frame{padding:18px 12px 22px;border-radius:13px}.m7-close{top:12px;right:12px;width:36px;height:36px;font-size:22px}.m7-discovery-card{width:145px}.m7-discovery-photo{height:145px}.m7-option{width:150px}.m7-chain-row{grid-template-columns:105px 1fr}}
 </style><div id="milestone7-jabatan" aria-hidden="true">
  <div class="m7-shell"><div class="m7-frame">
+   <button class="m7-close" id="m7-close" type="button" aria-label="Close Milestone VII" title="Close">×</button>
   <header class="m7-header">
    <div class="m7-eyebrow">LEADERS HALL · MILESTONE VII</div>
    <h1 class="m7-title">THE JABATAN</h1>
@@ -5262,7 +5288,7 @@ root.addEventListener("click",e=>{
  const sp=e.target.closest("[data-sort-person]");if(sp){sortPerson(sp.dataset.sortPerson);return}
  const su=e.target.closest("[data-sort-unit]");if(su){sortUnit(su.dataset.sortUnit);return}
 });
-$("m7-lock").onclick=lock;$("m7-next").onclick=next;
+$("m7-lock").onclick=lock;$("m7-next").onclick=next;$("m7-close").onclick=close;
 window.openJabatanMilestone=open;window.closeJabatanMilestone=close;
 
 document.addEventListener("click",function(e){
