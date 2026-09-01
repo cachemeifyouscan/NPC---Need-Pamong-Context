@@ -2458,13 +2458,10 @@ async function submitMilestoneScore(milestone,score){
     const cleanScore=Math.max(0,Math.min(max,Math.floor(Number(score)||0)));
 
     if(m==="8"){
-        // Revival is additive. The submitted M8 value is the cumulative Revival total.
-        // Even when the local value is already current, still sync it to Supabase.
-        if(cleanScore>Number(p.revivalTotal||0)){
-            p.revivalTotal=cleanScore;
-            p.milestoneScores[8]=cleanScore;
-            savePlayerData(p);
-        }
+        // Revival is cumulative. The value sent to Supabase is the player's
+        // CURRENT cumulative Revival total, not the score of one attempt.
+        p.revivalTotal=Math.max(Number(p.revivalTotal||0),cleanScore);
+        p.milestoneScores[8]=p.revivalTotal;
     }else{
         const previous=Math.max(0,Math.min(max,Math.floor(Number(p.milestoneScores[m]||0))));
         if(cleanScore<=previous){updatePlayerScoreUI();return;}
@@ -2510,7 +2507,21 @@ async function renderLeaderboard(){
     }
 }
 
-function openLeaderboard(){const o=document.getElementById("leaderboard-overlay");if(!o)return;o.classList.remove("hidden");o.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";renderLeaderboard();}
+async function syncCurrentLeaderboardScore(){
+    try{
+        const p=ensurePlayerIdentity(getPlayerData()||{});
+        if(!p.username)return;
+        const m8=Number(p.revivalTotal||0);
+        // Re-send the complete current Revival total before displaying rankings.
+        await submitMilestoneScore(8,m8);
+    }catch(e){console.warn("Leaderboard live sync failed:",e)}
+}
+async function openLeaderboard(){
+    const o=document.getElementById("leaderboard-overlay");if(!o)return;
+    o.classList.remove("hidden");o.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+    await syncCurrentLeaderboardScore();
+    await renderLeaderboard();
+}
 function closeLeaderboard(){const o=document.getElementById("leaderboard-overlay");if(!o)return;o.classList.add("hidden");o.setAttribute("aria-hidden","true");document.body.style.overflow="";}
 
 function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
