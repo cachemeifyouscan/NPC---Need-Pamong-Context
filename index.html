@@ -295,7 +295,133 @@ button,input{font:inherit}
 .error{min-height:23px;margin:15px 0 0;color:#87392a;font-size:14px;font-style:italic}
 .gate-footer{margin-top:22px;color:#907655;font-size:13px;font-style:italic;letter-spacing:1px}
 
+
+/* =========================================================
+   SAME CHRONICLE — HIGH VISIBILITY SELECTION / FREEZE
+========================================================= */
+.tower-same-card{
+  position:relative;
+  overflow:hidden;
+}
+.tower-same-card .tower-selection-mark{
+  position:absolute;
+  top:9px;
+  left:9px;
+  z-index:4;
+  display:none;
+  padding:5px 7px;
+  border:1px solid #6b432d;
+  background:#4f2d20;
+  color:#f7e5bd;
+  font:700 9px Georgia,serif;
+  letter-spacing:1px;
+  box-shadow:0 2px 0 rgba(48,27,18,.35);
+}
+.tower-same-card.selected{
+  border:3px solid #5d3025;
+  transform:translateY(-3px);
+  box-shadow:0 0 0 3px rgba(118,70,45,.16),0 6px 0 #8c5c38;
+  background:linear-gradient(#f3dfb3,#d6b77e);
+}
+.tower-same-card.selected .tower-selection-mark{
+  display:block;
+}
+.tower-same-card.selection-locked:not(.selected){
+  opacity:.58;
+  filter:saturate(.7);
+}
+.tower-same-card.match-frozen{
+  cursor:default;
+  transform:none;
+}
+.tower-same-card.match-frozen.correct{
+  border:3px solid #5d3025;
+  box-shadow:0 0 0 3px rgba(93,48,37,.13),0 4px 0 #79503a;
+}
+.tower-same-card.match-frozen.wrong{
+  border:3px solid #75463b;
+  background:#e3c5a5;
+  box-shadow:0 0 0 3px rgba(117,70,59,.12),0 4px 0 #8b5b4d;
+}
+.tower-same-card.match-frozen.missed{
+  border:3px dashed #5d3025;
+  background:#dfcc9e;
+  box-shadow:0 0 0 3px rgba(93,48,37,.10),0 4px 0 #967650;
+}
+.tower-same-card.match-frozen.correct .tower-selection-mark,
+.tower-same-card.match-frozen.wrong .tower-selection-mark,
+.tower-same-card.match-frozen.missed .tower-selection-mark{
+  display:block;
+}
+.tower-same-card.match-frozen.missed .tower-selection-mark{
+  background:#7a4c2d;
+}
+.tower-selection-status{
+  margin:12px auto 8px;
+  text-align:center;
+  color:#68462f;
+  font:700 11px Georgia,serif;
+  letter-spacing:1.2px;
+}
+.tower-selection-status span{
+  display:inline-block;
+  min-width:30px;
+  margin-left:4px;
+  color:#4b2d1b;
+}
+.tower-confirm-selection{
+  opacity:.58;
+  transition:opacity .16s ease,transform .16s ease,filter .16s ease;
+}
+.tower-confirm-selection.ready{
+  opacity:1;
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+.tower-confirm-selection.frozen{
+  opacity:.85;
+}
+.tower-same-result{
+  width:min(720px,94%);
+  margin:12px auto 0;
+  padding:10px 14px;
+  border:1px solid rgba(132,91,48,.35);
+  background:#f1dfb7;
+  text-align:center;
+  color:#4b2d1b;
+  font:12px Georgia,serif;
+}
+.tower-same-result strong{
+  display:block;
+  margin-bottom:3px;
+  letter-spacing:1px;
+}
+.tower-same-result em{font-style:italic}
+.tower-same-result.is-correct{border-left:4px solid #5d3a2b}
+.tower-same-result.is-wrong{border-left:4px solid #75463b;background:#ead1b9}
+
 /* responsive */
+
+.tower-match-result{
+  display:grid;
+  grid-template-columns:90px minmax(120px,1fr) minmax(180px,auto);
+  align-items:center;
+  gap:10px;
+  max-width:1040px;
+  margin:6px auto;
+  padding:8px 12px;
+  border:1px solid rgba(132,91,48,.30);
+  background:#f1dfb7;
+  font:12px Georgia,serif;
+  color:#4b2d1b;
+}
+.tower-match-result strong{letter-spacing:1px}
+.tower-match-result span{font-weight:bold}
+.tower-match-result em{font-style:normal;text-align:right}
+.tower-match-result.is-correct{border-left:4px solid #5d3a2b}
+.tower-match-result.is-wrong{border-left:4px solid #75463b;background:#ead1b9}
+.tower-match-result b{font-weight:bold}
+
 @media(max-width:700px){
     .gate-screen{padding:25px 12px}
     .gate-panel{width:94vw;padding:50px 25px 46px}
@@ -704,6 +830,223 @@ button,input{font:inherit}
 .team-a-game .team-a-divider,
 .team-a-game .team-a-progress{display:none!important}
 .team-a-game .team-a-inner{padding-top:8px}
+
+/* ===== ROUND 7 : FOUR-COLUMN MATCHING ===== */
+.tower-mixed-row .tower-mixed-person{
+  width:100%;
+}
+.tower-mixed-row .tower-mixed-select,
+.tower-mixed-row select{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  height:48px;
+  padding:0 10px;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.tower-mixed-row.locked{
+  border-left-color:#5d3a2b;
+}
+.tower-mixed-row.locked .tower-mixed-select{
+  cursor:not-allowed;
+}
+.tower-mixed-row.locked .tower-mixed-person::after{
+  margin-top:2px;
+}
+@media(max-width:900px){
+  .tower-mixed-list{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:560px){
+  .tower-mixed-list{
+    grid-template-columns:1fr;
+  }
+  .tower-mixed-person .tower-game-photo{
+    max-width:170px;
+    height:190px;
+  }
+}
+
+
+/* =========================================================
+   ROUND 7 — CHRONICLE MATCH : 4-CARD GALLERY
+   No wide horizontal rows. Four Pamong sit side-by-side.
+========================================================= */
+.tower-mixed-list{
+  width:min(1280px,96%) !important;
+  margin:20px auto 0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:16px !important;
+  align-items:stretch !important;
+}
+
+.tower-mixed-row{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  justify-content:flex-start !important;
+  gap:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:1px solid #9a7043 !important;
+  border-left:1px solid #9a7043 !important;
+  background:linear-gradient(180deg,#f1dfb7 0%,#e5c994 100%) !important;
+  box-shadow:0 4px 0 #a47b4a, inset 0 0 18px rgba(93,58,32,.055) !important;
+  transition:transform .16s ease,box-shadow .16s ease !important;
+  overflow:hidden !important;
+}
+
+.tower-mixed-row:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 6px 0 #a47b4a, inset 0 0 18px rgba(93,58,32,.07) !important;
+}
+
+/* Portrait area */
+.tower-mixed-person{
+  width:100% !important;
+  min-width:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:10px !important;
+  padding:14px 12px 12px !important;
+  box-sizing:border-box !important;
+  color:#4b2d1b !important;
+  font:bold 16px Georgia,serif !important;
+  text-align:center !important;
+}
+
+.tower-mixed-person .tower-game-photo{
+  flex:none !important;
+  width:150px !important;
+  height:190px !important;
+  max-width:100% !important;
+  aspect-ratio:3/4 !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  margin:0 auto !important;
+  border:1px solid #8e6438 !important;
+  background:#d8bc84 !important;
+  box-shadow:0 3px 0 #b18a57,0 5px 10px rgba(57,34,15,.12) !important;
+}
+
+.tower-mixed-person .tower-game-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  display:block !important;
+}
+
+.tower-mixed-person strong{
+  display:block !important;
+  width:100% !important;
+  line-height:1.25 !important;
+  min-height:20px !important;
+}
+
+/* Remove the old "PLACE IN + line" connector treatment. */
+.tower-mixed-connector{
+  width:100% !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  gap:7px !important;
+  padding:11px 12px 14px !important;
+  border-top:1px solid rgba(126,84,46,.28) !important;
+  color:#765238 !important;
+  font:bold 10px Georgia,serif !important;
+  letter-spacing:1.1px !important;
+  text-align:center !important;
+}
+
+.tower-mixed-connector::before{
+  display:none !important;
+}
+
+.tower-mixed-select{
+  width:100% !important;
+  min-width:0 !important;
+  height:46px !important;
+  min-height:46px !important;
+  box-sizing:border-box !important;
+  padding:0 9px !important;
+  border:1px solid #9a7043 !important;
+  background:#f8e9c8 !important;
+  color:#4b2d1b !important;
+  font:bold 12px Georgia,serif !important;
+  letter-spacing:.25px !important;
+  cursor:pointer !important;
+  box-shadow:0 2px 0 rgba(113,73,35,.16) !important;
+}
+
+.tower-mixed-row.locked{
+  border-left:1px solid #765238 !important;
+}
+
+.tower-mixed-row.locked .tower-mixed-select{
+  cursor:not-allowed !important;
+}
+
+.tower-mixed-row.locked .tower-mixed-person::after{
+  content:"ANSWER LOCKED" !important;
+  margin-top:-3px !important;
+  font:700 8px Georgia,serif !important;
+  letter-spacing:1px !important;
+  color:#765238 !important;
+}
+
+/* Make the feedback and action area sit naturally below the gallery. */
+#tower-trial-feedback{
+  width:min(1280px,96%);
+  margin:14px auto 0;
+}
+
+.tower-round-lock-note{
+  width:min(1280px,96%) !important;
+  max-width:none !important;
+  margin:16px auto 8px !important;
+  box-sizing:border-box !important;
+}
+
+@media(max-width:1050px){
+  .tower-mixed-list{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:600px){
+  .tower-mixed-list{
+    grid-template-columns:1fr !important;
+    width:min(430px,94%) !important;
+  }
+  .tower-mixed-person .tower-game-photo{
+    width:170px !important;
+    height:215px !important;
+  }
+}
+
+
+/* M6 layout polish: keep the question, portrait, recall panel and answers on one centered axis. */
+.placement-target{margin-left:auto !important;margin-right:auto !important;}
+.placement-target .placement-photo{margin-left:auto;margin-right:auto;}
+.placement-photo img{object-fit:contain !important;object-position:50% 50% !important;}
+.placement-chain{margin-left:auto !important;margin-right:auto !important;}
+.placement-chain-info{margin-left:auto !important;margin-right:auto !important;}
+.placement-four-options{width:100%;}
+@media(max-width:700px){
+  .placement-chain-info{max-width:100%;}
+  .placement-chain-row{grid-template-columns:100px 1fr;}
+  .placement-four-options{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -926,6 +1269,605 @@ button,input{font:inherit}
 }
 .tower-person-photo .team-a-placeholder{
     position:absolute;inset:0;display:grid;place-items:center;
+}
+</style>
+
+<style id="tower-reveal-photo-fix">
+.tower-reveal-photo{
+    position:relative;
+    width:min(360px,100%);
+    height:320px;
+    margin:0 auto 18px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#d9bd82,#ead6a8);
+    border:1px solid rgba(91,55,27,.35);
+}
+.tower-reveal-photo img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:opacity .18s ease;
+}
+.tower-reveal-photo .team-a-photo-skeleton{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,#d8bd83 0%,#ead7aa 50%,#d8bd83 100%);
+}
+.tower-reveal-photo .team-a-placeholder{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+}
+</style>
+
+<style id="tower-of-ages-trial-css">
+.tower-trial-head{text-align:center;margin:2px auto 14px;max-width:720px}
+.tower-trial-kicker{font-size:10px;letter-spacing:2.4px;color:#6b3b31;font-weight:bold;margin-bottom:6px}
+.tower-trial-head h3{margin:0;color:#43281b;font:700 24px Georgia,serif}
+.tower-trial-head p{margin:6px 0 0;color:#76583c;font-size:12px;font-style:italic}
+.tower-trial-face{width:min(300px,80%);height:225px;margin:8px auto 16px}
+.tower-trial-face .tower-person-photo{height:225px;border:1px solid #8f6337;box-shadow:0 5px 0 #b08a55,0 8px 15px rgba(57,34,15,.12)}
+.tower-trial-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:760px;margin:0 auto}
+.tower-generation-choice{min-height:54px;border:1px solid #8b6034;background:linear-gradient(#e5c993,#cba96f);color:#4b2d1b;box-shadow:0 3px 0 #957048,0 5px 10px rgba(57,34,15,.1);font:700 14px Georgia,serif;letter-spacing:.8px;cursor:pointer}
+.tower-generation-choice:hover{transform:translateY(-2px);background:linear-gradient(#eed9aa,#d6b982)}
+.tower-generation-choice.correct{background:linear-gradient(#6d4735,#512c28);color:#f4dfb3;border-color:#40231f}
+.tower-generation-choice.wrong{background:linear-gradient(#9a7760,#755342);color:#f4dfb3;border-color:#5a3c2e}
+.tower-generation-choice:disabled{cursor:default}
+.tower-trial-feedback{min-height:42px;margin:12px auto 0;max-width:760px;padding:10px;text-align:center;color:#63452f;font-size:12px}
+.tower-final-score{margin-top:16px;color:#6b3b31;font:bold 18px Georgia,serif;letter-spacing:1px}
+.generation-empty-small{min-height:250px}
+@media(max-width:700px){
+  .tower-trial-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tower-trial-face{width:90%}
+  .tower-mixed-list{
+  width:min(1260px,96%);
+  margin:18px auto 0;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  align-items:stretch;
+}
+.tower-mixed-row{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:stretch;
+  gap:9px;
+  padding:10px;
+  min-height:0;
+  border:1px solid rgba(132,91,48,.34);
+  border-left:3px solid #7a4931;
+  background:linear-gradient(180deg,#f4e4bd,#ead2a0);
+  box-shadow:0 3px 0 rgba(113,73,35,.18),inset 0 0 16px rgba(101,65,31,.06);
+}
+.tower-mixed-person{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  min-width:0;
+  font:bold 15px Georgia,serif;
+  color:#4b2d1b;
+  text-align:center;
+}
+.tower-mixed-person .tower-game-photo{
+  width:100%;
+  max-width:150px;
+  height:176px;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center;
+  justify-self:center;
+  border:1px solid #8e6438;
+  background:#d8bc84;
+  box-shadow:0 3px 0 #b18a57,0 5px 10px rgba(57,34,15,.12);
+}
+.tower-mixed-connector{width:100%}
+  .tower-match-result{grid-template-columns:75px 1fr;gap:5px}
+  .tower-match-result em{grid-column:1/-1;text-align:left}
+  .tower-same-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tower-same-card .tower-game-photo{height:160px}
+}
+
+
+</style>
+
+<style id="tower-photo-no-crop">
+/* Never crop Pamong photos in Tower of Ages.
+   The complete source portrait remains visible inside the frame. */
+.tower-person-photo img,
+.tower-trial-face .tower-person-photo img,
+.tower-reveal-photo img{
+    object-fit:contain !important;
+    object-position:center center !important;
+    background:#d3b77e;
+}
+.tower-person-photo,
+.tower-trial-face .tower-person-photo,
+.tower-reveal-photo{
+    background:#d3b77e;
+}
+.tower-reveal-meta{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:7px;
+    flex-wrap:wrap;
+    margin:8px 0 2px;
+    color:#5e402c;
+    font-size:12px;
+}
+.tower-meta-label{
+    font-size:9px;
+    letter-spacing:1.5px;
+    color:#87633e;
+    font-weight:bold;
+}
+.tower-meta-separator{color:#a47a45}
+</style>
+
+<style id="tower-photo-framing-final">
+/* Keep every portrait inside a portrait-oriented frame.
+   Never crop the source photo. */
+.tower-person-photo{
+    width:100%;
+    height:auto;
+    aspect-ratio:3 / 4;
+    min-height:0 !important;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#d8bd83;
+}
+.tower-person-photo img{
+    width:100% !important;
+    height:100% !important;
+    min-height:0 !important;
+    object-fit:contain !important;
+    object-position:center center;
+    display:block;
+    background:#d8bd83;
+}
+.generation-person{
+    min-height:0;
+}
+.generation-person .tower-person-photo{
+    width:100%;
+    aspect-ratio:3 / 4;
+    height:auto;
+}
+.generation-person .tower-person-photo img{
+    aspect-ratio:3 / 4;
+}
+.tower-trial-face{
+    width:min(300px,42vw);
+    height:auto !important;
+    aspect-ratio:3 / 4;
+    margin:8px auto 16px;
+}
+.tower-trial-face .tower-person-photo{
+    width:100%;
+    height:100% !important;
+    aspect-ratio:auto;
+    border:1px solid #8f6337;
+    box-shadow:0 5px 0 #b08a55,0 8px 15px rgba(57,34,15,.12);
+}
+.tower-trial-face .tower-person-photo img{
+    object-fit:contain !important;
+}
+.tower-reveal-photo{
+    width:min(360px,78vw);
+    height:auto !important;
+    aspect-ratio:3 / 4;
+    overflow:hidden;
+}
+.tower-reveal-photo img{
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain !important;
+    object-position:center;
+}
+@media(max-width:700px){
+    .tower-trial-face{width:min(280px,68vw);}
+    .tower-reveal-photo{width:min(300px,78vw);}
+}
+</style>
+
+
+<style id="tower-multi-challenge-css">
+.tower-game-photo{
+  position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:#d8bd83;
+}
+.tower-game-photo img{width:100%!important;height:100%!important;object-fit:contain!important;display:block}
+.tower-team-memory{
+  margin:7px auto 0;display:inline-block;padding:5px 12px;
+  border:1px solid #9a7043;background:#ead5a5;color:#5c3926;
+  font:bold 10px Georgia,serif;letter-spacing:1.5px;
+  box-shadow:0 2px 0 #b18a57;
+}
+.tower-same-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;max-width:880px;margin:10px auto 0;
+}
+.tower-same-card{
+  border:1px solid #9a7043;background:linear-gradient(#f0dfb8,#dfc18b);
+  padding:8px;cursor:pointer;color:#4b2d1b;
+  box-shadow:0 3px 0 #a27a4a;
+}
+.tower-same-card:hover,.tower-same-card.selected{transform:translateY(-2px);background:linear-gradient(#f4e5c2,#d3b27c)}
+.tower-same-card .tower-game-photo{height:180px}
+.tower-same-card span{display:block;margin-top:8px;font:bold 13px Georgia,serif}
+.tower-same-card.correct{background:#d8c49a;border-color:#5d3a2b}
+.tower-same-card.wrong{opacity:.65}
+.tower-order-board{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
+  max-width:1000px;margin:14px auto;
+}
+.tower-order-card{
+  position:relative;border:1px solid #9a7043;background:#ead5a5;
+  padding:8px;cursor:grab;box-shadow:0 3px 0 #a27a4a;
+}
+.tower-order-card.dragging{opacity:.55}
+.tower-order-card .tower-game-photo{height:190px}
+.tower-order-card strong{display:block;margin-top:7px;font:700 13px Georgia,serif}
+.tower-drag-handle{position:absolute;top:6px;right:7px;color:#6b4930;font-size:16px}
+.tower-submit-order{
+  display:block;margin:14px auto 0;padding:13px 28px;
+  border:1px solid #4a2a1d;background:linear-gradient(#70472b,#4b281b);
+  color:#f2dfb5;font:bold 12px Georgia,serif;letter-spacing:1px;
+  box-shadow:0 4px 0 #2e1a12;cursor:pointer;
+}
+.tower-mixed-list{
+  width:min(1040px,94%);
+  margin:18px auto 0;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.tower-mixed-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 180px;
+  gap:14px;
+  align-items:center;
+  padding:10px 12px;
+  margin:0;
+  min-height:150px;
+  border:1px solid rgba(132,91,48,.34);
+  border-left:4px solid #7a4931;
+  background:linear-gradient(90deg,#f4e4bd,#ead2a0);
+  box-shadow:0 3px 0 rgba(113,73,35,.18), inset 0 0 16px rgba(101,65,31,.06);
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.tower-mixed-row:hover{
+  transform:translateY(-1px);
+  background:linear-gradient(90deg,#f7e9c8,#edd7aa);
+  box-shadow:0 4px 0 rgba(113,73,35,.22), inset 0 0 16px rgba(101,65,31,.07);
+}
+.tower-mixed-person{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  min-width:0;
+  font:bold 17px Georgia,serif;
+  color:#4b2d1b;
+}
+.tower-mixed-person .tower-game-photo{
+  flex:0 0 105px;
+  width:105px;
+  height:140px;
+  aspect-ratio:3/4;
+  border:1px solid #8e6438;
+  box-shadow:0 3px 0 #b18a57, 0 5px 10px rgba(57,34,15,.12);
+}
+.tower-mixed-person strong{
+  display:block;
+  line-height:1.35;
+}
+.tower-mixed-connector{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+  gap:7px;
+  color:#8a6338;
+  font:bold 10px Georgia,serif;
+  letter-spacing:1.2px;
+  text-align:center;
+}
+.tower-mixed-connector::before{
+  content:"";
+  width:100%;
+  height:1px;
+  background:linear-gradient(90deg,rgba(138,99,56,.15),rgba(138,99,56,.7));
+}
+.tower-mixed-select{
+  width:100%;
+  min-height:54px;
+  padding:11px 12px;
+  border:1px solid #9a7043;
+  background:#f7e8c6;
+  color:#4b2d1b;
+  font:bold 13px Georgia,serif;
+  letter-spacing:.4px;
+  cursor:pointer;
+  box-shadow:0 2px 0 rgba(113,73,35,.16);
+}
+.tower-mixed-select:focus{
+  outline:2px solid rgba(122,73,49,.28);
+  outline-offset:2px;
+}
+.tower-mixed-select.correct{
+  background:#d8c49a;
+  border:2px solid #5d3a2b;
+}
+.tower-mixed-select.wrong{
+  background:#cdb19b;
+  border:2px solid #75463b;
+}
+.tower-mixed-select.correct{background:#d8c49a;border-color:#5d3a2b}
+.tower-mixed-select.wrong{background:#cdb19b;border-color:#75463b}
+
+.tower-mixed-row.locked{
+  border-left-color:#5d3a2b;
+  background:linear-gradient(90deg,#ead7ad,#dfc28c);
+}
+.tower-mixed-row.locked .tower-mixed-select{cursor:not-allowed;opacity:1}
+.tower-mixed-row.locked .tower-mixed-person::after{
+  content:"ANSWER LOCKED";display:block;margin-top:5px;
+  font:700 9px Georgia,serif;letter-spacing:1.1px;color:#765238;
+}
+.tower-round-lock-note{
+  max-width:1040px;margin:10px auto 0;padding:9px 12px;
+  border:1px solid rgba(132,91,48,.35);background:#ead5a5;
+  text-align:center;font:bold 11px Georgia,serif;letter-spacing:.8px;color:#5b3a28;
+}
+.tower-round-result{
+  max-width:1040px;margin:12px auto 0;padding:12px 16px;
+  border:1px solid rgba(91,58,43,.38);background:#ead5a5;
+  color:#4b2d1b;text-align:center;box-shadow:0 3px 0 rgba(113,73,35,.14);
+}
+.tower-round-result strong{display:block;font:700 14px Georgia,serif;letter-spacing:1px;margin-bottom:4px}
+.tower-round-result small{font:12px Georgia,serif}
+
+.tower-final-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
+  max-width:950px;margin:12px auto;
+}
+.tower-final-card{
+  padding:8px;border:1px solid #9a7043;background:#ead5a5;
+  box-shadow:0 3px 0 #a27a4a;text-align:center;
+}
+.tower-final-card .tower-game-photo{height:175px}
+.tower-final-card strong{display:block;margin:7px 0}
+@media(max-width:850px){
+  .tower-order-board{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tower-same-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tower-final-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .tower-same-grid,.tower-order-board,.tower-final-grid{grid-template-columns:1fr}
+  .tower-mixed-list{grid-template-columns:1fr}
+  .tower-mixed-row{grid-template-columns:minmax(0,1fr) 145px}
+  .tower-mixed-person{grid-template-columns:86px minmax(0,1fr);gap:10px}
+  .tower-mixed-person .tower-game-photo{width:86px;height:115px}
+}
+@media(max-width:420px){
+  .tower-mixed-row{grid-template-columns:1fr}
+  .tower-mixed-person .tower-game-photo{width:96px;height:128px}
+}
+</style>
+
+
+<style id="m6-final-centering-fix">
+/* FINAL M6 LAYOUT FIX — keep every challenge on one centered axis. */
+#placement-game .placement-inner{
+  width:100%;
+  box-sizing:border-box;
+}
+
+/* Six Pamong in sorting rounds: centered as a compact 6-card row. */
+#placement-game .placement-sort-grid{
+  width:min(900px, calc(100% - 24px)) !important;
+  max-width:900px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  display:grid !important;
+  grid-template-columns:repeat(6, minmax(0, 1fr)) !important;
+  justify-content:center !important;
+  align-items:start !important;
+  gap:12px !important;
+}
+
+#placement-game .placement-sort-card{
+  width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  margin:0 !important;
+}
+
+#placement-game .placement-sort-card .placement-photo{
+  width:100% !important;
+  height:155px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+}
+
+#placement-game .placement-sort-card .placement-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  margin:0 auto !important;
+}
+
+/* Four Batalyon/Sie destination boxes stay centered under the faces. */
+#placement-game .placement-sort-bins{
+  width:min(900px, calc(100% - 24px)) !important;
+  max-width:900px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  display:grid !important;
+  grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+  justify-content:center !important;
+  gap:12px !important;
+}
+
+/* Target/question photo is always centered on the same axis. */
+#placement-game .placement-target{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+}
+
+#placement-game .placement-target .placement-photo{
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+#placement-game .placement-target .placement-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  margin:0 auto !important;
+}
+
+/* Four answer cards: centered as a group, never left-aligned. */
+#placement-game .placement-answer-grid,
+#placement-game .placement-four-options{
+  width:min(900px, calc(100% - 24px)) !important;
+  max-width:900px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  justify-content:center !important;
+}
+
+@media (max-width:1000px){
+  #placement-game .placement-sort-grid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width:720px){
+  #placement-game .placement-sort-grid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  }
+  #placement-game .placement-sort-bins{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width:480px){
+  #placement-game .placement-sort-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+</style>
+
+
+<style id="m6-real-centering-fix">
+/* M6 REAL CENTERING FIX
+   Use a flex row for candidate cards instead of relying on grid width.
+   This keeps the visible card group centered in the actual game content. */
+#placement-game .placement-face-grid,
+#placement-game .placement-answer-grid {
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  align-content:center !important;
+  gap:16px !important;
+  width:100% !important;
+  max-width:none !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  box-sizing:border-box !important;
+}
+#placement-game .placement-face-grid .placement-face-card,
+#placement-game .placement-answer-grid .placement-face-card {
+  flex:0 0 190px !important;
+  width:190px !important;
+  max-width:190px !important;
+  box-sizing:border-box !important;
+}
+#placement-game .placement-face-grid .placement-photo,
+#placement-game .placement-answer-grid .placement-photo {
+  width:100% !important;
+  max-width:none !important;
+  height:188px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+#placement-game .placement-face-grid .placement-photo img,
+#placement-game .placement-answer-grid .placement-photo img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+}
+/* The sort cards also stay centered as one visual group. */
+#placement-game .placement-sort-grid {
+  display:flex !important;
+  flex-wrap:wrap !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  width:100% !important;
+  max-width:none !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  gap:12px !important;
+}
+/* Four battalion bins: centered as a group. */
+#placement-game .placement-four-bins {
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(170px,220px)) !important;
+  justify-content:center !important;
+  width:100% !important;
+  max-width:none !important;
+}
+/* Three Sie bins: centered as a group. */
+#placement-game .placement-three-bins {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(170px,220px)) !important;
+  justify-content:center !important;
+  width:100% !important;
+  max-width:none !important;
+}
+@media(max-width:900px){
+  #placement-game .placement-face-grid,
+  #placement-game .placement-answer-grid { flex-wrap:wrap !important; }
+  #placement-game .placement-face-grid .placement-face-card,
+  #placement-game .placement-answer-grid .placement-face-card { flex-basis:190px !important; }
+  #placement-game .placement-four-bins { grid-template-columns:repeat(2,minmax(170px,220px)) !important; }
+  #placement-game .placement-three-bins { grid-template-columns:repeat(2,minmax(170px,220px)) !important; }
+}
+@media(max-width:520px){
+  #placement-game .placement-face-grid,
+  #placement-game .placement-answer-grid { gap:10px !important; }
+  #placement-game .placement-face-grid .placement-face-card,
+  #placement-game .placement-answer-grid .placement-face-card { flex-basis:160px !important; width:160px !important; }
+  #placement-game .placement-four-bins,
+  #placement-game .placement-three-bins { grid-template-columns:1fr !important; }
 }
 </style>
 </head>
@@ -1233,7 +2175,8 @@ button,input{font:inherit}
  aria-label="Open Milestone 5" onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}">5</button>
                         <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">6</button>
                         <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">7</button>
-                        <button id="journey-node-8" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 8">8</button>
+                        <button id="journey-node-8" class="journey-node locked journey-button" type="button"
+ aria-label="Open Milestone 8">8</button>
                     </div>
                 </article>
             </div>
@@ -1680,9 +2623,15 @@ function refreshJourney(){
             unlocked = i <= Math.min(progress,4);
         }else if(i === 5){
             unlocked = milestone5Unlocked || progress >= 5;
+        }else if(i === 6){
+            // M6 opens after M5.
+            unlocked = progress >= 5;
+        }else if(i === 7){
+            // M7 opens after M6.
+            unlocked = progress >= 6;
         }else{
-            // 6–8 remain reserved until their mechanics are implemented.
-            unlocked = progress >= i;
+            // M8 opens only after M7 has been completed.
+            unlocked = progress >= 8;
         }
 
         n.classList.toggle("locked",!unlocked);
@@ -1810,9 +2759,16 @@ const supabaseStorageClient =
 
 function getPamongPhotoUrl(path){
     if(!path) return "";
-
-    const cleanPath = String(path).replace(/^\/+/, "");
+    const raw=String(path).trim();
+    if(/^https?:\/\//i.test(raw)) return raw;
+    const cleanPath=raw.replace(/^\/+/, "");
     return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_PHOTO_BUCKET}/${cleanPath.split("/").map(encodeURIComponent).join("/")}`;
+}
+
+function pamongPhotoPath(path){
+    const raw=String(path??"").trim();
+    if(!raw || /^https?:\/\//i.test(raw)) return "";
+    return raw.replace(/^\/+/,"");
 }
 
 async function getPamongSignedUrl(path){
@@ -1869,14 +2825,26 @@ async function loadTeamGamePamongs(){
 
     const rows = Array.isArray(body) ? body : [];
 
-    // Resolve Storage URLs one by one without changing the database structure.
-    return await Promise.all(rows.map(async person => ({
-        id: person.id,
-        full_name: person.nama,
-        nickname: person.panggilan,
-        photo_url: getPamongPhotoUrl(person.foto),
-        photo_path: person.foto
-    })));
+    // Resolve the actual browser-ready URL before rendering. This prevents
+    // the UI from briefly showing a broken-image icon while a signed URL is
+    // being negotiated. Public URLs are kept as a fallback.
+    return await Promise.all(rows.map(async person => {
+        const rawPath=teamGameText(person.foto);
+        const path=pamongPhotoPath(rawPath);
+        const publicUrl=getPamongPhotoUrl(rawPath);
+        let readyUrl=publicUrl;
+        if(path){
+            const signed=await resolvePamongPhoto(path);
+            if(signed) readyUrl=signed;
+        }
+        return {
+            id:person.id,
+            full_name:person.nama,
+            nickname:person.panggilan,
+            photo_url:readyUrl,
+            photo_path:rawPath
+        };
+    }));
 }
 
 function teamGameText(value){
@@ -2722,7 +3690,7 @@ function renderEndgameFaceChoice(person,prompt){
                 ${choices.map(x=>`
                     <button type="button" class="endgame-option" data-id="${teamGameText(x.id)}">
                         ${x.photo_url
-                            ? `<img src="${teamGameText(x.photo_url)}" alt="Pamong face">`
+                            ? `<img src="${teamGameText(x.photo_url)}" alt="Pamong face" loading="eager" decoding="async">`
                             : `<div class="team-a-placeholder" style="height:205px">PHOTO UNAVAILABLE</div>`}
                     </button>`).join("")}
             </div>
@@ -2780,8 +3748,1530 @@ document.addEventListener("keydown",function(e){
 
 </script>
 
-</body>
-</html>
+
+<style id="final-photo-system-v8">
+/* FINAL PHOTO SYSTEM: one predictable frame, no crop, no overflow. */
+.team-a-photo{
+  box-sizing:border-box !important;
+  width:min(320px,72vw) !important;
+  height:auto !important;
+  aspect-ratio:3 / 4 !important;
+  margin:0 auto 18px !important;
+  padding:9px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  background:#d7bb82 !important;
+  border:1px solid #79502a !important;
+  box-shadow:0 4px 0 #a77b46,0 10px 18px rgba(53,31,13,.16),inset 0 0 0 2px rgba(255,241,205,.35) !important;
+}
+.team-a-photo .team-a-photo-loading{
+  width:100% !important;height:100% !important;
+}
+.team-a-photo img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  margin:0 !important;
+  background:transparent !important;
+}
+.team-a-photo.phase2-photo{
+  width:min(320px,72vw) !important;
+  height:auto !important;
+  aspect-ratio:3 / 4 !important;
+  margin:0 auto 20px !important;
+  padding:9px !important;
+  background:#d7bb82 !important;
+  border:1px solid #79502a !important;
+  box-shadow:0 4px 0 #a77b46,0 10px 18px rgba(53,31,13,.16),inset 0 0 0 2px rgba(255,241,205,.35) !important;
+}
+.team-a-photo.phase2-photo img{
+  width:100% !important;height:100% !important;
+  max-width:100% !important;max-height:100% !important;
+  object-fit:contain !important;
+}
+/* The trial uses the same frame language but a slightly smaller footprint. */
+.tower-trial-face{
+  width:min(340px,48vw) !important;
+  aspect-ratio:3 / 4 !important;
+  height:auto !important;
+  margin:12px auto 18px !important;
+  display:flex !important;flex-direction:column !important;align-items:center !important;
+}
+.tower-trial-face .tower-game-photo{
+  width:100% !important;height:100% !important;aspect-ratio:3 / 4 !important;
+  box-sizing:border-box !important;padding:9px !important;
+  background:#d7bb82 !important;border:1px solid #79502a !important;
+  box-shadow:0 4px 0 #a77b46,0 10px 18px rgba(53,31,13,.16) !important;
+}
+.tower-trial-face .tower-game-photo img{
+  width:100% !important;height:100% !important;object-fit:contain !important;
+}
+.tower-game-photo{box-sizing:border-box !important;overflow:hidden !important;}
+.tower-game-photo img{object-fit:contain !important;object-position:center !important;}
+.tower-same-card .tower-game-photo{height:180px !important;aspect-ratio:3/4 !important;padding:7px !important;}
+.tower-order-card .tower-game-photo{height:190px !important;aspect-ratio:3/4 !important;padding:7px !important;}
+.tower-final-card .tower-game-photo{height:175px !important;aspect-ratio:3/4 !important;padding:7px !important;}
+.tower-reveal-photo{
+  width:min(300px,72vw) !important;height:auto !important;aspect-ratio:3/4 !important;
+  padding:9px !important;box-sizing:border-box !important;overflow:hidden !important;
+  background:#d7bb82 !important;border:1px solid #79502a !important;
+  box-shadow:0 4px 0 #a77b46,0 10px 18px rgba(53,31,13,.16) !important;
+}
+.tower-reveal-photo img{width:100% !important;height:100% !important;object-fit:contain !important;}
+.team-a-photo-loading{background:#d7bb82 !important;}
+.team-a-photo-skeleton{background:linear-gradient(90deg,#d0b27a 25%,#e0c792 50%,#d0b27a 75%) !important;background-size:200% 100% !important;animation:photoSkeleton 1.1s linear infinite !important;}
+@keyframes photoSkeleton{to{background-position:-200% 0}}
+@media(max-height:820px) and (min-width:651px){
+  .team-a-photo,.team-a-photo.phase2-photo{width:min(285px,46vw) !important;}
+  .tower-trial-face{width:min(300px,43vw) !important;}
+}
+@media(max-width:650px){
+  .team-a-photo,.team-a-photo.phase2-photo{width:min(290px,76vw) !important;}
+  .tower-trial-face{width:min(285px,72vw) !important;}
+}
+</style>
+
+<style id="milestone6-placement-css">
+#placement-game{position:fixed;inset:0;z-index:2147483005;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(39,25,12,.76);backdrop-filter:blur(2px)}
+#placement-game.hidden{display:none!important}
+.placement-panel{position:relative;width:min(1180px,96vw);height:min(850px,94vh);overflow:auto;background:linear-gradient(180deg,rgba(250,238,205,.98),rgba(225,197,143,.98));border:1px solid #9a7043;box-shadow:0 12px 40px rgba(30,18,8,.38),0 5px 0 #7c5232;color:#4a2d1b}
+.placement-inner{width:min(1120px,100%);margin:0 auto;padding:28px 30px 34px;text-align:center}.placement-close{position:absolute;right:14px;top:10px;width:38px;height:38px;border:1px solid #8c6238;background:#e5cc9d;color:#593923;font:700 24px Georgia,serif;cursor:pointer;z-index:3}
+.placement-kicker{text-align:center;font:700 11px Georgia,serif;letter-spacing:3px;color:#795237;margin-top:3px}.placement-title{text-align:center;margin:6px 0 3px;font:700 clamp(28px,4vw,46px) Georgia,serif;letter-spacing:2px;color:#4b2d1b}.placement-subtitle{max-width:720px;margin:0 auto 12px;text-align:center;font:14px Georgia,serif;line-height:1.6;color:#705139}
+.placement-divider{display:flex;align-items:center;gap:12px;justify-content:center;margin:12px auto 20px}.placement-divider i{display:block;width:100px;height:1px;background:#a47a4d}.placement-divider span{font-size:16px;color:#7a5132}
+.placement-progress{display:flex;justify-content:center;gap:8px;margin:0 auto 18px}.placement-progress span{width:32px;height:5px;background:#c7aa76;border-radius:2px}.placement-progress span.active{background:#75462f}.placement-progress span.done{background:#9b7043}
+.placement-phase{display:none}.placement-phase.active{display:block}.placement-section-title{text-align:center;margin:0 0 6px;font:700 21px Georgia,serif;letter-spacing:1px}.placement-section-note{text-align:center;max-width:760px;margin:0 auto 18px;font:13px Georgia,serif;line-height:1.55;color:#725239}
+.placement-index{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:1000px;margin:0 auto}.placement-index-group{padding:16px;border:1px solid #a47b4c;background:rgba(247,230,190,.72);box-shadow:0 3px 0 rgba(113,73,35,.16)}.placement-group-label{text-align:center;font:700 12px Georgia,serif;letter-spacing:2px;color:#70482e;margin-bottom:12px}.placement-category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.placement-category{min-height:68px;padding:10px 8px;border:1px solid #a47b4c;background:linear-gradient(180deg,#f5e4bd,#e6cb98);color:#4c3020;cursor:pointer;box-shadow:0 2px 0 rgba(113,73,35,.16)}.placement-category:hover{transform:translateY(-1px)}.placement-category .short{display:block;font:700 15px Georgia,serif;letter-spacing:1px}.placement-category .long{display:block;margin-top:3px;font:11px Georgia,serif;color:#765238}.placement-category.seen::after{content:" ✓";font-weight:700;color:#68412e}
+.placement-roster{max-width:1050px;margin:18px auto 0;min-height:150px;padding:14px;border:1px solid rgba(132,91,48,.35);background:rgba(244,225,185,.55)}.placement-roster-empty{min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;font:13px Georgia,serif;color:#86664b}.placement-roster-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(132,91,48,.3)}.placement-roster-head strong{font:700 17px Georgia,serif}.placement-roster-head span{font:11px Georgia,serif;color:#765238}.placement-people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.placement-person{border:1px solid #a47b4c;background:#f3dfb4;padding:8px;cursor:pointer;text-align:center;color:#4a2d1b;box-shadow:0 2px 0 rgba(113,73,35,.14)}.placement-person:hover{transform:translateY(-2px)}.placement-photo{width:100%;height:145px;background:#d5b77f;border:1px solid #8d643b;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.placement-photo img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}.placement-photo .photo-fallback{display:none;font:700 9px Georgia,serif;letter-spacing:1px;color:#795b42;text-align:center;padding:5px}.placement-person strong{display:block;margin-top:7px;font:700 13px Georgia,serif}.placement-person small{display:block;margin-top:3px;font:10px Georgia,serif;color:#765238}
+.placement-trial-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 14px}.placement-chip{padding:6px 10px;border:1px solid #a47b4c;background:#ead4a4;font:700 10px Georgia,serif;letter-spacing:1px;color:#68432e}.placement-question{text-align:center;margin:10px auto 18px;font:700 20px Georgia,serif;line-height:1.4}.placement-target{width:min(230px,70vw);margin:0 auto 18px;padding:12px;border:1px solid #9a7043;background:#f0dcb0;box-shadow:0 3px 0 rgba(113,73,35,.16);text-align:center}.placement-target .placement-photo{height:210px}.placement-target strong{display:block;margin-top:8px;font:700 16px Georgia,serif}.placement-target small{font:11px Georgia,serif;color:#765238}
+.placement-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:900px;margin:0 auto}.placement-option{min-height:62px;padding:10px;border:1px solid #9a7043;background:linear-gradient(180deg,#f5e4bd,#e6cb98);color:#4a2d1b;cursor:pointer;font:700 13px Georgia,serif;box-shadow:0 3px 0 rgba(113,73,35,.15)}.placement-option:hover{transform:translateY(-1px)}.placement-option.selected{border:3px solid #6b3f2c;background:#dec08b}.placement-option.correct{border:3px solid #496341;background:#d5dfc0}.placement-option.wrong{border:3px solid #713f34;background:#e2c1b1}.placement-option.locked{cursor:not-allowed;opacity:.92}
+.placement-face-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;max-width:1000px;margin:0 auto}.placement-face-card{padding:8px;border:1px solid #9a7043;background:#f1ddb2;cursor:pointer;text-align:center;position:relative;box-shadow:0 3px 0 rgba(113,73,35,.14)}.placement-face-card .placement-photo{height:150px}.placement-face-card strong{display:block;margin-top:6px;font:700 12px Georgia,serif}.placement-face-card small{font:9px Georgia,serif;color:#765238}.placement-face-card.selected{border:3px solid #6d422e}.placement-face-card.correct{border:3px solid #496341}.placement-face-card.wrong{border:3px solid #713f34}.placement-face-card.locked{cursor:not-allowed}
+.placement-pair-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:900px;margin:0 auto}.placement-pair-card{padding:9px;border:1px solid #9a7043;background:#f1ddb2;cursor:pointer;text-align:center;box-shadow:0 3px 0 rgba(113,73,35,.14)}.placement-pair-card .placement-photo{height:155px}.placement-pair-card.selected{border:3px solid #6d422e}.placement-pair-card.correct{border:3px solid #496341}.placement-pair-card.wrong{border:3px solid #713f34}.placement-pair-card.locked{cursor:not-allowed}
+.placement-sort-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;max-width:1080px;margin:0 auto 18px}.placement-sort-card{padding:7px;border:1px solid #9a7043;background:#f1ddb2;cursor:pointer;text-align:center;box-shadow:0 2px 0 rgba(113,73,35,.12)}.placement-sort-card .placement-photo{height:125px}.placement-sort-card strong{display:block;margin-top:5px;font:700 10px Georgia,serif}.placement-sort-card.selected{border:3px solid #6d422e}.placement-sort-card.placed{opacity:.6;cursor:default}.placement-sort-card.locked{cursor:not-allowed}.placement-sort-bins{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;max-width:1080px;margin:0 auto}.placement-sort-bin{min-height:88px;padding:8px;border:1px dashed #9a7043;background:rgba(246,228,188,.6);cursor:pointer;text-align:center;font:700 10px Georgia,serif;color:#67442f}.placement-sort-bin .bin-count{display:block;margin-top:5px;font:10px Georgia,serif;color:#87684c}.placement-sort-bin .bin-names{display:block;margin-top:6px;font:10px Georgia,serif;line-height:1.4}
+.placement-chain{max-width:760px;margin:0 auto;display:block;text-align:center}.placement-chain-person{padding:10px;border:1px solid #9a7043;background:#f1ddb2;text-align:center;margin:0 auto 16px}.placement-chain-person .placement-photo{height:205px}.placement-chain-person strong{display:block;margin-top:7px;font:700 15px Georgia,serif}.placement-chain-info{display:grid;gap:10px;max-width:620px;margin:0 auto}.placement-chain-row{display:grid;grid-template-columns:120px 1fr;align-items:center;border:1px solid #a47b4c;background:#ead2a0;min-height:52px;text-align:left}.placement-chain-row span{padding:8px;font:700 10px Georgia,serif;letter-spacing:1px;color:#765238;border-right:1px solid rgba(132,91,48,.25)}.placement-chain-row strong{padding:8px;font:700 13px Georgia,serif}
+.placement-final-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;max-width:1100px;margin:0 auto}.placement-final-card{padding:7px;border:1px solid #9a7043;background:#f1ddb2;text-align:center}.placement-final-card .placement-photo{height:140px}.placement-final-card strong{display:block;margin-top:5px;font:700 11px Georgia,serif}.placement-final-card select{width:100%;height:40px;margin-top:7px;border:1px solid #9a7043;background:#f8e9c8;color:#4b2d1b;font:bold 10px Georgia,serif}.placement-final-card.locked select{cursor:not-allowed}.placement-final-card.correct{border:3px solid #496341}.placement-final-card.wrong{border:3px solid #713f34}
+.placement-action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px auto 0}.placement-btn{min-width:190px;padding:12px 18px;border:1px solid #70442e;background:linear-gradient(180deg,#8b5a3e,#68402f);color:#f8e9c8;cursor:pointer;font:700 11px Georgia,serif;letter-spacing:1px;box-shadow:0 3px 0 #4f3023}.placement-btn:hover{filter:brightness(1.08)}.placement-btn:disabled{opacity:.45;cursor:not-allowed}.placement-btn.secondary{background:#dfc18b;color:#5c3927}.placement-lock-note{max-width:900px;margin:13px auto 0;padding:9px 12px;border:1px solid rgba(132,91,48,.35);background:#ead5a5;text-align:center;font:bold 10px Georgia,serif;letter-spacing:.6px;color:#68432e}.placement-result{max-width:900px;margin:14px auto 0;padding:13px 16px;border:1px solid rgba(91,58,43,.38);background:#ead5a5;text-align:center;color:#4b2d1b}.placement-result strong{display:block;font:700 14px Georgia,serif;letter-spacing:1px;margin-bottom:5px}.placement-result small{font:12px Georgia,serif;line-height:1.5}.placement-result .answer-line{margin-top:8px;font:11px Georgia,serif}.placement-result .answer-line b{color:#713f34}
+@media(max-width:1000px){.placement-people{grid-template-columns:repeat(4,minmax(0,1fr))}.placement-face-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.placement-final-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.placement-sort-grid,.placement-sort-bins{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* M6 answer-card centering: four candidates must occupy a centered row. */
+.placement-answer-grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(150px,190px)) !important;
+  justify-content:center !important;
+  align-items:start !important;
+  gap:16px !important;
+  width:100% !important;
+  max-width:900px !important;
+  margin:0 auto 14px !important;
+}
+.placement-answer-grid .placement-face-card{
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+}
+.placement-answer-grid .placement-photo{
+  width:100% !important;
+  max-width:174px !important;
+  height:188px !important;
+  margin:0 auto !important;
+}
+.placement-answer-grid .placement-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  margin:0 auto !important;
+}
+@media(max-width:900px){
+  .placement-answer-grid{grid-template-columns:repeat(2,minmax(150px,190px)) !important;}
+}
+
+@media(max-width:720px){.placement-inner{padding:24px 16px 28px}.placement-index{grid-template-columns:1fr}.placement-people{grid-template-columns:repeat(3,minmax(0,1fr))}.placement-options{grid-template-columns:repeat(2,minmax(0,1fr))}.placement-face-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.placement-pair-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.placement-final-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.placement-chain{grid-template-columns:1fr}.placement-sort-grid,.placement-sort-bins{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:480px){.placement-people{grid-template-columns:repeat(2,minmax(0,1fr))}.placement-face-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.placement-final-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.placement-sort-grid,.placement-sort-bins{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* FINAL CENTERING PASS — M6
+   Keeps every stage centered even when the browser viewport is wider/narrower. */
+#placement-game .placement-inner{
+  width:min(1120px,calc(100% - 40px));
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center;
+}
+#placement-game .placement-options,
+#placement-game .placement-answer-grid,
+#placement-game .placement-face-grid,
+#placement-game .placement-pair-grid,
+#placement-game .placement-sort-grid,
+#placement-game .placement-sort-bins,
+#placement-game .placement-final-grid,
+#placement-game .placement-group-options,
+#placement-game .placement-three-options,
+#placement-game .placement-four-options,
+#placement-game .placement-three-bins,
+#placement-game .placement-four-bins{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+#placement-game .placement-action-row{
+  width:100%;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  justify-content:center !important;
+}
+#placement-game .placement-result{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+@media(max-width:720px){
+  #placement-game .placement-inner{width:calc(100% - 24px);padding-left:12px;padding-right:12px}
+}
+</style>
+
+
+<style id="m6-compact-sort-layout-final">
+/* M6 FINAL: sorting cards must stay compact, never become full-width rows. */
+#placement-game .placement-sort-grid{
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:wrap !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  align-content:flex-start !important;
+  gap:14px !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 auto 18px !important;
+  box-sizing:border-box !important;
+}
+#placement-game .placement-sort-card{
+  flex:0 0 145px !important;
+  width:145px !important;
+  min-width:145px !important;
+  max-width:145px !important;
+  height:auto !important;
+  min-height:0 !important;
+  box-sizing:border-box !important;
+  padding:7px !important;
+  margin:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+}
+#placement-game .placement-sort-card .placement-photo{
+  width:100% !important;
+  height:155px !important;
+  box-sizing:border-box !important;
+  flex:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+}
+#placement-game .placement-sort-card .placement-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  margin:0 !important;
+}
+#placement-game .placement-sort-card strong{
+  width:100% !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+/* Destination bins remain a compact centered group. */
+#placement-game .placement-four-bins{
+  display:grid !important;
+  grid-template-columns:repeat(4, 190px) !important;
+  justify-content:center !important;
+  gap:12px !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+#placement-game .placement-three-bins{
+  display:grid !important;
+  grid-template-columns:repeat(3, 190px) !important;
+  justify-content:center !important;
+  gap:12px !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+@media(max-width:1000px){
+  #placement-game .placement-sort-card{
+    flex-basis:145px !important;
+    width:145px !important;
+    min-width:145px !important;
+    max-width:145px !important;
+  }
+  #placement-game .placement-four-bins{grid-template-columns:repeat(2,190px) !important;}
+  #placement-game .placement-three-bins{grid-template-columns:repeat(2,190px) !important;}
+}
+@media(max-width:500px){
+  #placement-game .placement-sort-card{
+    flex-basis:140px !important;
+    width:140px !important;
+    min-width:140px !important;
+    max-width:140px !important;
+  }
+  #placement-game .placement-four-bins,
+  #placement-game .placement-three-bins{grid-template-columns:1fr !important;}
+}
+</style>
+
+<div id="placement-game" class="hidden" aria-hidden="true">
+<section class="placement-panel" role="dialog" aria-modal="true" aria-labelledby="placement-title">
+<button id="placement-close" class="placement-close" type="button" aria-label="Close">×</button>
+<div class="placement-inner">
+<div class="placement-kicker">MILESTONE VI · THE PLACEMENT</div>
+<h2 class="placement-title" id="placement-title">THE PLACEMENT</h2>
+<p class="placement-subtitle">You know their faces. You know their teams. You know their generations. Now remember where they serve.</p>
+<div class="placement-divider"><i></i><span>✦</span><i></i></div>
+<div class="placement-progress" id="placement-progress"></div>
+
+<section class="placement-phase active" data-phase="discovery">
+<h3 class="placement-section-title">THE PLACEMENT INDEX</h3>
+<p class="placement-section-note">Explore each unit before the trial. Tap a unit to reveal the Pamong assigned there. This is your field guide — the real test comes after.</p>
+<div class="placement-index">
+<div class="placement-index-group"><div class="placement-group-label">BATALYON · SATRIA / MADYA / MUDA / PRATAMA</div><div class="placement-category-grid" id="placement-battalion-cats"></div></div>
+<div class="placement-index-group"><div class="placement-group-label">SIE · OPERASI / ADMINLOG / PENGAMANAN</div><div class="placement-category-grid" id="placement-sie-cats"></div></div>
+</div>
+<div class="placement-roster" id="placement-roster"><div class="placement-roster-empty">Choose a placement above to inspect its Pamong.</div></div>
+<div class="placement-action-row"><button class="placement-btn" id="placement-begin" type="button" disabled>BEGIN PLACEMENT TRIAL</button></div>
+</section>
+
+<section class="placement-phase" data-phase="trial">
+<div class="placement-trial-meta"><span class="placement-chip" id="placement-round-label">ROUND 1 / 7</span><span class="placement-chip" id="placement-score-label">SCORE 0</span></div>
+<div id="placement-trial-content"></div><div id="placement-feedback"></div>
+<div class="placement-action-row"><button class="placement-btn" id="placement-lock" type="button">LOCK IN ANSWER</button><button class="placement-btn secondary" id="placement-next" type="button" disabled>NEXT CHALLENGE</button></div>
+</section>
+
+<section class="placement-phase" data-phase="complete">
+<h3 class="placement-section-title">PLACEMENT RESTORED</h3><p class="placement-section-note">The Tower remembers where they serve. Do you?</p>
+<div id="placement-final-result"></div>
+</section>
+</div></section></div>
+<div id="placement-toast"></div>
+
+<script id="milestone6-placement-js">
+(function(){
+"use strict";
+
+const M6_KEY="npc_milestone6_placement_v4";
+const M6_PEOPLE_KEY="npc_milestone6_people_v1";
+
+const FALLBACK_PLACEMENT={
+"Bio":"Madya","Budin":"Satria","Edy":"Satria","Nabel":"Madya","Danu":"Muda",
+"Sasa":"Pratama","Yota":"Operasi","Wira":"Operasi","Yunik":"Pengamanan","Imas":"Minlog",
+"Fahmi":"Muda","Rizal":"Satria","Morez":"Madya","Hiday":"Muda","Heading":"Pratama",
+"Lolita":"Operasi","Naya":"Operasi","Agil":"Pengamanan","Hadyan":"Minlog","Agan":"Minlog",
+"Afi":"Pratama","Monike":"Satria","Gara":"Madya","Nia":"Muda","Yahya":"Muda",
+"Kacha":"Operasi","Izar":"Operasi","Yaji":"Pengamanan","Ilham":"Minlog","Adhli":"Satria",
+"Wening":"Madya","Dendi":"Madya","Onal":"Muda","Yoland":"Pratama","Aqil":"Pratama",
+"Fajar":"Operasi","Kadek":"Pengamanan","Dhyo":"Pengamanan","Atha":"Minlog"
+};
+
+const UNITS=[
+ {key:"Satria",short:"SAT",label:"Satria",group:"Batalyon"},
+ {key:"Madya",short:"MAD",label:"Madya",group:"Batalyon"},
+ {key:"Muda",short:"MUDA",label:"Muda",group:"Batalyon"},
+ {key:"Pratama",short:"PRATAMA",label:"Pratama",group:"Batalyon"},
+ {key:"Operasi",short:"OPERASI",label:"Operasi",group:"Sie"},
+ {key:"Adminlog",short:"ADMINLOG",label:"Adminlog",group:"Sie"},
+ {key:"Pengamanan",short:"PENGAMANAN",label:"Pengamanan",group:"Sie"}
+];
+
+const ROUND_NAMES=[
+ "BATALYON · RECOGNIZE",
+ "BATALYON · SAME PLACEMENT",
+ "BATALYON · SORT",
+ "BATALYON · RECALL",
+ "SIE · RECOGNIZE",
+ "SIE · SAME PLACEMENT",
+ "SIE · SORT",
+ "FINAL · PLACEMENT"
+];
+
+const $=id=>document.getElementById(id);
+const root=$("placement-game");
+if(!root)return;
+
+let people=[];
+let state={
+ phase:"discovery",
+ discoveredUnits:[],
+ round:0,
+ score:0,
+ locked:false,
+ selected:[],
+ selectedUnit:"",
+ finalGroup:"",
+ history:[],
+ completed:false,
+ roundData:null
+};
+
+function esc(v){
+ return String(v==null?"":v)
+ .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+ .replace(/'/g,"&#39;");
+}
+
+function norm(v){
+ const s=String(v||"").trim().toLowerCase();
+ const a={
+  sat:"Satria",satria:"Satria",
+  mad:"Madya",madya:"Madya",
+  muda:"Muda",pratama:"Pratama",
+  operasi:"Operasi",ops:"Operasi",
+  adminlog:"Adminlog",minlog:"Adminlog",
+  pengamanan:"Pengamanan",pam:"Pengamanan"
+ };
+ return a[s]||String(v||"").trim();
+}
+
+function save(){
+ try{localStorage.setItem(M6_KEY,JSON.stringify(state));}catch(e){}
+}
+
+function load(){
+ try{
+  const x=JSON.parse(localStorage.getItem(M6_KEY)||"null");
+  if(x)state=Object.assign(state,x);
+ }catch(e){}
+}
+
+function shuffle(a){
+ a=a.slice();
+ for(let i=a.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
+ return a;
+}
+
+function sample(a,n){return shuffle(a).slice(0,Math.min(n,a.length));}
+
+function unitInfo(k){return UNITS.find(u=>u.key===k)||UNITS[0];}
+function unitPeople(k){return people.filter(p=>norm(p.penempatan)===k);}
+function label(p){return p?.panggilan||p?.nama||"Pamong";}
+
+function targetFrom(list){
+ const a=(list||[]).filter(p=>p&&p.penempatan);
+ return a[Math.floor(Math.random()*a.length)]||people[0];
+}
+
+function target(){return targetFrom(people);}
+
+async function photoUrl(p){
+ if(!p)return "";
+ if(p._photoUrl)return p._photoUrl;
+
+ const raw=String(p.foto||"").trim();
+ if(!raw)return "";
+
+ if(/^https?:\/\//i.test(raw)){
+  p._photoUrl=raw;
+  return raw;
+ }
+
+ try{
+  if(typeof getPamongSignedUrl==="function"){
+   const u=await getPamongSignedUrl(raw.replace(/^\/+/,""));
+   if(u){p._photoUrl=u;return u;}
+  }
+ }catch(e){}
+
+ try{
+  if(typeof getPamongPhotoUrl==="function"){
+   const u=getPamongPhotoUrl(raw);
+   if(u){p._photoUrl=u;return u;}
+  }
+ }catch(e){}
+
+ return "";
+}
+
+function photoBox(p){
+ return `<div class="placement-photo" data-photo-person="${esc(p.id||p.panggilan||p.nama)}"><div class="photo-fallback" style="display:block">LOADING…</div></div>`;
+}
+
+async function hydrate(container){
+ if(!container)return;
+
+ await Promise.all([...container.querySelectorAll("[data-photo-person]")].map(async box=>{
+  const key=box.dataset.photoPerson;
+  const p=people.find(x=>String(x.id||x.panggilan||x.nama)===String(key));
+  if(!p)return;
+
+  const u=await photoUrl(p);
+
+  if(!u){
+   box.innerHTML='<div class="photo-fallback" style="display:block">PHOTO UNAVAILABLE</div>';
+   return;
+  }
+
+  box.innerHTML=`<img src="${esc(u)}" alt="${esc(label(p))}" loading="eager" decoding="async">`;
+
+  const img=box.querySelector("img");
+  img.addEventListener("error",()=>{
+   box.innerHTML='<div class="photo-fallback" style="display:block">PHOTO UNAVAILABLE</div>';
+  },{once:true});
+ }));
+}
+
+async function loadPeople(){
+ if(people.length)return people;
+
+ try{
+  const url=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,tim,angkatan,foto,penempatan&order=id.asc`;
+  const r=await fetch(url,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
+  if(!r.ok)throw new Error("HTTP "+r.status);
+
+  const d=await r.json();
+  if(!Array.isArray(d))throw new Error("Bad response");
+
+  people=d.map(p=>({
+   ...p,
+   penempatan:norm(p.penempatan)||
+    FALLBACK_PLACEMENT[String(p.panggilan||"").trim()]||""
+  }));
+ }catch(e){
+  try{
+   const c=JSON.parse(localStorage.getItem(M6_PEOPLE_KEY)||"[]");
+   if(Array.isArray(c)&&c.length)people=c;
+  }catch(_){}
+
+  if(!people.length){
+   people=Object.entries(FALLBACK_PLACEMENT).map(([n,pl],i)=>({
+    id:"fb-"+i,nama:n,panggilan:n,tim:"",angkatan:"",foto:"",penempatan:norm(pl)
+   }));
+  }
+ }
+
+ try{localStorage.setItem(M6_PEOPLE_KEY,JSON.stringify(people));}catch(e){}
+ return people;
+}
+
+function progress(){
+ const p=$("placement-progress");
+ const n=state.phase==="trial"?Math.min(8,state.round):0;
+ p.innerHTML=Array.from({length:8},(_,i)=>
+  `<span class="${i<n?"done":i===n&&state.phase==="trial"?"active":""}"></span>`
+ ).join("");
+}
+
+function phase(n){
+ root.querySelectorAll(".placement-phase").forEach(x=>
+  x.classList.toggle("active",x.dataset.phase===n)
+ );
+ progress();
+}
+
+function categories(){
+ const make=u=>`
+ <button class="placement-category ${state.discoveredUnits.includes(u.key)?"seen":""}"
+  type="button" data-unit="${esc(u.key)}">
+  <span class="short">${esc(u.label)}</span>
+  <span class="long">${esc(u.label)}</span>
+ </button>`;
+
+ $("placement-battalion-cats").innerHTML=
+  UNITS.filter(u=>u.group==="Batalyon").map(make).join("");
+
+ $("placement-sie-cats").innerHTML=
+  UNITS.filter(u=>u.group==="Sie").map(make).join("");
+}
+
+async function inspect(k){
+ if(!state.discoveredUnits.includes(k))state.discoveredUnits.push(k);
+ save();
+ categories();
+
+ const u=unitInfo(k);
+ const rows=unitPeople(k);
+ const r=$("placement-roster");
+
+ r.innerHTML=`
+ <div class="placement-roster-head">
+  <strong>${esc(u.short)} · ${esc(u.label)}</strong>
+  <span>${rows.length} PAMONG</span>
+ </div>
+ <div class="placement-people">
+ ${rows.map(p=>`
+  <button class="placement-person" type="button">
+   ${photoBox(p)}
+   <strong>${esc(label(p))}</strong>
+   <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+  </button>
+ `).join("")}
+ </div>`;
+
+ await hydrate(r);
+ $("placement-begin").disabled=state.discoveredUnits.length<UNITS.length;
+}
+
+/* -------------------- ROUND BUILDERS -------------------- */
+
+function build1(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Batalyon");
+ const p=targetFrom(candidates),u=unitInfo(norm(p.penempatan));
+
+ state.roundData={type:1,targetId:p.id,correct:u.key,stage:"Batalyon"};
+
+ return `
+ <div class="placement-stage-kicker">PHASE I · THE BATALYON</div>
+ <div class="placement-question">
+  Which Batalyon does <b>${esc(label(p))}</b> belong to?
+ </div>
+ <div class="placement-target">
+  ${photoBox(p)}
+  <strong>${esc(label(p))}</strong>
+  <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+ </div>
+ <div class="placement-options placement-four-options">
+  ${UNITS.filter(x=>x.group==="Batalyon").map(x=>
+   `<button class="placement-option" type="button" data-choice="${x.key}">${esc(x.label)}</button>`
+  ).join("")}
+ </div>`;
+}
+
+function build2(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Batalyon");
+ const p=targetFrom(candidates);
+ const same=sample(unitPeople(norm(p.penempatan)).filter(x=>String(x.id)!==String(p.id)),2);
+ const d=sample(candidates.filter(x=>norm(x.penempatan)!==norm(p.penempatan)),2);
+ const cards=shuffle([...same,...d]);
+
+ state.roundData={
+  type:2,targetId:p.id,
+  correctIds:same.map(x=>String(x.id)),
+  stage:"Batalyon"
+ };
+
+ return `
+ <div class="placement-stage-kicker">PHASE I · THE BATALYON</div>
+ <div class="placement-question">
+  Which Pamong serves in the <b>same Batalyon</b> as ${esc(label(p))}?
+ </div>
+ <div class="placement-target compact">
+  ${photoBox(p)}
+  <strong>${esc(label(p))}</strong>
+  <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+ </div>
+ <div class="placement-answer-grid">
+ ${cards.map(x=>`
+  <button class="placement-face-card" type="button" data-person-choice="${x.id}">
+   ${photoBox(x)}<strong>${esc(label(x))}</strong>
+  </button>
+ `).join("")}
+ </div>
+ <p class="placement-section-note">Choose exactly 2.</p>`;
+}
+
+function build3(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Batalyon");
+ const cards=sample(candidates,6);
+
+ state.roundData={
+  type:3,
+  ids:cards.map(p=>String(p.id)),
+  assignments:{},
+  stage:"Batalyon"
+ };
+
+ return `
+ <div class="placement-stage-kicker">PHASE I · THE BATALYON</div>
+ <div class="placement-question">Sort these Pamong into the correct Batalyon.</div>
+ <p class="placement-section-note">Tap a Pamong, then tap the Batalyon where they belong.</p>
+ <div class="placement-sort-grid">
+ ${cards.map(p=>`
+  <button class="placement-sort-card" type="button" data-sort-person="${p.id}">
+   ${photoBox(p)}<strong>${esc(label(p))}</strong>
+  </button>
+ `).join("")}
+ </div>
+ <div class="placement-sort-bins placement-four-bins">
+ ${UNITS.filter(x=>x.group==="Batalyon").map(u=>`
+  <button class="placement-sort-bin" type="button" data-sort-unit="${u.key}">${esc(u.label)}
+   <span class="bin-count" data-count-for="${u.key}">0 placed</span>
+   <span class="bin-names" data-names-for="${u.key}">—</span>
+  </button>
+ `).join("")}
+ </div>`;
+}
+
+function build4(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Batalyon");
+ const p=targetFrom(candidates),u=unitInfo(norm(p.penempatan));
+
+ state.roundData={type:4,targetId:p.id,correct:u.key,stage:"Batalyon"};
+
+ return `
+ <div class="placement-stage-kicker">PHASE I · THE BATALYON</div>
+ <div class="placement-question">Recall the Batalyon for <b>${esc(label(p))}</b>.</div>
+ <div class="placement-target">
+  ${photoBox(p)}
+  <strong>${esc(label(p))}</strong>
+  <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+ </div>
+ <div class="placement-chain">
+  <div class="placement-chain-info">
+   <div class="placement-chain-row"><span>TEAM</span><strong>${esc(p.tim?`TEAM ${p.tim}`:"—")}</strong></div>
+   <div class="placement-chain-row"><span>ANGKATAN</span><strong>${esc(p.angkatan||"—")}</strong></div>
+   <div class="placement-chain-row"><span>BATALYON</span><strong id="placement-chain-answer">???</strong></div>
+   <div class="placement-options placement-four-options">
+    ${UNITS.filter(x=>x.group==="Batalyon").map(x=>
+     `<button class="placement-option" type="button" data-choice="${x.key}">${esc(x.label)}</button>`
+    ).join("")}
+   </div>
+  </div>
+ </div>`;
+}
+
+function build5(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Sie");
+ const p=targetFrom(candidates),u=unitInfo(norm(p.penempatan));
+
+ state.roundData={type:5,targetId:p.id,correct:u.key,stage:"Sie"};
+
+ return `
+ <div class="placement-stage-kicker">PHASE II · THE SIE</div>
+ <div class="placement-question">
+  Which Sie does <b>${esc(label(p))}</b> serve in?
+ </div>
+ <div class="placement-target">
+  ${photoBox(p)}
+  <strong>${esc(label(p))}</strong>
+  <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+ </div>
+ <div class="placement-options placement-three-options">
+  ${UNITS.filter(x=>x.group==="Sie").map(x=>
+   `<button class="placement-option" type="button" data-choice="${x.key}">${esc(x.label)}</button>`
+  ).join("")}
+ </div>`;
+}
+
+function build6(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Sie");
+ const p=targetFrom(candidates);
+ const same=sample(unitPeople(norm(p.penempatan)).filter(x=>String(x.id)!==String(p.id)),2);
+ const d=sample(candidates.filter(x=>norm(x.penempatan)!==norm(p.penempatan)),2);
+ const cards=shuffle([...same,...d]);
+
+ state.roundData={
+  type:6,targetId:p.id,
+  correctIds:same.map(x=>String(x.id)),
+  stage:"Sie"
+ };
+
+ return `
+ <div class="placement-stage-kicker">PHASE II · THE SIE</div>
+ <div class="placement-question">
+  Which Pamong serves in the <b>same Sie</b> as ${esc(label(p))}?
+ </div>
+ <div class="placement-target compact">
+  ${photoBox(p)}
+  <strong>${esc(label(p))}</strong>
+  <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+ </div>
+ <div class="placement-face-grid">
+ ${cards.map(x=>`
+  <button class="placement-face-card" type="button" data-person-choice="${x.id}">
+   ${photoBox(x)}<strong>${esc(label(x))}</strong>
+  </button>
+ `).join("")}
+ </div>
+ <p class="placement-section-note">Choose exactly 2.</p>`;
+}
+
+function build7(){
+ const candidates=people.filter(p=>unitInfo(norm(p.penempatan)).group==="Sie");
+ const cards=sample(candidates,5);
+
+ state.roundData={
+  type:7,
+  ids:cards.map(p=>String(p.id)),
+  assignments:{},
+  stage:"Sie"
+ };
+
+ return `
+ <div class="placement-stage-kicker">PHASE II · THE SIE</div>
+ <div class="placement-question">Sort these Pamong into the correct Sie.</div>
+ <p class="placement-section-note">Tap a Pamong, then tap the Sie where they serve.</p>
+ <div class="placement-sort-grid">
+ ${cards.map(p=>`
+  <button class="placement-sort-card" type="button" data-sort-person="${p.id}">
+   ${photoBox(p)}<strong>${esc(label(p))}</strong>
+  </button>
+ `).join("")}
+ </div>
+ <div class="placement-sort-bins placement-three-bins">
+ ${UNITS.filter(x=>x.group==="Sie").map(u=>`
+  <button class="placement-sort-bin" type="button" data-sort-unit="${u.key}">${esc(u.label)}
+   <span class="bin-count" data-count-for="${u.key}">0 placed</span>
+   <span class="bin-names" data-names-for="${u.key}">—</span>
+  </button>
+ `).join("")}
+ </div>`;
+}
+
+function build8(){
+ const candidates=people.filter(p=>p.penempatan);
+ const p=targetFrom(candidates),u=unitInfo(norm(p.penempatan));
+
+ state.roundData={
+  type:8,targetId:p.id,correct:u.key,correctGroup:u.group,stage:"Final"
+ };
+ state.finalGroup="";
+
+ return `
+ <div class="placement-stage-kicker">PHASE III · THE FINAL PLACEMENT</div>
+ <div class="placement-question">Where does <b>${esc(label(p))}</b> serve?</div>
+ <div class="placement-target">
+  ${photoBox(p)}
+  <strong>${esc(label(p))}</strong>
+  <small>${esc(p.angkatan||"")}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small>
+ </div>
+ <p class="placement-section-note">Choose the group first. Then choose the exact placement.</p>
+ <div class="placement-options placement-group-options">
+  <button class="placement-option" type="button" data-group="Batalyon">BATALYON</button>
+  <button class="placement-option" type="button" data-group="Sie">SIE</button>
+ </div>
+ <div id="final-specific-options" class="placement-options final-specific-options"></div>`;
+}
+
+/* -------------------- ROUND UI -------------------- */
+
+function renderSort(){
+ const q=state.roundData;
+
+ UNITS.forEach(u=>{
+  const ids=Object.entries(q.assignments||{})
+   .filter(([,v])=>v===u.key)
+   .map(([id])=>id);
+
+  const names=ids.map(id=>label(people.find(p=>String(p.id)===id)||{}));
+
+  const c=document.querySelector(`[data-count-for="${u.key}"]`);
+  const n=document.querySelector(`[data-names-for="${u.key}"]`);
+
+  if(c)c.textContent=`${ids.length} placed`;
+  if(n)n.textContent=names.length?names.join(" · "):"—";
+ });
+
+ document.querySelectorAll("[data-sort-person]").forEach(b=>{
+  const id=String(b.dataset.sortPerson);
+  b.classList.toggle("selected",id===state.selectedUnit);
+  b.classList.toggle("placed",!!q.assignments[id]);
+ });
+}
+
+async function renderRound(){
+ state.locked=false;
+ state.selected=[];
+ state.selectedUnit="";
+ state.finalGroup="";
+
+ $("placement-round-label").textContent=
+  `ROUND ${state.round+1} / 8 · ${ROUND_NAMES[state.round]}`;
+
+ $("placement-score-label").textContent=`SCORE ${state.score}`;
+ $("placement-feedback").innerHTML="";
+ $("placement-lock").disabled=true;
+ $("placement-lock").textContent="LOCK IN ANSWER";
+ $("placement-next").disabled=true;
+
+ const builders=[build1,build2,build3,build4,build5,build6,build7,build8];
+
+ $("placement-trial-content").innerHTML=builders[state.round]();
+ await hydrate($("placement-trial-content"));
+
+ if([2,6].includes(state.round))renderSort();
+
+ progress();
+}
+
+function choose(v){
+ if(state.locked)return;
+ state.selected=[v];
+
+ document.querySelectorAll("#placement-trial-content .placement-option").forEach(b=>
+  b.classList.toggle("selected",b.dataset.choice===v)
+ );
+
+ $("placement-lock").disabled=!state.selected.length;
+}
+
+function toggle(id){
+ if(state.locked)return;
+
+ id=String(id);
+ const i=state.selected.indexOf(id);
+
+ if(i>=0)state.selected.splice(i,1);
+ else state.selected.push(id);
+
+ document.querySelectorAll("[data-person-choice]").forEach(b=>
+  b.classList.toggle("selected",state.selected.includes(String(b.dataset.personChoice)))
+ );
+
+ const needed=state.roundData?.correctIds?.length||2;
+ $("placement-lock").disabled=state.selected.length!==needed;
+}
+
+function sortPerson(id){
+ if(state.locked)return;
+
+ id=String(id);
+
+ if(state.roundData.assignments[id]){
+  delete state.roundData.assignments[id];
+  state.selectedUnit="";
+ }else{
+  state.selectedUnit=id;
+ }
+
+ renderSort();
+ $("placement-lock").disabled=
+  Object.keys(state.roundData.assignments||{}).length!==state.roundData.ids.length;
+}
+
+function sortUnit(u){
+ if(state.locked||!state.selectedUnit)return;
+
+ state.roundData.assignments[state.selectedUnit]=u;
+ state.selectedUnit="";
+ renderSort();
+
+ $("placement-lock").disabled=
+  Object.keys(state.roundData.assignments||{}).length!==state.roundData.ids.length;
+}
+
+function lock(){
+ if(state.locked)return;
+
+ state.locked=true;
+
+ const q=state.roundData;
+ let correct=false;
+ let details="";
+
+ if([1,4,5,8].includes(q.type)){
+  correct=state.selected[0]===q.correct;
+  details=`Correct placement: ${q.correct}.`;
+
+  document.querySelectorAll("#placement-trial-content [data-choice]").forEach(b=>{
+   b.disabled=true;
+   b.classList.add("locked");
+
+   if(b.dataset.choice===q.correct)b.classList.add("correct");
+   if(b.dataset.choice===state.selected[0]&&!correct)b.classList.add("wrong");
+  });
+
+  const a=$("placement-chain-answer");
+  if(a&&q.type===4)a.textContent=q.correct;
+ }
+
+ if([2,6].includes(q.type)){
+  const got=[...new Set(state.selected.map(String))];
+  const want=new Set(q.correctIds.map(String));
+
+  correct=got.length===want.size&&got.every(x=>want.has(x));
+
+  details=correct
+   ?"Correct grouping."
+   :`Correct Pamong: ${q.correctIds.map(id=>label(people.find(p=>String(p.id)===id)||{})).join(", ")}.`;
+
+  document.querySelectorAll("[data-person-choice]").forEach(b=>{
+   b.disabled=true;
+   b.classList.add("locked");
+
+   const id=String(b.dataset.personChoice);
+
+   if(want.has(id))b.classList.add("correct");
+   if(got.includes(id)&&!want.has(id))b.classList.add("wrong");
+  });
+ }
+
+ if([3,7].includes(q.type)){
+  correct=q.ids.every(id=>
+   q.assignments[id]===norm(people.find(p=>String(p.id)===id)?.penempatan)
+  );
+
+  details=correct
+   ?"All placements are correct."
+   :"One or more placements are incorrect.";
+
+  document.querySelectorAll("[data-sort-person],[data-sort-unit]").forEach(b=>{
+   b.disabled=true;
+   b.classList.add("locked");
+  });
+
+  q.ids.forEach(id=>{
+   const card=document.querySelector(`[data-sort-person="${id}"]`);
+   const assigned=q.assignments[id];
+   const actual=norm(people.find(p=>String(p.id)===id)?.penempatan);
+
+   if(card)card.classList.add(assigned===actual?"correct":"wrong");
+  });
+ }
+
+ if(correct)state.score+=100;
+
+ state.history.push({
+  round:state.round+1,
+  name:ROUND_NAMES[state.round],
+  correct,
+  scoreAwarded:correct?100:0,
+  locked:true,
+  details
+ });
+
+ save();
+
+ $("placement-score-label").textContent=`SCORE ${state.score}`;
+ $("placement-lock").disabled=true;
+ $("placement-lock").textContent="✓ ANSWER LOCKED";
+ $("placement-next").disabled=false;
+
+ $("placement-feedback").innerHTML=`
+ <div class="placement-lock-note">
+  ${correct
+   ?"✓ Correct. Your answer is locked and cannot be changed."
+   :"✕ Incorrect. Your answer is locked. No correction is allowed."}
+ </div>
+ <div class="placement-result">
+  <strong>${correct?"ROUND CORRECT":"ROUND INCORRECT"}</strong>
+  <small>${esc(details)}</small>
+ </div>`;
+}
+
+function begin(){
+ if(state.discoveredUnits.length<UNITS.length)return;
+
+ state.phase="trial";
+ state.round=0;
+ state.score=0;
+ state.history=[];
+ state.completed=false;
+ state.selected=[];
+ state.selectedUnit="";
+ state.finalGroup="";
+ save();
+
+ phase("trial");
+ renderRound();
+}
+
+function next(){
+ if(!state.locked)return;
+
+ if(state.round>=7){
+  complete();
+  return;
+ }
+
+ state.round++;
+ renderRound();
+}
+
+function complete(){
+ state.completed=true;
+ state.phase="complete";
+ save();
+
+ try{
+  const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
+  p.milestone=Math.max(Number(p.milestone||1),7);
+
+  if(typeof savePlayerData==="function")savePlayerData(p);
+  else localStorage.setItem("npcPlayer",JSON.stringify(p));
+
+  if(typeof refreshJourney==="function")refreshJourney();
+ }catch(e){}
+
+ const correct=state.history.filter(x=>x.correct).length;
+
+ $("placement-final-result").innerHTML=`
+ <div class="placement-result">
+  <strong>PLACEMENT RESTORED</strong>
+  <small>${correct} / 8 rounds correct · ${state.score} / 800 points.</small>
+ </div>
+ <div class="placement-action-row">
+  <button class="placement-btn" id="placement-replay" type="button">
+   PLAY THE PLACEMENT AGAIN
+  </button>
+  <button class="placement-btn secondary" id="placement-return-complete" type="button">
+   RETURN TO THE TOWER
+  </button>
+ </div>`;
+
+ phase("complete");
+
+ $("placement-replay").onclick=replayPlacement;
+ $("placement-return-complete").onclick=close;
+}
+
+function replayPlacement(){
+ state.phase="trial";
+ state.round=0;
+ state.score=0;
+ state.history=[];
+ state.completed=false;
+ state.locked=false;
+ state.selected=[];
+ state.selectedUnit="";
+ state.finalGroup="";
+ save();
+
+ phase("trial");
+ renderRound();
+}
+
+async function open(){
+ load();
+
+ root.classList.remove("hidden");
+ root.setAttribute("aria-hidden","false");
+ document.body.style.overflow="hidden";
+
+ await loadPeople();
+ categories();
+
+ if(state.completed){
+  complete();
+  return;
+ }
+
+ phase("discovery");
+ $("placement-begin").disabled=state.discoveredUnits.length<UNITS.length;
+}
+
+function close(){
+ root.classList.add("hidden");
+ root.setAttribute("aria-hidden","true");
+ document.body.style.overflow="";
+}
+
+/* -------------------- EVENTS -------------------- */
+
+root.addEventListener("click",async e=>{
+ const c=e.target.closest("[data-unit]");
+ if(c){
+  await loadPeople();
+  await inspect(c.dataset.unit);
+  return;
+ }
+
+ const group=e.target.closest("[data-group]");
+ if(group&&!state.locked){
+  state.finalGroup=group.dataset.group;
+
+  document.querySelectorAll("[data-group]").forEach(b=>
+   b.classList.toggle("selected",b===group)
+  );
+
+  const wrap=$("final-specific-options");
+
+  if(wrap){
+   wrap.style.display="grid";
+   wrap.innerHTML=UNITS
+    .filter(u=>u.group===state.finalGroup)
+    .map(u=>`
+     <button class="placement-option" type="button" data-choice="${u.key}">
+      ${esc(u.label)}
+     </button>
+    `).join("");
+  }
+  return;
+ }
+
+ const ch=e.target.closest("[data-choice]");
+ if(ch){
+  choose(ch.dataset.choice);
+  return;
+ }
+
+ const pc=e.target.closest("[data-person-choice]");
+ if(pc){
+  toggle(pc.dataset.personChoice);
+  return;
+ }
+
+ const sp=e.target.closest("[data-sort-person]");
+ if(sp){
+  sortPerson(sp.dataset.sortPerson);
+  return;
+ }
+
+ const su=e.target.closest("[data-sort-unit]");
+ if(su){
+  sortUnit(su.dataset.sortUnit);
+  return;
+ }
+});
+
+$("placement-close").onclick=close;
+$("placement-begin").onclick=begin;
+$("placement-lock").onclick=lock;
+$("placement-next").onclick=next;
+
+window.openPlacementMilestone=open;
+window.closePlacementMilestone=close;
+
+/* Keep the Tower node clickable once M5 is reached.
+   Completing M6 does not disable replay. */
+function syncNode6(){
+ const n=document.getElementById("journey-node-6");
+ if(!n)return;
+
+ let ok=false;
+
+ try{
+  const p=typeof getPlayerData==="function"?getPlayerData():null;
+  ok=Number(p?.milestone||1)>=5;
+ }catch(e){}
+
+ n.disabled=false;
+ n.removeAttribute("disabled");
+ n.classList.toggle("locked",!ok);
+ n.classList.toggle("active",ok);
+ n.style.pointerEvents=ok?"auto":"none";
+ n.style.cursor=ok?"pointer":"not-allowed";
+}
+
+document.addEventListener("click",function(e){
+ const n=e.target.closest("#journey-node-6");
+ if(!n)return;
+
+ e.preventDefault();
+ e.stopImmediatePropagation();
+
+ let ok=false;
+
+ try{
+  const p=typeof getPlayerData==="function"?getPlayerData():null;
+  ok=Number(p?.milestone||1)>=5;
+ }catch(err){}
+
+ if(ok)open();
+},true);
+
+window.addEventListener("load",()=>{
+ syncNode6();
+ setTimeout(syncNode6,800);
+ setTimeout(syncNode6,2000);
+});
+
+setInterval(syncNode6,1500);
+
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<style id="milestone7-jabatan-style">
+#milestone7-jabatan{position:fixed;inset:0;z-index:99999;display:none;overflow:auto;background:radial-gradient(circle at center,rgba(255,250,235,.94),rgba(217,190,143,.97));color:#3f2a1d}
+#milestone7-jabatan.active{display:block}
+.m7-shell{width:min(1120px,calc(100% - 34px));min-height:100%;margin:0 auto;padding:28px 0 42px}
+.m7-frame{width:100%;margin:0 auto;padding:24px;border:1px solid rgba(90,55,33,.35);border-radius:18px;background:linear-gradient(145deg,#f6e9ca,#ead5aa 55%,#dfc392);box-shadow:0 18px 55px rgba(62,38,20,.22),inset 0 0 0 4px rgba(255,248,225,.34)}
+.m7-header{text-align:center;margin-bottom:18px}
+.m7-eyebrow{font:700 12px/1.2 Georgia,serif;letter-spacing:4px;color:#75462e;margin-bottom:7px}
+.m7-title{margin:0;font:700 clamp(30px,4vw,48px)/1 Georgia,serif;letter-spacing:2px;color:#4d2c20}
+.m7-subtitle{margin:9px auto 0;max-width:760px;font:16px/1.55 Georgia,serif;color:#6b4a34}
+.m7-stagebar{display:flex;justify-content:center;gap:8px;margin:20px auto 24px;flex-wrap:wrap}
+.m7-stage{border:1px solid rgba(86,53,33,.3);border-radius:999px;padding:8px 14px;font:700 11px/1 Arial,sans-serif;letter-spacing:1.5px;background:rgba(255,248,226,.6);color:#7a563b}
+.m7-stage.active{background:#71452f;color:#fff7e5;border-color:#5d3927}.m7-stage.done{background:#cdb37e;color:#4b321f}
+.m7-meta{display:flex;justify-content:center;gap:12px;margin:0 auto 18px;flex-wrap:wrap}
+.m7-pill{min-width:130px;padding:9px 16px;text-align:center;border:1px solid rgba(86,53,33,.25);border-radius:10px;background:rgba(255,250,237,.72);font:700 12px/1.2 Arial,sans-serif;letter-spacing:1px;color:#5a3b29}
+.m7-content{width:min(960px,100%);margin:0 auto;text-align:center}
+.m7-discovery-intro{max-width:720px;margin:0 auto 22px;padding:13px 18px;border-left:4px solid #74472f;border-right:4px solid #74472f;background:rgba(255,249,231,.52);border-radius:10px;font:16px/1.55 Georgia,serif;color:#65432e}
+.m7-discovery-section{margin:22px auto 30px}.m7-section-title{margin:0 0 13px;font:700 19px/1.2 Georgia,serif;letter-spacing:1px;color:#573523}.m7-section-note{margin:-5px 0 15px;font:12px/1.4 Arial,sans-serif;color:#806047}
+.m7-discovery-grid{display:flex;justify-content:center;align-items:stretch;gap:14px;flex-wrap:wrap;width:fit-content;max-width:100%;margin:0 auto}
+.m7-discovery-card{width:155px;padding:9px;border:1px solid rgba(84,51,31,.34);border-radius:12px;background:rgba(255,249,232,.86);cursor:pointer;box-shadow:0 5px 12px rgba(71,41,21,.10);transition:.15s ease}
+.m7-discovery-card:hover{transform:translateY(-2px)}.m7-discovery-card.revealed{background:#ead8b3;border-color:#74472f}
+.m7-discovery-photo{width:100%;height:155px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:9px;background:#d9c49b}
+.m7-discovery-photo img{width:100%;height:100%;object-fit:contain;object-position:center}.m7-fallback{font:700 10px/1 Arial,sans-serif;letter-spacing:1px;color:#7b5a42}
+.m7-photo-loading{position:relative;overflow:hidden;background:linear-gradient(100deg,#d3ba88 25%,#ead8b2 40%,#d3ba88 55%);background-size:220% 100%;animation:m7PhotoShimmer 1.25s ease-in-out infinite}
+.m7-photo-loading::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border:2px solid rgba(102,72,43,.20);border-top-color:#765238;border-radius:50%;animation:m7PhotoSpin .9s linear infinite}
+.m7-photo-loading .m7-fallback{opacity:.72}
+.m7-photo-missing{background:#d9c49b;animation:none}
+.m7-photo-missing::after{display:none}
+@keyframes m7PhotoShimmer{0%{background-position:200% 0}100%{background-position:-20% 0}}
+@keyframes m7PhotoSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.m7-discovery-name{display:block;margin-top:8px;font:700 17px/1.15 Georgia,serif;color:#4d2d20}.m7-discovery-placement{display:block;margin-top:4px;font:700 11px/1.25 Arial,sans-serif;letter-spacing:.8px;color:#76553d}
+.m7-reveal{display:none;margin-top:9px;padding-top:8px;border-top:1px solid rgba(84,51,31,.22);text-align:left}.m7-discovery-card.revealed .m7-reveal{display:block}
+.m7-reveal strong{display:block;font:700 13px/1.3 Georgia,serif;color:#513122}.m7-reveal small{display:block;margin-top:3px;font:10px/1.35 Arial,sans-serif;color:#76553d}
+.m7-discovery-lock{margin:22px auto 0;max-width:650px;padding:13px 16px;border-radius:11px;background:rgba(255,249,231,.7);border:1px solid rgba(84,51,31,.24);font:700 12px/1.5 Arial,sans-serif;color:#65432e}
+.m7-btnrow{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px auto 0}.m7-btn{min-width:190px;padding:12px 18px;border:1px solid #633d29;border-radius:10px;background:#71452f;color:#fff8e9;cursor:pointer;font:700 12px/1 Arial,sans-serif;letter-spacing:1.2px}.m7-btn:disabled{opacity:.42;cursor:not-allowed}.m7-btn.secondary{background:#e4cfaa;color:#5b3a28}
+.m7-question{margin:5px auto 18px;font:700 clamp(20px,2.5vw,30px)/1.3 Georgia,serif;color:#4d2d20}.m7-question small{display:block;margin-top:6px;font:14px/1.5 Arial,sans-serif;color:#76553d}
+.m7-person-card{width:180px;margin:0 auto 20px;padding:10px;border:1px solid rgba(89,54,31,.35);border-radius:13px;background:rgba(255,249,231,.82);box-shadow:0 8px 18px rgba(72,42,22,.14)}
+.m7-person-photo{width:100%;height:190px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:9px;background:#d9c49b}.m7-person-photo img{width:100%;height:100%;object-fit:contain;object-position:center}
+.m7-person-name{display:block;margin-top:8px;font:700 18px/1.15 Georgia,serif;color:#4d2d20}.m7-person-meta{display:block;margin-top:4px;font:11px/1.4 Arial,sans-serif;color:#76553d}
+.m7-options,.m7-face-grid,.m7-sort-grid,.m7-bins{display:flex;justify-content:center;align-items:stretch;gap:14px;flex-wrap:wrap;width:fit-content;max-width:100%;margin:0 auto}
+.m7-option{width:180px;min-height:74px;padding:13px 14px;border:1px solid rgba(84,51,31,.36);border-radius:12px;background:linear-gradient(#f8edd3,#ead6ad);color:#523322;cursor:pointer;font:700 16px/1.25 Georgia,serif;box-shadow:0 5px 12px rgba(71,41,21,.12);transition:.15s ease}.m7-option:hover:not(:disabled){transform:translateY(-2px)}
+.m7-option.selected{border:2px solid #74472f;background:#dbc18d;box-shadow:0 0 0 3px rgba(116,71,47,.13),0 8px 18px rgba(71,41,21,.18)}.m7-option.correct{background:#d6c18e;border-color:#5e4327}.m7-option.wrong{opacity:.62}
+.m7-face-card{width:155px;padding:9px;border:1px solid rgba(84,51,31,.34);border-radius:12px;background:rgba(255,249,232,.86);cursor:pointer;box-shadow:0 5px 12px rgba(71,41,21,.10)}.m7-face-card .m7-person-photo{height:155px}.m7-face-card strong{display:block;margin-top:7px;font:700 16px/1.15 Georgia,serif}.m7-face-card.selected{border:2px solid #74472f;transform:translateY(-2px)}.m7-face-card.correct{background:#d6c18e;border-color:#5e4327}.m7-face-card.wrong{opacity:.62}
+.m7-sort-card{width:145px;padding:8px;border:1px solid rgba(84,51,31,.34);border-radius:11px;background:rgba(255,249,232,.86);cursor:pointer}.m7-sort-card .m7-person-photo{height:140px}.m7-sort-card strong{display:block;margin-top:6px;font:700 15px/1.15 Georgia,serif}.m7-sort-card.selected{border:2px solid #74472f;transform:translateY(-2px)}.m7-sort-card.correct{background:#d6c18e}.m7-sort-card.wrong{opacity:.62}
+.m7-bin{width:190px;min-height:105px;padding:14px;border:2px dashed rgba(101,65,40,.46);border-radius:12px;background:rgba(255,249,231,.5);cursor:pointer;color:#5a3926;font:700 16px/1.25 Georgia,serif}.m7-bin.selected{border-style:solid;border-color:#74472f;background:#e2c996}.m7-bin small{display:block;margin-top:8px;font:11px/1.35 Arial,sans-serif;color:#76553d}
+.m7-chain{width:min(720px,100%);margin:0 auto;display:grid;gap:9px}.m7-chain-row{display:grid;grid-template-columns:145px 1fr;align-items:center;border:1px solid rgba(84,51,31,.25);border-radius:10px;background:rgba(255,249,232,.7);overflow:hidden}.m7-chain-row span{padding:11px;background:rgba(119,73,47,.08);font:700 10px/1 Arial,sans-serif;letter-spacing:1.3px;color:#76523a}.m7-chain-row strong{padding:11px 14px;text-align:left;font:700 15px/1.3 Georgia,serif;color:#4e3022}
+.m7-feedback{width:min(720px,100%);margin:16px auto 0}.m7-feedback-note{padding:11px 14px;border-radius:10px;background:rgba(255,249,231,.78);border:1px solid rgba(84,51,31,.25);font:700 12px/1.5 Arial,sans-serif;color:#5b3a28}
+.m7-complete{padding:28px 18px;text-align:center}.m7-complete h2{margin:0 0 8px;font:700 34px/1 Georgia,serif;color:#4e2e21}.m7-complete p{margin:0 auto 20px;font:15px/1.6 Georgia,serif;color:#6e4b34}
+@media(max-width:760px){.m7-shell{width:min(100% - 18px,1120px);padding:10px 0 24px}.m7-frame{padding:18px 12px 22px;border-radius:13px}.m7-discovery-card{width:145px}.m7-discovery-photo{height:145px}.m7-option{width:150px}.m7-chain-row{grid-template-columns:105px 1fr}}
+</style><div id="milestone7-jabatan" aria-hidden="true">
+ <div class="m7-shell"><div class="m7-frame">
+  <header class="m7-header">
+   <div class="m7-eyebrow">LEADERS HALL · MILESTONE VII</div>
+   <h1 class="m7-title">THE JABATAN</h1>
+   <p class="m7-subtitle">You know their faces, teams, generations, and placements. First, meet those who hold the key positions.</p>
+  </header>
+  <div class="m7-stagebar">
+   <span class="m7-stage active" data-m7-stage="discovery">DISCOVERY</span>
+   <span class="m7-stage" data-m7-stage="command">THE LEADERS</span>
+   <span class="m7-stage" data-m7-stage="sie">THE SIE LEADERS</span>
+   <span class="m7-stage" data-m7-stage="final">CHAIN OF COMMAND</span>
+  </div>
+  <div class="m7-meta"><div class="m7-pill" id="m7-round">DISCOVERY</div><div class="m7-pill" id="m7-score">7 LEADERS</div></div>
+  <main class="m7-content" id="m7-content"></main>
+  <div class="m7-feedback" id="m7-feedback"></div>
+  <div class="m7-btnrow" id="m7-actions">
+   <button class="m7-btn" id="m7-lock" type="button" disabled style="display:none">LOCK IN ANSWER</button>
+   <button class="m7-btn secondary" id="m7-next" type="button" disabled style="display:none">NEXT CHALLENGE</button>
+  </div>
+  <div class="m7-complete" id="m7-complete" style="display:none"></div>
+ </div></div>
+</div><script id="milestone7-jabatan-js">
+(function(){
+"use strict";
+const root=document.getElementById("milestone7-jabatan");if(!root)return;
+const $=id=>document.getElementById(id);
+
+const HOLDERS=[
+ {id:"Bio",name:"Bio",angkatan:"STSN15",penempatan:"Madya",jabatan:"Ketua Tim – Komandan Batalyon Taruna Madya",type:"batalyon"},
+ {id:"Fahmi",name:"Fahmi",angkatan:"STSN15",penempatan:"Muda",jabatan:"Ketua Tim – Komandan Batalyon Taruna Muda",type:"batalyon"},
+ {id:"Afi",name:"Afi",angkatan:"STSN12",penempatan:"Pratama",jabatan:"Ketua Tim – Komandan Batalyon Taruna Pratama",type:"batalyon"},
+ {id:"Adhli",name:"Adhli",angkatan:"STSN14",penempatan:"Satria",jabatan:"Ketua Tim – Komandan Batalyon Taruna Satria",type:"batalyon"},
+ {id:"Yota",name:"Yota",angkatan:"STSN15",penempatan:"Operasi",jabatan:"Kepala Seksi Operasi",type:"sie"},
+ {id:"Hadyan",name:"Hadyan",angkatan:"STSN14",penempatan:"Adminlog",jabatan:"Kepala Seksi Administrasi dan Logistik",type:"sie"},
+ {id:"Yaji",name:"Yaji",angkatan:"STSN14",penempatan:"Pengamanan",jabatan:"Kepala Seksi Pengamanan",type:"sie"}
+];
+const ROUNDS=["THE COMMAND · BATALYON RECOGNITION","THE COMMAND · FACE RECALL","THE COMMAND · BATALYON SORT","THE COMMAND · JABATAN","THE OFFICES · SIE RECOGNITION","THE OFFICES · FACE RECALL","CHAIN OF COMMAND · FINAL RECALL"];
+let people=HOLDERS.map(x=>({...x}));
+let state={phase:"discovery",discovery:{command:[],sie:[]},round:0,score:0,locked:false,selected:[],selectedUnit:"",history:[],completed:false,roundData:null};
+
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function label(p){return p?.panggilan||p?.name||p?.nama||"Pamong"}
+
+async function loadPeople(){
+ try{
+  if(typeof SUPABASE_REST_URL!=="undefined"&&typeof SUPABASE_PUBLIC_KEY!=="undefined"){
+   const r=await fetch(`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,tim,angkatan,foto,penempatan&order=id.asc`,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
+   if(r.ok){
+    const d=await r.json();
+    if(Array.isArray(d)){
+     people=HOLDERS.map(h=>{
+      const f=d.find(p=>[p.panggilan,p.nama].map(x=>String(x||"").toLowerCase()).includes(h.name.toLowerCase()));
+      return Object.assign({},h,f||{},{
+       id:f?.id||h.id,name:h.name,panggilan:f?.panggilan||h.name,nama:f?.nama||h.name,
+       angkatan:f?.angkatan||h.angkatan,penempatan:f?.penempatan||h.penempatan,jabatan:h.jabatan,type:h.type
+      });
+     });
+    }
+   }
+  }
+ }catch(e){}
+ return people;
+}
+
+function photoUrl(p){
+ const raw=String(p.foto||p.photo_path||p.photo_url||"").trim();
+ if(!raw)return "";
+ if(/^https?:\/\//i.test(raw))return raw;
+ try{if(typeof getPamongPhotoUrl==="function"){const u=getPamongPhotoUrl(raw);if(u)return u}}catch(e){}
+ // Public URL is used immediately so the UI never waits on Storage signing.
+ return "";
+}
+function photoBox(p,person=false){
+ const cls=person?"m7-person-photo":"m7-discovery-photo";
+ return `<div class="${cls} m7-photo-loading" data-m7-photo="${esc(p.id)}"><span class="m7-fallback">LOADING PORTRAIT</span></div>`;
+}
+function showMissingPhoto(b){
+ if(!b)return;
+ b.classList.remove("m7-photo-loading");
+ b.classList.add("m7-photo-missing");
+ b.innerHTML='<span class="m7-fallback">PORTRAIT UNAVAILABLE</span>';
+}
+function showLoadedPhoto(b,img){
+ if(!b||!img)return;
+ b.classList.remove("m7-photo-loading","m7-photo-missing");
+ b.innerHTML="";
+ b.appendChild(img);
+}
+async function hydrate(c){
+ if(!c)return;
+ [...c.querySelectorAll("[data-m7-photo]")].forEach(b=>{
+  const p=people.find(x=>String(x.id)===String(b.dataset.m7Photo));if(!p)return;
+  const u=photoUrl(p);
+
+  // Keep a deliberate loading state briefly even when the source is missing.
+  // This avoids the UI looking like it "failed" or froze while fetching.
+  let missingTimer=setTimeout(()=>showMissingPhoto(b),1400);
+
+  const img=new Image();
+  img.alt=label(p);img.loading="eager";img.decoding="async";
+
+  img.onload=()=>{
+   clearTimeout(missingTimer);
+   showLoadedPhoto(b,img);
+  };
+
+  img.onerror=()=>{
+   // Give Storage signing/retry a chance before the loading state resolves.
+   try{
+    if(typeof resolvePamongPhoto==="function" && p.foto){
+     resolvePamongPhoto(String(p.foto).replace(/^\/+/,"")).then(signed=>{
+      if(!signed)return;
+      const retry=new Image();retry.alt=label(p);retry.loading="eager";retry.decoding="async";
+      retry.onload=()=>{
+       clearTimeout(missingTimer);
+       showLoadedPhoto(b,retry);
+      };
+      retry.onerror=()=>{};
+      retry.src=signed;
+     }).catch(()=>{});
+    }
+   }catch(e){}
+  };
+
+  if(u){
+   img.src=u;
+  }else{
+   // No URL at all: stay in the animated loading state for the same delay.
+   // The timer above will then turn it into a subtle unavailable state.
+  }
+ });
+}
+function save(){try{localStorage.setItem("npc_milestone7_jabatan_discovery_v2",JSON.stringify(state))}catch(e){}}
+function setStage(s){
+ const order=["discovery","command","sie","final"],now=order.indexOf(s);
+ root.querySelectorAll("[data-m7-stage]").forEach(el=>{let i=order.indexOf(el.dataset.m7Stage);el.classList.toggle("active",i===now);el.classList.toggle("done",i<now)})
+}
+
+function discoveryCard(p,kind){
+ const revealed=state.discovery[kind].includes(String(p.id));
+ return `<button class="m7-discovery-card ${revealed?"revealed":""}" type="button" data-discover="${esc(p.id)}" data-kind="${kind}">
+ ${photoBox(p)}<span class="m7-discovery-name">${esc(label(p))}</span>
+ <span class="m7-discovery-placement">${revealed?esc(p.penempatan):"TAP TO REVEAL"}</span>
+ <span class="m7-reveal"><strong>${esc(p.jabatan)}</strong><small>${esc(p.angkatan)}${p.tim?` · TEAM ${esc(p.tim)}`:""}</small></span>
+ </button>`;
+}
+
+async function renderDiscovery(){
+ setStage("discovery");$("m7-round").textContent="DISCOVERY";$("m7-score").textContent="7 LEADERS";$("m7-feedback").innerHTML="";
+ $("m7-lock").style.display="none";$("m7-next").style.display="none";$("m7-complete").style.display="none";$("m7-content").style.display="block";$("m7-actions").style.display="flex";
+ const b=people.filter(x=>x.type==="batalyon"),s=people.filter(x=>x.type==="sie");
+ const count=state.discovery.command.length+state.discovery.sie.length;
+ $("m7-content").innerHTML=`<div class="m7-discovery-intro">Before the game begins, meet the seven people who hold the key leadership positions. Tap each card to reveal their jabatan. No quiz yet — just <b>look, tap, reveal, remember.</b></div>
+ <section class="m7-discovery-section"><h2 class="m7-section-title">THE COMMAND</h2><p class="m7-section-note">Four Batalyon Commanders</p><div class="m7-discovery-grid">${b.map(p=>discoveryCard(p,"command")).join("")}</div></section>
+ <section class="m7-discovery-section"><h2 class="m7-section-title">THE OFFICES</h2><p class="m7-section-note">Three Heads of Sie</p><div class="m7-discovery-grid">${s.map(p=>discoveryCard(p,"sie")).join("")}</div></section>
+ <div class="m7-discovery-lock">${count} / 7 leaders discovered. ${count===7?"The leaders have been revealed. You may enter the Jabatan game.":"Reveal every card before entering the game."}</div>
+ <div class="m7-btnrow"><button class="m7-btn" id="m7-enter-game" type="button" ${count===7?"":"disabled"}>ENTER THE JABATAN</button></div>`;
+ await hydrate($("m7-content"));
+ $("m7-enter-game").onclick=beginGame;
+}
+
+function build1(){let p=shuffle(HOLDERS.filter(x=>x.type==="batalyon"))[0];state.roundData={type:1,targetId:p.id,correct:p.penempatan};return `<div class="m7-question">What Batalyon did <b>${esc(label(p))}</b> command?<small>Recall the placement you discovered earlier.</small></div><div class="m7-person-card">${photoBox(p,true)}<strong class="m7-person-name">${esc(label(p))}</strong><small class="m7-person-meta">${esc(p.angkatan)}</small></div><div class="m7-options">${shuffle(HOLDERS.filter(x=>x.type==="batalyon")).map(x=>`<button class="m7-option" type="button" data-choice="${x.penempatan}">${x.penempatan}</button>`).join("")}</div>`}
+function build2(){let p=shuffle(HOLDERS.filter(x=>x.type==="batalyon"))[0];state.roundData={type:2,targetId:p.id,correct:p.id};return `<div class="m7-question">Which Pamong holds the command of <b>${esc(p.penempatan)}</b>?<small>Recall the face behind the Batalyon.</small></div><div class="m7-face-grid">${shuffle(HOLDERS.filter(x=>x.type==="batalyon")).map(x=>`<button class="m7-face-card" type="button" data-person-choice="${x.id}">${photoBox(x,true)}<strong>${esc(label(x))}</strong></button>`).join("")}</div>`}
+function build3(){let cards=shuffle(HOLDERS.filter(x=>x.type==="batalyon"));state.roundData={type:3,ids:cards.map(x=>x.id),assignments:{}};return `<div class="m7-question">Sort the four Commanders by their Batalyon.<small>Tap a Pamong, then choose their Batalyon.</small></div><div class="m7-sort-grid">${cards.map(x=>`<button class="m7-sort-card" type="button" data-sort-person="${x.id}">${photoBox(x,true)}<strong>${esc(label(x))}</strong></button>`).join("")}</div><div class="m7-bins">${["Satria","Madya","Muda","Pratama"].map(u=>`<button class="m7-bin" type="button" data-sort-unit="${u}">${u}<small data-bin-names="${u}">0 placed</small></button>`).join("")}</div>`}
+function build4(){let p=shuffle(HOLDERS.filter(x=>x.type==="batalyon"))[0];state.roundData={type:4,targetId:p.id,correct:p.jabatan};return `<div class="m7-question">What is <b>${esc(label(p))}</b>'s full jabatan?<small>${esc(p.penempatan)} · ${esc(p.angkatan)}</small></div><div class="m7-person-card">${photoBox(p,true)}<strong class="m7-person-name">${esc(label(p))}</strong><small class="m7-person-meta">${esc(p.penempatan)}</small></div><div class="m7-options">${shuffle(HOLDERS.filter(x=>x.type==="batalyon").map(x=>x.jabatan)).map(j=>`<button class="m7-option" type="button" data-choice="${esc(j)}">${esc(j)}</button>`).join("")}</div>`}
+function build5(){let p=shuffle(HOLDERS.filter(x=>x.type==="sie"))[0];state.roundData={type:5,targetId:p.id,correct:p.penempatan};return `<div class="m7-question">Who heads this Sie?<small>${esc(p.penempatan)}</small></div><div class="m7-person-card">${photoBox(p,true)}<strong class="m7-person-name">${esc(label(p))}</strong><small class="m7-person-meta">${esc(p.angkatan)}</small></div><div class="m7-options">${shuffle(HOLDERS.filter(x=>x.type==="sie")).map(x=>`<button class="m7-option" type="button" data-choice="${x.penempatan}">${x.penempatan}</button>`).join("")}</div>`}
+function build6(){let p=shuffle(HOLDERS.filter(x=>x.type==="sie"))[0];state.roundData={type:6,targetId:p.id,correct:p.id};return `<div class="m7-question">Which Pamong holds <b>${esc(p.penempatan)}</b>?<small>Recognize the face, then lock your answer.</small></div><div class="m7-face-grid">${shuffle(HOLDERS.filter(x=>x.type==="sie")).map(x=>`<button class="m7-face-card" type="button" data-person-choice="${x.id}">${photoBox(x,true)}<strong>${esc(label(x))}</strong></button>`).join("")}</div>`}
+function build7(){let p=shuffle(HOLDERS)[0];state.roundData={type:7,targetId:p.id,correct:p.jabatan};return `<div class="m7-question">Final recall: complete the chain for <b>${esc(label(p))}</b>.<small>Face → Angkatan → Jabatan</small></div><div class="m7-person-card">${photoBox(p,true)}<strong class="m7-person-name">${esc(label(p))}</strong><small class="m7-person-meta">${esc(p.angkatan)}</small></div><div class="m7-chain"><div class="m7-chain-row"><span>FACE</span><strong>${esc(label(p))}</strong></div><div class="m7-chain-row"><span>ANGKATAN</span><strong>${esc(p.angkatan)}</strong></div><div class="m7-options">${shuffle(HOLDERS.map(x=>x.jabatan)).map(j=>`<button class="m7-option" type="button" data-choice="${esc(j)}">${esc(j)}</button>`).join("")}</div></div>`}
+const builders=[build1,build2,build3,build4,build5,build6,build7];
+
+async function renderRound(){
+ state.locked=false;state.selected=[];state.selectedUnit="";state.roundData=null;
+ $("m7-round").textContent=`ROUND ${state.round+1} / 7`;$("m7-score").textContent=`SCORE ${state.score}`;$("m7-feedback").innerHTML="";
+ $("m7-lock").style.display="";$("m7-next").style.display="";$("m7-lock").disabled=true;$("m7-next").disabled=true;$("m7-lock").textContent="LOCK IN ANSWER";
+ $("m7-content").style.display="block";$("m7-complete").style.display="none";$("m7-actions").style.display="flex";
+ setStage(state.round<4?"command":state.round<6?"sie":"final");
+ $("m7-content").innerHTML=builders[state.round]();await hydrate($("m7-content"));if(state.round===2)renderSort();
+}
+function renderSort(){const q=state.roundData;["Satria","Madya","Muda","Pratama"].forEach(u=>{const ids=Object.entries(q.assignments).filter(([,v])=>v===u).map(([id])=>id);const names=ids.map(id=>label(people.find(p=>String(p.id)===id)||{}));const e=root.querySelector(`[data-bin-names="${u}"]`);if(e)e.textContent=`${names.length} placed${names.length?": "+names.join(" · "):""}`});root.querySelectorAll("[data-sort-person]").forEach(b=>b.classList.toggle("selected",String(b.dataset.sortPerson)===state.selectedUnit))}
+function choose(v){if(state.locked)return;state.selected=[v];root.querySelectorAll(".m7-option").forEach(b=>b.classList.toggle("selected",b.dataset.choice===v));$("m7-lock").disabled=false}
+function choosePerson(id){if(state.locked)return;state.selected=[String(id)];root.querySelectorAll("[data-person-choice]").forEach(b=>b.classList.toggle("selected",String(b.dataset.personChoice)===String(id)));$("m7-lock").disabled=false}
+function sortPerson(id){if(state.locked)return;id=String(id);if(state.roundData.assignments[id])delete state.roundData.assignments[id];else state.selectedUnit=id;renderSort();$("m7-lock").disabled=Object.keys(state.roundData.assignments).length!==state.roundData.ids.length}
+function sortUnit(u){if(state.locked||!state.selectedUnit)return;state.roundData.assignments[state.selectedUnit]=u;state.selectedUnit="";renderSort();$("m7-lock").disabled=Object.keys(state.roundData.assignments).length!==state.roundData.ids.length}
+
+function lock(){
+ if(state.locked)return;state.locked=true;const q=state.roundData;let correct=false,details="";
+ if([1,4,5,7].includes(q.type)){correct=state.selected[0]===q.correct;details=q.type===7?`Correct jabatan: ${q.correct}.`:`Correct answer: ${q.correct}.`;root.querySelectorAll("[data-choice]").forEach(b=>{b.disabled=true;if(b.dataset.choice===q.correct)b.classList.add("correct");if(b.dataset.choice===state.selected[0]&&!correct)b.classList.add("wrong")})}
+ if([2,6].includes(q.type)){correct=String(state.selected[0])===String(q.correct);details=`Correct Pamong: ${label(people.find(p=>String(p.id)===String(q.correct))||{})}.`;root.querySelectorAll("[data-person-choice]").forEach(b=>{b.disabled=true;if(String(b.dataset.personChoice)===String(q.correct))b.classList.add("correct");if(String(b.dataset.personChoice)===String(state.selected[0])&&!correct)b.classList.add("wrong")})}
+ if(q.type===3){correct=q.ids.every(id=>q.assignments[id]===people.find(p=>String(p.id)===String(id))?.penempatan);details=correct?"All four commanders are correctly placed.":"One or more commanders are in the wrong Batalyon.";root.querySelectorAll("[data-sort-person],[data-sort-unit]").forEach(b=>b.disabled=true);q.ids.forEach(id=>{const c=root.querySelector(`[data-sort-person="${id}"]`),p=people.find(x=>String(x.id)===String(id));if(c)c.classList.add(q.assignments[id]===p?.penempatan?"correct":"wrong")})}
+ if(correct)state.score+=100;state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
+ $("m7-score").textContent=`SCORE ${state.score}`;$("m7-lock").disabled=true;$("m7-next").disabled=false;$("m7-lock").textContent="✓ ANSWER LOCKED";
+ $("m7-feedback").innerHTML=`<div class="m7-feedback-note">${correct?"✓ Correct. Your answer is locked and cannot be changed.":"✕ Incorrect. Your answer is locked. No correction is allowed."}<br>${esc(details)}</div>`;
+}
+function beginGame(){state.phase="trial";state.round=0;state.score=0;state.locked=false;state.selected=[];state.history=[];state.completed=false;save();renderRound()}
+function next(){if(!state.locked)return;if(state.round>=6){complete();return}state.round++;renderRound()}
+function complete(){
+ state.completed=true;state.phase="complete";save();
+ try{const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};p.milestone=Math.max(Number(p.milestone||1),7);if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));if(typeof refreshJourney==="function")refreshJourney()}catch(e){}
+ const correct=state.history.filter(x=>x.correct).length;
+ $("m7-content").style.display="none";$("m7-actions").style.display="none";$("m7-complete").style.display="block";
+ $("m7-complete").innerHTML=`<h2>THE JABATAN REMEMBERED</h2><p>${correct} / 7 rounds correct · ${state.score} / 700 points.<br>The chain of command is now part of your memory.</p><div class="m7-btnrow"><button class="m7-btn" id="m7-replay" type="button">PLAY THE JABATAN AGAIN</button><button class="m7-btn secondary" id="m7-return" type="button">RETURN TO THE JOURNEY</button></div>`;
+ setStage("final");$("m7-replay").onclick=replay;$("m7-return").onclick=close;
+}
+function replay(){state={phase:"discovery",discovery:{command:[],sie:[]},round:0,score:0,locked:false,selected:[],selectedUnit:"",history:[],completed:false,roundData:null};save();renderDiscovery()}
+function close(){root.classList.remove("active");root.setAttribute("aria-hidden","true");document.body.style.overflow=""}
+async function open(){root.classList.add("active");root.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";await loadPeople();if(state.completed){complete();return}if(state.phase==="trial")renderRound();else renderDiscovery()}
+
+root.addEventListener("click",e=>{
+ const d=e.target.closest("[data-discover]");
+ if(d){const k=d.dataset.kind,id=String(d.dataset.discover);if(!state.discovery[k].includes(id))state.discovery[k].push(id);save();renderDiscovery();return}
+ const c=e.target.closest("[data-choice]");if(c){choose(c.dataset.choice);return}
+ const p=e.target.closest("[data-person-choice]");if(p){choosePerson(p.dataset.personChoice);return}
+ const sp=e.target.closest("[data-sort-person]");if(sp){sortPerson(sp.dataset.sortPerson);return}
+ const su=e.target.closest("[data-sort-unit]");if(su){sortUnit(su.dataset.sortUnit);return}
+});
+$("m7-lock").onclick=lock;$("m7-next").onclick=next;
+window.openJabatanMilestone=open;window.closeJabatanMilestone=close;
+
+document.addEventListener("click",function(e){
+ const n=e.target.closest("#journey-node-7,#milestone-7,[data-milestone='7']");if(!n)return;
+ let unlocked=false;try{const p=typeof getPlayerData==="function"?getPlayerData():null;unlocked=Number(p?.milestone||1)>=6}catch(err){}
+ if(unlocked){e.preventDefault();e.stopImmediatePropagation();open()}
+},true);
+})();
+</script>
 <!-- Teams A–D journey -->
 <style>
 /* =========================================================
@@ -4330,6 +6820,14 @@ document.addEventListener("keydown",function(e){
 
 
 <script id="generation-game-js">
+/* =========================================================
+   MILESTONE V — THE TOWER OF AGES
+   Discovery:
+      Generation -> roster browsing (no Team clues)
+   Trial:
+      Use the Team knowledge from Milestones 1–4 to recall
+      which familiar face belongs to which generation.
+========================================================= */
 (function(){
   const overlay=document.getElementById("generation-game");
   const closeBtn=document.getElementById("generation-close");
@@ -4341,144 +6839,182 @@ document.addEventListener("keydown",function(e){
   if(!overlay||!timeline||!discovery) return;
 
   const GENERATIONS=["STSN12","STSN13","STSN14","STSN15","STSN16","STSN17","STSN18"];
+  const DISCOVERY_KEY="npc_milestone5_discovered_v2";
+  const GAME_KEY="npc_milestone5_game_v6";
 
-  /* Current Pengasuh table has no gender field, so this UI mapping keeps the
-     agreed male/female grouping without altering the source data. */
+  /* The source Pengasuh table does not expose gender in the current schema.
+     This mapping is only for presentation in the Tower roster. */
   const GENDER_MAP={
     Morez:"male",Afi:"female",Budin:"male",Nia:"female",Edy:"male",
     Nabel:"female",Danu:"male",Imas:"female",Rizal:"male",Heading:"male",
     Hadyan:"male",Monike:"female",Yaji:"male",Ilham:"male",Adhli:"male",
-    Wening:"female",Onal:"male",Yoland:"female",Kadek:"male",Bio:"male",
-    Sasa:"female",Yota:"male",Yunik:"female",Wira:"male",Fahmi:"male",
-    Hiday:"female",Lolita:"female",Naya:"female",Nurul:"female",Agil:"male",Gara:"male",
-    Yahya:"male",Kacha:"male",Aqil:"male",Izar:"male",Fajar:"male",
-    Dhyo:"male",Dendi:"male",Atha:"female",Agan:"male"
+    Wening:"female",Onal:"male",Yolan:"female",Yoland:"female",Nurul:"female",
+    Kadek:"male",Bio:"male",Sasa:"female",Yota:"male",Yunik:"female",
+    Wira:"male",Fahmi:"male",Hiday:"female",Lolita:"female",Naya:"female",
+    Agil:"male",Gara:"male",Yahya:"male",Kacha:"male",Aqil:"male",
+    Izar:"male",Fajar:"male",Dhyo:"male",Dendi:"male",Atha:"female",
+    Agan:"male"
   };
 
   let allPeople=[];
   let discovered=new Set();
   let selected=null;
+  let phase="discovery";
+  let trial=null;
 
-  const storeKey="npc_milestone5_discovered";
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
+  const normalizeGeneration=value=>{
+    const raw=String(value??"").trim().toUpperCase();
+    const digits=(raw.match(/\d+/)||[""])[0];
+    return digits?`STSN${Number(digits)}`:raw.replace(/\s+/g,"");
+  };
+  const peopleForGeneration=g=>allPeople.filter(p=>normalizeGeneration(p.angkatan)===normalizeGeneration(g));
 
-  function esc(v){return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]))}
-  function photoUrl(path){
-    if(!path)return "";
-    const clean=String(path).replace(/^\/+/,"");
-    return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_PHOTO_BUCKET}/${clean.split("/").map(encodeURIComponent).join("/")}`;
-  }
+  function photoUrl(path){return getPamongPhotoUrl(path)}
   function getPersonPhoto(p){return p.foto_url||photoUrl(p.foto)}
+
+  async function ensureTowerPersonPhoto(p){
+    if(!p) return "";
+    if(p.foto_url && p.foto_url!==photoUrl(p.foto)) return p.foto_url;
+    const raw=String(p.foto??"").trim();
+    if(!raw) return "";
+    if(/^https?:\/\//i.test(raw)){ p.foto_url=raw; return raw; }
+    const signed=await resolvePamongPhoto(pamongPhotoPath(raw));
+    if(signed){ p.foto_url=signed; return signed; }
+    p.foto_url=photoUrl(raw);
+    return p.foto_url;
+  }
+
+  async function ensureTowerPeoplePhotos(people){
+    const list=Array.isArray(people)?people:[];
+    // Small concurrency window keeps Supabase responsive without flooding it.
+    let cursor=0;
+    const worker=async()=>{
+      while(cursor<list.length){
+        const item=list[cursor++];
+        await ensureTowerPersonPhoto(item);
+      }
+    };
+    await Promise.all([worker(),worker(),worker(),worker()]);
+    return list;
+  }
+  function getPersonTeam(p){
+    const value = p.tim ?? p.team ?? p.kelompok ?? "";
+    return String(value).trim();
+  }
 
   async function loadPeople(){
     if(allPeople.length)return allPeople;
     try{
-      const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,foto&order=id.asc`;
+      const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto&order=id.asc`;
       const res=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
       if(!res.ok)throw new Error(`HTTP ${res.status}`);
-      allPeople=await res.json();
-      if(!Array.isArray(allPeople)) throw new Error("Unexpected Supabase response.");
+      const data=await res.json();
+      if(!Array.isArray(data))throw new Error("Unexpected Pengasuh response");
+      allPeople=data;
     }catch(err){
-      console.error("Milestone V data load failed:",err);
+      console.error("Tower of Ages data load failed:",err);
       allPeople=[];
     }
     return allPeople;
   }
 
-  function loadDiscovered(){
+  function loadDiscoveryState(){
     try{
-      const raw=JSON.parse(localStorage.getItem(storeKey)||"[]");
-      discovered=new Set(raw.filter(g=>GENERATIONS.includes(g)));
+      discovered=new Set((JSON.parse(localStorage.getItem(DISCOVERY_KEY)||"[]")||[])
+        .filter(g=>GENERATIONS.includes(g)));
     }catch(e){discovered=new Set()}
   }
-  function saveDiscovered(){
-    try{localStorage.setItem(storeKey,JSON.stringify([...discovered]))}catch(e){}
+  function saveDiscoveryState(){
+    try{localStorage.setItem(DISCOVERY_KEY,JSON.stringify([...discovered]))}catch(e){}
   }
 
-  function normalizeGeneration(value){
-    const raw=String(value??"").trim().toUpperCase();
-    const digits=(raw.match(/\d+/)||[""])[0];
-    return digits ? `STSN${Number(digits)}` : raw.replace(/\s+/g,"");
+  function getGameState(){
+    try{return JSON.parse(localStorage.getItem(GAME_KEY)||"null")}catch(e){return null}
   }
-
-  function peopleForGeneration(g){
-    const target=normalizeGeneration(g);
-    return allPeople.filter(p=>normalizeGeneration(p.angkatan)===target);
-  }
-
-  function counts(){
-    return GENERATIONS.map(g=>{
-      const rows=peopleForGeneration(g);
-      return {g,total:rows.length,
-        male:rows.filter(p=>GENDER_MAP[p.panggilan]==="male").length,
-        female:rows.filter(p=>GENDER_MAP[p.panggilan]==="female").length};
-    });
+  function saveGameState(){
+    try{localStorage.setItem(GAME_KEY,JSON.stringify(trial))}catch(e){}
   }
 
   function renderTimeline(){
-    const cs=counts();
-    timeline.innerHTML=cs.map(x=>`
-      <button class="generation-tab ${selected===x.g?"active ":""}${discovered.has(x.g)?"discovered":""}"
-              type="button" data-generation="${esc(x.g)}" aria-label="Open ${esc(x.g)}">
-        <strong>${esc(x.g)}</strong>
-        <small>${x.total} IDENTITIES${discovered.has(x.g)?" · ✓":""}</small>
-      </button>`).join("");
+    timeline.innerHTML=GENERATIONS.map(g=>{
+      const rows=peopleForGeneration(g);
+      return `<button class="generation-tab ${selected===g?"active ":""}${discovered.has(g)?"discovered":""}"
+        type="button" data-generation="${esc(g)}">
+        <strong>${esc(g)}</strong>
+        <small>${rows.length} IDENTITIES${discovered.has(g)?" · ✓":""}</small>
+      </button>`;
+    }).join("");
+
     timeline.querySelectorAll("[data-generation]").forEach(btn=>{
-      btn.addEventListener("click",()=>openGeneration(btn.dataset.g));
+      btn.addEventListener("click",()=>openGeneration(btn.dataset.generation));
     });
   }
 
+  function rosterPhoto(p){
+    const url=getPersonPhoto(p);
+    if(!url)return `<div class="tower-person-photo"><div class="team-a-placeholder">PHOTO UNAVAILABLE</div></div>`;
+    return `<div class="tower-person-photo team-a-photo-loading">
+      <img src="${esc(url)}" alt="${esc(p.panggilan||p.nama||"Pamong")}"
+        loading="lazy" decoding="async" data-photo-path="${esc(p.foto||"")}"
+        style="opacity:0" onload="handlePamongImageLoad(this)"
+        onerror="handlePamongImageError(this)">
+      <div class="team-a-photo-skeleton" aria-hidden="true"></div>
+      <div class="team-a-placeholder" style="display:none">PHOTO UNAVAILABLE</div>
+    </div>`;
+  }
+
   function personCard(p){
-    const publicSrc=getPersonPhoto(p);
-    const path=String(p.foto||"").replace(/^\/+/, "");
-    const safePath=esc(path);
-    const safeSrc=esc(publicSrc);
-    const safeAlt=esc(p.panggilan||p.nama||"Pamong");
-    const photo=(publicSrc||path)
-      ? `<div class="tower-person-photo team-a-photo-loading" data-photo-wrapper>
-           <img src="${safeSrc}" alt="${safeAlt}" loading="eager" decoding="async"
-                fetchpriority="high" data-photo-path="${safePath}"
-                data-public-src="${safeSrc}" style="opacity:0"
-                onload="handlePamongImageLoad(this)"
-                onerror="handlePamongImageError(this)">
-           <div class="team-a-photo-skeleton" aria-hidden="true"></div>
-           <div class="team-a-placeholder" style="display:none">PHOTO UNAVAILABLE</div>
-         </div>`
-      : `<div class="tower-person-photo"><div class="team-a-placeholder">PHOTO UNAVAILABLE</div></div>`;
-    return `<button class="generation-person" type="button" data-person-id="${esc(p.id)}"
-      aria-label="Reveal ${safeAlt}">
-      ${photo}
+    return `<button class="generation-person" type="button" data-person-id="${esc(p.id)}">
+      ${rosterPhoto(p)}
       <div class="gp-name">${esc(p.panggilan||p.nama)}</div>
       <div class="gp-full">Tap to reveal identity</div>
     </button>`;
-}
-function showPerson(p){
-    let modal=document.getElementById("generation-person-reveal");
+  }
+
+  async function showPerson(p){
+    let modal=$("generation-person-reveal");
     if(!modal){
       modal=document.createElement("div");
       modal.id="generation-person-reveal";
       modal.className="generation-person-reveal hidden";
       document.body.appendChild(modal);
     }
-    const url=getPersonPhoto(p);
-    modal.innerHTML=`
-      <div class="generation-reveal-card" role="dialog" aria-modal="true">
-        ${url?`<img src="${esc(url)}" alt="${esc(p.panggilan||"Pamong")}" decoding="async">`:""}
-        <h3>${esc(p.panggilan||p.nama)}</h3>
-        <p>${esc(p.nama||"")}</p>
-        <p><strong>${esc(p.angkatan||"")}</strong></p>
-        <button class="generation-reveal-close" type="button">CLOSE</button>
-      </div>`;
+    const url=await ensureTowerPersonPhoto(p);
+    const path=String(p.foto||"").replace(/^\/+/,"");
+    const photo=url?`<div class="tower-reveal-photo team-a-photo-loading">
+      <img src="${esc(url)}" alt="${esc(p.panggilan||"Pamong")}" decoding="async" fetchpriority="high"
+        data-photo-path="${esc(path)}" style="opacity:0"
+        onload="handlePamongImageLoad(this)" onerror="handlePamongImageError(this)">
+      <div class="team-a-photo-skeleton"></div>
+      <div class="team-a-placeholder" style="display:none">PHOTO UNAVAILABLE</div>
+    </div>`:`<div class="tower-reveal-photo"><div class="team-a-placeholder">PHOTO UNAVAILABLE</div></div>`;
+
+    modal.innerHTML=`<div class="generation-reveal-card" role="dialog" aria-modal="true">
+      ${photo}
+      <h3>${esc(p.panggilan||p.nama)}</h3>
+      <p>${esc(p.nama||"")}</p>
+      <div class="tower-reveal-meta">
+        <span class="tower-meta-label">CHRONICLE</span>
+        <strong>${esc(normalizeGeneration(p.angkatan))}</strong>
+        ${getPersonTeam(p) ? `<span class="tower-meta-separator">·</span><span class="tower-meta-label">TEAM</span><strong>${esc(getPersonTeam(p))}</strong>` : ""}
+      </div>
+      <button class="generation-reveal-close" type="button">CLOSE</button>
+    </div>`;
     modal.classList.remove("hidden");
     modal.querySelector(".generation-reveal-close").onclick=()=>modal.classList.add("hidden");
     modal.onclick=e=>{if(e.target===modal)modal.classList.add("hidden")};
   }
 
-  function openGeneration(g){
-    selected=g;
-    discovered.add(g);
-    saveDiscovered();
+  async function openGeneration(g){
+    selected=normalizeGeneration(g);
+    discovered.add(selected);
+    saveDiscoveryState();
+    phase="discovery";
 
-    const rows=peopleForGeneration(g);
+    const rows=peopleForGeneration(selected);
+    await ensureTowerPeoplePhotos(rows);
     const male=rows.filter(p=>GENDER_MAP[p.panggilan]==="male");
     const female=rows.filter(p=>GENDER_MAP[p.panggilan]==="female");
     const unknown=rows.filter(p=>!GENDER_MAP[p.panggilan]);
@@ -4491,12 +7027,14 @@ function showPerson(p){
 
     discovery.innerHTML=`
       <div class="generation-chapter-head">
-        <h3>${esc(g)}</h3>
+        <h3>${esc(selected)}</h3>
         <span>${rows.length} IDENTITIES IN THIS CHRONICLE</span>
       </div>
-      ${group("MALE",male)}
-      ${group("FEMALE",female)}
-      ${group("IDENTITIES",unknown)}`;
+      ${rows.length
+        ? `${group("MALE",male)}${group("FEMALE",female)}${group("IDENTITIES",unknown)}`
+        : `<div class="generation-empty"><div class="generation-seal">V</div>
+           <h3>NO IDENTITIES FOUND</h3><p>No Pengasuh records were returned for this Chronicle.</p></div>`}
+    `;
 
     discovery.querySelectorAll("[data-person-id]").forEach(btn=>{
       btn.addEventListener("click",()=>{
@@ -4504,28 +7042,593 @@ function showPerson(p){
         if(p)showPerson(p);
       });
     });
+
     renderTimeline();
     updateStatus();
   }
 
-  function updateStatus(){
-    const n=discovered.size;
-    status.textContent=`${n} / ${GENERATIONS.length} CHRONICLES DISCOVERED`;
-    nextBtn.disabled=n<GENERATIONS.length;
-    nextBtn.textContent=n===GENERATIONS.length?"CONTINUE TO THE TRIAL":"DISCOVER ALL CHRONICLES";
+  /* ---------- TRIAL ---------- */
+
+  function uniquePeople(){
+    const seen=new Set();
+    return allPeople.filter(p=>{
+      const id=String(p.id);
+      if(seen.has(id))return false;
+      seen.add(id);return true;
+    }).filter(p=>GENERATIONS.includes(normalizeGeneration(p.angkatan)));
   }
 
-  async function open(){
-    loadDiscovered();
-    await loadPeople();
-    selected=null;
+  function shuffled(arr){
+    const a=[...arr];
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function trialCandidates(){
+    return shuffled(uniquePeople());
+  }
+
+  const TRIAL_ROUNDS=[
+    "match","match",
+    "same","same",
+    "orderOld","orderYoung",
+    "mixed","final"
+  ];
+
+  function validPeople(){
+    return uniquePeople().filter(p=>GENERATIONS.includes(normalizeGeneration(p.angkatan)));
+  }
+
+  function generationPool(minPeople=1){
+    return GENERATIONS.filter(g=>peopleForGeneration(g).length>=minPeople);
+  }
+
+  function pickFromGeneration(g,n){
+    return shuffled(peopleForGeneration(g)).slice(0,n);
+  }
+
+  function buildQuestion(round){
+    const type=TRIAL_ROUNDS[round-1]||"match";
+    const pool=validPeople();
+    if(pool.length<4)return null;
+
+    if(type==="match"){
+      const target=pool[Math.floor(Math.random()*pool.length)];
+      const correct=normalizeGeneration(target.angkatan);
+      return {
+        type,target,correct,
+        options:shuffled([correct,...shuffled(GENERATIONS.filter(g=>g!==correct)).slice(0,3)])
+      };
+    }
+
+    if(type==="same"){
+      const gens=generationPool(2);
+      if(!gens.length)return buildQuestion(round-1||1);
+      const g=gens[Math.floor(Math.random()*gens.length)];
+      const correct=pickFromGeneration(g,Math.min(3,peopleForGeneration(g).length));
+      const distractorPool=shuffled(pool.filter(p=>normalizeGeneration(p.angkatan)!==g));
+      const count=Math.min(6,correct.length+3);
+      return {
+        type,generation:g,correctPeople:correct,
+        choices:shuffled([...correct,...distractorPool.slice(0,count-correct.length)])
+      };
+    }
+
+    if(type==="orderOld"||type==="orderYoung"){
+      const gens=shuffled(generationPool(1)).slice(0,4);
+      if(gens.length<4)return buildQuestion(1);
+      const cards=gens.map(g=>pickFromGeneration(g,1)[0]).filter(Boolean);
+      return {
+        type,cards,
+        answer:type==="orderOld"?gens.slice().sort((a,b)=>Number(a.replace("STSN",""))-Number(b.replace("STSN",""))):
+          gens.slice().sort((a,b)=>Number(b.replace("STSN",""))-Number(a.replace("STSN","")))
+      };
+    }
+
+    if(type==="mixed"){
+      const gens=shuffled(generationPool(1)).slice(0,4);
+      const pairs=gens.map(g=>({person:pickFromGeneration(g,1)[0],generation:g})).filter(x=>x.person);
+      return {type,pairs};
+    }
+
+    if(type==="final"){
+      const gens=shuffled(generationPool(1)).slice(0,4);
+      const pairs=gens.map(g=>({person:pickFromGeneration(g,1)[0],generation:g})).filter(x=>x.person);
+      return {type,pairs};
+    }
+
+    return buildQuestion(1);
+  }
+
+  async function startTrial(){
+    const old=getGameState();
+    trial=(old&&old.completed!==true&&Array.isArray(old.history))?old:{
+      round:1,score:0,streak:0,completed:false,history:[]
+    };
+    phase="trial";
+    await renderTrial();
+  }
+
+  function personMini(p){
+    const url=getPersonPhoto(p);
+    return url?`<div class="tower-game-photo team-a-photo-loading">
+      <img src="${esc(url)}" alt="${esc(p.panggilan||"Pamong")}" loading="eager" decoding="async"
+        style="opacity:0" onload="handlePamongImageLoad(this)" onerror="handlePamongImageError(this)">
+      <div class="team-a-photo-skeleton"></div>
+      <div class="team-a-placeholder" style="display:none">PHOTO UNAVAILABLE</div>
+    </div>`:`<div class="tower-game-photo"><div class="team-a-placeholder">PHOTO UNAVAILABLE</div></div>`;
+  }
+
+  function teamLabel(p){
+    const t=getPersonTeam(p);
+    return t?`<div class="tower-team-memory">TEAM ${esc(t.replace(/^TEAM\s*/i,""))}</div>`:"";
+  }
+
+  async function renderTrial(){
+    const q=buildQuestion(trial.round);
+    if(!q){
+      discovery.innerHTML=`<div class="generation-empty">
+        <div class="generation-seal">!</div><h3>THE TRIAL IS NOT READY</h3>
+        <p>Not enough generation-linked identities are available.</p>
+      </div>`;
+      nextBtn.disabled=true;
+      return;
+    }
+
+    trial.current=q;
+
+    // Do not inject <img> until the signed URLs are ready. This is the
+    // important part that eliminates the broken-image flash in the quiz.
+    const questionPeople=[];
+    if(q.type==="match") questionPeople.push(q.target);
+    if(q.type==="same") questionPeople.push(...q.choices);
+    if(q.type==="orderOld"||q.type==="orderYoung") questionPeople.push(...q.cards);
+    if(q.type==="mixed"||q.type==="final") questionPeople.push(...q.pairs.map(x=>x.person));
+    await ensureTowerPeoplePhotos(questionPeople);
+    saveGameState();
+
+    let content="";
+    let title="";
+    let subtitle="";
+
+    if(q.type==="match"){
+      title="WHEN DID THIS FACE WALK THESE HALLS?";
+      subtitle="You have met this face before. Place it in the right Chronicle.";
+      content=`
+        <div class="tower-trial-face">${personMini(q.target)}${teamLabel(q.target)}</div>
+        <div class="tower-trial-options">${q.options.map(g=>`
+          <button class="tower-generation-choice" type="button" data-answer="${esc(g)}">${esc(g)}</button>`).join("")}</div>`;
+    }
+
+    if(q.type==="same"){
+      title="THE SAME CHRONICLE";
+      subtitle=`These faces have walked the same halls. Find the ${q.correctPeople.length} Pamong from ${esc(q.generation)}.`;
+      content=`
+        <div class="tower-same-grid">${q.choices.map(p=>`
+          <button class="tower-same-card" type="button" data-person-id="${esc(p.id)}">
+            ${personMini(p)}
+            <span>${esc(p.panggilan||p.nama)}</span>
+            <b class="tower-selection-mark">SELECTED</b>
+          </button>`).join("")}</div>
+        <div class="tower-selection-status" id="tower-selection-status">
+          SELECT 2 PAMONG · <span>0 / ${q.correctPeople.length}</span>
+        </div>
+        <button class="tower-submit-order tower-confirm-selection" type="button" id="tower-confirm-same" disabled>
+          CONFIRM SELECTION
+        </button>`;
+    }
+
+    if(q.type==="orderOld"||q.type==="orderYoung"){
+      const direction=q.type==="orderOld"?"OLDEST → YOUNGEST":"YOUNGEST → OLDEST";
+      title="THE CHRONICLE ORDER";
+      subtitle=`Arrange the Pamong from ${direction}. Drag the portraits into the correct order.`;
+      content=`
+        <div class="tower-order-board" id="tower-order-board">
+          ${shuffled(q.cards).map((p,i)=>`
+            <div class="tower-order-card" draggable="true" data-person-id="${esc(p.id)}" data-generation="${esc(normalizeGeneration(p.angkatan))}">
+              <span class="tower-drag-handle">☷</span>${personMini(p)}
+              <strong>${esc(p.panggilan||p.nama)}</strong>
+            </div>`).join("")}
+        </div>
+        <button class="tower-submit-order" type="button" id="tower-submit-order">CONFIRM ORDER</button>`;
+    }
+
+    if(q.type==="mixed"){
+      title="THE CHRONICLE MATCH";
+      subtitle="The faces are familiar. Match each Pamong to the Chronicle they belong to.";
+      content=`
+        <div class="tower-mixed-list">${q.pairs.map((pair,i)=>`
+          <div class="tower-mixed-row">
+            <div class="tower-mixed-person">
+              ${personMini(pair.person)}
+              <strong>${esc(pair.person.panggilan||pair.person.nama)}</strong>
+            </div>
+            <div class="tower-mixed-connector">
+              <span>PLACE IN</span>
+              <select class="tower-mixed-select" data-index="${i}">
+              <option value="">CHOOSE CHRONICLE</option>
+              ${GENERATIONS.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join("")}
+              </select>
+            </div>
+          </div>`).join("")}</div>
+        <div class="tower-round-lock-note">Once you lock your answers, they are final. You cannot change them before moving on.</div><button class="tower-submit-order" type="button" id="tower-submit-mixed">LOCK IN ANSWERS</button>`;
+    }
+
+    if(q.type==="final"){
+      title="THE FINAL CHRONICLE";
+      subtitle="Restore these faces to their place in the Tower. Every answer must be correct.";
+      content=`
+        <div class="tower-final-grid">${q.pairs.map((pair,i)=>`
+          <div class="tower-final-card">
+            ${personMini(pair.person)}
+            <strong>${esc(pair.person.panggilan||pair.person.nama)}</strong>
+            <select class="tower-mixed-select" data-index="${i}">
+              <option value="">CHRONICLE</option>
+              ${GENERATIONS.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join("")}
+            </select>
+          </div>`).join("")}</div>
+        <div class="tower-round-lock-note">Once submitted, every answer is final. No corrections are allowed after locking.</div><button class="tower-submit-order" type="button" id="tower-submit-final">LOCK IN FINAL ANSWERS</button>`;
+    }
+
+    discovery.innerHTML=`
+      <div class="tower-trial-head">
+        <div class="tower-trial-kicker">THE CHRONICLE TRIAL · ROUND ${trial.round} OF ${TRIAL_ROUNDS.length}</div>
+        <h3>${title}</h3>
+        <p>${subtitle}</p>
+      </div>
+      ${content}
+      <div id="tower-trial-feedback" class="tower-trial-feedback"></div>
+    `;
+
+    trial.answerLocked=false;
+    bindTrialInteractions(q);
     renderTimeline();
+    status.textContent=`ROUND ${trial.round} · SCORE ${trial.score}`;
+    nextBtn.disabled=true;
+    nextBtn.textContent="COMPLETE THE CHALLENGE";
+  }
+
+  function bindTrialInteractions(q){
+    if(q.type==="match"){
+      discovery.querySelectorAll("[data-answer]").forEach(btn=>{
+        btn.addEventListener("click",()=>answerMatch(btn.dataset.answer));
+      });
+    }
+
+    if(q.type==="same"){
+      const confirm=$("tower-confirm-same");
+      const statusEl=$("tower-selection-status");
+      discovery.querySelectorAll(".tower-same-card").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          if(btn.disabled)return;
+          const selectedNow=btn.classList.toggle("selected");
+          const selected=discovery.querySelectorAll(".tower-same-card.selected").length;
+
+          statusEl.innerHTML=`SELECT ${q.correctPeople.length} PAMONG · <span>${selected} / ${q.correctPeople.length}</span>`;
+
+          // Do not allow selecting more than the required number.
+          if(selected>=q.correctPeople.length){
+            discovery.querySelectorAll(".tower-same-card:not(.selected)").forEach(b=>b.classList.add("selection-locked"));
+            confirm.disabled=false;
+            confirm.classList.add("ready");
+          }else{
+            discovery.querySelectorAll(".tower-same-card.selection-locked").forEach(b=>b.classList.remove("selection-locked"));
+            confirm.disabled=true;
+            confirm.classList.remove("ready");
+          }
+        });
+      });
+      confirm.addEventListener("click",answerSame);
+    }
+
+    if(q.type==="orderOld"||q.type==="orderYoung"){
+      const board=$("tower-order-board");
+      let dragged=null;
+      board.querySelectorAll(".tower-order-card").forEach(card=>{
+        card.addEventListener("dragstart",()=>{dragged=card;card.classList.add("dragging")});
+        card.addEventListener("dragend",()=>{dragged=null;card.classList.remove("dragging")});
+        card.addEventListener("dragover",e=>{
+          e.preventDefault();
+          if(!dragged||dragged===card)return;
+          const r=card.getBoundingClientRect();
+          const after=e.clientY>r.top+r.height/2;
+          board.insertBefore(dragged,after?card.nextSibling:card);
+        });
+      });
+      $("tower-submit-order").addEventListener("click",answerOrder);
+    }
+
+    if(q.type==="mixed") $("tower-submit-mixed").addEventListener("click",answerMixed);
+    if(q.type==="final") $("tower-submit-final").addEventListener("click",answerFinal);
+  }
+
+  function finishAnswer(correct,explanation){
+    const feedback=$("tower-trial-feedback");
+    if(correct){
+      trial.score+=100;
+      trial.streak=(trial.streak||0)+1;
+      feedback.innerHTML=`<strong>CHRONICLE CONFIRMED.</strong><br>${explanation}`;
+    }else{
+      trial.streak=0;
+      feedback.innerHTML=`<strong>THE MEMORY FADES.</strong><br>${explanation}`;
+    }
+    trial.history.push({round:trial.round,type:trial.current.type,correct});
+    trial.round++;
+    saveGameState();
+
+    if(trial.round>TRIAL_ROUNDS.length){
+      trial.completed=true;
+      saveGameState();
+      setTimeout(showTrialComplete,650);
+    }else{
+      nextBtn.disabled=false;
+      nextBtn.textContent="NEXT CHALLENGE";
+    }
+  }
+
+  function answerMatch(answer){
+    if(!trial?.current)return;
+    discovery.querySelectorAll("[data-answer]").forEach(b=>b.disabled=true);
+    const q=trial.current;
+    const correct=answer===q.correct;
+    const clicked=discovery.querySelector(`[data-answer="${CSS.escape(answer)}"]`);
+    clicked?.classList.add(correct?"correct":"wrong");
+    if(!correct)discovery.querySelector(`[data-answer="${CSS.escape(q.correct)}"]`)?.classList.add("correct");
+    finishAnswer(correct,`${esc(q.target.panggilan||q.target.nama)} belongs to <b>${esc(q.correct)}</b>.`);
+  }
+
+  function answerSame(){
+    const q=trial.current;
+    const cards=[...discovery.querySelectorAll(".tower-same-card")];
+    const selected=cards.filter(b=>b.classList.contains("selected"));
+    const ids=new Set(q.correctPeople.map(p=>String(p.id)));
+    const correct=selected.length===ids.size&&selected.every(b=>ids.has(String(b.dataset.personId)));
+
+    // Freeze the board after confirmation so the learner can inspect the correction.
+    cards.forEach(b=>{
+      b.disabled=true;
+      b.classList.remove("selection-locked");
+      const mark=b.querySelector(".tower-selection-mark");
+      const isSelected=b.classList.contains("selected");
+      const isCorrect=ids.has(String(b.dataset.personId));
+
+      if(isSelected && isCorrect){
+        b.classList.add("correct","match-frozen");
+        if(mark)mark.textContent="✓ MATCHED";
+      }else if(isSelected && !isCorrect){
+        b.classList.add("wrong","match-frozen");
+        if(mark)mark.textContent="✕ WRONG";
+      }else if(!isSelected && isCorrect){
+        b.classList.add("missed","match-frozen");
+        if(mark)mark.textContent="← SHOULD BE SELECTED";
+      }else{
+        b.classList.add("match-frozen");
+        if(mark)mark.textContent="";
+      }
+    });
+
+    const confirm=$("tower-confirm-same");
+    if(confirm){
+      confirm.disabled=true;
+      confirm.textContent=correct?"✓ CHRONICLE CONFIRMED":"CHRONICLE REVEALED";
+      confirm.classList.add("frozen");
+    }
+
+    const feedback=$("tower-trial-feedback");
+    feedback.innerHTML=`
+      <div class="tower-same-result ${correct?"is-correct":"is-wrong"}">
+        <strong>${correct?"✓ CORRECT":"✕ NOT QUITE"}</strong>
+        <span>The correct Chronicle is <b>${esc(q.generation)}</b>.</span>
+        ${correct
+          ? `<em>You identified the right Pamong.</em>`
+          : `<em>The highlighted card shows who should have been selected.</em>`}
+      </div>`;
+
+    trial.score += correct ? 100 : 0;
+    trial.streak = correct ? (trial.streak||0)+1 : 0;
+    trial.history.push({round:trial.round,type:q.type,correct});
+    trial.round++;
+    saveGameState();
+
+    if(trial.round>TRIAL_ROUNDS.length){
+      trial.completed=true;
+      setTimeout(showTrialComplete,700);
+    }else{
+      nextBtn.disabled=false;
+      nextBtn.textContent="NEXT CHALLENGE";
+    }
+  }
+
+  function answerOrder(){
+    const q=trial.current;
+    const ids=[...discovery.querySelectorAll(".tower-order-card")].map(c=>c.dataset.generation);
+    const correct=ids.length===q.answer.length&&ids.every((g,i)=>g===q.answer[i]);
+    finishAnswer(correct,`Correct order: <b>${q.answer.map(esc).join(" → ")}</b>.`);
+  }
+
+  function answerMixed(){
+    if(trial.answerLocked)return;
+
+    const q=trial.current;
+    const selects=[...discovery.querySelectorAll(".tower-mixed-select")];
+
+    // Lock immediately. The score is determined once and cannot be changed.
+    trial.answerLocked=true;
+
+    const results=selects.map((s,i)=>({
+      selected:s.value,
+      correct:q.pairs[i].generation,
+      ok:s.value===q.pairs[i].generation,
+      name:q.pairs[i].person.panggilan||q.pairs[i].person.nama
+    }));
+    const allCorrect=results.length>0 && results.every(r=>r.ok);
+
+    selects.forEach((s,i)=>{
+      s.disabled=true;
+      s.classList.add(results[i].ok?"correct":"wrong");
+    });
+    discovery.querySelectorAll(".tower-mixed-row").forEach(r=>r.classList.add("locked"));
+
+    const submit=$("tower-submit-mixed");
+    if(submit){
+      submit.disabled=true;
+      submit.textContent="✓ ANSWERS LOCKED";
+      submit.classList.add("frozen");
+    }
+
+    const feedback=$("tower-trial-feedback");
+    feedback.innerHTML=`
+      <div class="tower-round-result ${allCorrect?"is-correct":"is-wrong"}">
+        <strong>${allCorrect?"✓ ROUND CORRECT":"✕ ROUND INCORRECT"}</strong>
+        <small>${allCorrect
+          ? "All matches are correct. +100 points."
+          : "0 points for this round. The result is final and cannot be corrected."}</small>
+      </div>
+      ${results.map(r=>`
+        <div class="tower-match-result ${r.ok?"is-correct":"is-wrong"}">
+          <strong>${r.ok?"✓ CORRECT":"✕ WRONG"}</strong>
+          <span>${esc(r.name)}</span>
+          <em>${r.ok
+            ? `Correct: ${esc(r.correct)}`
+            : `Your answer: ${esc(r.selected||"—")} · Correct: <b>${esc(r.correct)}</b>`}</em>
+        </div>
+      `).join("")}`;
+
+    // IMPORTANT: revealing the correct answer never awards points.
+    trial.score += allCorrect ? 100 : 0;
+    trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
+    trial.history.push({
+      round:trial.round,type:q.type,correct:allCorrect,
+      scoreAwarded:allCorrect?100:0,locked:true,details:results
+    });
+    trial.round++;
+    saveGameState();
+
+    if(trial.round>TRIAL_ROUNDS.length){
+      trial.completed=true;
+      setTimeout(showTrialComplete,700);
+    }else{
+      nextBtn.disabled=false;
+      nextBtn.textContent="NEXT CHALLENGE";
+    }
+  }
+
+  function answerFinal(){
+    if(trial.answerLocked)return;
+
+    const q=trial.current;
+    const selects=[...discovery.querySelectorAll(".tower-mixed-select")];
+    trial.answerLocked=true;
+
+    const results=selects.map((s,i)=>({
+      selected:s.value,
+      correct:q.pairs[i].generation,
+      ok:s.value===q.pairs[i].generation,
+      name:q.pairs[i].person.panggilan||q.pairs[i].person.nama
+    }));
+    const allCorrect=results.length>0 && results.every(r=>r.ok);
+
+    selects.forEach((s,i)=>{
+      s.disabled=true;
+      s.classList.add(results[i].ok?"correct":"wrong");
+    });
+    discovery.querySelectorAll(".tower-final-card").forEach(c=>c.classList.add("locked"));
+
+    const submit=$("tower-submit-final");
+    if(submit){
+      submit.disabled=true;
+      submit.textContent="✓ FINAL ANSWERS LOCKED";
+      submit.classList.add("frozen");
+    }
+
+    const feedback=$("tower-trial-feedback");
+    feedback.innerHTML=`
+      <div class="tower-round-result ${allCorrect?"is-correct":"is-wrong"}">
+        <strong>${allCorrect?"✓ FINAL CHRONICLE RESTORED":"✕ FINAL CHRONICLE INCORRECT"}</strong>
+        <small>${allCorrect
+          ? "All answers are correct. +100 points."
+          : "0 points for this round. The result is final and cannot be corrected."}</small>
+      </div>
+      ${results.map(r=>`
+        <div class="tower-match-result ${r.ok?"is-correct":"is-wrong"}">
+          <strong>${r.ok?"✓ CORRECT":"✕ WRONG"}</strong>
+          <span>${esc(r.name)}</span>
+          <em>${r.ok
+            ? `Correct: ${esc(r.correct)}`
+            : `Your answer: ${esc(r.selected||"—")} · Correct: <b>${esc(r.correct)}</b>`}</em>
+        </div>
+      `).join("")}`;
+
+    trial.score += allCorrect ? 100 : 0;
+    trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
+    trial.history.push({
+      round:trial.round,type:q.type,correct:allCorrect,
+      scoreAwarded:allCorrect?100:0,locked:true,details:results
+    });
+    trial.round++;
+    saveGameState();
+
+    if(trial.round>TRIAL_ROUNDS.length){
+      trial.completed=true;
+      setTimeout(showTrialComplete,700);
+    }else{
+      nextBtn.disabled=false;
+      nextBtn.textContent="NEXT CHALLENGE";
+    }
+  }
+
+  function showTrialComplete(){
     discovery.innerHTML=`
       <div class="generation-empty">
         <div class="generation-seal">V</div>
-        <h3>THE TOWER OF AGES</h3>
-        <p>Select a generation to uncover its identities.</p>
+        <h3>CHRONICLE COMPLETE</h3>
+        <p>You have placed the faces back into their generations.</p>
+        <div class="tower-final-score">SCORE · ${trial.score}</div>
       </div>`;
+    status.textContent=`TRIAL COMPLETE · SCORE ${trial.score}`;
+    nextBtn.disabled=false;
+    nextBtn.textContent="COMPLETE MILESTONE V";
+  }
+
+  function completeMilestone(){
+    close();
+    try{
+      const pd=getPlayerData?.()||{};
+      if(Number(pd.milestone||1)<6){
+        pd.milestone=6;
+        localStorage.setItem("npc_player",JSON.stringify(pd));
+      }
+    }catch(e){}
+    if(typeof refreshJourney==="function")refreshJourney();
+  }
+
+  function updateStatus(){
+    status.textContent=`${discovered.size} / ${GENERATIONS.length} CHRONICLES DISCOVERED`;
+    if(phase==="discovery"){
+      if(discovered.size===GENERATIONS.length){
+        nextBtn.disabled=false;
+        nextBtn.textContent="BEGIN THE CHRONICLE TRIAL";
+      }else{
+        nextBtn.disabled=true;
+        nextBtn.textContent="DISCOVER ALL CHRONICLES";
+      }
+    }
+  }
+
+  async function open(){
+    loadDiscoveryState();
+    await loadPeople();
+    selected=null;
+    phase="discovery";
+    renderTimeline();
+    discovery.innerHTML=`<div class="generation-empty">
+      <div class="generation-seal">V</div>
+      <h3>THE TOWER OF AGES</h3>
+      <p>Choose a Chronicle to uncover the generation.</p>
+    </div>`;
     updateStatus();
     overlay.classList.remove("hidden");
     overlay.setAttribute("aria-hidden","false");
@@ -4538,21 +7641,17 @@ function showPerson(p){
     document.body.style.overflow="";
   }
 
-  async function continueToTrial(){
-    if(discovered.size<GENERATIONS.length)return;
-    close();
-    try{
-      const pd=getPlayerData?.()||{};
-      if(Number(pd.milestone||1)<6){
-        pd.milestone=6;
-        localStorage.setItem("npc_player",JSON.stringify(pd));
-      }
-    }catch(e){}
-    if(typeof refreshJourney==="function")refreshJourney();
-  }
+  nextBtn.addEventListener("click",async()=>{
+    if(phase==="discovery" && discovered.size===GENERATIONS.length){
+      startTrial();
+    }else if(phase==="trial" && trial?.completed){
+      completeMilestone();
+    }else if(phase==="trial" && trial?.current){
+      await renderTrial();
+    }
+  });
 
   if(closeBtn)closeBtn.addEventListener("click",close);
-  nextBtn.addEventListener("click",continueToTrial);
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 
   function allTeamsDone(){
@@ -4567,6 +7666,7 @@ function showPerson(p){
     node5.classList.toggle("active",unlocked);
     node5.setAttribute("aria-disabled",unlocked?"false":"true");
   }
+
   window.openGenerationMilestone=open;
   window.openTowerAgeGeneration=openGeneration;
   syncNode5();
@@ -4704,3 +7804,362 @@ window.addEventListener("load",function(){
   },true);
 })();
 </script>
+
+<style>
+/* =========================================================
+   M6 — STAGED PLACEMENT
+   BATALYON → SIE → FINAL
+   ========================================================= */
+.placement-stage-kicker{
+  margin:8px auto 12px;
+  text-align:center;
+  font-family:Georgia,serif;
+  font-size:12px;
+  letter-spacing:3px;
+  font-weight:700;
+  color:#70462d;
+}
+
+.placement-four-options{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  max-width:900px !important;
+}
+
+.placement-three-options{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  max-width:760px !important;
+}
+
+.placement-group-options{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  max-width:620px !important;
+}
+
+.final-specific-options{
+  display:none;
+  max-width:760px !important;
+  margin:12px auto 0 !important;
+}
+
+.placement-four-bins{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+.placement-three-bins{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+
+.placement-target.compact{
+  transform:scale(.9);
+  transform-origin:top center;
+  margin-bottom:-12px;
+}
+
+.placement-option.selected,
+.placement-person-option.selected,
+.placement-face-card.selected,
+.placement-pair-card.selected,
+.placement-sort-card.selected,
+.placement-sort-bin.selected{
+  box-shadow:
+    0 0 0 3px rgba(102,60,34,.35),
+    0 8px 18px rgba(71,42,23,.2);
+  transform:translateY(-2px);
+}
+
+.placement-option.correct,
+.placement-person-option.correct,
+.placement-face-card.correct,
+.placement-pair-card.correct,
+.placement-sort-card.correct{
+  background:#d9c58f !important;
+  border-color:#684328 !important;
+}
+
+.placement-option.wrong,
+.placement-person-option.wrong,
+.placement-face-card.wrong,
+.placement-pair-card.wrong,
+.placement-sort-card.wrong{
+  opacity:.65;
+  filter:saturate(.65);
+}
+
+@media(max-width:900px){
+  .placement-four-options,
+  .placement-four-bins{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+</style>
+
+
+<style id="m7-leaders-hall-overlay-fix">
+#milestone7-jabatan{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  z-index:2147483647!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+#milestone7-jabatan.active{display:block!important}
+</style>
+
+
+<style id="m8-revival-css">
+#milestone8-revival{position:fixed;inset:0;z-index:2147483647;display:none;overflow:auto;background:rgba(42,27,12,.76);backdrop-filter:blur(3px)}
+#milestone8-revival.active{display:flex;align-items:center;justify-content:center;padding:16px}
+.m8-panel{position:relative;width:min(1160px,96vw);height:min(900px,94vh);overflow:auto;padding:42px 42px 30px;
+background:linear-gradient(135deg,#fff8e6,#ecd4a4 60%,#d8b87c);border:2px solid #76502a;border-radius:3px;
+box-shadow:0 25px 60px rgba(31,18,7,.45),inset 0 0 0 5px rgba(255,239,194,.3);color:#422817}
+.m8-panel:before{content:"";position:absolute;inset:10px;border:1px solid rgba(111,77,31,.4);pointer-events:none}
+.m8-inner{position:relative;z-index:2;max-width:1000px;margin:auto;text-align:center}
+.m8-close{position:absolute;right:18px;top:16px;z-index:5;width:38px;height:38px;border:1px solid #81531f;background:linear-gradient(#9c6b29,#603815);color:#f4d99e;font-size:23px;cursor:pointer}
+.m8-kicker{color:#6c3d32;letter-spacing:4px;font-size:11px;font-weight:bold}
+.m8-title{margin:7px 0 4px;color:#3d2418;font:700 clamp(38px,5vw,58px)/1 "Palatino Linotype",Palatino,Georgia,serif}
+.m8-subtitle{margin:7px auto 16px;color:#725238;font-size:15px;font-style:italic}
+.m8-progress{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.m8-pill{padding:7px 12px;border:1px solid #9a7543;background:#f2dfb9;color:#65452b;font:700 10px Georgia,serif;letter-spacing:1px}
+.m8-card{width:min(900px,100%);margin:auto;padding:20px;background:linear-gradient(145deg,#faf0d6,#e8cc98);
+border:1px solid #9a7043;box-shadow:0 8px 18px rgba(55,32,14,.12)}
+.m8-question{margin:0 auto 16px;color:#442a1b;font:700 clamp(20px,2.8vw,29px)/1.3 Georgia,serif}
+.m8-question small{display:block;margin-top:7px;color:#765238;font:italic 13px Georgia,serif}
+.m8-photo{width:min(230px,60vw);height:275px;margin:0 auto 12px;padding:7px;background:linear-gradient(#80532b,#603a1e 55%,#472914);
+border:2px solid #5b3718;box-shadow:0 7px 13px rgba(54,31,10,.22)}
+.m8-photo img{width:100%;height:100%;object-fit:contain;display:block;background:#d0b57d;border:1px solid #9b7137}
+.m8-photo-placeholder{height:100%;display:grid;place-items:center;background:#ead3a4;color:#78562d;font-size:11px;letter-spacing:1px}
+.m8-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:820px;margin:0 auto}
+.m8-option{min-height:60px;padding:10px;border:1px solid #9a7543;background:#f5e5c2;color:#49311c;cursor:pointer;font:700 13px Georgia,serif}
+.m8-option:hover:not(:disabled){transform:translateY(-2px);background:#fff1ca}
+.m8-option.selected{outline:3px solid rgba(102,60,34,.25);transform:translateY(-2px)}
+.m8-option.correct{background:#dbe3c5;border:2px solid #55713c}
+.m8-option.wrong{background:#efd0c4;border:2px solid #9a4738;opacity:.7}
+.m8-option img{display:block;width:100%;height:180px;object-fit:contain;background:#d0b57d;margin-bottom:7px}
+.m8-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+.m8-btn{min-width:210px;height:50px;border:1px solid #412511;background:linear-gradient(#7c502a,#603b20 55%,#4b2c18);color:#f5dfb1;
+font:bold 13px Georgia,serif;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 0 #2c190d}
+.m8-btn:disabled{opacity:.45;cursor:not-allowed}
+.m8-btn.secondary{background:#ead6ad;color:#553720;border-color:#8d6535;box-shadow:0 3px 0 #9a7543}
+.m8-feedback{min-height:24px;margin:12px auto 0;color:#76512a;font-weight:bold;font-size:12px;line-height:1.5}
+.m8-complete{padding:35px 15px}.m8-complete h2{margin:0 0 10px;font:700 38px Georgia,serif;color:#43281b}
+.m8-complete p{margin:0 auto 20px;max-width:650px;font:16px/1.6 Georgia,serif;color:#684a29}
+@media(max-width:650px){#milestone8-revival.active{padding:7px}.m8-panel{width:97vw;height:95vh;padding:45px 15px 22px}.m8-options{grid-template-columns:1fr}.m8-photo{height:225px}}
+</style>
+
+<div id="milestone8-revival" aria-hidden="true">
+ <div class="m8-panel" role="dialog" aria-modal="true" aria-labelledby="m8-title">
+  <button id="m8-close" class="m8-close" type="button" aria-label="Close">×</button>
+  <div class="m8-inner">
+   <div class="m8-kicker">MILESTONE VIII · THE FINAL MEMORY TRIAL</div>
+   <h2 id="m8-title" class="m8-title">THE REVIVAL</h2>
+   <p class="m8-subtitle">What was once revealed must now be remembered.</p>
+   <div class="m8-progress"><span id="m8-counter" class="m8-pill">MEMORY 1 / 20</span><span id="m8-score" class="m8-pill">SCORE 0</span></div>
+   <section id="m8-content" class="m8-card"></section>
+   <div id="m8-feedback" class="m8-feedback"></div>
+   <div id="m8-actions" class="m8-actions">
+    <button id="m8-lock" class="m8-btn" type="button" disabled>LOCK IN ANSWER</button>
+    <button id="m8-next" class="m8-btn secondary" type="button" disabled>NEXT MEMORY</button>
+   </div>
+   <section id="m8-complete" class="m8-complete" style="display:none"></section>
+  </div>
+ </div>
+</div>
+
+<script id="m8-revival-js">
+(function(){
+"use strict";
+const root=document.getElementById("milestone8-revival"); if(!root)return;
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
+const norm=v=>String(v??"").trim().toLowerCase().replace(/\s+/g," ");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const TYPES=["faceName","nameFace","team","generation","placement","role","batalyon","combo"];
+const TOTAL=20;
+let people=[],state=null,photoCache=new Map();
+
+function label(p){return p?.panggilan||p?.nama||p?.name||"Pamong"}
+function team(p){return String(p?.tim??p?.team??p?.kelompok??"").trim()}
+function generation(p){return String(p?.angkatan??p?.generation??"").trim()}
+function placement(p){return String(p?.penempatan??p?.placement??"").trim()}
+function role(p){return String(p?.jabatan??p?.role??"").trim()}
+function uniqueVals(fn,exclude){return [...new Set(people.map(fn).filter(Boolean).filter(v=>norm(v)!==norm(exclude)))]}
+function distract(fn,correct,n=3){return shuffle(uniqueVals(fn,correct)).slice(0,n)}
+function personById(id){return people.find(p=>String(p.id)===String(id))}
+
+async function loadPeople(){
+ if(people.length)return people;
+ try{
+  if(typeof SUPABASE_REST_URL!=="undefined"&&typeof SUPABASE_PUBLIC_KEY!=="undefined"){
+   const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan&order=id.asc`;
+   const r=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});
+   if(r.ok){const d=await r.json();if(Array.isArray(d))people=d}
+  }
+ }catch(e){console.warn("M8 data load failed",e)}
+ return people;
+}
+async function photoUrl(p){
+ const key=String(p?.id||label(p));if(photoCache.has(key))return photoCache.get(key)||"";
+ const raw=String(p?.foto||p?.photo_path||p?.photo_url||"").trim();
+ if(!raw)return "";
+ if(/^https?:\/\//i.test(raw)){photoCache.set(key,raw);return raw}
+ try{
+  if(typeof resolvePamongPhoto==="function"){
+   const u=await resolvePamongPhoto(raw.replace(/^\/+/,""));
+   if(u){photoCache.set(key,u);return u}
+  }
+ }catch(e){}
+ try{
+  if(typeof getPamongPhotoUrl==="function"){
+   const u=getPamongPhotoUrl(raw);if(u){photoCache.set(key,u);return u}
+  }
+ }catch(e){}
+ return "";
+}
+function makeQ(type,target){
+ const others=shuffle(people.filter(p=>String(p.id)!==String(target.id)));
+ if(type==="faceName")return {type,target,correct:label(target),options:shuffle([label(target),...others.slice(0,3).map(label)]),photo:true,prompt:"WHO IS THIS?",sub:"Recognize the face."};
+ if(type==="nameFace"){const picks=shuffle([target,...others.slice(0,3)]);return {type,target,correct:String(target.id),people:picks,prompt:`WHICH FACE BELONGS TO <b>${esc(label(target))}</b>?`,sub:"Name → face."}}
+ if(type==="team"){const c=team(target);return {type,target,correct:c,options:shuffle([c,...distract(team,c)]),prompt:`WHICH TEAM DID <b>${esc(label(target))}</b> BELONG TO?`,sub:"Person → Team."}}
+ if(type==="generation"){const c=generation(target);return {type,target,correct:c,options:shuffle([c,...distract(generation,c)]),prompt:`WHICH CHRONICLE DID <b>${esc(label(target))}</b> BELONG TO?`,sub:"Person → Angkatan."}}
+ if(type==="placement"){const c=placement(target);return {type,target,correct:c,options:shuffle([c,...distract(placement,c)]),prompt:`WHERE DID <b>${esc(label(target))}</b> SERVE?`,sub:"Person → Placement."}}
+ if(type==="role"){const c=role(target);return {type,target,correct:c,options:shuffle([c,...distract(role,c)]),prompt:`WHAT IS <b>${esc(label(target))}'S</b> JABATAN?`,sub:"Person → Jabatan."}}
+ if(type==="batalyon"){
+  const c=placement(target), candidates=people.filter(p=>placement(p)&&norm(placement(p))!==norm(c));
+  // Use "command" only for the actual Batalyon leaders discovered in M7.
+  // Everyone else is recalled by belonging to the Batalyon.
+  const isBatalyonLeader = typeof HOLDERS !== "undefined" && HOLDERS.some(h =>
+    String(h.id) === String(target.id) && h.type === "batalyon"
+  );
+  const prompt = isBatalyonLeader
+    ? `WHICH BATALYON DID <b>${esc(label(target))}</b> COMMAND?`
+    : `WHICH BATALYON DID <b>${esc(label(target))}</b> BELONG TO?`;
+  const sub = isBatalyonLeader
+    ? "Recall the command association."
+    : "Recall the Batalyon association.";
+  return {type,target,correct:c,options:shuffle([c,...shuffle(candidates).slice(0,3).map(placement)]),prompt,sub}
+ }
+ const picks=shuffle([target,...others.slice(0,3)]);
+ return {type:"combo",target,correct:String(target.id),people:picks,prompt:`WHICH IDENTITY BELONGS TO <b>${esc(label(target))}</b>?`,sub:"Recall Team · Angkatan · Placement together."}
+}
+function buildQuestions(){
+ const out=[];let lastId="",lastType="",guard=0;
+ while(out.length<TOTAL&&guard++<800){
+  const type=TYPES[Math.floor(Math.random()*TYPES.length)];
+  const eligible=people.filter(p=>label(p)&&String(p.id)!==lastId);
+  if(!eligible.length)break;
+  const target=shuffle(eligible)[0];
+  if(type===lastType&&out.length<3)continue;
+  const q=makeQ(type,target);
+  if(!q.correct||!q.options?.length&&type!=="nameFace"&&type!=="combo")continue;
+  out.push(q);lastId=String(target.id);lastType=type;
+ }
+ return out;
+}
+function photoBox(p,cls=""){return `<div class="m8-photo ${cls}" data-m8-photo="${esc(p.id)}"><div class="m8-photo-placeholder">LOADING PORTRAIT</div></div>`}
+async function hydratePhotos(){
+ const boxes=[...root.querySelectorAll("[data-m8-photo]")];
+ await Promise.all(boxes.map(async box=>{
+  const p=personById(box.dataset.m8Photo);if(!p)return;
+  const u=await photoUrl(p);if(!u){box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>';return}
+  const img=new Image();img.alt=label(p);img.decoding="async";img.loading="eager";
+  img.onload=()=>{box.innerHTML="";box.appendChild(img)};
+  img.onerror=()=>{box.innerHTML='<div class="m8-photo-placeholder">PORTRAIT UNAVAILABLE</div>'};
+  img.src=u;
+ }));
+}
+function render(){
+ const q=state.questions[state.index];state.current=q;state.selected=null;state.locked=false;
+ $("m8-counter").textContent=`MEMORY ${state.index+1} / ${state.questions.length}`;
+ $("m8-score").textContent=`SCORE ${state.score}`;
+ $("m8-lock").disabled=true;$("m8-next").disabled=true;$("m8-feedback").textContent="";
+ let html=`<div class="m8-question">${q.prompt}<small>${q.sub}</small></div>`;
+ if(q.photo)html+=photoBox(q.target);
+ if(q.people)html+=`<div class="m8-options">${q.people.map(p=>`<button type="button" class="m8-option" data-person="${esc(p.id)}">${photoBox(p)}</button>`).join("")}</div>`;
+ else html+=`<div class="m8-options">${q.options.map(o=>`<button type="button" class="m8-option" data-choice="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+ $("m8-content").innerHTML=html;hydratePhotos();
+}
+function choose(el){
+ if(state.locked)return;
+ state.selected=el.dataset.person??el.dataset.choice;
+ root.querySelectorAll(".m8-option").forEach(b=>b.classList.remove("selected"));
+ el.classList.add("selected");$("m8-lock").disabled=false;
+}
+function lock(){
+ if(state.locked||state.selected==null)return;
+ state.locked=true;const q=state.current,correct=String(state.selected)===String(q.correct);
+ if(correct)state.score+=100;
+ root.querySelectorAll(".m8-option").forEach(b=>{
+  b.disabled=true;const v=b.dataset.person??b.dataset.choice;
+  if(String(v)===String(q.correct))b.classList.add("correct");
+  if(String(v)===String(state.selected)&&!correct)b.classList.add("wrong");
+ });
+ $("m8-score").textContent=`SCORE ${state.score}`;
+ $("m8-lock").disabled=true;$("m8-next").disabled=false;
+ let answer=q.type==="nameFace"||q.type==="combo"?label(personById(q.correct)||q.target):q.correct;
+ $("m8-feedback").innerHTML=`${correct?"✓ Correct.":"✕ Incorrect. Your answer is locked."}<br>Correct answer: <b>${esc(answer)}</b>`;
+}
+function next(){
+ if(!state.locked)return;
+ if(state.index>=state.questions.length-1){complete();return}
+ state.index++;render();
+}
+function complete(){
+ const correct=state.score/100;
+ try{
+  const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
+  p.milestone=Math.max(Number(p.milestone||1),8);
+  if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
+  if(typeof refreshJourney==="function")refreshJourney();
+ }catch(e){}
+ $("m8-content").style.display="none";$("m8-actions").style.display="none";$("m8-feedback").style.display="none";
+ $("m8-complete").style.display="block";
+ $("m8-complete").innerHTML=`<h2>THE REVIVAL COMPLETE</h2><p>${correct} / ${state.questions.length} memories recovered · ${state.score} / ${state.questions.length*100} points.</p><div class="m8-actions"><button id="m8-replay" class="m8-btn" type="button">REVIVE AGAIN</button><button id="m8-return" class="m8-btn secondary" type="button">RETURN TO JOURNEY</button></div>`;
+ $("m8-replay").onclick=restart;$("m8-return").onclick=close;
+}
+async function start(){
+ $("m8-complete").style.display="none";$("m8-content").style.display="block";$("m8-actions").style.display="flex";$("m8-feedback").style.display="";
+ $("m8-content").innerHTML='<div style="padding:60px">GATHERING THE MEMORIES OF SANAPATI…</div>';
+ await loadPeople();
+ if(people.length<4){$("m8-content").innerHTML='<div style="padding:60px">Not enough identity data is available for the Revival.</div>';return}
+ state={index:0,score:0,selected:null,locked:false,current:null,questions:buildQuestions()};
+ render();
+}
+function restart(){start()}
+function close(){root.classList.remove("active");root.setAttribute("aria-hidden","true");document.body.style.overflow=""}
+async function open(){root.classList.add("active");root.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";await start()}
+root.addEventListener("click",e=>{
+ const o=e.target.closest(".m8-option");if(o){choose(o);return}
+ if(e.target.id==="m8-lock"){lock();return}
+ if(e.target.id==="m8-next"){next();return}
+ if(e.target.id==="m8-close"){close();return}
+});
+window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
+})();
+</script>
+
+<script id="m8-journey-guard">
+(function(){
+ function sync(){
+  const n=document.getElementById("journey-node-8");if(!n)return;
+  let unlocked=false;
+  try{const p=typeof getPlayerData==="function"?getPlayerData():null;unlocked=Number(p?.milestone||1)>=7}catch(e){}
+  n.disabled=false;n.removeAttribute("disabled");
+  n.classList.toggle("locked",!unlocked);n.classList.toggle("active",unlocked);
+  n.style.pointerEvents=unlocked?"auto":"none";n.style.cursor=unlocked?"pointer":"default";
+  n.setAttribute("aria-disabled",unlocked?"false":"true");
+ }
+ document.addEventListener("click",function(e){
+  const n=e.target.closest("#journey-node-8");if(!n)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  let ok=false;try{ok=Number((typeof getPlayerData==="function"?getPlayerData():{})?.milestone||1)>=7}catch(err){}
+  if(ok&&typeof window.openRevivalMilestone==="function")window.openRevivalMilestone();
+ },true);
+ window.addEventListener("load",()=>{sync();setTimeout(sync,100);setTimeout(sync,600)});
+ setInterval(sync,800);
+})();
+</script>
+
+</body>
+</html>
