@@ -2553,12 +2553,11 @@ async function fetchLeaderboard(){
     const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}`+
         `?select=player_id,username,total_score,updated_at`+
         `&order=total_score.desc,updated_at.asc`+
-        `&limit=${LEADERBOARD_MAX_ROWS}`+
-        `&_=${Date.now()}`;
+        `&limit=${LEADERBOARD_MAX_ROWS}`;
     const response=await fetch(endpoint,{
         method:"GET",
         cache:"no-store",
-        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache"}
+        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Cache-Control":"no-cache","Pragma":"no-cache"}
     });
     const raw=await response.text();
     if(!response.ok){
