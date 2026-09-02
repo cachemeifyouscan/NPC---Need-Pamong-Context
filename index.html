@@ -1813,64 +1813,62 @@ button,input{font:inherit}
 .dm-result .dm-submit{margin-top:14px}
 
 
+/* Username-first SIGN IN */
+#signin-screen .auth-card{
+  width:min(92vw,520px);
+  margin:auto;
+  padding:42px 38px;
+  text-align:center;
+}
+#signin-screen .auth-kicker{
+  letter-spacing:.18em;
+  font-size:.72rem;
+  opacity:.72;
+  margin-bottom:10px;
+}
+#signin-screen h1{
+  margin:0 0 8px;
+  letter-spacing:.08em;
+}
+#signin-screen .auth-subtitle{
+  margin:0 0 28px;
+  opacity:.78;
+}
+#signin-screen label{
+  display:block;
+  text-align:left;
+  margin:0 0 8px;
+  font-size:.72rem;
+  letter-spacing:.14em;
+  opacity:.75;
+}
+#signin-screen #signin-username{
+  width:100%;
+  box-sizing:border-box;
+  margin-bottom:16px;
+}
+#signin-screen .auth-message{
+  min-height:1.3em;
+  margin:14px 0 0;
+  font-size:.85rem;
+}
 
 
-/* =========================================================
-   SIGN IN USERNAME STEP
-========================================================= */
-.signin-username-card{max-width:620px}
-.signin-username-card .form-stack{max-width:480px;margin:26px auto 0}
-.signin-username-card .medieval-input{text-align:center}
+/* Sign-in username verification screen */
+.signin-username-card{max-width:540px;}
 .text-back-button{
-    border:0;background:transparent;color:#76512a;cursor:pointer;
-    font:600 12px "Palatino Linotype",Palatino,Georgia,serif;
-    letter-spacing:1px;margin-top:4px;padding:8px 12px;
+    display:block;
+    margin:18px auto 0;
+    border:0;
+    background:none;
+    color:inherit;
+    font-family:inherit;
+    font-size:.78rem;
+    letter-spacing:.08em;
+    cursor:pointer;
+    opacity:.78;
 }
-.text-back-button:hover{text-decoration:underline}
-
-
-/* =========================================================
-   AUTH FLOW — FULL-SCREEN PAGE SWAP (NO SCROLL)
-========================================================= */
-#main-game{
-  position:relative;
-  width:100vw;
-  height:100vh;
-  height:100dvh;
-  overflow:hidden;
-}
-#main-game > .screen,
-#main-game > .gate-screen{
-  box-sizing:border-box;
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  height:100dvh;
-  min-height:0;
-  overflow:hidden;
-  padding:24px;
-}
-#main-game > .screen.hidden,
-#main-game > .gate-screen.hidden{
-  display:none !important;
-}
-#main-game .manuscript-card{
-  box-sizing:border-box;
-  max-height:calc(100dvh - 48px);
-}
-@media(max-width:700px){
-  #main-game > .screen,
-  #main-game > .gate-screen{padding:14px;}
-  #main-game .manuscript-card{max-height:calc(100dvh - 28px);}
-  #main-game .mascot-small{width:92px;height:92px;margin-bottom:2px;}
-  #main-game .screen-title{font-size:32px;margin:7px 0;}
-  #main-game .screen-text{font-size:15px;line-height:1.45;margin-bottom:16px;}
-  #main-game .account-choice-grid{margin:16px auto 5px;gap:10px;}
-  #main-game .account-choice-btn{min-height:105px;padding:14px;}
-  #main-game .account-choice-note{margin-top:10px;font-size:11px;line-height:1.4;}
-  #main-game .account-back{margin-top:10px!important;}
-}
+.text-back-button:hover{opacity:1;text-decoration:underline;}
 
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
@@ -3182,8 +3180,9 @@ button,input{font:inherit}
 </section>
 
 
+
 <!-- =========================================================
-     SIGN IN — USERNAME
+     SIGN IN — USERNAME VERIFICATION
 ========================================================= -->
 <section id="signin-username-screen" class="screen hidden">
     <div class="manuscript-card signin-username-card">
@@ -3193,15 +3192,15 @@ button,input{font:inherit}
         <p class="screen-text">Enter your name first. The realm will search for your saved chronicle.</p>
 
         <div class="form-stack">
-            <label class="field-label" for="signin-username-input">YOUR NAME</label>
-            <input id="signin-username-input" class="medieval-input" type="text" autocomplete="username" placeholder="Enter your name..." maxlength="24">
+            <label class="field-label" for="signin-username">YOUR NAME</label>
+            <input id="signin-username" class="medieval-input" type="text" placeholder="Enter your name..." maxlength="24" autocomplete="username">
             <button id="signin-username-button" class="wood-button" type="button">✦ FIND MY CHRONICLE ✦</button>
             <p id="signin-username-error" class="error"></p>
-            <button id="signin-username-back" class="text-back-button" type="button">← BACK</button>
         </div>
+
+        <button id="signin-username-back" class="text-back-button" type="button">← BACK</button>
     </div>
 </section>
-
 
 <!-- =========================================================
      USERNAME
@@ -3272,8 +3271,8 @@ button,input{font:inherit}
     <div class="manuscript-card">
         <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
         <div class="screen-kicker">THE GATE REMEMBERS YOU</div>
-        <h1 class="screen-title">Enter Your Seal</h1>
-        <p id="pin-login-message" class="screen-text">Chronicle found. Enter your four-digit seal to continue.</p>
+        <h1 class="screen-title">Welcome Back</h1>
+        <p id="pin-login-message" class="screen-text">Masukkan PIN untuk melanjutkan progressmu.</p>
 
         <div class="form-stack">
             <label class="field-label" for="login-pin-input">YOUR FOUR-DIGIT SEAL</label>
@@ -3668,12 +3667,10 @@ if (introStartButton) {
    SCREEN SYSTEM
 ========================================================= */
 function showScreen(screenId) {
-    // Every auth step is a new full-screen page — never a scroll transition.
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
     const screens = [
         "login-screen",
         "account-choice-screen",
+        "signin-username-screen",
         "username-screen",
         "avatar-screen",
         "pin-setup-screen",
@@ -4084,14 +4081,63 @@ const accountChoiceError = document.getElementById("account-choice-error");
 if(signInButton){
     signInButton.addEventListener("click", function(){
         accountChoiceError.textContent = "";
-        const input = document.getElementById("signin-username-input");
-        const error = document.getElementById("signin-username-error");
-        if(input) input.value = "";
-        if(error) error.textContent = "";
+        const input=document.getElementById("signin-username");
+        const err=document.getElementById("signin-username-error");
+        if(input) input.value="";
+        if(err) err.textContent="";
         showScreen("signin-username-screen");
         if(input) setTimeout(()=>input.focus(),80);
     });
 }
+
+/* =========================================================
+   SIGN IN — USERNAME VERIFICATION FIRST
+========================================================= */
+const signinUsernameInput=document.getElementById("signin-username");
+const signinUsernameButton=document.getElementById("signin-username-button");
+const signinUsernameError=document.getElementById("signin-username-error");
+const signinUsernameBack=document.getElementById("signin-username-back");
+
+function verifySigninUsername(){
+    const typed=(signinUsernameInput?.value||"").trim();
+    const player=getPlayerData();
+
+    if(!typed){
+        if(signinUsernameError) signinUsernameError.textContent="Enter your name first.";
+        signinUsernameInput?.focus();
+        return;
+    }
+
+    if(!player || !player.username){
+        if(signinUsernameError) signinUsernameError.textContent="No chronicle found on this device. Choose SIGN UP to begin your adventure.";
+        return;
+    }
+
+    if(typed.toLowerCase() !== String(player.username).trim().toLowerCase()){
+        if(signinUsernameError) signinUsernameError.textContent="That name was not found. Check the spelling and try again.";
+        signinUsernameInput?.focus();
+        signinUsernameInput?.select();
+        return;
+    }
+
+    // Username verified. Only now reveal the PIN screen.
+    if(signinUsernameError) signinUsernameError.textContent="";
+    const pinMessage=document.getElementById("pin-login-message");
+    if(pinMessage) pinMessage.textContent=`Chronicle found for ${player.username}. Enter your PIN to continue.`;
+    const pinField=document.getElementById("login-pin-input");
+    if(pinField) pinField.value="";
+    showScreen("pin-login-screen");
+    if(pinField) setTimeout(()=>pinField.focus(),80);
+}
+
+signinUsernameButton?.addEventListener("click",verifySigninUsername);
+signinUsernameInput?.addEventListener("keydown",e=>{
+    if(e.key==="Enter") verifySigninUsername();
+});
+signinUsernameBack?.addEventListener("click",()=>{
+    accountChoiceError.textContent="";
+    showScreen("account-choice-screen");
+});
 
 if(signUpButton){
     signUpButton.addEventListener("click", function(){
@@ -4263,61 +4309,6 @@ if (pinButton) {
             `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
 
         showScreen("welcome-screen");
-    });
-}
-
-/* =========================================================
-   SIGN IN — VERIFY USERNAME FIRST
-========================================================= */
-const signinUsernameInput = document.getElementById("signin-username-input");
-const signinUsernameButton = document.getElementById("signin-username-button");
-const signinUsernameError = document.getElementById("signin-username-error");
-const signinUsernameBack = document.getElementById("signin-username-back");
-
-function verifySigninUsername(){
-    const typed = (signinUsernameInput?.value || "").trim();
-    const player = getPlayerData();
-
-    if(!typed){
-        signinUsernameError.textContent = "Please enter your name first.";
-        signinUsernameInput?.focus();
-        return;
-    }
-
-    if(!player || !player.username){
-        signinUsernameError.textContent = "No chronicle was found on this device. Choose SIGN UP to begin.";
-        return;
-    }
-
-    if(typed.toLowerCase() !== String(player.username).trim().toLowerCase()){
-        signinUsernameError.textContent = "That name was not found. Check the spelling and try again.";
-        signinUsernameInput?.focus();
-        signinUsernameInput?.select();
-        return;
-    }
-
-    // Username is verified. Only now reveal the PIN step.
-    signinUsernameError.textContent = "";
-    document.getElementById("pin-login-message").textContent =
-        "Chronicle found. Enter your four-digit seal to continue.";
-    const pinField = document.getElementById("login-pin-input");
-    if(pinField) pinField.value = "";
-    showScreen("pin-login-screen");
-    if(pinField) setTimeout(()=>pinField.focus(),80);
-}
-
-if(signinUsernameButton){
-    signinUsernameButton.addEventListener("click", verifySigninUsername);
-}
-if(signinUsernameInput){
-    signinUsernameInput.addEventListener("keydown", function(e){
-        if(e.key === "Enter") verifySigninUsername();
-    });
-}
-if(signinUsernameBack){
-    signinUsernameBack.addEventListener("click", function(){
-        signinUsernameError.textContent = "";
-        showScreen("account-choice-screen");
     });
 }
 
@@ -6940,9 +6931,9 @@ const root=document.getElementById("milestone7-jabatan");if(!root)return;
 const $=id=>document.getElementById(id);
 
 const HOLDERS=[
- {id:"Bio",name:"Bio",angkatan:"STSN15",penempatan:"Madya",jabatan:"Ketua Tim – Komandan Batalyon Taruna Madya",type:"batalyon"},
- {id:"Fahmi",name:"Fahmi",angkatan:"STSN15",penempatan:"Muda",jabatan:"Ketua Tim – Komandan Batalyon Taruna Muda",type:"batalyon"},
  {id:"Afi",name:"Afi",angkatan:"STSN12",penempatan:"Pratama",jabatan:"Ketua Tim – Komandan Batalyon Taruna Pratama",type:"batalyon"},
+ {id:"Fahmi",name:"Fahmi",angkatan:"STSN15",penempatan:"Muda",jabatan:"Ketua Tim – Komandan Batalyon Taruna Muda",type:"batalyon"},
+ {id:"Bio",name:"Bio",angkatan:"STSN15",penempatan:"Madya",jabatan:"Ketua Tim – Komandan Batalyon Taruna Madya",type:"batalyon"},
  {id:"Adhli",name:"Adhli",angkatan:"STSN14",penempatan:"Satria",jabatan:"Ketua Tim – Komandan Batalyon Taruna Satria",type:"batalyon"},
  {id:"Yota",name:"Yota",angkatan:"STSN15",penempatan:"Operasi",jabatan:"Kepala Seksi Operasi",type:"sie"},
  {id:"Hadyan",name:"Hadyan",angkatan:"STSN14",penempatan:"Adminlog",jabatan:"Kepala Seksi Administrasi dan Logistik",type:"sie"},
@@ -10883,17 +10874,6 @@ if(document.readyState==="loading"){
 })();
 </script>
 
-
-
-
-
-
-<script>
-(function(){
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
-})();
-</script>
 
 </body>
 </html>
