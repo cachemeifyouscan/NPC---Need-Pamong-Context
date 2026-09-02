@@ -1653,6 +1653,18 @@ button,input{font:inherit}
     margin:13px auto 0;color:#7a5729;font-size:11px;letter-spacing:1px;
 }
 .home-footer span:first-child,.home-footer span:last-child{color:#b18443}
+/* =========================================================
+   EXIT GAME — MEDIEVAL GATE
+========================================================= */
+.exit-game-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 14px;border:1px solid #76522d;border-radius:5px;background:linear-gradient(180deg,#f8e8c2 0%,#d8b57b 100%);color:#4b301b;font:700 11px Georgia,"Times New Roman",serif;letter-spacing:1.25px;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 2px 0 rgba(74,43,18,.35);transition:transform .15s ease,filter .15s ease}
+.exit-game-button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.exit-game-button:active{transform:translateY(1px)}
+.npc-exit-modal{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(39,24,11,.68);backdrop-filter:blur(3px)}
+.npc-exit-modal.hidden{display:none!important}
+.npc-exit-panel{width:min(520px,94vw);padding:30px 28px 26px;text-align:center;border:2px solid #76522d;border-radius:8px;background:repeating-linear-gradient(0deg,rgba(93,56,22,.025) 0 1px,transparent 1px 5px),linear-gradient(180deg,#fff7df 0%,#ead2a0 100%);box-shadow:0 18px 50px rgba(30,16,5,.45),inset 0 0 0 6px rgba(118,82,45,.08)}
+.npc-exit-ornament{font-size:25px;color:#8b6435;letter-spacing:8px;margin-bottom:8px}.npc-exit-kicker{font:700 10px Georgia,serif;letter-spacing:3px;color:#8a6335;text-transform:uppercase}.npc-exit-title{margin:8px 0 9px;font:700 29px Georgia,serif;color:#4a2d18;letter-spacing:1px}.npc-exit-copy{margin:0 auto 22px;max-width:390px;color:#6b4a29;font:14px/1.6 Georgia,serif}.npc-exit-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.npc-exit-action{min-width:190px;min-height:44px;padding:10px 16px;border-radius:5px;cursor:pointer;font:700 11px Georgia,serif;letter-spacing:1.3px;text-transform:uppercase}.npc-exit-stay{border:1px solid #76522d;background:#f7e5bd;color:#4b301b}.npc-exit-confirm{border:1px solid #4d2b16;background:linear-gradient(180deg,#80532b,#4f2d18);color:#f7e3b4;box-shadow:0 3px 0 #2d180b}.npc-exit-action:hover{filter:brightness(1.06);transform:translateY(-1px)}
+@media(max-width:650px){.exit-game-button{min-height:34px;padding:0 9px;font-size:9px;letter-spacing:.8px}.exit-game-button span{display:none}.npc-exit-panel{padding:25px 18px 22px}.npc-exit-title{font-size:24px}.npc-exit-action{width:100%;min-width:0}}
+
 @media(max-width:1000px){
     .home-brand{display:none}
     .premium-main{grid-template-columns:1fr}
@@ -3267,6 +3279,7 @@ button,input{font:inherit}
                 <button id="leaderboard-open" class="leaderboard-top-button" type="button" title="Open Hall of Legends">
                     🏆 <span>HALL OF LEGENDS</span>
                 </button>
+                <button id="exit-game-button" class="exit-game-button" type="button" title="Exit Game">↩ <span>EXIT GAME</span></button>
                 <div class="score-chip">
                     <span class="score-star">✦</span>
                     <span id="player-total-score">0</span>
@@ -3544,6 +3557,20 @@ button,input{font:inherit}
     </div>
 </div>
 
+<!-- EXIT GAME CONFIRMATION -->
+<div id="npc-exit-modal" class="npc-exit-modal hidden" role="dialog" aria-modal="true" aria-labelledby="npc-exit-title">
+  <div class="npc-exit-panel">
+    <div class="npc-exit-ornament">✦ ❦ ✦</div>
+    <div class="npc-exit-kicker">THE GATES OF SANAPATI</div>
+    <h2 id="npc-exit-title" class="npc-exit-title">Leave the Chronicle?</h2>
+    <p class="npc-exit-copy">Your progress is kept. Return to the gates now, or remain in the realm and continue your expedition.</p>
+    <div class="npc-exit-actions">
+      <button id="npc-exit-stay" class="npc-exit-action npc-exit-stay" type="button">KEEP PLAYING</button>
+      <button id="npc-exit-confirm" class="npc-exit-action npc-exit-confirm" type="button">↩ RETURN TO THE GATES</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* =========================================================
    NPC — NEED PAMONG CONTEXT
@@ -3585,6 +3612,29 @@ function showScreen(screenId) {
     const target = document.getElementById(screenId);
     if (target) target.classList.remove("hidden");
 }
+
+/* =========================================================
+   EXIT GAME — RETURN TO THE GATES
+   Does not clear local progress or collectible cards.
+========================================================= */
+(function(){
+    const exitButton=document.getElementById("exit-game-button");
+    const modal=document.getElementById("npc-exit-modal");
+    const stay=document.getElementById("npc-exit-stay");
+    const confirm=document.getElementById("npc-exit-confirm");
+    function close(){if(modal) modal.classList.add("hidden");}
+    function open(){if(modal) modal.classList.remove("hidden");}
+    function exit(){
+        close();
+        showScreen("login-screen");
+        window.scrollTo({top:0,behavior:"auto"});
+    }
+    if(exitButton) exitButton.addEventListener("click",open);
+    if(stay) stay.addEventListener("click",close);
+    if(confirm) confirm.addEventListener("click",exit);
+    if(modal) modal.addEventListener("click",e=>{if(e.target===modal) close();});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape" && modal && !modal.classList.contains("hidden")) close();});
+})();
 
 /* =========================================================
    PLAYER STORAGE
