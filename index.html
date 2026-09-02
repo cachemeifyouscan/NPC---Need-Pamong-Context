@@ -1859,6 +1859,41 @@ button,input{font:inherit}
   box-sizing:border-box;
   max-height:calc(100dvh - 48px);
 }
+/* =========================================================
+   GAME HOME SCROLL FIX
+   Auth pages stay full-screen; the actual game home must scroll.
+========================================================= */
+html, body{
+  min-height:100%;
+}
+body{
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+#main-game{
+  height:auto !important;
+  min-height:100dvh;
+  overflow:visible !important;
+}
+#main-game > #game-screen{
+  position:relative !important;
+  inset:auto !important;
+  width:100%;
+  height:auto !important;
+  min-height:100dvh !important;
+  max-height:none !important;
+  overflow:visible !important;
+  padding:18px !important;
+}
+#main-game > #game-screen .premium-home{
+  min-height:calc(100dvh - 36px);
+}
+
+@media(max-width:700px){
+  #main-game > #game-screen{padding:10px !important;}
+  #main-game > #game-screen .premium-home{min-height:calc(100dvh - 20px);}
+}
+
 @media(max-width:700px){
   #main-game > .screen,
   #main-game > .gate-screen{padding:14px;}
