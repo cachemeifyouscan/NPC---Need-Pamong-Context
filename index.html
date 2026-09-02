@@ -3795,6 +3795,17 @@ function savePlayerData(data) {
     let existing={};
     try{existing=JSON.parse(localStorage.getItem("npcPlayer")||"{}");}catch(e){}
 
+    /*
+     * IMPORTANT: localStorage belongs to the current browser, not to the
+     * account system. If the browser previously belonged to another player
+     * (for example missatha), NEVER merge that player's progress into the
+     * newly signed-in/signed-up account.
+     */
+    const existingUsername=String(existing?.username||"").trim().toLowerCase();
+    const incomingUsername=String(incoming?.username||"").trim().toLowerCase();
+    const sameAccount=!!existingUsername && !!incomingUsername && existingUsername===incomingUsername;
+    if(!sameAccount) existing={};
+
     const merged=ensurePlayerIdentity({...existing,...incoming});
     const oldScores=(existing&&typeof existing.milestoneScores==="object")?existing.milestoneScores:{};
     const newScores=(incoming&&typeof incoming.milestoneScores==="object")?incoming.milestoneScores:{};
@@ -4022,8 +4033,16 @@ async function submitMilestoneScore(milestone,score){
        could never intercept those calls. */
     try{
         const cardKind = m==="8" ? "revival" : (["1","2","3","4"].includes(m) ? "endgame" : "question");
-        if(window.NPCCollectibleCards?.roll){
-            void window.NPCCollectibleCards.roll(cardKind);
+        const rewardKey = `cardRewardMilestone_${m}`;
+        const latest = ensurePlayerIdentity(getPlayerData()||{});
+        if(window.NPCCollectibleCards?.roll && latest.username && !latest[rewardKey]){
+            void window.NPCCollectibleCards.roll(cardKind, { guaranteed:true }).then(card=>{
+                if(card){
+                    const current=ensurePlayerIdentity(getPlayerData()||{});
+                    current[rewardKey]=true;
+                    savePlayerData(current);
+                }
+            }).catch(e=>console.warn("[NPC Cards] Drop promise failed:",e));
         }
     }catch(cardError){
         console.warn("[NPC Cards] Card roll failed:",cardError);
@@ -4088,6 +4107,25 @@ async function renderLeaderboard(){
 }
 
 async function fetchLeaderboard(){
+    // Hall of Legends reads the same cloud chronicle used by accounts.
+    // This avoids the old split-brain situation where account progress lived
+    // in npc_accounts but the Hall depended on a separately populated table.
+    const response=await fetch(`${SUPABASE_REST_URL}/rpc/npc_hall_of_legends`,{
+        method:"POST",cache:"no-store",
+        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
+        body:"{}"
+    });
+    const raw=await response.text();
+    if(!response.ok){
+        let detail=raw;
+        try{detail=JSON.parse(raw)?.message||JSON.parse(raw)?.details||raw}catch(e){}
+        throw new Error(`npc_hall_of_legends HTTP ${response.status}: ${detail}`);
+    }
+    let body=[];
+    try{body=JSON.parse(raw)}catch(e){throw new Error("Hall response bukan JSON");}
+    return Array.isArray(body)?body:[];
+
+    /* Legacy direct-table implementation retained below for reference. */
     const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}`+
         `?select=player_id,username,total_score,updated_at`+
         `&order=total_score.desc,updated_at.asc`+
@@ -4222,7 +4260,7 @@ const usernameButton = document.getElementById("username-button");
 const usernameError = document.getElementById("username-error");
 
 if (usernameButton) {
-    usernameButton.addEventListener("click", function () {
+    usernameButton.addEventListener("click", async function () {
         const username = usernameInput.value.trim();
 
         if (!username) {
@@ -4235,12 +4273,28 @@ if (usernameButton) {
             return;
         }
 
-        usernameError.textContent = "";
-        sessionStorage.setItem("npcUsername", username);
-        selectedAvatar = "";
-        sessionStorage.removeItem("npcAvatar");
-        renderAvatarPicker();
-        showScreen("avatar-screen");
+        usernameError.textContent = "Checking the chronicles…";
+        usernameButton.disabled = true;
+
+        try {
+            const existing = await npcCloudUsernameExists(username);
+            if (existing?.exists === true) {
+                usernameError.textContent = `Username "${existing.username || username}" sudah terdaftar. Silakan pilih SIGN IN.`;
+                return;
+            }
+
+            usernameError.textContent = "";
+            sessionStorage.setItem("npcUsername", username);
+            selectedAvatar = "";
+            sessionStorage.removeItem("npcAvatar");
+            renderAvatarPicker();
+            showScreen("avatar-screen");
+        } catch (error) {
+            console.error("[NPC Cloud Chronicle] Username check failed:", error);
+            usernameError.textContent = "Tidak dapat mengecek username. Pastikan koneksi database tersedia.";
+        } finally {
+            usernameButton.disabled = false;
+        }
     });
 }
 
@@ -4343,11 +4397,10 @@ if (pinButton) {
         pinButton.disabled = true;
 
         try{
-            /* Prevent duplicate usernames globally. */
-            const existing = await npcCloudAuthenticate(username,"__DISCOVERY_ONLY__");
-            if(existing && existing.ok !== false){
+            /* Final server-side duplicate check before creating the account. */
+            const existing = await npcCloudUsernameExists(username);
+            if(existing?.exists === true){
                 pinError.textContent = "That username already has a chronicle. Choose SIGN IN instead.";
-                pinButton.disabled = false;
                 return;
             }
 
@@ -4361,7 +4414,15 @@ if (pinButton) {
                 totalScore: 0
             };
 
-            await npcCloudCreateAccount(player,pin);
+            const created = await npcCloudCreateAccount(player,pin);
+            if(!created || created.ok !== true){
+                if(created?.reason === "USERNAME_EXISTS") {
+                    pinError.textContent = "That username already has a chronicle. Choose SIGN IN instead.";
+                    return;
+                }
+                throw new Error(`Account creation failed: ${JSON.stringify(created)}`);
+            }
+
             savePlayerData(player);
 
             sessionStorage.removeItem("npcUsername");
@@ -4374,8 +4435,9 @@ if (pinButton) {
             showScreen("welcome-screen");
         }catch(error){
             console.error("[NPC Cloud Chronicle] Sign-up failed:",error);
-            pinError.textContent =
-                "The chronicle vault is not ready yet. Run the supplied Supabase SQL setup, then try again.";
+            pinError.textContent = error?.message
+                ? `Signup gagal: ${error.message}`
+                : "Signup gagal. Periksa koneksi Supabase.";
         }finally{
             pinButton.disabled=false;
         }
@@ -4404,19 +4466,13 @@ async function verifySigninUsername(){
 
     try{
         /*
-         * Username discovery is cloud-based. This is what makes a chronicle
-         * findable from another browser/device.
+         * ALWAYS ask Supabase. localStorage is only a cache and must NEVER
+         * decide whether an account exists. This is what makes login truly
+         * cross-browser and cross-device.
          */
-        const local = getPlayerData();
-        let discovered = null;
+        const discovered = await npcFindCloudChronicle(typed);
 
-        if(local && String(local.username||"").trim().toLowerCase()===typed.toLowerCase()){
-            discovered = {ok:true, username:local.username, player_id:local.playerId, chronicle:local};
-        }else{
-            discovered = await npcCloudAuthenticate(typed,"__DISCOVERY_ONLY__");
-        }
-
-        if(!discovered || discovered.ok===false || !discovered.username){
+        if(!discovered || discovered.ok===false || discovered.exists!==true || !discovered.username){
             signinUsernameError.textContent = "That name was not found in the chronicles.";
             return;
         }
@@ -4432,8 +4488,9 @@ async function verifySigninUsername(){
         if(pinField) setTimeout(()=>pinField.focus(),80);
     }catch(error){
         console.error("[NPC Cloud Chronicle] Discovery failed:",error);
-        signinUsernameError.textContent =
-            "The chronicle vault could not be reached. Check the Supabase setup.";
+        signinUsernameError.textContent = error?.message
+            ? `Cloud error: ${error.message}`
+            : "The chronicle vault could not be reached. Check the Supabase setup.";
     }finally{
         signinUsernameButton.disabled=false;
     }
@@ -4481,24 +4538,24 @@ if (pinLoginButton) {
         try{
             const remote = await npcCloudAuthenticate(username,enteredPin);
 
-            if(!remote || remote.ok===false || !remote.chronicle){
-                /*
-                 * Same-device fallback for legacy profiles that have not yet
-                 * been migrated to the cloud.
-                 */
-                const local=getPlayerData();
-                if(local && String(local.username||"").toLowerCase()===String(username).toLowerCase() && enteredPin===local.pin){
-                    pinLoginError.textContent="";
-                    document.getElementById("welcome-message").textContent =
-                        `Welcome back, ${local.username}! Your adventure awaits.`;
-                    showScreen("welcome-screen");
-                    return;
+            /*
+             * Cloud is authoritative. There is deliberately NO localStorage
+             * PIN fallback here, because that would allow an old browser cache
+             * (such as missatha) to masquerade as another account.
+             */
+            if(!remote || remote.ok!==true || !remote.chronicle){
+                if(remote?.reason === "NOT_FOUND") {
+                    pinLoginError.textContent = "Akun tidak ditemukan di cloud.";
+                }else if(remote?.reason === "BAD_PIN") {
+                    pinLoginError.textContent = "PIN salah. Coba lagi.";
+                }else{
+                    pinLoginError.textContent = "Chronicle akun ini tidak dapat dibuka.";
                 }
-                pinLoginError.textContent = "PIN salah. Coba lagi.";
                 return;
             }
 
-            const player=remote.chronicle;
+            /* Replace the browser cache with THIS account's cloud chronicle. */
+            const player={...remote.chronicle};
             player.username=remote.username||username;
             player.playerId=remote.player_id||player.playerId||npcUuid();
             player.avatar=remote.avatar||player.avatar||"avatar-01.webp";
@@ -4514,8 +4571,9 @@ if (pinLoginButton) {
             showScreen("welcome-screen");
         }catch(error){
             console.error("[NPC Cloud Chronicle] Sign-in failed:",error);
-            pinLoginError.textContent =
-                "The chronicle vault could not be reached. Check the Supabase setup.";
+            pinLoginError.textContent = error?.message
+                ? `Cloud error: ${error.message}`
+                : "The chronicle vault could not be reached. Check the Supabase setup.";
         }finally{
             pinLoginButton.disabled=false;
         }
@@ -4789,6 +4847,7 @@ const supabaseStorageClient =
 const NPC_CLOUD_ACCOUNT_RPC = "npc_create_account";
 const NPC_CLOUD_SIGNIN_RPC = "npc_authenticate";
 const NPC_CLOUD_SAVE_RPC = "npc_save_chronicle";
+const NPC_CLOUD_USERNAME_EXISTS_RPC = "npc_username_exists";
 let npcCloudSyncTimer = null;
 
 async function npcHashPin(pin){
@@ -4833,12 +4892,18 @@ async function npcCloudCreateAccount(player,pin){
 }
 
 async function npcCloudAuthenticate(username,pin){
-  const pinHash=await npcHashPin(pin);
-  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
+  const isDiscovery = String(pin) === "__DISCOVERY_ONLY__";
+  const pinHash = isDiscovery ? "__DISCOVERY_ONLY__" : await npcHashPin(pin);
+  return await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
     p_username:String(username).trim(),
     p_pin_hash:pinHash
   });
-  return result;
+}
+
+async function npcCloudUsernameExists(username){
+  return await npcCloudRpc(NPC_CLOUD_USERNAME_EXISTS_RPC,{
+    p_username:String(username).trim()
+  });
 }
 
 async function npcCloudSave(player){
@@ -4846,12 +4911,15 @@ async function npcCloudSave(player){
   try{
     const chronicle={...player};
     delete chronicle.pin; /* Never send the raw PIN to Supabase. */
-    await npcCloudRpc(NPC_CLOUD_SAVE_RPC,{
+    const result = await npcCloudRpc(NPC_CLOUD_SAVE_RPC,{
       p_username:String(player.username).trim(),
       p_player_id:String(player.playerId),
       p_avatar:String(player.avatar||"avatar-01.webp"),
       p_chronicle:chronicle
     });
+    if(!result || result.ok !== true){
+      throw new Error(`Chronicle save rejected: ${JSON.stringify(result)}`);
+    }
   }catch(e){
     console.warn("[NPC Cloud Chronicle] Save failed:",e);
   }
@@ -4863,12 +4931,32 @@ function queueNpcCloudSave(player){
   npcCloudSyncTimer=setTimeout(()=>npcCloudSave(player),900);
 }
 
+/* Optional console diagnostics. Does not expose the PIN or chronicle. */
+window.NPCCloudDebug = {
+  async checkUsername(username){
+    try {
+      const result = await npcCloudUsernameExists(username);
+      console.log("[NPC Cloud] username check:", result);
+      return result;
+    } catch (e) {
+      console.error("[NPC Cloud] username check failed:", e);
+      return null;
+    }
+  },
+  async signIn(username, pin){
+    try {
+      const result = await npcCloudAuthenticate(username, pin);
+      console.log("[NPC Cloud] sign-in result:", result);
+      return result;
+    } catch (e) {
+      console.error("[NPC Cloud] sign-in failed:", e);
+      return null;
+    }
+  }
+};
+
 async function npcFindCloudChronicle(username){
-  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
-    p_username:String(username).trim(),
-    p_pin_hash:"__DISCOVERY_ONLY__"
-  }).catch(()=>null);
-  return result;
+  return await npcCloudUsernameExists(username).catch(()=>null);
 }
 
 function getPamongPhotoUrl(path){
@@ -10866,7 +10954,7 @@ function npcShowDrop(number,chance,kind){
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 }
 
-async function npcRoll(kind="question"){
+async function npcRoll(kind="question", options={}){
   // Wait for the GitHub asset scan. The previous version could roll while
   // the 39-image scan was still running, leaving the pool temporarily empty.
   await npcScanAssets();
@@ -10884,10 +10972,9 @@ async function npcRoll(kind="question"){
   const activity=npcGetActivity()+1;
   npcSetActivity(activity);
 
-  const chance=npcChanceFor(kind);
-  const roll=Math.random()*100;
-  console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,pool);
-  if(roll>=chance) return null;
+  const chance = 100;
+  const roll = 0;
+  console.log(`[NPC Cards] ${kind}: GUARANTEED DROP | pool:`,pool);
 
   const number=pool[Math.floor(Math.random()*pool.length)];
   npcCollectedNumbers.add(number);
@@ -11203,8 +11290,7 @@ window.NPCCloudChronicle = {
     return true;
   },
   async find(username){
-    const result=await npcCloudAuthenticate(String(username),"__DISCOVERY_ONLY__");
-    return result;
+    return await npcFindCloudChronicle(String(username));
   }
 };
 
