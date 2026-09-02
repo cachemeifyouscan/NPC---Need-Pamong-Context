@@ -11212,69 +11212,129 @@ window.NPCCloudChronicle = {
 </html>
 <style id="npc-avatar-signup-layout-fix">
 /* =========================================================
-   SIGN-UP AVATAR SCREEN — KEEP ACTIONS VISIBLE
-   The portrait grid scrolls; the BACK / CHOOSE CHARACTER
-   controls stay visible inside the viewport.
+   SIGN-UP AVATAR SCREEN — ROOMY CHARACTER CARDS
+   The screen may scroll naturally. The portrait grid gets
+   enough vertical room for full character cards, while the
+   grid itself can still scroll when all 50 portraits exceed it.
 ========================================================= */
 #avatar-screen:not(.hidden){
-  height:100dvh;
   min-height:100dvh;
-  max-height:100dvh;
+  height:auto;
+  max-height:none;
   box-sizing:border-box;
-  overflow:hidden;
-  padding:18px 18px 22px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:28px 18px 44px;
 }
 
 #avatar-screen:not(.hidden) .avatar-picker-card{
-  height:calc(100dvh - 40px);
-  max-height:calc(100dvh - 40px);
+  width:min(1080px,96vw);
+  min-height:calc(100dvh - 72px);
+  height:auto;
+  max-height:none;
   box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
+  display:block;
+  overflow:visible;
+  margin:0 auto;
 }
 
+/* Give each portrait a proper character frame.
+   contain prevents tall characters from being chopped. */
 #avatar-screen:not(.hidden) .avatar-picker{
-  flex:1 1 auto;
-  min-height:0;
-  max-height:none;
+  margin:22px auto 0;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:14px;
+  max-height:62vh;
+  min-height:420px;
   overflow-y:auto;
   overflow-x:hidden;
   align-content:start;
+  padding:10px 12px 16px;
+  scrollbar-width:thin;
+}
+
+#avatar-screen:not(.hidden) .avatar-option{
+  min-width:0;
+  padding:7px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+#avatar-screen:not(.hidden) .avatar-option img{
+  width:100%;
+  aspect-ratio:3 / 4;
+  height:auto;
+  object-fit:contain;
+  object-position:center;
+  background:linear-gradient(145deg,#ead8ad,#d8bd82);
+}
+
+#avatar-screen:not(.hidden) .avatar-number{
+  min-height:18px;
+  margin:6px 0 2px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 #avatar-screen:not(.hidden) .avatar-picker-note{
-  flex:0 0 auto;
+  margin:10px 0 0;
 }
 
 #avatar-screen:not(.hidden) .avatar-picker-actions{
-  flex:0 0 auto;
-  position:relative;
+  position:sticky;
+  bottom:0;
   z-index:5;
-  margin-top:10px;
-  padding:10px 0 2px;
+  display:flex;
+  justify-content:center;
+  gap:28px;
+  margin:16px auto 0;
+  padding:14px 0 6px;
+  background:linear-gradient(to bottom,rgba(255,248,232,0),rgba(255,248,232,.94) 25%,rgba(255,248,232,1));
 }
 
 #avatar-screen:not(.hidden) #avatar-error{
-  flex:0 0 auto;
   min-height:18px;
   margin:4px 0 0;
 }
 
-@media(max-width:760px){
-  #avatar-screen:not(.hidden){padding:10px 10px 14px}
-  #avatar-screen:not(.hidden) .avatar-picker-card{
-    height:calc(100dvh - 24px);
-    max-height:calc(100dvh - 24px);
+@media(max-width:900px){
+  #avatar-screen:not(.hidden) .avatar-picker{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    max-height:60vh;
+    min-height:360px;
   }
-  #avatar-screen:not(.hidden) .avatar-picker-actions{margin-top:8px;padding-top:8px}
+}
+
+@media(max-width:760px){
+  #avatar-screen:not(.hidden){padding:18px 10px 30px}
+  #avatar-screen:not(.hidden) .avatar-picker-card{width:min(720px,96vw);min-height:calc(100dvh - 48px)}
+  #avatar-screen:not(.hidden) .avatar-picker{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+    max-height:58vh;
+    min-height:320px;
+    padding:8px;
+  }
+  #avatar-screen:not(.hidden) .avatar-picker-actions{gap:14px;margin-top:12px;padding-top:12px}
+}
+
+@media(max-width:520px){
+  #avatar-screen:not(.hidden) .avatar-picker{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:9px;
+    max-height:56vh;
+    min-height:280px;
+  }
+  #avatar-screen:not(.hidden) .avatar-picker-actions{flex-direction:column;align-items:center}
 }
 
 @media(max-height:720px){
-  #avatar-screen:not(.hidden) .mascot-small{max-height:72px;width:auto}
-  #avatar-screen:not(.hidden) .screen-title{margin-top:4px;margin-bottom:4px}
-  #avatar-screen:not(.hidden) .screen-text{margin-top:4px;margin-bottom:6px}
-  #avatar-screen:not(.hidden) .avatar-picker{margin-top:8px}
-  #avatar-screen:not(.hidden) .avatar-picker-actions{margin-top:6px;padding-top:6px}
+  #avatar-screen:not(.hidden) .avatar-picker{max-height:55vh;min-height:300px}
+  #avatar-screen:not(.hidden) .mascot-small{max-height:82px;width:auto}
+  #avatar-screen:not(.hidden) .screen-title{margin-top:6px;margin-bottom:6px}
+  #avatar-screen:not(.hidden) .screen-text{margin-top:5px;margin-bottom:8px}
 }
 </style>
