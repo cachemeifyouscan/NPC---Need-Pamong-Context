@@ -1676,6 +1676,118 @@ button,input{font:inherit}
     .premium-side-card{padding:20px 15px}
 }
 
+
+.codex-copy{min-width:0}
+.codex-meter{height:3px;margin-top:5px;background:#0f0a07;border:1px solid #63451f;overflow:hidden}
+.codex-meter span{display:block;width:0;height:100%;background:linear-gradient(90deg,#8c612a,#e0b967);transition:width .35s ease}
+.codex-state{min-width:44px;font-size:10px!important;white-space:nowrap}
+.codex-row.complete{background:rgba(181,139,66,.06)}
+.codex-row.complete .codex-state{color:#e0b967}
+
+/* =========================================================
+   THE DAILY MYSTERY
+   Functional mini-investigation overlay + home card
+   ========================================================= */
+.daily-mystery-card{
+  position:relative;
+  margin-top:14px;
+  padding:16px;
+  background:
+    linear-gradient(145deg,rgba(255,249,226,.98),rgba(225,196,132,.78)),
+    repeating-linear-gradient(0deg,rgba(93,58,25,.035) 0 1px,transparent 1px 4px);
+  border:1px solid #8a6230;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.42),0 8px 20px rgba(59,38,18,.13);
+}
+.daily-mystery-card:before{
+  content:"";
+  position:absolute;inset:5px;pointer-events:none;
+  border:1px solid rgba(118,77,30,.25);
+}
+.dm-kicker{font:700 9px/1.2 Georgia,serif;letter-spacing:2px;color:#8a3f2d}
+.dm-title{margin:5px 0 3px;font:700 22px/1.05 Georgia,serif;color:#4b2b18}
+.dm-sub{font:12px/1.4 Georgia,serif;color:#72512e;margin:0 0 12px}
+.dm-case{
+  padding:10px 11px;margin:10px 0;
+  border-left:3px solid #7d3d2e;
+  background:rgba(255,252,237,.66);
+}
+.dm-case strong{display:block;font:700 10px/1.2 Georgia,serif;letter-spacing:1px;color:#7d3d2e}
+.dm-case span{display:block;margin-top:4px;font:12px/1.35 Georgia,serif;color:#4b3420}
+.dm-meta{display:flex;justify-content:space-between;gap:8px;font:700 9px/1 Georgia,serif;letter-spacing:1px;color:#78562f}
+.dm-open,.dm-submit,.dm-next,.dm-choice{
+  border:1px solid #67421f;
+  background:linear-gradient(#835631,#4d2c18);
+  color:#f7e4b8;
+  font:700 10px Georgia,serif;letter-spacing:1px;
+  cursor:pointer;
+}
+.dm-open{width:100%;padding:10px;margin-top:10px}
+.dm-overlay{
+  position:fixed;inset:0;z-index:10000;display:none;
+  align-items:center;justify-content:center;padding:18px;
+  background:rgba(38,24,14,.68);backdrop-filter:blur(3px);
+}
+.dm-overlay.open{display:flex}
+.dm-panel{
+  width:min(900px,96vw);max-height:92vh;overflow:auto;
+  padding:22px;
+  background:
+    linear-gradient(145deg,#fff8e5,#e9d19e),
+    repeating-linear-gradient(0deg,rgba(91,57,23,.03) 0 1px,transparent 1px 4px);
+  border:2px solid #70451f;
+  box-shadow:0 20px 60px rgba(0,0,0,.4),inset 0 0 0 4px rgba(255,255,255,.35);
+}
+.dm-panel-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;border-bottom:1px solid rgba(103,66,31,.3);padding-bottom:12px}
+.dm-panel-kicker{font:700 9px Georgia,serif;letter-spacing:2px;color:#8a3f2d}
+.dm-panel h2{margin:5px 0;font:700 28px Georgia,serif;color:#432716}
+.dm-close{border:0;background:transparent;font-size:28px;color:#5b381d;cursor:pointer}
+.dm-progress{height:7px;background:#d6bb82;margin:14px 0;overflow:hidden}
+.dm-progress i{display:block;height:100%;width:0;background:#75401f;transition:width .25s}
+.dm-evidence{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 16px
+}
+.dm-evidence-card{
+  border:1px solid rgba(101,63,28,.3);padding:11px;background:rgba(255,252,239,.65)
+}
+.dm-evidence-card b{font:700 9px Georgia,serif;letter-spacing:1px;color:#7b4a25}
+.dm-evidence-card p{margin:5px 0 0;font:13px/1.4 Georgia,serif;color:#4d3520}
+.dm-question{font:700 17px/1.3 Georgia,serif;color:#412817;margin:8px 0 12px}
+.dm-options{display:grid;gap:8px}
+.dm-choice{
+  text-align:left;padding:11px 12px;background:rgba(255,248,226,.9);color:#4a2c18;
+  border-color:#a27843;font-size:12px;letter-spacing:.3px
+}
+.dm-choice:hover,.dm-choice.selected{background:#d8b873;border-color:#70451f}
+.dm-choice.correct{background:#b9c79d;border-color:#52653c}
+.dm-choice.wrong{background:#d5a49b;border-color:#71382e}
+.dm-free{
+  width:100%;box-sizing:border-box;padding:11px;
+  border:1px solid #9b7440;background:rgba(255,252,239,.85);
+  font:14px Georgia,serif;color:#402918
+}
+.dm-actions{display:flex;justify-content:space-between;gap:10px;margin-top:15px}
+.dm-submit,.dm-next{padding:11px 16px}
+.dm-submit[disabled],.dm-next[disabled]{opacity:.45;cursor:not-allowed}
+.dm-feedback{min-height:20px;margin-top:10px;font:700 12px Georgia,serif;color:#71402b}
+.dm-result{text-align:center;padding:12px}
+.dm-result .seal{font-size:44px}
+.dm-score{font:700 24px Georgia,serif;color:#68401e;margin:8px}
+.dm-reward{font:700 12px Georgia,serif;letter-spacing:1px;color:#7d3d2e}
+.dm-confidence{display:flex;gap:7px;margin-top:10px}
+.dm-confidence button{flex:1;padding:8px;border:1px solid #9b7440;background:#f8e9c4;color:#56361e;font:700 9px Georgia,serif;cursor:pointer}
+.dm-confidence button.active{background:#c89c58;color:#fff8e6;border-color:#6e431e}
+@media(max-width:650px){
+ .dm-evidence{grid-template-columns:1fr}
+ .dm-panel{padding:16px}
+ .dm-panel h2{font-size:23px}
+ .dm-actions{flex-direction:column}
+}
+
+
+.dm-choice:disabled,.dm-free:disabled{opacity:.78;cursor:default}
+.dm-result h2{font:700 25px Georgia,serif;color:#432716;margin:8px 0}
+.dm-result .dm-submit{margin-top:14px}
+
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2514,6 +2626,28 @@ button,input{font:inherit}
 .leaderboard-loading,.leaderboard-error{padding:28px;color:#6a4a2b;background:rgba(255,248,224,.6);border:1px dashed rgba(115,77,34,.35)}.leaderboard-you{margin:13px 0;color:#684a29;font-size:13px}.leaderboard-refresh{margin-top:6px;border:1px solid #62401f;background:linear-gradient(#80532b,#4e2e18);color:#f6dfae;padding:11px 18px;font:700 11px Georgia,serif;letter-spacing:1.2px;cursor:pointer}
 @media(max-width:760px){.leaderboard-panel{padding:43px 18px 25px;width:96vw}.leaderboard-top-button span{display:none}.leaderboard-row{grid-template-columns:42px 1fr auto;gap:8px;padding:9px}.leaderboard-score{font-size:15px}}
 </style>
+
+<style id="daily-mystery-click-fix">
+#dm-floating-open{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:9998;
+  border:2px solid #6d431f;
+  padding:13px 18px;
+  cursor:pointer;
+  color:#f8e7bf;
+  background:linear-gradient(#8b5b31,#4d2d18);
+  box-shadow:0 8px 22px rgba(40,24,12,.28),inset 0 1px rgba(255,255,255,.25);
+  font:700 11px Georgia,"Times New Roman",serif;
+  letter-spacing:1.2px;
+}
+#dm-floating-open:hover{transform:translateY(-2px);filter:brightness(1.06)}
+@media(max-width:600px){
+ #dm-floating-open{right:14px;bottom:14px;padding:11px 14px;font-size:10px}
+}
+</style>
+
 </head>
 
 <body>
@@ -2929,28 +3063,28 @@ button,input{font:inherit}
                             <span class="section-kicker">THE CHRONICLE</span>
                             <h3 class="journey-title">YOUR JOURNEY</h3>
                         </div>
-                        <span class="journey-caption">8 milestones · 1 realm to master</span>
+                        <span class="journey-caption">8 chapters · one realm to master</span>
                     </div>
 
                     <div class="journey premium-journey" id="journey-path">
                         <button data-team="A" id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1">
-                            <span class="journey-number">1</span><span class="journey-label">FACE</span>
+                            <span class="journey-number">1</span><span class="journey-label">TEAM A</span>
                         </button>
                         <button data-team="B" id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2">
-                            <span class="journey-number">2</span><span class="journey-label">NAME</span>
+                            <span class="journey-number">2</span><span class="journey-label">TEAM B</span>
                         </button>
                         <button data-team="C" id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3">
-                            <span class="journey-number">3</span><span class="journey-label">TEAM</span>
+                            <span class="journey-number">3</span><span class="journey-label">TEAM C</span>
                         </button>
                         <button data-team="D" id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4">
-                            <span class="journey-number">4</span><span class="journey-label">ROLE</span>
+                            <span class="journey-number">4</span><span class="journey-label">TEAM D</span>
                         </button>
                         <button id="journey-node-5" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 5"
                             onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}">
                             <span class="journey-number">5</span><span class="journey-label">AGES</span>
                         </button>
                         <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">
-                            <span class="journey-number">6</span><span class="journey-label">AREA</span>
+                            <span class="journey-number">6</span><span class="journey-label">AREAS</span>
                         </button>
                         <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">
                             <span class="journey-number">7</span><span class="journey-label">LEADERS</span>
@@ -2969,31 +3103,31 @@ button,input{font:inherit}
                 <h3 class="side-title">CONTEXT PROGRESS</h3>
                 <p class="side-intro">Every detail you uncover strengthens your understanding of the realm.</p>
 
-                <div class="codex-list">
-                    <div class="codex-row complete">
+                <div class="codex-list" id="pamong-codex">
+                    <div class="codex-row" data-codex="face">
                         <span class="codex-icon">◉</span>
-                        <div class="codex-copy"><strong>FACE</strong><small>Recognize the Pamong.</small></div>
-                        <span class="codex-state">✓</span>
+                        <div class="codex-copy"><strong>FACE</strong><small>Recognize the Pamong.</small><div class="codex-meter"><span id="codex-face-bar"></span></div></div>
+                        <span class="codex-state" id="codex-face-count">0 / 0</span>
                     </div>
-                    <div class="codex-row complete">
+                    <div class="codex-row" data-codex="name">
                         <span class="codex-icon">✒</span>
-                        <div class="codex-copy"><strong>NAME</strong><small>Remember who they are.</small></div>
-                        <span class="codex-state">✓</span>
+                        <div class="codex-copy"><strong>NAME</strong><small>Remember who they are.</small><div class="codex-meter"><span id="codex-name-bar"></span></div></div>
+                        <span class="codex-state" id="codex-name-count">0 / 0</span>
                     </div>
-                    <div class="codex-row">
+                    <div class="codex-row" data-codex="team">
                         <span class="codex-icon">♟</span>
-                        <div class="codex-copy"><strong>TEAM</strong><small>Discover where they belong.</small></div>
-                        <span class="codex-state">○</span>
+                        <div class="codex-copy"><strong>TEAM</strong><small>Discover where they belong.</small><div class="codex-meter"><span id="codex-team-bar"></span></div></div>
+                        <span class="codex-state" id="codex-team-count">0 / 4</span>
                     </div>
-                    <div class="codex-row">
+                    <div class="codex-row" data-codex="role">
                         <span class="codex-icon">⚔</span>
-                        <div class="codex-copy"><strong>ROLE</strong><small>Understand what they do.</small></div>
-                        <span class="codex-state">○</span>
+                        <div class="codex-copy"><strong>ROLE</strong><small>Understand what they do.</small><div class="codex-meter"><span id="codex-role-bar"></span></div></div>
+                        <span class="codex-state" id="codex-role-count">0 / 4</span>
                     </div>
-                    <div class="codex-row">
+                    <div class="codex-row" data-codex="fact">
                         <span class="codex-icon">✦</span>
-                        <div class="codex-copy"><strong>FUN FACT</strong><small>Uncover the unexpected.</small></div>
-                        <span class="codex-state">○</span>
+                        <div class="codex-copy"><strong>FUN FACT</strong><small>Uncover the unexpected.</small><div class="codex-meter"><span id="codex-fact-bar"></span></div></div>
+                        <span class="codex-state" id="codex-fact-count">0 / 0</span>
                     </div>
                 </div>
 
@@ -3007,8 +3141,24 @@ button,input{font:inherit}
 
                 <div class="keeper-note">
                     <div class="note-mark">❦</div>
-                    <div>
-                        <strong>KEEPER'S NOTE</strong>
+                    
+<div class="daily-mystery-card" id="daily-mystery-card">
+  <div class="dm-kicker">🕵 THE DAILY MYSTERY</div>
+  <div class="dm-title">A Memory Has Been Lost.</div>
+  <p class="dm-sub">One case. Limited clues. One identity to recover.</p>
+  <div class="dm-case">
+    <strong id="dm-home-case">CASE FILE · LOADING</strong>
+    <span id="dm-home-teaser">The archive has lost a name.</span>
+  </div>
+  <div class="dm-meta">
+    <span id="dm-home-progress">5 EVIDENCE</span>
+    <span id="dm-home-reward">+500 SCORE</span>
+  </div>
+  <button class="dm-open" type="button" id="dm-open-btn">OPEN CASE FILE →</button>
+</div>
+
+<div>
+                        <strong>THE DAILY MYSTERY</strong>
                         <p>“A name is remembered. Context is understood.”</p>
                     </div>
                 </div>
@@ -3259,6 +3409,104 @@ function ensurePlayerIdentity(player){
 
 
 
+
+/* =========================================================
+   PAMONG CODEX — LIVE DISCOVERY TRACKER
+   Reads the game's existing progress and adds only a small
+   persistent discovery record; no milestone/scoring logic is changed.
+========================================================= */
+function getCodexDiscovery(){
+    const p=(typeof getPlayerData==="function")?(getPlayerData()||{}):{};
+    const saved=Array.isArray(p.codexPamongs)?p.codexPamongs:[];
+    return new Set(saved.map(String));
+}
+function saveCodexDiscovery(set){
+    const p=(typeof getPlayerData==="function")?(getPlayerData()||{}):{};
+    if(!p.username)return;
+    p.codexPamongs=[...set];
+    if(typeof savePlayerData==="function") savePlayerData(p);
+}
+function markCodexPamong(teamKey,p){
+    if(!p)return;
+    const id=String(p.id??p.panggilan??p.nama??"");
+    if(!id)return;
+    const set=getCodexDiscovery();
+    const key=`${String(teamKey).toUpperCase()}:${id}`;
+    if(!set.has(key)){
+        set.add(key);
+        saveCodexDiscovery(set);
+    }
+    updatePamongCodex();
+}
+function codexProgress(key){
+    const p=(typeof getPlayerData==="function")?(getPlayerData()||{}):{};
+    const discovered=getCodexDiscovery();
+    const teamKeys=["A","B","C","D"];
+    const cfg=(typeof TEAM_CONFIG!=="undefined")?TEAM_CONFIG:{};
+    const totals=teamKeys.reduce((sum,k)=>sum+Number(cfg[k]?.male||0)+Number(cfg[k]?.female||0),0);
+    const discoveredIds=[...discovered];
+    const face=discoveredIds.length;
+    const teamComplete=teamKeys.filter(k=>p[`team${k}_phase1_complete`]===true).length;
+
+    let ages=0;
+    try{
+        const arr=JSON.parse(localStorage.getItem("npc_milestone5_discovered_v2")||"[]");
+        ages=Array.isArray(arr)?arr.length:0;
+    }catch(e){}
+
+    let areas=0;
+    try{
+        const st=JSON.parse(localStorage.getItem("npc_milestone6_placement_v4")||"null");
+        areas=Array.isArray(st?.discoveredUnits)?st.discoveredUnits.length:0;
+    }catch(e){}
+
+    let leaders=0;
+    try{
+        const st=JSON.parse(localStorage.getItem("npc_milestone7_jabatan_discovery_v2")||"null");
+        leaders=Array.isArray(st?.discovery?.command)?st.discovery.command.length:0;
+        leaders+=Array.isArray(st?.discovery?.sie)?st.discovery.sie.length:0;
+    }catch(e){}
+
+    const role=leaders; // leadership roles are revealed in Milestone VII.
+    const fact=0;      // no persistent Fun Fact field exists in the current game logic.
+
+    return {
+        face:[face,totals],
+        name:[face,totals],
+        team:[teamComplete,4],
+        role:[role,7],
+        fact:[fact,0],
+        ages:[ages,7],
+        areas:[areas,7],
+        leaders:[leaders,7],
+        revival:[Number(p.revivalTotal||0),null]
+    };
+}
+function setCodexRow(key,current,total){
+    const count=document.getElementById(`codex-${key}-count`);
+    const bar=document.getElementById(`codex-${key}-bar`);
+    const row=document.querySelector(`[data-codex="${key}"]`);
+    if(!count)return;
+    if(total===null){
+        count.textContent=current>0?`${current} pts`:"—";
+        if(bar)bar.style.width=current>0?"100%":"0%";
+        row?.classList.toggle("complete",current>0);
+        return;
+    }
+    count.textContent=`${current} / ${total}`;
+    const pct=total?Math.min(100,(current/total)*100):0;
+    if(bar)bar.style.width=`${pct}%`;
+    row?.classList.toggle("complete",total>0 && current>=total);
+}
+function updatePamongCodex(){
+    const x=codexProgress("all");
+    setCodexRow("face",x.face[0],x.face[1]);
+    setCodexRow("name",x.name[0],x.name[1]);
+    setCodexRow("team",x.team[0],x.team[1]);
+    setCodexRow("role",x.role[0],x.role[1]);
+    setCodexRow("fact",x.fact[0],x.fact[1]);
+}
+
 function updatePlayerDashboardIdentity(player){
     const p=player||getPlayerData&&getPlayerData();
     const label=document.getElementById("player-label");
@@ -3268,6 +3516,7 @@ function updatePlayerDashboardIdentity(player){
         const chosen=(p&&p.avatar)||"avatar-01.webp";
         avatar.src=`avatars/${chosen}`;
     }
+    if(typeof updatePamongCodex==="function") setTimeout(updatePamongCodex,0);
 }
 
 function updatePlayerAvatarUI(player){
@@ -4388,6 +4637,7 @@ function renderTeamGameRecall(){
 
 function renderTeamGameReward(){
     const p=currentTeamGamePamong();
+    if(typeof markCodexPamong==="function") markCodexPamong(currentTeamKey,p);
 
     teamGameKicker.textContent=`${TEAM_CONFIG[currentTeamKey].label} · DISCOVERED`;
     teamGameTitle.textContent="Identity Unlocked";
@@ -9649,6 +9899,446 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
   window.openBardcorePlayer=openPanel;
 })();
 </script>
+
+<div class="dm-overlay" id="dm-overlay" aria-hidden="true">
+  <div class="dm-panel" role="dialog" aria-modal="true" aria-labelledby="dm-title">
+    <div class="dm-panel-head">
+      <div>
+        <div class="dm-panel-kicker" id="dm-case-kicker">CASE FILE</div>
+        <h2 id="dm-title">The Daily Mystery</h2>
+        <div id="dm-case-intro" class="dm-sub">A memory has been lost.</div>
+      </div>
+      <button class="dm-close" id="dm-close" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="dm-progress"><i id="dm-progress-fill"></i></div>
+    <div id="dm-evidence" class="dm-evidence"></div>
+    <div id="dm-question"></div>
+    <div id="dm-options" class="dm-options"></div>
+    <div id="dm-feedback" class="dm-feedback"></div>
+    <div class="dm-actions">
+      <span id="dm-step-label" class="dm-sub">Evidence 1 of 6</span>
+      <button id="dm-next" class="dm-next" type="button" disabled>CONTINUE →</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* =========================================================
+   THE DAILY MYSTERY — SELF-CONTAINED GAME MODULE
+   ========================================================= */
+(function(){
+"use strict";
+
+const DM_KEY = "npc_daily_mystery_v2";
+const dayKey = new Date().toISOString().slice(0,10);
+
+const fallbackPeople = [
+  {id:"demo-01",nama:"The Archivist",panggilan:"Archivist",angkatan:"1",tim:"A",penempatan:"Central Command",jabatan:"Pamong"},
+  {id:"demo-02",nama:"The Falcon",panggilan:"Falcon",angkatan:"2",tim:"B",penempatan:"Training Wing",jabatan:"Pamong"},
+  {id:"demo-03",nama:"The Scribe",panggilan:"Scribe",angkatan:"3",tim:"C",penempatan:"Academy",jabatan:"Pamong"},
+  {id:"demo-04",nama:"The Warden",panggilan:"Warden",angkatan:"4",tim:"D",penempatan:"Operations",jabatan:"Pamong"}
+];
+
+function dmLoadPeople(){
+  const candidates = [];
+  try{
+    const p = typeof getPlayerData==="function" ? getPlayerData() : null;
+    const arrays = [
+      window.PAMONG_DATA, window.PAMONGS, window.pamongData,
+      window.Pengasuh, window.pengasuh, window.people
+    ];
+    arrays.forEach(a=>{ if(Array.isArray(a)) candidates.push(...a); });
+    if(p?.pamongs && Array.isArray(p.pamongs)) candidates.push(...p.pamongs);
+  }catch(e){}
+  const clean = candidates.map((x,i)=>({
+    id:String(x.id ?? x.nrp ?? x.nama ?? i),
+    nama:String(x.nama ?? x.name ?? x.full_name ?? "").trim(),
+    panggilan:String(x.panggilan ?? x.nickname ?? "").trim(),
+    angkatan:String(x.angkatan ?? x.generation ?? x.gen ?? "").trim(),
+    tim:String(x.tim ?? x.team ?? "").trim(),
+    penempatan:String(x.penempatan ?? x.placement ?? x.area ?? "").trim(),
+    jabatan:String(x.jabatan ?? x.role ?? x.position ?? "").trim(),
+    foto:String(x.foto ?? x.photo ?? x.image ?? "").trim()
+  })).filter(x=>x.nama || x.panggilan);
+
+  const unique = [];
+  const seen = new Set();
+  clean.forEach(x=>{
+    const k=x.id+"|"+x.nama;
+    if(!seen.has(k)){seen.add(k);unique.push(x);}
+  });
+  return unique.length >= 4 ? unique : fallbackPeople;
+}
+
+function dmHash(s){
+  let h=2166136261;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}
+  return (h>>>0);
+}
+
+function dmGetState(){
+  try{
+    const x=JSON.parse(localStorage.getItem(DM_KEY)||"null");
+    return x && x.date===dayKey ? x : null;
+  }catch(e){return null}
+}
+
+function dmSaveState(x){ localStorage.setItem(DM_KEY,JSON.stringify(x)); }
+
+function dmPickCase(){
+  const people=dmLoadPeople();
+  const seed=dmHash(dayKey);
+  const target=people[seed%people.length] || fallbackPeople[0];
+  target.tim=target.tim || "A";
+  target.angkatan=target.angkatan || "1";
+  target.penempatan=target.penempatan || "Central Command";
+  target.jabatan=target.jabatan || "Pamong";
+  target.nama=target.nama || target.panggilan || "The Missing Pamong";
+  const others=people.filter(x=>x.id!==target.id);
+  const shuffled=others.sort(()=>dmHash(dayKey+x.id)%3-1).slice(0,5);
+
+  const cluePool=[];
+  if(target.tim) cluePool.push({label:"TEAM LEDGER",text:"The recovered ledger places this person under Team "+target.tim+"."});
+  if(target.angkatan) cluePool.push({label:"GENERATION RECORD",text:"The generation mark reads: "+target.angkatan+"."});
+  if(target.penempatan) cluePool.push({label:"PLACEMENT MAP",text:"A torn map fragment points toward: "+target.penempatan+"."});
+  if(target.jabatan) cluePool.push({label:"ROLE REGISTER",text:"The surviving role register mentions: "+target.jabatan+"."});
+  cluePool.push({label:"ARCHIVE NOTE",text:"The lost memory belongs to one of the people recorded in Sanapati's archive."});
+
+  const cases=[
+    {name:"THE VANISHED RECORD",intro:"One identity has disappeared from the archive. Reconstruct it before the ink fades."},
+    {name:"THE TORN CHRONICLE",intro:"A chronicle survived the fire, but its most important name did not."},
+    {name:"THE WRONG COMPANY",intro:"A witness insists the missing person belonged elsewhere. The ledger says otherwise."},
+    {name:"THE SILENT WITNESS",intro:"Someone remembers the role. Someone remembers the place. One memory is unreliable."},
+    {name:"THE LOST PLACEMENT",intro:"A map fragment survived. The name attached to it did not."},
+    {name:"THE MISSING ROLE",intro:"The archive remembers the person but has forgotten what they were entrusted to do."}
+  ];
+  const c=cases[seed%cases.length];
+
+  const options=[target,...shuffled.slice(0,3)].sort(()=>dmHash(dayKey+"o"+Math.random())%3-1);
+  return {
+    date:dayKey,target,case:c,clues:cluePool.slice(0,4),options,
+    solved:false,step:0,answers:[],score:0,startedAt:Date.now()
+  };
+}
+
+function dmValidState(x){
+  return !!(x &&
+    x.date===dayKey &&
+    x.case && typeof x.case.name==="string" &&
+    x.target && typeof x.target==="object" &&
+    Array.isArray(x.clues) && x.clues.length>0 &&
+    Array.isArray(x.options) && x.options.length>=2 &&
+    typeof x.step==="number" && x.step>=0 && x.step<=5 &&
+    Array.isArray(x.answers));
+}
+let state=dmGetState();
+if(!dmValidState(state)){
+  state=dmPickCase();
+  dmSaveState(state);
+}
+let selected=null;
+
+function $(id){return document.getElementById(id)}
+function dmOpen(){
+  if(state.solved){ dmRenderSolved(); }
+  $("dm-overlay").classList.add("open");
+  $("dm-overlay").setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+  dmRender();
+}
+function dmClose(){
+  $("dm-overlay").classList.remove("open");
+  $("dm-overlay").setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+function dmRender(){
+  if(!dmValidState(state)){
+    state=dmPickCase();
+    dmSaveState(state);
+  }
+
+  $("dm-case-kicker").textContent="CASE FILE · "+state.case.name;
+  $("dm-case-intro").textContent=state.case.intro;
+  const total=6;
+  const pct=Math.min(100,(state.step/total)*100);
+  $("dm-progress-fill").style.width=pct+"%";
+  $("dm-step-label").textContent=state.solved
+    ?"CASE COMPLETE"
+    :"Evidence "+(state.step+1)+" of "+total;
+
+  $("dm-evidence").innerHTML=state.clues.map((c,i)=>`
+    <div class="dm-evidence-card">
+      <b>EVIDENCE ${String(i+1).padStart(2,"0")} · ${c.label}</b>
+      <p>${c.text}</p>
+    </div>
+  `).join("");
+
+  if(state.solved){dmRenderSolved();return;}
+
+  const allPeople=dmLoadPeople();
+
+  const makeOptions=(correct, pool)=>{
+    const vals=[];
+    if(correct) vals.push(String(correct));
+    pool.forEach(v=>{
+      if(v && String(v)!==String(correct) && !vals.includes(String(v))) vals.push(String(v));
+    });
+    return vals.slice(0,4);
+  };
+
+  const steps=[
+    {
+      q:"Which team matches the recovered ledger?",
+      type:"choice",
+      opts:makeOptions(state.target.tim,["A","B","C","D"]),
+      answer:state.target.tim
+    },
+    {
+      q:"Which generation mark belongs to the missing person?",
+      type:"choice",
+      opts:makeOptions(state.target.angkatan,["1","2","3","4","5","6","7"]),
+      answer:state.target.angkatan
+    },
+    {
+      q:"Where was the person placed?",
+      type:"choice",
+      opts:makeOptions(
+        state.target.penempatan,
+        allPeople.map(x=>x.penempatan).filter(Boolean)
+      ),
+      answer:state.target.penempatan
+    },
+    {
+      q:"What role was written beside the surviving record?",
+      type:"choice",
+      opts:makeOptions(
+        state.target.jabatan,
+        allPeople.map(x=>x.jabatan).filter(Boolean)
+      ),
+      answer:state.target.jabatan
+    },
+    {
+      q:"Who is the missing person?",
+      type:"choice",
+      opts:state.options.map(x=>x.nama||x.panggilan||"Unknown"),
+      answer:state.target.nama||state.target.panggilan
+    },
+    {
+      q:"Final memory check — enter the name exactly as recorded.",
+      type:"text",
+      answer:state.target.nama||state.target.panggilan
+    }
+  ];
+
+  const s=steps[state.step];
+  if(!s){
+    state=dmPickCase();
+    dmSaveState(state);
+    dmRender();
+    return;
+  }
+
+  $("dm-question").innerHTML=`<div class="dm-question">${s.q}</div>`;
+  $("dm-feedback").textContent="";
+  $("dm-next").disabled=true;
+  $("dm-next").textContent="SUBMIT ANSWER";
+  selected=null;
+
+  if(s.type==="choice"){
+    $("dm-options").innerHTML=s.opts.map((o)=>`
+      <button type="button" class="dm-choice" data-val="${String(o).replace(/"/g,"&quot;")}">${o}</button>
+    `).join("");
+
+    $("dm-options").querySelectorAll(".dm-choice").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        if(state._answered)return;
+        selected=btn.dataset.val;
+        $("dm-options").querySelectorAll(".dm-choice")
+          .forEach(x=>x.classList.toggle("selected",x===btn));
+        $("dm-next").disabled=false;
+      });
+    });
+  }else{
+    $("dm-options").innerHTML=`
+      <input class="dm-free" id="dm-free-input" type="text"
+        placeholder="Write the recovered name..." autocomplete="off">
+    `;
+    $("dm-free-input").addEventListener("input",()=>{
+      $("dm-next").disabled=!$("dm-free-input").value.trim();
+    });
+    setTimeout(()=>$("dm-free-input")?.focus(),50);
+  }
+}
+function dmAnswer(){
+  if(state._answered)return;
+
+  const expected=[
+    state.target.tim,
+    state.target.angkatan,
+    state.target.penempatan,
+    state.target.jabatan,
+    state.target.nama || state.target.panggilan,
+    state.target.nama || state.target.panggilan
+  ][state.step];
+
+  const actual = state.step===5
+    ? ($("dm-free-input")?.value||"").trim()
+    : selected;
+
+  const ok=String(actual||"").trim().toLowerCase()===
+           String(expected||"").trim().toLowerCase();
+
+  state.answers.push({step:state.step,ok});
+  if(ok) state.score += state.step===4 ? 150 : 70;
+  else state.score=Math.max(0,state.score-25);
+
+  state._answered=true;
+  dmSaveState(state);
+
+  $("dm-feedback").textContent=ok
+    ?"✓ The memory aligns with the archive."
+    :"✕ That fragment does not match the surviving record.";
+
+  if(state.step===5){
+    $("dm-next").textContent="SEAL THE CASE";
+  }else{
+    $("dm-next").textContent="CONTINUE →";
+  }
+  $("dm-next").disabled=false;
+
+  // Lock the current answer so the same question cannot be submitted twice.
+  $("dm-options").querySelectorAll("button,input").forEach(el=>{
+    el.disabled=true;
+  });
+}
+
+function dmNext(){
+  if(!state._answered){
+    dmAnswer();
+    return;
+  }
+
+  if(state.step>=5){
+    state.solved=true;
+    const correct=state.answers.filter(x=>x.ok).length;
+    const elapsed=Math.max(1,Math.floor((Date.now()-state.startedAt)/1000));
+    const speedBonus=Math.max(0,Math.min(120,180-elapsed));
+
+    state.score=Math.max(0,state.score+speedBonus);
+    state.final={correct,elapsed,score:state.score};
+    state._answered=false;
+    dmSaveState(state);
+
+    dmRenderSolved();
+    dmUpdateHome();
+    return;
+  }
+
+  state.step++;
+  state._answered=false;
+  dmSaveState(state);
+  dmRender();
+}
+function dmRenderSolved(){
+  const f=state.final || {correct:state.answers.filter(x=>x.ok).length,elapsed:0,score:state.score};
+  $("dm-evidence").innerHTML="";
+  $("dm-question").innerHTML=`
+    <div class="dm-result">
+      <div class="seal">🕵</div>
+      <div class="dm-kicker">CASE SOLVED</div>
+      <h2>${state.target.nama || state.target.panggilan}</h2>
+      <div class="dm-score">+${f.score} SCORE</div>
+      <div class="dm-reward">CARD UNLOCKED · ${f.correct}/6 CLUES RECOVERED</div>
+      <p class="dm-sub">The memory has been restored to the Sanapati archive.</p>
+      <button type="button" class="dm-submit" onclick="document.getElementById('dm-close').click()">RETURN TO SANAPATI</button>
+    </div>`;
+  $("dm-options").innerHTML="";
+  $("dm-feedback").textContent="";
+  $("dm-step-label").textContent="CASE SOLVED";
+  $("dm-progress-fill").style.width="100%";
+  $("dm-next").disabled=true;
+  $("dm-next").textContent="CASE SEALED";
+}
+
+function dmUpdateHome(){
+  const solved=state.solved;
+  if($("dm-home-case")) $("dm-home-case").textContent=solved ? "CASE SOLVED · ARCHIVE RESTORED" : "CASE FILE · "+state.case.name;
+  if($("dm-home-teaser")) $("dm-home-teaser").textContent=solved ? "Today's missing memory has been recovered." : state.case.intro;
+  if($("dm-home-progress")) $("dm-home-progress").textContent=solved ? "✓ SOLVED TODAY" : "6 EVIDENCE";
+  if($("dm-home-reward")) $("dm-home-reward").textContent=solved ? "+"+state.score+" SCORE" : "+500 SCORE";
+  if($("dm-open-btn")) $("dm-open-btn").textContent=solved ? "REVIEW CASE FILE →" : "OPEN CASE FILE →";
+}
+
+$("dm-open-btn")?.addEventListener("click",dmOpen);
+$("dm-close")?.addEventListener("click",dmClose);
+$("dm-overlay")?.addEventListener("click",e=>{if(e.target.id==="dm-overlay")dmClose()});
+$("dm-next")?.addEventListener("click",dmNext);
+document.addEventListener("keydown",e=>{if(e.key==="Escape" && $("dm-overlay")?.classList.contains("open"))dmClose()});
+dmUpdateHome();
+
+/* Expose for debugging / future integration without touching existing game functions. */
+window.NPCDailyMystery={open:dmOpen,close:dmClose,getState:()=>state};
+})();
+</script>
+
+
+<button id="dm-floating-open" type="button" aria-label="Open Daily Mystery">
+  🕵 OPEN DAILY MYSTERY
+</button>
+
+
+<script id="daily-mystery-click-bridge">
+(function(){
+  function openMystery(){
+    var overlay=document.getElementById("dm-overlay");
+    if(!overlay) return;
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+    if(window.NPCDailyMystery && typeof window.NPCDailyMystery.open==="function"){
+      window.NPCDailyMystery.open();
+    } else {
+      // Fallback: dispatch a click on the original button if the module has loaded
+      var original=document.getElementById("dm-open-btn");
+      if(original) original.click();
+    }
+  }
+
+  function bind(){
+    var floating=document.getElementById("dm-floating-open");
+    var original=document.getElementById("dm-open-btn");
+
+    if(floating && !floating.dataset.bound){
+      floating.dataset.bound="1";
+      floating.addEventListener("click",function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        openMystery();
+      });
+    }
+
+    // Rebind the visible card button directly, even if its original listener
+    // was affected by DOM placement.
+    if(original && !original.dataset.boundFix){
+      original.dataset.boundFix="1";
+      original.addEventListener("click",function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        openMystery();
+      }, true);
+    }
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",bind);
+  }else bind();
+
+  setTimeout(bind,300);
+  setTimeout(bind,1000);
+})();
+</script>
+
 </body>
 </html>
 <script>
@@ -9657,5 +10347,15 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
     if(p && typeof updatePlayerDashboardIdentity==="function"){
         updatePlayerDashboardIdentity(p);
     }
+})();
+</script>
+
+<script>
+(function(){
+  function bootCodex(){
+    if(typeof updatePamongCodex==="function") updatePamongCodex();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bootCodex);
+  else bootCodex();
 })();
 </script>
