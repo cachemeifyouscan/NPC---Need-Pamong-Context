@@ -1813,62 +1813,64 @@ button,input{font:inherit}
 .dm-result .dm-submit{margin-top:14px}
 
 
-/* Username-first SIGN IN */
-#signin-screen .auth-card{
-  width:min(92vw,520px);
-  margin:auto;
-  padding:42px 38px;
-  text-align:center;
-}
-#signin-screen .auth-kicker{
-  letter-spacing:.18em;
-  font-size:.72rem;
-  opacity:.72;
-  margin-bottom:10px;
-}
-#signin-screen h1{
-  margin:0 0 8px;
-  letter-spacing:.08em;
-}
-#signin-screen .auth-subtitle{
-  margin:0 0 28px;
-  opacity:.78;
-}
-#signin-screen label{
-  display:block;
-  text-align:left;
-  margin:0 0 8px;
-  font-size:.72rem;
-  letter-spacing:.14em;
-  opacity:.75;
-}
-#signin-screen #signin-username{
-  width:100%;
-  box-sizing:border-box;
-  margin-bottom:16px;
-}
-#signin-screen .auth-message{
-  min-height:1.3em;
-  margin:14px 0 0;
-  font-size:.85rem;
-}
 
 
-/* Sign-in username verification screen */
-.signin-username-card{max-width:540px;}
+/* =========================================================
+   SIGN IN USERNAME STEP
+========================================================= */
+.signin-username-card{max-width:620px}
+.signin-username-card .form-stack{max-width:480px;margin:26px auto 0}
+.signin-username-card .medieval-input{text-align:center}
 .text-back-button{
-    display:block;
-    margin:18px auto 0;
-    border:0;
-    background:none;
-    color:inherit;
-    font-family:inherit;
-    font-size:.78rem;
-    letter-spacing:.08em;
-    cursor:pointer;
-    opacity:.78;
+    border:0;background:transparent;color:#76512a;cursor:pointer;
+    font:600 12px "Palatino Linotype",Palatino,Georgia,serif;
+    letter-spacing:1px;margin-top:4px;padding:8px 12px;
 }
-.text-back-button:hover{opacity:1;text-decoration:underline;}
+.text-back-button:hover{text-decoration:underline}
+
+
+/* =========================================================
+   AUTH FLOW — FULL-SCREEN PAGE SWAP (NO SCROLL)
+========================================================= */
+#main-game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  height:100dvh;
+  overflow:hidden;
+}
+#main-game > .screen,
+#main-game > .gate-screen{
+  box-sizing:border-box;
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  height:100dvh;
+  min-height:0;
+  overflow:hidden;
+  padding:24px;
+}
+#main-game > .screen.hidden,
+#main-game > .gate-screen.hidden{
+  display:none !important;
+}
+#main-game .manuscript-card{
+  box-sizing:border-box;
+  max-height:calc(100dvh - 48px);
+}
+@media(max-width:700px){
+  #main-game > .screen,
+  #main-game > .gate-screen{padding:14px;}
+  #main-game .manuscript-card{max-height:calc(100dvh - 28px);}
+  #main-game .mascot-small{width:92px;height:92px;margin-bottom:2px;}
+  #main-game .screen-title{font-size:32px;margin:7px 0;}
+  #main-game .screen-text{font-size:15px;line-height:1.45;margin-bottom:16px;}
+  #main-game .account-choice-grid{margin:16px auto 5px;gap:10px;}
+  #main-game .account-choice-btn{min-height:105px;padding:14px;}
+  #main-game .account-choice-note{margin-top:10px;font-size:11px;line-height:1.4;}
+  #main-game .account-back{margin-top:10px!important;}
+}
 
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
@@ -2942,6 +2944,66 @@ button,input{font:inherit}
 @media(max-width:600px){.premium-actions{gap:7px}.leave-game-button span:not(.leave-icon){display:none}.leave-game-button{padding:9px 10px}.leave-actions{flex-direction:column}.leave-action{width:100%}}
 </style>
 
+<style id="npc-card-artwork-only-final">
+/* CARD ARTWORK IS THE ONLY CARD CONTENT */
+.collectible-card .cc-number,
+.collectible-card .cc-name,
+.collectible-card .cc-team,
+.collectible-drop-number,
+.collectible-drop-name,
+.collectible-drop-team,
+.collectible-drop-fact{display:none!important}
+
+.collectible-card{cursor:pointer!important}
+.collectible-card img{cursor:zoom-in!important}
+
+.collectible-drop-card{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:fit-content;
+  margin:0 auto 16px;
+  padding:7px;
+  border:1px solid #684016;
+  background:linear-gradient(145deg,#d9b46e,#9a672c);
+  box-shadow:inset 0 0 0 2px rgba(255,236,180,.3),0 8px 18px rgba(0,0,0,.22);
+  cursor:zoom-in;
+}
+.collectible-drop-card img{
+  display:block;
+  width:min(250px,68vw);
+  aspect-ratio:3/4;
+  object-fit:cover;
+  border:1px solid #593719;
+}
+
+/* Full artwork viewer */
+.npc-card-viewer{
+  position:fixed;inset:0;z-index:130000;
+  display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(10,6,3,.88);backdrop-filter:blur(7px);
+}
+.npc-card-viewer.open{display:flex}
+.npc-card-viewer-inner{
+  position:relative;max-width:min(92vw,520px);max-height:94vh;
+  padding:10px;background:linear-gradient(145deg,#d9b46e,#8f5f27);
+  border:1px solid #8b5d22;
+  box-shadow:0 24px 70px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,235,177,.25);
+}
+.npc-card-viewer img{
+  display:block;max-width:min(86vw,480px);max-height:88vh;
+  width:auto;height:auto;aspect-ratio:3/4;object-fit:contain;
+  border:1px solid #593719;background:#3b2416;
+}
+.npc-card-viewer-close{
+  position:absolute;right:-12px;top:-12px;
+  width:34px;height:34px;border:1px solid #70461f;
+  background:linear-gradient(#8b5a27,#4b2b17);
+  color:#f8dfaa;font:700 20px Georgia,serif;cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,.35);
+}
+</style>
 </head>
 
 <body>
@@ -3174,15 +3236,14 @@ button,input{font:inherit}
         </div>
 
         <p id="account-choice-error" class="error"></p>
-        <p class="account-choice-note">Your chronicle is stored on this device. Signing up on a device with an existing chronicle will replace that local profile.</p>
+        <p class="account-choice-note">Your chronicle follows your name across devices. Use SIGN IN to return to an existing chronicle.</p>
         <button id="account-back-button" class="wood-button account-back" type="button">← BACK</button>
     </div>
 </section>
 
 
-
 <!-- =========================================================
-     SIGN IN — USERNAME VERIFICATION
+     SIGN IN — USERNAME
 ========================================================= -->
 <section id="signin-username-screen" class="screen hidden">
     <div class="manuscript-card signin-username-card">
@@ -3192,15 +3253,15 @@ button,input{font:inherit}
         <p class="screen-text">Enter your name first. The realm will search for your saved chronicle.</p>
 
         <div class="form-stack">
-            <label class="field-label" for="signin-username">YOUR NAME</label>
-            <input id="signin-username" class="medieval-input" type="text" placeholder="Enter your name..." maxlength="24" autocomplete="username">
+            <label class="field-label" for="signin-username-input">YOUR NAME</label>
+            <input id="signin-username-input" class="medieval-input" type="text" autocomplete="username" placeholder="Enter your name..." maxlength="24">
             <button id="signin-username-button" class="wood-button" type="button">✦ FIND MY CHRONICLE ✦</button>
             <p id="signin-username-error" class="error"></p>
+            <button id="signin-username-back" class="text-back-button" type="button">← BACK</button>
         </div>
-
-        <button id="signin-username-back" class="text-back-button" type="button">← BACK</button>
     </div>
 </section>
+
 
 <!-- =========================================================
      USERNAME
@@ -3271,8 +3332,8 @@ button,input{font:inherit}
     <div class="manuscript-card">
         <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
         <div class="screen-kicker">THE GATE REMEMBERS YOU</div>
-        <h1 class="screen-title">Welcome Back</h1>
-        <p id="pin-login-message" class="screen-text">Masukkan PIN untuk melanjutkan progressmu.</p>
+        <h1 class="screen-title">Enter Your Seal</h1>
+        <p id="pin-login-message" class="screen-text">Chronicle found. Enter your four-digit seal to continue.</p>
 
         <div class="form-stack">
             <label class="field-label" for="login-pin-input">YOUR FOUR-DIGIT SEAL</label>
@@ -3667,10 +3728,12 @@ if (introStartButton) {
    SCREEN SYSTEM
 ========================================================= */
 function showScreen(screenId) {
+    // Every auth step is a new full-screen page — never a scroll transition.
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     const screens = [
         "login-screen",
         "account-choice-screen",
-        "signin-username-screen",
         "username-screen",
         "avatar-screen",
         "pin-setup-screen",
@@ -3715,6 +3778,7 @@ function savePlayerData(data) {
 
     localStorage.setItem("npcPlayer", JSON.stringify(merged));
     updatePlayerScoreUI();
+    if(typeof queueNpcCloudSave==='function') queueNpcCloudSave(merged);
     return merged;
 }
 
@@ -4081,63 +4145,14 @@ const accountChoiceError = document.getElementById("account-choice-error");
 if(signInButton){
     signInButton.addEventListener("click", function(){
         accountChoiceError.textContent = "";
-        const input=document.getElementById("signin-username");
-        const err=document.getElementById("signin-username-error");
-        if(input) input.value="";
-        if(err) err.textContent="";
+        const input = document.getElementById("signin-username-input");
+        const error = document.getElementById("signin-username-error");
+        if(input) input.value = "";
+        if(error) error.textContent = "";
         showScreen("signin-username-screen");
         if(input) setTimeout(()=>input.focus(),80);
     });
 }
-
-/* =========================================================
-   SIGN IN — USERNAME VERIFICATION FIRST
-========================================================= */
-const signinUsernameInput=document.getElementById("signin-username");
-const signinUsernameButton=document.getElementById("signin-username-button");
-const signinUsernameError=document.getElementById("signin-username-error");
-const signinUsernameBack=document.getElementById("signin-username-back");
-
-function verifySigninUsername(){
-    const typed=(signinUsernameInput?.value||"").trim();
-    const player=getPlayerData();
-
-    if(!typed){
-        if(signinUsernameError) signinUsernameError.textContent="Enter your name first.";
-        signinUsernameInput?.focus();
-        return;
-    }
-
-    if(!player || !player.username){
-        if(signinUsernameError) signinUsernameError.textContent="No chronicle found on this device. Choose SIGN UP to begin your adventure.";
-        return;
-    }
-
-    if(typed.toLowerCase() !== String(player.username).trim().toLowerCase()){
-        if(signinUsernameError) signinUsernameError.textContent="That name was not found. Check the spelling and try again.";
-        signinUsernameInput?.focus();
-        signinUsernameInput?.select();
-        return;
-    }
-
-    // Username verified. Only now reveal the PIN screen.
-    if(signinUsernameError) signinUsernameError.textContent="";
-    const pinMessage=document.getElementById("pin-login-message");
-    if(pinMessage) pinMessage.textContent=`Chronicle found for ${player.username}. Enter your PIN to continue.`;
-    const pinField=document.getElementById("login-pin-input");
-    if(pinField) pinField.value="";
-    showScreen("pin-login-screen");
-    if(pinField) setTimeout(()=>pinField.focus(),80);
-}
-
-signinUsernameButton?.addEventListener("click",verifySigninUsername);
-signinUsernameInput?.addEventListener("keydown",e=>{
-    if(e.key==="Enter") verifySigninUsername();
-});
-signinUsernameBack?.addEventListener("click",()=>{
-    accountChoiceError.textContent="";
-    showScreen("account-choice-screen");
-});
 
 if(signUpButton){
     signUpButton.addEventListener("click", function(){
@@ -4270,7 +4285,7 @@ const pinButton = document.getElementById("pin-button");
 const pinError = document.getElementById("pin-error");
 
 if (pinButton) {
-    pinButton.addEventListener("click", function () {
+    pinButton.addEventListener("click", async function () {
         const pin = pinInput.value.trim();
         const confirmPin = pinConfirmInput.value.trim();
 
@@ -4278,37 +4293,129 @@ if (pinButton) {
             pinError.textContent = "PIN harus terdiri dari 4 angka.";
             return;
         }
-
         if (pin !== confirmPin) {
             pinError.textContent = "PIN dan konfirmasi PIN tidak sama.";
             return;
         }
 
         const username = sessionStorage.getItem("npcUsername");
-
         if (!username) {
             pinError.textContent = "Username tidak ditemukan.";
             return;
         }
 
-        const player = {
-            playerId: npcUuid(),
-                        username: username,
-            avatar: sessionStorage.getItem("npcAvatar") || "avatar-01.webp",
-            pin: pin,
-            milestone: 1,
-            milestoneScores: {},
-            totalScore: 0
-        };
+        pinError.textContent = "Checking the chronicles…";
+        pinButton.disabled = true;
 
-        savePlayerData(player);
-        sessionStorage.removeItem("npcUsername");
-        sessionStorage.removeItem("npcAvatar");
+        try{
+            /* Prevent duplicate usernames globally. */
+            const existing = await npcCloudAuthenticate(username,"__DISCOVERY_ONLY__");
+            if(existing && existing.ok !== false){
+                pinError.textContent = "That username already has a chronicle. Choose SIGN IN instead.";
+                pinButton.disabled = false;
+                return;
+            }
 
-        document.getElementById("welcome-message").textContent =
-            `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
+            const player = {
+                playerId: npcUuid(),
+                username: username,
+                avatar: sessionStorage.getItem("npcAvatar") || "avatar-01.webp",
+                pin: pin,
+                milestone: 1,
+                milestoneScores: {},
+                totalScore: 0
+            };
 
-        showScreen("welcome-screen");
+            await npcCloudCreateAccount(player,pin);
+            savePlayerData(player);
+
+            sessionStorage.removeItem("npcUsername");
+            sessionStorage.removeItem("npcAvatar");
+            pinInput.value="";
+            pinConfirmInput.value="";
+
+            document.getElementById("welcome-message").textContent =
+                `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
+            showScreen("welcome-screen");
+        }catch(error){
+            console.error("[NPC Cloud Chronicle] Sign-up failed:",error);
+            pinError.textContent =
+                "The chronicle vault is not ready yet. Run the supplied Supabase SQL setup, then try again.";
+        }finally{
+            pinButton.disabled=false;
+        }
+    });
+}
+
+/* =========================================================
+   SIGN IN — VERIFY USERNAME FIRST
+========================================================= */
+const signinUsernameInput = document.getElementById("signin-username-input");
+const signinUsernameButton = document.getElementById("signin-username-button");
+const signinUsernameError = document.getElementById("signin-username-error");
+const signinUsernameBack = document.getElementById("signin-username-back");
+
+async function verifySigninUsername(){
+    const typed = (signinUsernameInput?.value || "").trim();
+
+    if(!typed){
+        signinUsernameError.textContent = "Please enter your name first.";
+        signinUsernameInput?.focus();
+        return;
+    }
+
+    signinUsernameError.textContent = "Searching the chronicles…";
+    signinUsernameButton.disabled = true;
+
+    try{
+        /*
+         * Username discovery is cloud-based. This is what makes a chronicle
+         * findable from another browser/device.
+         */
+        const local = getPlayerData();
+        let discovered = null;
+
+        if(local && String(local.username||"").trim().toLowerCase()===typed.toLowerCase()){
+            discovered = {ok:true, username:local.username, player_id:local.playerId, chronicle:local};
+        }else{
+            discovered = await npcCloudAuthenticate(typed,"__DISCOVERY_ONLY__");
+        }
+
+        if(!discovered || discovered.ok===false || !discovered.username){
+            signinUsernameError.textContent = "That name was not found in the chronicles.";
+            return;
+        }
+
+        sessionStorage.setItem("npcSigninUsername",String(discovered.username));
+        signinUsernameError.textContent = "";
+
+        document.getElementById("pin-login-message").textContent =
+            `Chronicle found for ${discovered.username}. Enter your four-digit seal to continue.`;
+        const pinField = document.getElementById("login-pin-input");
+        if(pinField) pinField.value="";
+        showScreen("pin-login-screen");
+        if(pinField) setTimeout(()=>pinField.focus(),80);
+    }catch(error){
+        console.error("[NPC Cloud Chronicle] Discovery failed:",error);
+        signinUsernameError.textContent =
+            "The chronicle vault could not be reached. Check the Supabase setup.";
+    }finally{
+        signinUsernameButton.disabled=false;
+    }
+}
+
+if(signinUsernameButton){
+    signinUsernameButton.addEventListener("click", verifySigninUsername);
+}
+if(signinUsernameInput){
+    signinUsernameInput.addEventListener("keydown", function(e){
+        if(e.key === "Enter") verifySigninUsername();
+    });
+}
+if(signinUsernameBack){
+    signinUsernameBack.addEventListener("click", function(){
+        signinUsernameError.textContent = "";
+        showScreen("account-choice-screen");
     });
 }
 
@@ -4320,26 +4427,63 @@ const pinLoginButton = document.getElementById("pin-login-button");
 const pinLoginError = document.getElementById("pin-login-error");
 
 if (pinLoginButton) {
-    pinLoginButton.addEventListener("click", function () {
+    pinLoginButton.addEventListener("click", async function () {
         const enteredPin = loginPinInput.value.trim();
-        const player = getPlayerData();
+        const username = sessionStorage.getItem("npcSigninUsername");
 
-        if (!player) {
-            pinLoginError.textContent = "Data player tidak ditemukan.";
+        if (!username) {
+            pinLoginError.textContent = "Find the chronicle by username first.";
+            return;
+        }
+        if (!/^\d{4}$/.test(enteredPin)) {
+            pinLoginError.textContent = "PIN harus terdiri dari 4 angka.";
             return;
         }
 
-        if (enteredPin !== player.pin) {
-            pinLoginError.textContent = "PIN salah. Coba lagi.";
-            return;
+        pinLoginError.textContent = "Opening your chronicle…";
+        pinLoginButton.disabled = true;
+
+        try{
+            const remote = await npcCloudAuthenticate(username,enteredPin);
+
+            if(!remote || remote.ok===false || !remote.chronicle){
+                /*
+                 * Same-device fallback for legacy profiles that have not yet
+                 * been migrated to the cloud.
+                 */
+                const local=getPlayerData();
+                if(local && String(local.username||"").toLowerCase()===String(username).toLowerCase() && enteredPin===local.pin){
+                    pinLoginError.textContent="";
+                    document.getElementById("welcome-message").textContent =
+                        `Welcome back, ${local.username}! Your adventure awaits.`;
+                    showScreen("welcome-screen");
+                    return;
+                }
+                pinLoginError.textContent = "PIN salah. Coba lagi.";
+                return;
+            }
+
+            const player=remote.chronicle;
+            player.username=remote.username||username;
+            player.playerId=remote.player_id||player.playerId||npcUuid();
+            player.avatar=remote.avatar||player.avatar||"avatar-01.webp";
+            player.pin=enteredPin; /* local session convenience; cloud stores only hash */
+
+            savePlayerData(player);
+            sessionStorage.removeItem("npcSigninUsername");
+            loginPinInput.value="";
+            pinLoginError.textContent="";
+
+            document.getElementById("welcome-message").textContent =
+                `Welcome back, ${player.username}! Your adventure awaits.`;
+            showScreen("welcome-screen");
+        }catch(error){
+            console.error("[NPC Cloud Chronicle] Sign-in failed:",error);
+            pinLoginError.textContent =
+                "The chronicle vault could not be reached. Check the Supabase setup.";
+        }finally{
+            pinLoginButton.disabled=false;
         }
-
-        pinLoginError.textContent = "";
-
-        document.getElementById("welcome-message").textContent =
-            `Welcome back, ${player.username}! Your adventure awaits.`;
-
-        showScreen("welcome-screen");
     });
 }
 
@@ -4600,6 +4744,97 @@ const supabaseStorageClient =
     window.supabase && SUPABASE_PUBLIC_KEY
         ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
         : null;
+
+
+/* =========================================================
+   CLOUD CHRONICLE — CROSS-DEVICE ACCOUNT STORAGE
+   Requires the one-time SQL setup in NPC_CLOUD_CHRONICLE_SETUP.sql.
+   The browser stores only a SHA-256 PIN hash, never the raw PIN.
+========================================================= */
+const NPC_CLOUD_ACCOUNT_RPC = "npc_create_account";
+const NPC_CLOUD_SIGNIN_RPC = "npc_authenticate";
+const NPC_CLOUD_SAVE_RPC = "npc_save_chronicle";
+let npcCloudSyncTimer = null;
+
+async function npcHashPin(pin){
+  const data=new TextEncoder().encode(String(pin));
+  const digest=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+async function npcCloudRpc(name,body){
+  const response=await fetch(`${SUPABASE_REST_URL}/rpc/${name}`,{
+    method:"POST",cache:"no-store",
+    headers:{
+      "apikey":SUPABASE_PUBLIC_KEY,
+      "Content-Type":"application/json",
+      "Cache-Control":"no-cache"
+    },
+    body:JSON.stringify(body)
+  });
+  const raw=await response.text();
+  let data=null;
+  try{data=raw?JSON.parse(raw):null}catch(e){data=raw}
+  if(!response.ok){
+    const detail=(data&&typeof data==="object")
+      ?(data.message||data.details||data.hint||JSON.stringify(data))
+      :String(data||"Unknown error");
+    throw new Error(`Cloud chronicle HTTP ${response.status}: ${detail}`);
+  }
+  return data;
+}
+
+async function npcCloudCreateAccount(player,pin){
+  const pinHash=await npcHashPin(pin);
+  const chronicle={...player};
+  delete chronicle.pin; /* Never send the raw PIN to Supabase. */
+  return await npcCloudRpc(NPC_CLOUD_ACCOUNT_RPC,{
+    p_username:String(player.username).trim(),
+    p_pin_hash:pinHash,
+    p_player_id:String(player.playerId),
+    p_avatar:String(player.avatar||"avatar-01.webp"),
+    p_chronicle:chronicle
+  });
+}
+
+async function npcCloudAuthenticate(username,pin){
+  const pinHash=await npcHashPin(pin);
+  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
+    p_username:String(username).trim(),
+    p_pin_hash:pinHash
+  });
+  return result;
+}
+
+async function npcCloudSave(player){
+  if(!player?.username)return;
+  try{
+    const chronicle={...player};
+    delete chronicle.pin; /* Never send the raw PIN to Supabase. */
+    await npcCloudRpc(NPC_CLOUD_SAVE_RPC,{
+      p_username:String(player.username).trim(),
+      p_player_id:String(player.playerId),
+      p_avatar:String(player.avatar||"avatar-01.webp"),
+      p_chronicle:chronicle
+    });
+  }catch(e){
+    console.warn("[NPC Cloud Chronicle] Save failed:",e);
+  }
+}
+
+function queueNpcCloudSave(player){
+  if(!player?.username || typeof SUPABASE_REST_URL==="undefined")return;
+  clearTimeout(npcCloudSyncTimer);
+  npcCloudSyncTimer=setTimeout(()=>npcCloudSave(player),900);
+}
+
+async function npcFindCloudChronicle(username){
+  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
+    p_username:String(username).trim(),
+    p_pin_hash:"__DISCOVERY_ONLY__"
+  }).catch(()=>null);
+  return result;
+}
 
 function getPamongPhotoUrl(path){
     if(!path) return "";
@@ -6931,9 +7166,9 @@ const root=document.getElementById("milestone7-jabatan");if(!root)return;
 const $=id=>document.getElementById(id);
 
 const HOLDERS=[
- {id:"Afi",name:"Afi",angkatan:"STSN12",penempatan:"Pratama",jabatan:"Ketua Tim – Komandan Batalyon Taruna Pratama",type:"batalyon"},
- {id:"Fahmi",name:"Fahmi",angkatan:"STSN15",penempatan:"Muda",jabatan:"Ketua Tim – Komandan Batalyon Taruna Muda",type:"batalyon"},
  {id:"Bio",name:"Bio",angkatan:"STSN15",penempatan:"Madya",jabatan:"Ketua Tim – Komandan Batalyon Taruna Madya",type:"batalyon"},
+ {id:"Fahmi",name:"Fahmi",angkatan:"STSN15",penempatan:"Muda",jabatan:"Ketua Tim – Komandan Batalyon Taruna Muda",type:"batalyon"},
+ {id:"Afi",name:"Afi",angkatan:"STSN12",penempatan:"Pratama",jabatan:"Ketua Tim – Komandan Batalyon Taruna Pratama",type:"batalyon"},
  {id:"Adhli",name:"Adhli",angkatan:"STSN14",penempatan:"Satria",jabatan:"Ketua Tim – Komandan Batalyon Taruna Satria",type:"batalyon"},
  {id:"Yota",name:"Yota",angkatan:"STSN15",penempatan:"Operasi",jabatan:"Kepala Seksi Operasi",type:"sie"},
  {id:"Hadyan",name:"Hadyan",angkatan:"STSN14",penempatan:"Adminlog",jabatan:"Kepala Seksi Administrasi dan Logistik",type:"sie"},
@@ -10536,7 +10771,7 @@ function npcBuildCard(number,locked){
   tm.textContent=locked?"LOCKED":"TEAM "+String(p?.tim||"—");
   b.appendChild(tm);
 
-  if(!locked) b.addEventListener("click",()=>npcShowDetail(number));
+  if(!locked) b.addEventListener("click",()=>npcOpenCardViewer(number));
   return b;
 }
 
@@ -10562,7 +10797,6 @@ function npcAvailableUncollected(){
 }
 
 function npcShowDrop(number,chance,kind){
-  const p=npcGetMeta(number);
   const existing=npc$("collectible-drop-overlay");
   if(existing) existing.remove();
 
@@ -10575,27 +10809,25 @@ function npcShowDrop(number,chance,kind){
       <div class="collectible-drop-kicker">A NEW DISCOVERY</div>
       <h2>CARD ACQUIRED</h2>
       <p class="collectible-drop-sub">The archives have yielded a new Pamong card.</p>
-      <div class="collectible-drop-card">
-        <img src="${npcEsc(npcCardPath(number))}" alt="Card #${npcPad(number)}">
-        <div class="collectible-drop-number">CARD #${npcPad(number)}</div>
-        <div class="collectible-drop-name">${npcEsc(npcName(p))}</div>
-        <div class="collectible-drop-team">TEAM ${npcEsc(p.tim||"—")}</div>
-      </div>
-      <div class="collectible-drop-fact">
-        ${npcFact(p)
-          ? `✦ ${npcEsc(npcFact(p))}`
-          : "The full card artwork has been added to your collection."}
-      </div>
+      <button type="button" class="collectible-drop-card" id="collectible-drop-card-button" aria-label="View card">
+        <img src="${npcEsc(npcCardPath(number))}?v=${Date.now()}" alt="New collectible card">
+      </button>
+      <div class="collectible-drop-fact">The full card artwork has been added to your collection.</div>
       <button type="button" id="collectible-drop-close">ADD TO COLLECTION →</button>
     </div>`;
 
   document.body.appendChild(overlay);
+
   const close=()=>{
     overlay.remove();
     npcRenderShelf();
     npcUpdateFunFactCodex();
   };
+
   npc$("collectible-drop-close")?.addEventListener("click",close);
+  npc$("collectible-drop-card-button")?.addEventListener("click",()=>{
+    npcOpenCardViewer(number);
+  });
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 }
 
@@ -10670,6 +10902,46 @@ function npcRenderFull(){
   npcUpdateFunFactCodex();
 }
 
+
+function npcOpenCardViewer(number){
+  if(!npcCollectedNumbers.has(Number(number)) && !document.getElementById("collectible-drop-overlay")) return;
+
+  let viewer=npc$("npc-card-viewer");
+  if(!viewer){
+    viewer=document.createElement("div");
+    viewer.id="npc-card-viewer";
+    viewer.className="npc-card-viewer";
+    viewer.setAttribute("aria-hidden","true");
+    viewer.innerHTML=`
+      <div class="npc-card-viewer-inner" role="dialog" aria-modal="true" aria-label="Card artwork">
+        <button type="button" class="npc-card-viewer-close" id="npc-card-viewer-close" aria-label="Close card viewer">×</button>
+        <img id="npc-card-viewer-img" alt="Collectible card artwork">
+      </div>`;
+    document.body.appendChild(viewer);
+    viewer.addEventListener("click",e=>{if(e.target===viewer)npcCloseCardViewer()});
+    viewer.querySelector("#npc-card-viewer-close")?.addEventListener("click",npcCloseCardViewer);
+  }
+
+  const img=viewer.querySelector("#npc-card-viewer-img");
+  if(img) {
+    img.src=npcCardPath(Number(number))+"?v="+Date.now();
+    img.alt=`Collectible card #${npcPad(Number(number))}`;
+  }
+  viewer.classList.add("open");
+  viewer.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+}
+
+function npcCloseCardViewer(){
+  const viewer=npc$("npc-card-viewer");
+  if(!viewer)return;
+  viewer.classList.remove("open");
+  viewer.setAttribute("aria-hidden","true");
+  const drop=npc$("collectible-drop-overlay");
+  const collection=npc$("collectible-overlay");
+  if(!drop && !collection?.classList.contains("open")) document.body.style.overflow="";
+}
+
 function npcShowDetail(number){
   if(!npcCollectedNumbers.has(number)) return;
   const p=npcGetMeta(number);
@@ -10738,7 +11010,7 @@ async function npcInit(){
   npc$("collectible-overlay")?.addEventListener("click",e=>{
     if(e.target.id==="collectible-overlay")npcClose();
   });
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")npcClose()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){npcCloseCardViewer();npcClose();}});
 
   /* Metadata is optional; card images are the source of truth. */
   npcLoadPeople().then(()=>{
@@ -10874,6 +11146,32 @@ if(document.readyState==="loading"){
 })();
 </script>
 
+
+
+
+
+
+<script>
+(function(){
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+})();
+</script>
+
+
+window.NPCCloudChronicle = {
+  async migrateCurrentLocal(pin){
+    const p=getPlayerData();
+    if(!p?.username) throw new Error("No local chronicle found.");
+    if(!/^\d{4}$/.test(String(pin))) throw new Error("Use the four-digit PIN for this chronicle.");
+    await npcCloudCreateAccount(p,String(pin));
+    return true;
+  },
+  async find(username){
+    const result=await npcCloudAuthenticate(String(username),"__DISCOVERY_ONLY__");
+    return result;
+  }
+};
 
 </body>
 </html>
