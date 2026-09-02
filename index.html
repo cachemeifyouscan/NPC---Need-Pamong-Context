@@ -8,7 +8,7 @@
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Georgia,"Times New Roman",serif;color:#3d2d1c;background:#eee2cc}
-body{overflow-x:hidden;overflow-y:auto}
+body{overflow-x:hidden}
 button,input{font:inherit}
 .hidden{display:none!important}
 
@@ -292,30 +292,6 @@ button,input{font:inherit}
 }
 #start-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
 #start-button:active{transform:translateY(3px);box-shadow:inset 0 2px 0 rgba(255,220,155,.12),0 1px 0 #29170b}
-
-/* =========================================================
-   ACCOUNT CHOICE — SIGN IN / SIGN UP
-========================================================= */
-.account-choice-card{max-width:720px}
-.account-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:560px;margin:28px auto 8px}
-.account-choice-btn{
-  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:148px;padding:24px 18px;border:1px solid #9a7743;border-radius:4px;
-  background:linear-gradient(180deg,#fff9e9 0%,#ead3a2 100%);
-  color:#4b321b;font-family:"Palatino Linotype",Palatino,Georgia,serif;cursor:pointer;
-  box-shadow:0 4px 0 #8a6637,0 9px 18px rgba(63,38,14,.15),inset 0 1px 0 rgba(255,255,255,.8);
-  transition:transform .15s ease,filter .15s ease,box-shadow .15s ease;
-}
-.account-choice-btn:before{content:"";position:absolute;inset:7px;border:1px solid rgba(126,91,40,.3);pointer-events:none;border-radius:2px}
-.account-choice-btn:hover{transform:translateY(-3px);filter:brightness(1.04);box-shadow:0 7px 0 #8a6637,0 13px 22px rgba(63,38,14,.18),inset 0 1px 0 rgba(255,255,255,.8)}
-.account-choice-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #8a6637,0 5px 12px rgba(63,38,14,.14)}
-.account-choice-icon{font-size:31px;line-height:1;margin-bottom:11px;color:#76511f}
-.account-choice-title{font-size:20px;font-weight:700;letter-spacing:2px}
-.account-choice-sub{margin-top:7px;font-size:12px;letter-spacing:.7px;color:#806746;font-style:italic}
-.account-choice-note{margin:20px auto 0;max-width:510px;color:#8b7354;font-size:13px;line-height:1.6;font-style:italic}
-.account-back{margin:18px auto 0!important;width:150px!important;height:44px!important;font-size:12px!important}
-@media(max-width:620px){.account-choice-grid{grid-template-columns:1fr;max-width:320px}.account-choice-btn{min-height:125px}}
-
 .error{min-height:23px;margin:15px 0 0;color:#87392a;font-size:14px;font-style:italic}
 .gate-footer{margin-top:22px;color:#907655;font-size:13px;font-style:italic;letter-spacing:1px}
 
@@ -494,7 +470,7 @@ button,input{font:inherit}
 /* =========================================================
    GAME HOME
 ========================================================= */
-#game-screen{min-height:100vh;padding:24px 18px 40px;background:#e9d6ac;color:#432b18;overflow:visible}
+#game-screen{min-height:100vh;padding:24px;background:#e9d6ac;color:#432b18}
 .game-shell{width:min(1180px,96vw);margin:auto}
 .game-topbar{
     display:flex;align-items:center;justify-content:space-between;gap:20px;
@@ -1461,8 +1437,7 @@ button,input{font:inherit}
 ========================================================= */
 #game-screen{
     min-height:100vh;
-    height:auto;
-    padding:18px 18px 42px;
+    padding:18px;
     color:#3e2817;
     background:
       radial-gradient(circle at 50% 0%,rgba(255,248,220,.72),transparent 38%),
@@ -1812,66 +1787,6 @@ button,input{font:inherit}
 .dm-choice:disabled,.dm-free:disabled{opacity:.78;cursor:default}
 .dm-result h2{font:700 25px Georgia,serif;color:#432716;margin:8px 0}
 .dm-result .dm-submit{margin-top:14px}
-
-
-
-
-/* =========================================================
-   SIGN IN USERNAME STEP
-========================================================= */
-.signin-username-card{max-width:620px}
-.signin-username-card .form-stack{max-width:480px;margin:26px auto 0}
-.signin-username-card .medieval-input{text-align:center}
-.text-back-button{
-    border:0;background:transparent;color:#76512a;cursor:pointer;
-    font:600 12px "Palatino Linotype",Palatino,Georgia,serif;
-    letter-spacing:1px;margin-top:4px;padding:8px 12px;
-}
-.text-back-button:hover{text-decoration:underline}
-
-
-/* =========================================================
-   AUTH FLOW — FULL-SCREEN PAGE SWAP (NO SCROLL)
-========================================================= */
-#main-game{
-  position:relative;
-  width:100vw;
-  height:100vh;
-  height:100dvh;
-  overflow:hidden;
-}
-#main-game > .screen,
-#main-game > .gate-screen{
-  box-sizing:border-box;
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  height:100dvh;
-  min-height:0;
-  overflow:hidden;
-  padding:24px;
-}
-#main-game > .screen.hidden,
-#main-game > .gate-screen.hidden{
-  display:none !important;
-}
-#main-game .manuscript-card{
-  box-sizing:border-box;
-  max-height:calc(100dvh - 48px);
-}
-@media(max-width:700px){
-  #main-game > .screen,
-  #main-game > .gate-screen{padding:14px;}
-  #main-game .manuscript-card{max-height:calc(100dvh - 28px);}
-  #main-game .mascot-small{width:92px;height:92px;margin-bottom:2px;}
-  #main-game .screen-title{font-size:32px;margin:7px 0;}
-  #main-game .screen-text{font-size:15px;line-height:1.45;margin-bottom:16px;}
-  #main-game .account-choice-grid{margin:16px auto 5px;gap:10px;}
-  #main-game .account-choice-btn{min-height:105px;padding:14px;}
-  #main-game .account-choice-note{margin-top:10px;font-size:11px;line-height:1.4;}
-  #main-game .account-back{margin-top:10px!important;}
-}
 
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
@@ -2920,91 +2835,81 @@ button,input{font:inherit}
   color:#f7dfaa;font:700 10px Georgia,serif;letter-spacing:1px;cursor:pointer;
 }
 #collectible-drop-close:hover{filter:brightness(1.08)}
-
-/* ===== MEDIEVAL LEAVE GAME ===== */
-.leave-game-button{
-  display:inline-flex;align-items:center;gap:7px;padding:9px 12px;
-  border:1px solid #9a7543;background:linear-gradient(#f6e8c8,#dfc38c);
-  color:#4a2f19;font:700 10px/1 Georgia,serif;letter-spacing:1.1px;
-  cursor:pointer;box-shadow:inset 0 1px rgba(255,255,255,.65),0 2px 5px rgba(60,35,10,.12);
-  transition:.18s ease;
-}
-.leave-game-button:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:0 4px 10px rgba(60,35,10,.18)}
-.leave-game-button .leave-icon{font-size:15px;line-height:1}
-#leave-game-overlay{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(30,18,8,.68);backdrop-filter:blur(3px)}
-#leave-game-overlay.open{display:flex}
-.leave-game-panel{position:relative;width:min(440px,92vw);padding:34px 30px 28px;text-align:center;background:linear-gradient(145deg,#fff8e6,#e7c991);border:1px solid #8b6330;box-shadow:0 22px 60px rgba(0,0,0,.35),inset 0 0 0 5px rgba(139,99,48,.08)}
-.leave-game-panel:before,.leave-game-panel:after{content:"✦";position:absolute;top:12px;color:#8b6330;font-size:16px}.leave-game-panel:before{left:18px}.leave-game-panel:after{right:18px}
-.leave-ornament{color:#8b6330;font-size:18px;letter-spacing:5px;margin-bottom:10px}
-.leave-kicker{font-size:10px;letter-spacing:3px;font-weight:bold;color:#87602e}
-.leave-title{margin:7px 0 10px;font:700 29px/1.1 Georgia,serif;color:#432a16}
-.leave-copy{margin:0 auto 24px;max-width:330px;font:14px/1.6 Georgia,serif;color:#6d4d2c}
-.leave-actions{display:flex;justify-content:center;gap:10px}
-.leave-action{min-width:125px;padding:11px 16px;border:1px solid #8b6330;font:700 11px Georgia,serif;letter-spacing:1.2px;cursor:pointer}
-.leave-stay{background:#f6e7c5;color:#4b301a}.leave-confirm{background:linear-gradient(#71471f,#4e2d16);color:#f8dfaa}.leave-action:hover{filter:brightness(1.08)}
-@media(max-width:600px){.premium-actions{gap:7px}.leave-game-button span:not(.leave-icon){display:none}.leave-game-button{padding:9px 10px}.leave-actions{flex-direction:column}.leave-action{width:100%}}
 </style>
 
-<style id="npc-card-artwork-only-final">
-/* CARD ARTWORK IS THE ONLY CARD CONTENT */
+
+<style id="npc-card-only-final">
+/* =========================================================
+   COLLECTIBLE CARD — ARTWORK ONLY
+   Names / teams / facts / card numbers are NEVER rendered
+   outside the uploaded GitHub card artwork.
+========================================================= */
 .collectible-card .cc-number,
 .collectible-card .cc-name,
 .collectible-card .cc-team,
 .collectible-drop-number,
 .collectible-drop-name,
 .collectible-drop-team,
-.collectible-drop-fact{display:none!important}
-
-.collectible-card{cursor:pointer!important}
-.collectible-card img{cursor:zoom-in!important}
+.collectible-drop-fact,
+.collectible-drop-sub{
+  display:none !important;
+}
 
 .collectible-drop-card{
-  position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:fit-content;
-  margin:0 auto 16px;
-  padding:7px;
-  border:1px solid #684016;
-  background:linear-gradient(145deg,#d9b46e,#9a672c);
-  box-shadow:inset 0 0 0 2px rgba(255,236,180,.3),0 8px 18px rgba(0,0,0,.22);
-  cursor:zoom-in;
-}
-.collectible-drop-card img{
-  display:block;
-  width:min(250px,68vw);
-  aspect-ratio:3/4;
-  object-fit:cover;
-  border:1px solid #593719;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:min(330px,76vw) !important;
+  margin:12px auto 18px !important;
+  padding:8px !important;
+  border:1px solid #a77836 !important;
+  background:linear-gradient(145deg,#dfc184,#b78843) !important;
+  box-shadow:inset 0 0 0 2px rgba(255,237,183,.28),0 12px 28px rgba(0,0,0,.25) !important;
+  cursor:pointer !important;
+  transition:transform .16s ease,filter .16s ease !important;
 }
 
-/* Full artwork viewer */
-.npc-card-viewer{
-  position:fixed;inset:0;z-index:130000;
-  display:none;align-items:center;justify-content:center;
-  padding:18px;background:rgba(10,6,3,.88);backdrop-filter:blur(7px);
+.collectible-drop-card:hover{
+  transform:translateY(-3px) !important;
+  filter:brightness(1.06) !important;
 }
-.npc-card-viewer.open{display:flex}
-.npc-card-viewer-inner{
-  position:relative;max-width:min(92vw,520px);max-height:94vh;
-  padding:10px;background:linear-gradient(145deg,#d9b46e,#8f5f27);
-  border:1px solid #8b5d22;
-  box-shadow:0 24px 70px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,235,177,.25);
+
+.collectible-drop-card:active{
+  transform:translateY(1px) !important;
 }
-.npc-card-viewer img{
-  display:block;max-width:min(86vw,480px);max-height:88vh;
-  width:auto;height:auto;aspect-ratio:3/4;object-fit:contain;
-  border:1px solid #593719;background:#3b2416;
+
+.collectible-drop-card img{
+  display:block !important;
+  width:100% !important;
+  aspect-ratio:3/4 !important;
+  object-fit:cover !important;
+  border:1px solid #593719 !important;
+  background:#5e3c22 !important;
 }
-.npc-card-viewer-close{
-  position:absolute;right:-12px;top:-12px;
-  width:34px;height:34px;border:1px solid #70461f;
-  background:linear-gradient(#8b5a27,#4b2b17);
-  color:#f8dfaa;font:700 20px Georgia,serif;cursor:pointer;
-  box-shadow:0 5px 15px rgba(0,0,0,.35);
+
+.collectible-card{
+  cursor:pointer !important;
 }
 </style>
+
+
+<style id="npc-card-viewer-final">
+.collectible-detail.open{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:10px !important;
+}
+.collectible-detail.open img{
+  width:min(460px,82vw) !important;
+  max-height:78vh !important;
+  aspect-ratio:3/4 !important;
+  object-fit:contain !important;
+  border:1px solid #a77836 !important;
+  box-shadow:0 15px 40px rgba(0,0,0,.45) !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -3061,20 +2966,6 @@ button,input{font:inherit}
   <div class="bard-footnote">Music is streamed from YouTube; no audio files are stored in this game.</div>
   <div id="bard-youtube-player" aria-hidden="true"></div>
 </section>
-
-
-<div id="leave-game-overlay" role="dialog" aria-modal="true" aria-labelledby="leave-game-title">
-  <div class="leave-game-panel">
-    <div class="leave-ornament">✦ ❦ ✦</div>
-    <div class="leave-kicker">THE CHRONICLE</div>
-    <h2 id="leave-game-title" class="leave-title">LEAVE THE CHRONICLE?</h2>
-    <p class="leave-copy">Your progress has been saved.<br>You may return to your journey at any time.</p>
-    <div class="leave-actions">
-      <button id="leave-stay" class="leave-action leave-stay" type="button">STAY</button>
-      <button id="leave-confirm" class="leave-action leave-confirm" type="button">LEAVE GAME</button>
-    </div>
-  </div>
-</div>
 
 <!-- =========================================================
      OPENING
@@ -3214,57 +3105,6 @@ button,input{font:inherit}
 
 
 <!-- =========================================================
-     ACCOUNT CHOICE
-========================================================= -->
-<section id="account-choice-screen" class="screen hidden">
-    <div class="manuscript-card account-choice-card">
-        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
-        <div class="screen-kicker">THE CHRONICLE GATE</div>
-        <h1 class="screen-title">Choose Your Path</h1>
-        <p class="screen-text">Will you return to an existing chronicle, or begin a new one?</p>
-
-        <div class="account-choice-grid">
-            <button id="sign-in-button" class="account-choice-btn" type="button">
-                <span class="account-choice-icon">⚔</span>
-                <span class="account-choice-title">SIGN IN</span>
-                <span class="account-choice-sub">Continue your saved chronicle</span>
-            </button>
-            <button id="sign-up-button" class="account-choice-btn" type="button">
-                <span class="account-choice-icon">✦</span>
-                <span class="account-choice-title">SIGN UP</span>
-                <span class="account-choice-sub">Begin a new adventure</span>
-            </button>
-        </div>
-
-        <p id="account-choice-error" class="error"></p>
-        <p class="account-choice-note">Your chronicle follows your name across devices. Use SIGN IN to return to an existing chronicle.</p>
-        <button id="account-back-button" class="wood-button account-back" type="button">← BACK</button>
-    </div>
-</section>
-
-
-<!-- =========================================================
-     SIGN IN — USERNAME
-========================================================= -->
-<section id="signin-username-screen" class="screen hidden">
-    <div class="manuscript-card signin-username-card">
-        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
-        <div class="screen-kicker">THE CHRONICLE REMEMBERS</div>
-        <h1 class="screen-title">What Is Your Name?</h1>
-        <p class="screen-text">Enter your name first. The realm will search for your saved chronicle.</p>
-
-        <div class="form-stack">
-            <label class="field-label" for="signin-username-input">YOUR NAME</label>
-            <input id="signin-username-input" class="medieval-input" type="text" autocomplete="username" placeholder="Enter your name..." maxlength="24">
-            <button id="signin-username-button" class="wood-button" type="button">✦ FIND MY CHRONICLE ✦</button>
-            <p id="signin-username-error" class="error"></p>
-            <button id="signin-username-back" class="text-back-button" type="button">← BACK</button>
-        </div>
-    </div>
-</section>
-
-
-<!-- =========================================================
      USERNAME
 ========================================================= -->
 <section id="username-screen" class="screen hidden">
@@ -3333,8 +3173,8 @@ button,input{font:inherit}
     <div class="manuscript-card">
         <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
         <div class="screen-kicker">THE GATE REMEMBERS YOU</div>
-        <h1 class="screen-title">Enter Your Seal</h1>
-        <p id="pin-login-message" class="screen-text">Chronicle found. Enter your four-digit seal to continue.</p>
+        <h1 class="screen-title">Welcome Back</h1>
+        <p id="pin-login-message" class="screen-text">Masukkan PIN untuk melanjutkan progressmu.</p>
 
         <div class="form-stack">
             <label class="field-label" for="login-pin-input">YOUR FOUR-DIGIT SEAL</label>
@@ -3426,9 +3266,6 @@ button,input{font:inherit}
             <div class="top-actions premium-actions">
                 <button id="leaderboard-open" class="leaderboard-top-button" type="button" title="Open Hall of Legends">
                     🏆 <span>HALL OF LEGENDS</span>
-                </button>
-                <button id="leave-game-button" class="leave-game-button" type="button" title="Leave the Chronicle">
-                    <span class="leave-icon">↩</span><span>LEAVE</span>
                 </button>
                 <div class="score-chip">
                     <span class="score-star">✦</span>
@@ -3731,7 +3568,6 @@ if (introStartButton) {
 function showScreen(screenId) {
     const screens = [
         "login-screen",
-        "account-choice-screen",
         "username-screen",
         "avatar-screen",
         "pin-setup-screen",
@@ -3748,19 +3584,6 @@ function showScreen(screenId) {
 
     const target = document.getElementById(screenId);
     if (target) target.classList.remove("hidden");
-
-    // Auth screens are viewport-like; Game Home is a normal scrollable page.
-    if (screenId === "game-screen") {
-        document.documentElement.style.overflowY = "auto";
-        document.body.style.overflowY = "auto";
-        document.documentElement.style.overflowX = "hidden";
-        document.body.style.overflowX = "hidden";
-        window.scrollTo({top:0, behavior:"auto"});
-    } else {
-        document.documentElement.style.overflow = "hidden";
-        document.body.style.overflow = "hidden";
-        window.scrollTo({top:0, behavior:"auto"});
-    }
 }
 
 /* =========================================================
@@ -3789,7 +3612,6 @@ function savePlayerData(data) {
 
     localStorage.setItem("npcPlayer", JSON.stringify(merged));
     updatePlayerScoreUI();
-    if(typeof queueNpcCloudSave==='function') queueNpcCloudSave(merged);
     return merged;
 }
 
@@ -3992,19 +3814,6 @@ async function submitMilestoneScore(milestone,score){
     savePlayerData(p);
     updatePlayerScoreUI();
 
-    /* COLLECTIBLE CARD DROP — called from the REAL scoring function.
-       The previous version tried to replace window.submitMilestoneScore,
-       but the game calls its lexical function directly, so that wrapper
-       could never intercept those calls. */
-    try{
-        const cardKind = m==="8" ? "revival" : (["1","2","3","4"].includes(m) ? "endgame" : "question");
-        if(window.NPCCollectibleCards?.roll){
-            void window.NPCCollectibleCards.roll(cardKind);
-        }
-    }catch(cardError){
-        console.warn("[NPC Cards] Card roll failed:",cardError);
-    }
-
     try{
         const response=await fetch(`${SUPABASE_REST_URL}/rpc/submit_npc_score`,{
             method:"POST",cache:"no-store",
@@ -4102,7 +3911,7 @@ function closeLeaderboard(){
     if(!o)return;
     o.classList.add("hidden");
     o.setAttribute("aria-hidden","true");
-    document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
+    document.body.style.overflow="";
 }
 
 function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
@@ -4141,52 +3950,17 @@ if (startButton) {
 
         accessError.textContent = "";
 
-        showScreen("account-choice-screen");
-    });
-}
+        const player = getPlayerData();
 
-/* =========================================================
-   SIGN IN / SIGN UP CHOICE
-========================================================= */
-const signInButton = document.getElementById("sign-in-button");
-const signUpButton = document.getElementById("sign-up-button");
-const accountBackButton = document.getElementById("account-back-button");
-const accountChoiceError = document.getElementById("account-choice-error");
+        if (player) {
+            document.getElementById("pin-login-message").textContent =
+                `Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
 
-if(signInButton){
-    signInButton.addEventListener("click", function(){
-        accountChoiceError.textContent = "";
-        const input = document.getElementById("signin-username-input");
-        const error = document.getElementById("signin-username-error");
-        if(input) input.value = "";
-        if(error) error.textContent = "";
-        showScreen("signin-username-screen");
-        if(input) setTimeout(()=>input.focus(),80);
-    });
-}
-
-if(signUpButton){
-    signUpButton.addEventListener("click", function(){
-        accountChoiceError.textContent = "";
-        const existing = getPlayerData();
-        if(existing){
-            accountChoiceError.textContent = `A chronicle for ${existing.username} already lives on this device. Signing up will replace it.`;
+            showScreen("pin-login-screen");
+            return;
         }
-        const u=document.getElementById("username");
-        if(u) u.value="";
-        const ue=document.getElementById("username-error");
-        if(ue) ue.textContent="";
-        showScreen("username-screen");
-        if(u) setTimeout(()=>u.focus(),80);
-    });
-}
 
-if(accountBackButton){
-    accountBackButton.addEventListener("click", function(){
-        accountChoiceError.textContent="";
-        showScreen("login-screen");
-        const a=document.getElementById("access-code");
-        if(a) setTimeout(()=>a.focus(),80);
+        showScreen("username-screen");
     });
 }
 
@@ -4296,7 +4070,7 @@ const pinButton = document.getElementById("pin-button");
 const pinError = document.getElementById("pin-error");
 
 if (pinButton) {
-    pinButton.addEventListener("click", async function () {
+    pinButton.addEventListener("click", function () {
         const pin = pinInput.value.trim();
         const confirmPin = pinConfirmInput.value.trim();
 
@@ -4304,129 +4078,37 @@ if (pinButton) {
             pinError.textContent = "PIN harus terdiri dari 4 angka.";
             return;
         }
+
         if (pin !== confirmPin) {
             pinError.textContent = "PIN dan konfirmasi PIN tidak sama.";
             return;
         }
 
         const username = sessionStorage.getItem("npcUsername");
+
         if (!username) {
             pinError.textContent = "Username tidak ditemukan.";
             return;
         }
 
-        pinError.textContent = "Checking the chronicles…";
-        pinButton.disabled = true;
+        const player = {
+            playerId: npcUuid(),
+                        username: username,
+            avatar: sessionStorage.getItem("npcAvatar") || "avatar-01.webp",
+            pin: pin,
+            milestone: 1,
+            milestoneScores: {},
+            totalScore: 0
+        };
 
-        try{
-            /* Prevent duplicate usernames globally. */
-            const existing = await npcCloudAuthenticate(username,"__DISCOVERY_ONLY__");
-            if(existing && existing.ok !== false){
-                pinError.textContent = "That username already has a chronicle. Choose SIGN IN instead.";
-                pinButton.disabled = false;
-                return;
-            }
+        savePlayerData(player);
+        sessionStorage.removeItem("npcUsername");
+        sessionStorage.removeItem("npcAvatar");
 
-            const player = {
-                playerId: npcUuid(),
-                username: username,
-                avatar: sessionStorage.getItem("npcAvatar") || "avatar-01.webp",
-                pin: pin,
-                milestone: 1,
-                milestoneScores: {},
-                totalScore: 0
-            };
+        document.getElementById("welcome-message").textContent =
+            `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
 
-            await npcCloudCreateAccount(player,pin);
-            savePlayerData(player);
-
-            sessionStorage.removeItem("npcUsername");
-            sessionStorage.removeItem("npcAvatar");
-            pinInput.value="";
-            pinConfirmInput.value="";
-
-            document.getElementById("welcome-message").textContent =
-                `Welcome, ${username}! Your adventure in Sanapati Land begins now.`;
-            showScreen("welcome-screen");
-        }catch(error){
-            console.error("[NPC Cloud Chronicle] Sign-up failed:",error);
-            pinError.textContent =
-                "The chronicle vault is not ready yet. Run the supplied Supabase SQL setup, then try again.";
-        }finally{
-            pinButton.disabled=false;
-        }
-    });
-}
-
-/* =========================================================
-   SIGN IN — VERIFY USERNAME FIRST
-========================================================= */
-const signinUsernameInput = document.getElementById("signin-username-input");
-const signinUsernameButton = document.getElementById("signin-username-button");
-const signinUsernameError = document.getElementById("signin-username-error");
-const signinUsernameBack = document.getElementById("signin-username-back");
-
-async function verifySigninUsername(){
-    const typed = (signinUsernameInput?.value || "").trim();
-
-    if(!typed){
-        signinUsernameError.textContent = "Please enter your name first.";
-        signinUsernameInput?.focus();
-        return;
-    }
-
-    signinUsernameError.textContent = "Searching the chronicles…";
-    signinUsernameButton.disabled = true;
-
-    try{
-        /*
-         * Username discovery is cloud-based. This is what makes a chronicle
-         * findable from another browser/device.
-         */
-        const local = getPlayerData();
-        let discovered = null;
-
-        if(local && String(local.username||"").trim().toLowerCase()===typed.toLowerCase()){
-            discovered = {ok:true, username:local.username, player_id:local.playerId, chronicle:local};
-        }else{
-            discovered = await npcCloudAuthenticate(typed,"__DISCOVERY_ONLY__");
-        }
-
-        if(!discovered || discovered.ok===false || !discovered.username){
-            signinUsernameError.textContent = "That name was not found in the chronicles.";
-            return;
-        }
-
-        sessionStorage.setItem("npcSigninUsername",String(discovered.username));
-        signinUsernameError.textContent = "";
-
-        document.getElementById("pin-login-message").textContent =
-            `Chronicle found for ${discovered.username}. Enter your four-digit seal to continue.`;
-        const pinField = document.getElementById("login-pin-input");
-        if(pinField) pinField.value="";
-        showScreen("pin-login-screen");
-        if(pinField) setTimeout(()=>pinField.focus(),80);
-    }catch(error){
-        console.error("[NPC Cloud Chronicle] Discovery failed:",error);
-        signinUsernameError.textContent =
-            "The chronicle vault could not be reached. Check the Supabase setup.";
-    }finally{
-        signinUsernameButton.disabled=false;
-    }
-}
-
-if(signinUsernameButton){
-    signinUsernameButton.addEventListener("click", verifySigninUsername);
-}
-if(signinUsernameInput){
-    signinUsernameInput.addEventListener("keydown", function(e){
-        if(e.key === "Enter") verifySigninUsername();
-    });
-}
-if(signinUsernameBack){
-    signinUsernameBack.addEventListener("click", function(){
-        signinUsernameError.textContent = "";
-        showScreen("account-choice-screen");
+        showScreen("welcome-screen");
     });
 }
 
@@ -4438,63 +4120,26 @@ const pinLoginButton = document.getElementById("pin-login-button");
 const pinLoginError = document.getElementById("pin-login-error");
 
 if (pinLoginButton) {
-    pinLoginButton.addEventListener("click", async function () {
+    pinLoginButton.addEventListener("click", function () {
         const enteredPin = loginPinInput.value.trim();
-        const username = sessionStorage.getItem("npcSigninUsername");
+        const player = getPlayerData();
 
-        if (!username) {
-            pinLoginError.textContent = "Find the chronicle by username first.";
-            return;
-        }
-        if (!/^\d{4}$/.test(enteredPin)) {
-            pinLoginError.textContent = "PIN harus terdiri dari 4 angka.";
+        if (!player) {
+            pinLoginError.textContent = "Data player tidak ditemukan.";
             return;
         }
 
-        pinLoginError.textContent = "Opening your chronicle…";
-        pinLoginButton.disabled = true;
-
-        try{
-            const remote = await npcCloudAuthenticate(username,enteredPin);
-
-            if(!remote || remote.ok===false || !remote.chronicle){
-                /*
-                 * Same-device fallback for legacy profiles that have not yet
-                 * been migrated to the cloud.
-                 */
-                const local=getPlayerData();
-                if(local && String(local.username||"").toLowerCase()===String(username).toLowerCase() && enteredPin===local.pin){
-                    pinLoginError.textContent="";
-                    document.getElementById("welcome-message").textContent =
-                        `Welcome back, ${local.username}! Your adventure awaits.`;
-                    showScreen("welcome-screen");
-                    return;
-                }
-                pinLoginError.textContent = "PIN salah. Coba lagi.";
-                return;
-            }
-
-            const player=remote.chronicle;
-            player.username=remote.username||username;
-            player.playerId=remote.player_id||player.playerId||npcUuid();
-            player.avatar=remote.avatar||player.avatar||"avatar-01.webp";
-            player.pin=enteredPin; /* local session convenience; cloud stores only hash */
-
-            savePlayerData(player);
-            sessionStorage.removeItem("npcSigninUsername");
-            loginPinInput.value="";
-            pinLoginError.textContent="";
-
-            document.getElementById("welcome-message").textContent =
-                `Welcome back, ${player.username}! Your adventure awaits.`;
-            showScreen("welcome-screen");
-        }catch(error){
-            console.error("[NPC Cloud Chronicle] Sign-in failed:",error);
-            pinLoginError.textContent =
-                "The chronicle vault could not be reached. Check the Supabase setup.";
-        }finally{
-            pinLoginButton.disabled=false;
+        if (enteredPin !== player.pin) {
+            pinLoginError.textContent = "PIN salah. Coba lagi.";
+            return;
         }
+
+        pinLoginError.textContent = "";
+
+        document.getElementById("welcome-message").textContent =
+            `Welcome back, ${player.username}! Your adventure awaits.`;
+
+        showScreen("welcome-screen");
     });
 }
 
@@ -4688,7 +4333,7 @@ function openMilestone(teamKey="A"){
     milestoneOverlay.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
 }
-function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");}
+function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow="";}
 if(milestoneClose)milestoneClose.addEventListener("click",closeMilestoneOne);
 
 if(milestoneButton){
@@ -4755,97 +4400,6 @@ const supabaseStorageClient =
     window.supabase && SUPABASE_PUBLIC_KEY
         ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
         : null;
-
-
-/* =========================================================
-   CLOUD CHRONICLE — CROSS-DEVICE ACCOUNT STORAGE
-   Requires the one-time SQL setup in NPC_CLOUD_CHRONICLE_SETUP.sql.
-   The browser stores only a SHA-256 PIN hash, never the raw PIN.
-========================================================= */
-const NPC_CLOUD_ACCOUNT_RPC = "npc_create_account";
-const NPC_CLOUD_SIGNIN_RPC = "npc_authenticate";
-const NPC_CLOUD_SAVE_RPC = "npc_save_chronicle";
-let npcCloudSyncTimer = null;
-
-async function npcHashPin(pin){
-  const data=new TextEncoder().encode(String(pin));
-  const digest=await crypto.subtle.digest("SHA-256",data);
-  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-
-async function npcCloudRpc(name,body){
-  const response=await fetch(`${SUPABASE_REST_URL}/rpc/${name}`,{
-    method:"POST",cache:"no-store",
-    headers:{
-      "apikey":SUPABASE_PUBLIC_KEY,
-      "Content-Type":"application/json",
-      "Cache-Control":"no-cache"
-    },
-    body:JSON.stringify(body)
-  });
-  const raw=await response.text();
-  let data=null;
-  try{data=raw?JSON.parse(raw):null}catch(e){data=raw}
-  if(!response.ok){
-    const detail=(data&&typeof data==="object")
-      ?(data.message||data.details||data.hint||JSON.stringify(data))
-      :String(data||"Unknown error");
-    throw new Error(`Cloud chronicle HTTP ${response.status}: ${detail}`);
-  }
-  return data;
-}
-
-async function npcCloudCreateAccount(player,pin){
-  const pinHash=await npcHashPin(pin);
-  const chronicle={...player};
-  delete chronicle.pin; /* Never send the raw PIN to Supabase. */
-  return await npcCloudRpc(NPC_CLOUD_ACCOUNT_RPC,{
-    p_username:String(player.username).trim(),
-    p_pin_hash:pinHash,
-    p_player_id:String(player.playerId),
-    p_avatar:String(player.avatar||"avatar-01.webp"),
-    p_chronicle:chronicle
-  });
-}
-
-async function npcCloudAuthenticate(username,pin){
-  const pinHash=await npcHashPin(pin);
-  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
-    p_username:String(username).trim(),
-    p_pin_hash:pinHash
-  });
-  return result;
-}
-
-async function npcCloudSave(player){
-  if(!player?.username)return;
-  try{
-    const chronicle={...player};
-    delete chronicle.pin; /* Never send the raw PIN to Supabase. */
-    await npcCloudRpc(NPC_CLOUD_SAVE_RPC,{
-      p_username:String(player.username).trim(),
-      p_player_id:String(player.playerId),
-      p_avatar:String(player.avatar||"avatar-01.webp"),
-      p_chronicle:chronicle
-    });
-  }catch(e){
-    console.warn("[NPC Cloud Chronicle] Save failed:",e);
-  }
-}
-
-function queueNpcCloudSave(player){
-  if(!player?.username || typeof SUPABASE_REST_URL==="undefined")return;
-  clearTimeout(npcCloudSyncTimer);
-  npcCloudSyncTimer=setTimeout(()=>npcCloudSave(player),900);
-}
-
-async function npcFindCloudChronicle(username){
-  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
-    p_username:String(username).trim(),
-    p_pin_hash:"__DISCOVERY_ONLY__"
-  }).catch(()=>null);
-  return result;
-}
 
 function getPamongPhotoUrl(path){
     if(!path) return "";
@@ -5148,7 +4702,7 @@ function closeTeamGame(){
     if(!teamGameGame) return;
     teamGameGame.classList.add("hidden");
     teamGameGame.setAttribute("aria-hidden","true");
-    document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
+    document.body.style.overflow="";
 }
 
 if(teamGameClose) teamGameClose.addEventListener("click",closeTeamGame);
@@ -5486,6 +5040,7 @@ function bindEndgameChoice(correctId,feedbackId){
             }else btn.classList.add("wrong");
             const f=document.getElementById(feedbackId);
             if(f)f.textContent=correct?"✦ CORRECT — MEMORY CONFIRMED.":"✕ NOT QUITE.";
+            if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("endgame");
             document.querySelectorAll(".endgame-option").forEach(x=>x.disabled=true);
             setTimeout(()=>{
                 endgameIndex++;
@@ -5596,6 +5151,7 @@ function renderEndgameQuestion(){
                 ? "✦ CORRECT — MEMORY CONFIRMED."
                 : `✕ NOT QUITE. The correct nickname is "${teamGameText(p.nickname)}".`;
 
+            if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("endgame");
             if(submit)submit.disabled=true;
 
             setTimeout(()=>{
@@ -5646,14 +5202,53 @@ function renderEndgameQuestion(){
                 <div id="eg-speed-message" class="endgame-feedback">Memorize the face...</div>
                 <div id="eg-speed-options" class="endgame-options"></div>
             </div>`;
-        setTimeout(()=>{
+        /* The countdown starts ONLY after the portrait has actually rendered.
+           Slow Storage/network loading must never eat into the learner's
+           memorization time. */
+        (function waitForSpeedPortrait(){
             const photo=document.getElementById("eg-speed-photo");
             const area=document.getElementById("eg-speed-options");
             if(!photo||!area)return;
-            photo.innerHTML='<div class="team-a-placeholder">WHO WAS THAT?</div>';
-            area.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})));
-            bindEndgameChoice(p.id,"eg-speed-message");
-        },1800);
+
+            let started=false;
+            let waited=0;
+            const reveal=()=>{
+                if(started)return;
+                started=true;
+                setTimeout(()=>{
+                    const currentPhoto=document.getElementById("eg-speed-photo");
+                    const currentArea=document.getElementById("eg-speed-options");
+                    if(!currentPhoto||!currentArea)return;
+                    currentPhoto.innerHTML='<div class="team-a-placeholder">WHO WAS THAT?</div>';
+                    currentArea.innerHTML=endgameOptions(choices.map(x=>({id:x.id,html:`<strong>${teamGameText(x.full_name)}</strong>`})));
+                    bindEndgameChoice(p.id,"eg-speed-message");
+                },1800);
+            };
+
+            const img=photo.querySelector("img");
+            if(img){
+                if(img.complete && img.naturalWidth>0){ reveal(); return; }
+                img.addEventListener("load",reveal,{once:true});
+            }
+
+            const poll=setInterval(()=>{
+                if(started){clearInterval(poll);return;}
+                const current=document.getElementById("eg-speed-photo");
+                const currentImg=current?.querySelector("img");
+                if(currentImg && currentImg.complete && currentImg.naturalWidth>0){
+                    clearInterval(poll);
+                    reveal();
+                    return;
+                }
+                waited+=100;
+                /* If the portrait genuinely fails, do not trap the question.
+                   Give loading/fallback up to 15 seconds, then continue. */
+                if(waited>=15000){
+                    clearInterval(poll);
+                    reveal();
+                }
+            },100);
+        })();
         return;
     }
 
@@ -5832,6 +5427,10 @@ function renderEndgameResult(){
                 player.milestone=Math.min(5,Math.max(Number(player.milestone||1),completedMilestone+1));
                 savePlayerData(player);
                 submitMilestoneScore(completedMilestone,endgameScore);
+                // Safety-net: completing an Endgame always gets one reward attempt.
+                if(window.NPCCollectibleCards?.awardAfterAnswer){
+                    void window.NPCCollectibleCards.awardAfterAnswer("endgame");
+                }
             }
             showTeamGameReviewMenu();
         }else{
@@ -6909,6 +6508,10 @@ function complete(){
   if(typeof savePlayerData==="function")savePlayerData(p);
   else localStorage.setItem("npcPlayer",JSON.stringify(p));
 
+  if(window.NPCCollectibleCards?.awardAfterAnswer){
+   void window.NPCCollectibleCards.awardAfterAnswer("endgame");
+  }
+
   if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){}
 
@@ -6972,7 +6575,7 @@ async function open(){
 function close(){
  root.classList.add("hidden");
  root.setAttribute("aria-hidden","true");
- document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
+ document.body.style.overflow="";
 }
 
 /* -------------------- EVENTS -------------------- */
@@ -7339,7 +6942,9 @@ function lock(){
  if([1,4,5,7].includes(q.type)){correct=state.selected[0]===q.correct;details=q.type===7?`Correct jabatan: ${q.correct}.`:`Correct answer: ${q.correct}.`;root.querySelectorAll("[data-choice]").forEach(b=>{b.disabled=true;if(b.dataset.choice===q.correct)b.classList.add("correct");if(b.dataset.choice===state.selected[0]&&!correct)b.classList.add("wrong")})}
  if([2,6].includes(q.type)){correct=String(state.selected[0])===String(q.correct);details=`Correct Pamong: ${label(people.find(p=>String(p.id)===String(q.correct))||{})}.`;root.querySelectorAll("[data-person-choice]").forEach(b=>{b.disabled=true;if(String(b.dataset.personChoice)===String(q.correct))b.classList.add("correct");if(String(b.dataset.personChoice)===String(state.selected[0])&&!correct)b.classList.add("wrong")})}
  if(q.type===3){correct=q.ids.every(id=>q.assignments[id]===people.find(p=>String(p.id)===String(id))?.penempatan);details=correct?"All four commanders are correctly placed.":"One or more commanders are in the wrong Batalyon.";root.querySelectorAll("[data-sort-person],[data-sort-unit]").forEach(b=>b.disabled=true);q.ids.forEach(id=>{const c=root.querySelector(`[data-sort-person="${id}"]`),p=people.find(x=>String(x.id)===String(id));if(c)c.classList.add(q.assignments[id]===p?.penempatan?"correct":"wrong")})}
- if(correct){state.score+=100;void submitMilestoneScore(7,state.score);}state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
+ if(correct){state.score+=100;void submitMilestoneScore(7,state.score);}
+ if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
+ state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
  $("m7-score").textContent=`SCORE ${state.score}`;$("m7-lock").disabled=true;$("m7-next").disabled=false;$("m7-lock").textContent="✓ ANSWER LOCKED";
  $("m7-feedback").innerHTML=`<div class="m7-feedback-note">${correct?"✓ Correct. Your answer is locked and cannot be changed.":"✕ Incorrect. Your answer is locked. No correction is allowed."}<br>${esc(details)}</div>`;
 }
@@ -7347,7 +6952,17 @@ function beginGame(){state.phase="trial";state.round=0;state.score=0;state.locke
 function next(){if(!state.locked)return;if(state.round>=6){complete();return}state.round++;renderRound()}
 function complete(){
  state.completed=true;state.phase="complete";save();
- try{const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};submitMilestoneScore(7,state.score||0);p.milestone=Math.max(Number(p.milestone||1),7);if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));if(typeof refreshJourney==="function")refreshJourney()}catch(e){}
+ try{
+  const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
+  submitMilestoneScore(7,state.score||0);
+  p.milestone=Math.max(Number(p.milestone||1),7);
+  if(typeof savePlayerData==="function")savePlayerData(p);
+  else localStorage.setItem("npcPlayer",JSON.stringify(p));
+  if(window.NPCCollectibleCards?.awardAfterAnswer){
+   void window.NPCCollectibleCards.awardAfterAnswer("endgame");
+  }
+  if(typeof refreshJourney==="function")refreshJourney();
+ }catch(e){}
  const correct=state.history.filter(x=>x.correct).length;
  $("m7-content").style.display="none";$("m7-actions").style.display="none";$("m7-complete").style.display="block";
  $("m7-complete").innerHTML=`<h2>JABATAN REMEMBERED</h2><p>${correct} / 7 rounds correct · ${state.score} / 700 points.<br>The chain of command is now part of your memory.</p><div class="m7-btnrow"><button class="m7-btn" id="m7-replay" type="button">PLAY JABATAN AGAIN</button><button class="m7-btn secondary" id="m7-return" type="button">RETURN TO THE JOURNEY</button></div>`;
@@ -9460,6 +9075,7 @@ document.addEventListener("click",function(e){
       feedback.innerHTML=`<strong>THE MEMORY FADES.</strong><br>${explanation}`;
     }
     trial.history.push({round:trial.round,type:trial.current.type,correct});
+    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
     trial.round++;
     saveGameState();
 
@@ -9533,6 +9149,7 @@ document.addEventListener("click",function(e){
 
     trial.score += correct ? 100 : 0;
     if(correct)void submitMilestoneScore(5,trial.score);
+    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
     trial.streak = correct ? (trial.streak||0)+1 : 0;
     trial.history.push({round:trial.round,type:q.type,correct});
     trial.round++;
@@ -9605,6 +9222,7 @@ document.addEventListener("click",function(e){
     // IMPORTANT: revealing the correct answer never awards points.
     trial.score += allCorrect ? 100 : 0;
     if(allCorrect)void submitMilestoneScore(5,trial.score);
+    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
     trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
     trial.history.push({
       round:trial.round,type:q.type,correct:allCorrect,
@@ -9709,6 +9327,9 @@ document.addEventListener("click",function(e){
         pd.milestone=6;
         localStorage.setItem("npc_player",JSON.stringify(pd));
       }
+      if(window.NPCCollectibleCards?.awardAfterAnswer){
+        void window.NPCCollectibleCards.awardAfterAnswer("endgame");
+      }
     }catch(e){}
     if(typeof refreshJourney==="function")refreshJourney();
   }
@@ -9746,7 +9367,7 @@ document.addEventListener("click",function(e){
   function close(){
     overlay.classList.add("hidden");
     overlay.setAttribute("aria-hidden","true");
-    document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
+    document.body.style.overflow="";
   }
 
   nextBtn.addEventListener("click",async()=>{
@@ -10036,6 +9657,19 @@ window.addEventListener("load",function(){
 .m8-runbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 14px}.m8-runstat{padding:7px 12px;background:rgba(255,248,224,.72);border:1px solid rgba(111,77,31,.25);border-radius:14px;font:bold 10px Arial,sans-serif;letter-spacing:1px;color:#73502a}.m8-streak{color:#8a6229}.m8-new-record{margin:0 auto 15px;padding:11px 14px;border:1px solid #9a6b2d;background:#ead4a6;font:bold 11px Arial,sans-serif;letter-spacing:1.4px;color:#68401f;max-width:650px}
 @media(max-width:850px){.m8-wager-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){#milestone8-revival.active{padding:7px}.m8-panel{width:97vw;height:95vh;padding:45px 15px 22px}.m8-options{grid-template-columns:1fr}.m8-photo{height:240px}.m8-wager-grid{grid-template-columns:1fr}.m8-wager{padding:14px}.m8-close{right:12px;top:12px}}
+
+/* CARD ARTWORK ONLY — GitHub artwork is the source of truth */
+.collectible-card{padding:5px;}
+.collectible-card img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;}
+.collectible-card .cc-number,.collectible-card .cc-name,.collectible-card .cc-team{display:none!important;}
+.collectible-card.locked{min-height:0;display:flex;align-items:center;justify-content:center;}
+.collectible-card.locked img{display:block;width:100%;aspect-ratio:3/4;}
+.collectible-detail.open{display:flex;justify-content:center;align-items:center;}
+.collectible-detail.open img{width:min(420px,80vw);aspect-ratio:3/4;object-fit:cover;border:1px solid #a77836;box-shadow:0 12px 35px rgba(0,0,0,.35);}
+.collectible-detail.open > div{display:none!important;}
+.collectible-drop-card{display:flex;justify-content:center;align-items:center;}
+.collectible-drop-card img{display:block;width:min(300px,70vw);aspect-ratio:3/4;object-fit:cover;border:1px solid #a77836;box-shadow:0 15px 35px rgba(0,0,0,.3);}
+.collectible-drop-fact{margin:16px 0 0;padding:10px 14px;border-left:2px solid #b78942;font:italic 12px/1.5 Georgia,serif;color:#cdb078;text-align:center;}
 </style>
 
 <div id="milestone8-revival" aria-hidden="true">
@@ -10164,6 +9798,7 @@ function lock(){
  root.querySelectorAll(".m8-option").forEach(b=>{b.disabled=true;const v=b.dataset.person??b.dataset.choice;if(String(v)===String(q.correct))b.classList.add("correct");if(String(v)===String(state.selected)&&!correct)b.classList.add("wrong")});
  $('m8-score').textContent=`SCORE ${state.score}`;$('m8-lock').disabled=true;$('m8-next').disabled=false;let answer=q.type==="nameFace"||q.type==="combo"?label(personById(q.correct)||q.target):q.correct;
  $('m8-feedback').innerHTML=`${correct?"✓ Correct.":"✕ Incorrect."} <span class="m8-streak">${state.streak>=5?`🔥 ${state.streak} STREAK`:""}</span><br>Correct answer: <b>${esc(answer)}</b>`;
+ if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("revival");
 }
 function next(){if(!state||!state.locked)return;if(state.index>=state.questions.length-1){complete();return}state.index++;render()}
 async function complete(){
@@ -10184,6 +9819,9 @@ async function complete(){
   if(Number(p.milestone||1)<8)p.milestone=8;
   if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
   await submitMilestoneScore(8,after);
+  if(window.NPCCollectibleCards?.awardAfterAnswer){
+    await window.NPCCollectibleCards.awardAfterAnswer("revival");
+  }
   if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){console.warn("Revival score save failed",e)}
  $('m8-content').style.display="none";$('m8-actions').style.display="none";$('m8-feedback').style.display="none";$('m8-complete').style.display="block";
@@ -10715,18 +10353,23 @@ async function npcLoadPeople(){
 
 async function npcAssetExists(number){
   const path=npcCardPath(number)+"?v="+Date.now();
+  const imageCheck=()=>new Promise(resolve=>{
+    const img=new Image();
+    let settled=false;
+    const done=value=>{if(settled)return;settled=true;resolve(value);};
+    img.onload=()=>done(true);
+    img.onerror=()=>done(false);
+    img.src=path;
+    setTimeout(()=>done(false),4000);
+  });
   try{
     const r=await fetch(path,{method:"HEAD",cache:"no-store"});
-    return r.ok;
+    // GitHub Pages/CDNs can reject HEAD even when the image itself is valid.
+    // In that case, verify the actual artwork with an Image request.
+    if(r.ok)return true;
+    return await imageCheck();
   }catch(e){
-    // Fallback for hosts that do not support HEAD.
-    return await new Promise(resolve=>{
-      const img=new Image();
-      img.onload=()=>resolve(true);
-      img.onerror=()=>resolve(false);
-      img.src=path;
-      setTimeout(()=>resolve(false),3000);
-    });
+    return await imageCheck();
   }
 }
 
@@ -10752,7 +10395,6 @@ async function npcScanAssets(){
 function npcGetMeta(number){ return npcCardPeople[number-1]||{}; }
 
 function npcBuildCard(number,locked){
-  const p=npcGetMeta(number);
   const b=document.createElement("button");
   b.type="button";
   b.className="collectible-card"+(locked?" locked":"");
@@ -10763,26 +10405,13 @@ function npcBuildCard(number,locked){
   img.decoding="async";
   img.alt=locked
     ? `Locked collectible card #${npcPad(number)}`
-    : `${npcName(p)} collectible card`;
-  if(!locked) img.src=npcCardPath(number);
+    : `Collectible card #${npcPad(number)}`;
+  if(!locked) img.src=npcCardPath(number)+"?v="+Date.now();
   b.appendChild(img);
 
-  const no=document.createElement("div");
-  no.className="cc-number";
-  no.textContent="CARD #"+npcPad(number);
-  b.appendChild(no);
-
-  const nm=document.createElement("div");
-  nm.className="cc-name";
-  nm.textContent=locked?"???":npcName(p);
-  b.appendChild(nm);
-
-  const tm=document.createElement("div");
-  tm.className="cc-team";
-  tm.textContent=locked?"LOCKED":"TEAM "+String(p?.tim||"—");
-  b.appendChild(tm);
-
-  if(!locked) b.addEventListener("click",()=>npcOpenCardViewer(number));
+  // The artwork is the single source of truth.
+  // Do not render names, teams, roles, facts, or database metadata outside the card.
+  if(!locked) b.addEventListener("click",()=>npcShowDetail(number));
   return b;
 }
 
@@ -10819,11 +10448,14 @@ function npcShowDrop(number,chance,kind){
       <div class="collectible-drop-ornament">✦ ❦ ✦</div>
       <div class="collectible-drop-kicker">A NEW DISCOVERY</div>
       <h2>CARD ACQUIRED</h2>
-      <p class="collectible-drop-sub">The archives have yielded a new Pamong card.</p>
-      <button type="button" class="collectible-drop-card" id="collectible-drop-card-button" aria-label="View card">
+
+      <button type="button"
+              class="collectible-drop-card"
+              id="collectible-drop-card-button"
+              aria-label="View newly acquired card">
         <img src="${npcEsc(npcCardPath(number))}?v=${Date.now()}" alt="New collectible card">
       </button>
-      <div class="collectible-drop-fact">The full card artwork has been added to your collection.</div>
+
       <button type="button" id="collectible-drop-close">ADD TO COLLECTION →</button>
     </div>`;
 
@@ -10835,14 +10467,15 @@ function npcShowDrop(number,chance,kind){
     npcUpdateFunFactCodex();
   };
 
-  npc$("collectible-drop-close")?.addEventListener("click",close);
   npc$("collectible-drop-card-button")?.addEventListener("click",()=>{
-    npcOpenCardViewer(number);
+    npcShowDetail(number);
   });
+
+  npc$("collectible-drop-close")?.addEventListener("click",close);
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 }
 
-async function npcRoll(kind="question"){
+async function npcRoll(kind="question",force=false){
   // Wait for the GitHub asset scan. The previous version could roll while
   // the 39-image scan was still running, leaving the pool temporarily empty.
   await npcScanAssets();
@@ -10860,8 +10493,8 @@ async function npcRoll(kind="question"){
   const activity=npcGetActivity()+1;
   npcSetActivity(activity);
 
-  const chance=npcChanceFor(kind);
-  const roll=Math.random()*100;
+  const chance=force ? 100 : npcChanceFor(kind);
+  const roll=force ? 0 : Math.random()*100;
   console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,pool);
   if(roll>=chance) return null;
 
@@ -10913,79 +10546,14 @@ function npcRenderFull(){
   npcUpdateFunFactCodex();
 }
 
-
-function npcOpenCardViewer(number){
-  if(!npcCollectedNumbers.has(Number(number)) && !document.getElementById("collectible-drop-overlay")) return;
-
-  let viewer=npc$("npc-card-viewer");
-  if(!viewer){
-    viewer=document.createElement("div");
-    viewer.id="npc-card-viewer";
-    viewer.className="npc-card-viewer";
-    viewer.setAttribute("aria-hidden","true");
-    viewer.innerHTML=`
-      <div class="npc-card-viewer-inner" role="dialog" aria-modal="true" aria-label="Card artwork">
-        <button type="button" class="npc-card-viewer-close" id="npc-card-viewer-close" aria-label="Close card viewer">×</button>
-        <img id="npc-card-viewer-img" alt="Collectible card artwork">
-      </div>`;
-    document.body.appendChild(viewer);
-    viewer.addEventListener("click",e=>{if(e.target===viewer)npcCloseCardViewer()});
-    viewer.querySelector("#npc-card-viewer-close")?.addEventListener("click",npcCloseCardViewer);
-  }
-
-  const img=viewer.querySelector("#npc-card-viewer-img");
-  if(img) {
-    img.src=npcCardPath(Number(number))+"?v="+Date.now();
-    img.alt=`Collectible card #${npcPad(Number(number))}`;
-  }
-  viewer.classList.add("open");
-  viewer.setAttribute("aria-hidden","false");
-  document.body.style.overflow="hidden";
-}
-
-function npcCloseCardViewer(){
-  const viewer=npc$("npc-card-viewer");
-  if(!viewer)return;
-  viewer.classList.remove("open");
-  viewer.setAttribute("aria-hidden","true");
-  const drop=npc$("collectible-drop-overlay");
-  const collection=npc$("collectible-overlay");
-  if(!drop && !collection?.classList.contains("open")) document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
-}
-
 function npcShowDetail(number){
   if(!npcCollectedNumbers.has(number)) return;
-  const p=npcGetMeta(number);
   const d=npc$("collectible-detail");
   const img=npc$("collectible-detail-img");
-  const nm=npc$("collectible-detail-name");
-  const info=npc$("collectible-detail-info");
-  if(!d)return;
+  if(!d || !img)return;
 
-  img.src=npcCardPath(number);
-  img.alt=`Card #${npcPad(number)} — ${npcName(p)}`;
-  nm.textContent=npcName(p);
-
-  const bits=[];
-  if(npcNickname(p))bits.push("Known as "+npcNickname(p));
-  if(p.angkatan)bits.push("Generation "+p.angkatan);
-  if(p.tim)bits.push("Team "+p.tim);
-  if(p.penempatan)bits.push(p.penempatan);
-  if(p.jabatan)bits.push(p.jabatan);
-  info.textContent=bits.join(" · ");
-
-  let factBox=npc$("collectible-detail-fact");
-  if(!factBox){
-    factBox=document.createElement("div");
-    factBox.id="collectible-detail-fact";
-    factBox.className="collectible-detail-fact";
-    info.parentElement.appendChild(factBox);
-  }
-
-  factBox.innerHTML=npcFact(p)
-    ? `<span>✦ FUN FACT</span><strong>${npcEsc(npcFact(p))}</strong>`
-    : `<span>✦ CARD #${npcPad(number)}</span><strong>The full artwork is the collectible.</strong>`;
-
+  img.src=npcCardPath(number)+"?v="+Date.now();
+  img.alt=`Collectible card #${npcPad(number)}`;
   d.classList.add("open");
 }
 
@@ -11001,7 +10569,7 @@ function npcClose(){
   npc$("collectible-overlay")?.classList.remove("open");
   npc$("collectible-overlay")?.setAttribute("aria-hidden","true");
   npc$("collectible-detail")?.classList.remove("open");
-  document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
+  document.body.style.overflow="";
 }
 
 function npcUpdateFunFactCodex(){
@@ -11021,28 +10589,30 @@ async function npcInit(){
   npc$("collectible-overlay")?.addEventListener("click",e=>{
     if(e.target.id==="collectible-overlay")npcClose();
   });
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"){npcCloseCardViewer();npcClose();}});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")npcClose()});
 
-  /* Metadata is optional; card images are the source of truth. */
-  npcLoadPeople().then(()=>{
-    npcRenderShelf();
-    npcUpdateFunFactCodex();
-  });
-
-  /* Detect whichever card assets have been uploaded to GitHub. */
+  /* Card artwork is the source of truth. No Supabase name/team/fact metadata is used. */
   npcScanAssets().then(()=>{
     npcRenderShelf();
     npcUpdateFunFactCodex();
   });
 
+  /* Re-scan GitHub periodically so newly uploaded card-02.webp ... card-39.webp
+     become eligible without requiring a code change. A normal page refresh also works. */
   setInterval(()=>{
-    const before=npcCollectedNumbers.size;
+    const beforeCollected=npcCollectedNumbers.size;
     npcRefreshCollected();
-    if(before!==npcCollectedNumbers.size){
+    if(beforeCollected!==npcCollectedNumbers.size){
       npcRenderShelf();
       npcUpdateFunFactCodex();
     }
-  },1500);
+
+    npcAssetScanDone=false;
+    npcAvailableAssets.clear();
+    npcScanAssets().then(()=>{
+      npcRenderShelf();
+    });
+  },30000);
 }
 
 window.NPCCollectibleCards={
@@ -11052,6 +10622,15 @@ window.NPCCollectibleCards={
   refreshFunFact:npcUpdateFunFactCodex,
   roll:npcRoll,
   award:npcRoll,
+  awardAfterAnswer:async(kind="question")=>{
+    // If the initial scan found no cards, retry immediately. Otherwise use the
+    // cached pool so an answer reward never waits on another 39-file scan.
+    if(!npcAvailableAssets.size){
+      npcAssetScanDone=false;
+      npcAvailableAssets.clear();
+    }
+    return npcRoll(kind,true);
+  },
   getChance:npcChanceFor,
   getCardPath:npcCardPath,
   getAvailableAssets:()=>Array.from(npcAvailableAssets).sort((a,b)=>a-b),
@@ -11080,11 +10659,7 @@ if(document.readyState==="loading"){
     </div>
 
     <div class="collectible-detail" id="collectible-detail">
-      <img id="collectible-detail-img" alt="Pamong collectible card">
-      <div>
-        <h3 id="collectible-detail-name">Pamong</h3>
-        <p id="collectible-detail-info"></p>
-      </div>
+      <img id="collectible-detail-img" alt="Collectible card">
     </div>
 
     <div class="collectible-full-grid" id="collectible-full-grid"></div>
@@ -11113,8 +10688,7 @@ if(document.readyState==="loading"){
 })();
 </script>
 
-<!-- Existing scoring hook: does not modify the game's score -->
-<!-- Card drops are triggered directly inside submitMilestoneScore above. -->
+<!-- Card rewards are triggered after an answer is locked, independently of score. -->
 
 
 <script>
@@ -11135,48 +10709,6 @@ if(document.readyState==="loading"){
   else bootCodex();
 })();
 </script>
-
-
-<script>
-(function(){
-  const openBtn=document.getElementById('leave-game-button');
-  const overlay=document.getElementById('leave-game-overlay');
-  const stay=document.getElementById('leave-stay');
-  const confirm=document.getElementById('leave-confirm');
-  if(!openBtn||!overlay)return;
-  function closeLeave(){overlay.classList.remove('open');}
-  openBtn.addEventListener('click',()=>overlay.classList.add('open'));
-  stay&&stay.addEventListener('click',closeLeave);
-  overlay.addEventListener('click',e=>{if(e.target===overlay)closeLeave()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))closeLeave()});
-  confirm&&confirm.addEventListener('click',()=>{
-    closeLeave();
-    if(typeof showScreen==='function') showScreen('login-screen');
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
-})();
-</script>
-
-
-
-
-
-
-
-
-window.NPCCloudChronicle = {
-  async migrateCurrentLocal(pin){
-    const p=getPlayerData();
-    if(!p?.username) throw new Error("No local chronicle found.");
-    if(!/^\d{4}$/.test(String(pin))) throw new Error("Use the four-digit PIN for this chronicle.");
-    await npcCloudCreateAccount(p,String(pin));
-    return true;
-  },
-  async find(username){
-    const result=await npcCloudAuthenticate(String(username),"__DISCOVERY_ONLY__");
-    return result;
-  }
-};
 
 </body>
 </html>
