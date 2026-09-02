@@ -1685,7 +1685,7 @@ button,input{font:inherit}
 .codex-row.complete .codex-state{color:#e0b967}
 
 /* =========================================================
-   THE DAILY MYSTERY
+   
    Functional mini-investigation overlay + home card
    ========================================================= */
 .daily-mystery-card{
@@ -2628,100 +2628,180 @@ button,input{font:inherit}
 </style>
 
 
-<style id="hidden-achievements-css">
-.achievement-card{
-  position:relative;margin-top:14px;padding:16px;
-  background:linear-gradient(145deg,rgba(255,249,226,.98),rgba(225,196,132,.78));
-  border:1px solid #8a6230;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.42),0 8px 20px rgba(59,38,18,.13);
-  overflow:hidden;
+
+<style id="collectible-cards-css">
+.collectible-section{
+  position:relative;margin-top:14px;padding:16px 14px 14px;
+  background:rgba(35,21,13,.42);
+  border:1px solid rgba(188,139,62,.38);
+  box-shadow:inset 0 0 0 1px rgba(255,220,145,.05);
 }
-.achievement-card:before{
-  content:"";position:absolute;inset:5px;pointer-events:none;
-  border:1px solid rgba(118,77,30,.25);
+.collectible-section:before{
+  content:"";position:absolute;left:0;right:0;top:5px;
+  height:1px;background:linear-gradient(90deg,transparent,#b78942,transparent);
 }
-.achievement-kicker{font:700 9px/1.2 Georgia,serif;letter-spacing:2px;color:#765023}
-.achievement-title{margin:5px 0 3px;font:700 22px/1.05 Georgia,serif;color:#4b2b18}
-.achievement-sub{font:12px/1.4 Georgia,serif;color:#72512e;margin:0 0 12px}
-.achievement-feature{
-  display:flex;align-items:center;gap:11px;
-  padding:11px;background:rgba(255,252,237,.66);
-  border-left:3px solid #765023;min-height:48px;
+.collectible-head{
+  display:flex;justify-content:space-between;align-items:end;gap:12px;
+  margin-bottom:10px;
 }
-.achievement-lock{
-  flex:0 0 38px;width:38px;height:38px;display:grid;place-items:center;
-  border:1px solid #a27843;background:#ead4a2;
-  color:#6e4a23;font:700 18px Georgia,serif;
+.collectible-kicker{
+  font:700 9px/1 Georgia,serif;letter-spacing:2px;color:#d0a75b;
 }
-.achievement-feature>div:last-child{min-width:0}
-.achievement-secret{font:700 8px/1.2 Georgia,serif;letter-spacing:1.4px;color:#8a6230;margin-bottom:3px}
-.achievement-feature strong{
-  display:block;font:700 13px/1.2 Georgia,serif;color:#4b2b18;
+.collectible-title{
+  margin:4px 0 0;font:700 21px/1 Georgia,serif;color:#f2d58f;
+}
+.collectible-count{
+  font:700 9px/1 Georgia,serif;letter-spacing:1px;color:#c79a4d;
+  white-space:nowrap;
+}
+.collectible-sub{
+  margin:0 0 12px;font:11px/1.35 Georgia,serif;color:#b99a6b;
+}
+.collectible-shelf{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;
+}
+.collectible-card{
+  min-width:0;position:relative;padding:6px;
+  border:1px solid #9a6c2e;
+  background:linear-gradient(145deg,#dfc184,#b78843);
+  box-shadow:inset 0 0 0 2px rgba(255,237,183,.32),0 5px 12px rgba(0,0,0,.2);
+  cursor:pointer;transition:transform .16s ease,filter .16s ease;
+}
+.collectible-card:hover{transform:translateY(-3px);filter:brightness(1.06)}
+.collectible-card img{
+  display:block;width:100%;aspect-ratio:3/4;object-fit:cover;
+  border:1px solid rgba(76,43,18,.65);background:#6b4828;
+}
+.collectible-card .cc-number{
+  margin-top:5px;font:700 7px/1 Georgia,serif;letter-spacing:1px;color:#5d381c;
+}
+.collectible-card .cc-name{
+  margin-top:3px;font:700 10px/1.1 Georgia,serif;color:#402616;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.achievement-feature span{
-  display:block;margin-top:3px;font:11px/1.3 Georgia,serif;color:#765634;
+.collectible-card .cc-team{
+  margin-top:3px;font:8px/1 Georgia,serif;color:#67431f;
 }
-.achievement-meta{
-  display:flex;justify-content:space-between;margin-top:10px;
-  font:700 9px/1 Georgia,serif;letter-spacing:1px;color:#78562f;
+.collectible-card.locked{
+  cursor:default;filter:none;background:linear-gradient(145deg,#493020,#2c1a12);
+  border-color:#664523;
 }
-.achievement-open{
-  width:100%;margin-top:10px;padding:10px;
-  border:1px solid #67421f;background:linear-gradient(#835631,#4d2c18);
-  color:#f7e4b8;font:700 10px Georgia,serif;letter-spacing:1px;cursor:pointer;
+.collectible-card.locked:hover{transform:none;filter:none}
+.collectible-card.locked img{
+  filter:grayscale(1) brightness(.28);opacity:.55;
 }
-.achievement-open:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.achievement-overlay{
+.collectible-card.locked .cc-number,
+.collectible-card.locked .cc-name,
+.collectible-card.locked .cc-team{color:#8d704b}
+.collectible-card.locked .cc-name{
+  text-align:center;font-size:14px;letter-spacing:2px;
+}
+.collectible-empty{
+  grid-column:1/-1;padding:18px;text-align:center;
+  border:1px dashed rgba(184,137,67,.4);color:#a9875b;
+  font:11px/1.4 Georgia,serif;
+}
+.collectible-view{
+  width:100%;margin-top:10px;padding:9px;
+  border:1px solid #8e632d;background:transparent;color:#d9b66d;
+  font:700 9px Georgia,serif;letter-spacing:1px;cursor:pointer;
+}
+.collectible-view:hover{background:rgba(184,137,67,.1)}
+.collectible-overlay{
   position:fixed;inset:0;z-index:100000;display:none;
   align-items:center;justify-content:center;padding:18px;
-  background:rgba(38,24,14,.68);backdrop-filter:blur(3px);
+  background:rgba(20,12,8,.78);backdrop-filter:blur(3px);
 }
-.achievement-overlay.open{display:flex}
-.achievement-panel{
-  width:min(760px,96vw);max-height:90vh;overflow:auto;padding:22px;
-  background:linear-gradient(145deg,#fff8e5,#e9d19e);
-  border:2px solid #70451f;
-  box-shadow:0 20px 60px rgba(0,0,0,.4),inset 0 0 0 4px rgba(255,255,255,.35);
+.collectible-overlay.open{display:flex}
+.collectible-panel{
+  width:min(850px,96vw);max-height:90vh;overflow:auto;padding:20px;
+  background:linear-gradient(145deg,#2e1b11,#17100c);
+  border:1px solid #a77836;
+  box-shadow:0 20px 60px rgba(0,0,0,.55),inset 0 0 0 1px rgba(226,186,105,.16);
 }
-.achievement-panel-head{
+.collectible-panel-head{
   display:flex;justify-content:space-between;align-items:flex-start;
-  border-bottom:1px solid rgba(103,66,31,.3);padding-bottom:12px;
+  border-bottom:1px solid rgba(190,145,69,.28);padding-bottom:11px;
 }
-.achievement-panel-kicker{font:700 9px Georgia,serif;letter-spacing:2px;color:#765023}
-.achievement-panel h2{margin:5px 0;font:700 28px Georgia,serif;color:#432716}
-.achievement-close{border:0;background:transparent;font-size:28px;color:#5b381d;cursor:pointer}
-.achievement-list{display:grid;gap:9px;margin-top:14px}
-.achievement-row{
-  display:grid;grid-template-columns:46px 1fr auto;gap:11px;align-items:center;
-  padding:11px;border:1px solid rgba(101,63,28,.28);
-  background:rgba(255,252,239,.68);
+.collectible-panel-kicker{font:700 9px Georgia,serif;letter-spacing:2px;color:#c89b50}
+.collectible-panel h2{margin:5px 0;font:700 27px Georgia,serif;color:#f0d28d}
+.collectible-close{border:0;background:transparent;font-size:27px;color:#d4ad68;cursor:pointer}
+.collectible-full-grid{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:14px;
 }
-.achievement-row.unlocked{background:rgba(225,202,151,.72);border-color:#8c6733}
-.achievement-icon{
-  width:42px;height:42px;display:grid;place-items:center;
-  border:1px solid #a27843;background:#ead4a2;font-size:20px;
+.collectible-detail{
+  display:none;margin-top:15px;padding:14px;
+  border:1px solid rgba(180,132,55,.38);background:rgba(255,226,158,.06);
 }
-.achievement-row.locked .achievement-icon{filter:grayscale(1);opacity:.62}
-.achievement-row h3{margin:0;font:700 13px Georgia,serif;color:#4b2b18}
-.achievement-row p{margin:3px 0 0;font:11px/1.35 Georgia,serif;color:#765634}
-.achievement-status{font:700 8px Georgia,serif;letter-spacing:1px;color:#765023}
-.achievement-toast{
-  position:fixed;right:22px;bottom:22px;z-index:100001;
-  width:min(340px,calc(100vw - 32px));padding:14px;
-  background:linear-gradient(145deg,#fff8e5,#e0c185);
-  border:2px solid #70451f;box-shadow:0 12px 32px rgba(0,0,0,.3);
-  transform:translateY(140%);transition:transform .35s ease;
+.collectible-detail.open{display:grid;grid-template-columns:120px 1fr;gap:15px}
+.collectible-detail img{width:120px;aspect-ratio:3/4;object-fit:cover;border:1px solid #a77836}
+.collectible-detail h3{margin:0;color:#f1d18a;font:700 22px Georgia,serif}
+.collectible-detail p{margin:6px 0;color:#bda274;font:11px/1.5 Georgia,serif}
+@media(max-width:700px){
+  .collectible-shelf{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .collectible-full-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-.achievement-toast.show{transform:translateY(0)}
-.achievement-toast .toast-kicker{font:700 8px Georgia,serif;letter-spacing:2px;color:#765023}
-.achievement-toast strong{display:block;margin-top:4px;font:700 18px Georgia,serif;color:#432716}
-.achievement-toast span{display:block;margin-top:4px;font:11px/1.35 Georgia,serif;color:#765634}
-@media(max-width:600px){
- .achievement-panel{padding:15px}
- .achievement-panel h2{font-size:23px}
- .achievement-row{grid-template-columns:40px 1fr}
- .achievement-status{grid-column:2}
+@media(max-width:460px){
+  .collectible-shelf{gap:6px}
+  .collectible-card{padding:4px}
+  .collectible-card .cc-name{font-size:8px}
+  .collectible-full-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .collectible-detail.open{grid-template-columns:90px 1fr}
+  .collectible-detail img{width:90px}
+}
+</style>
+
+
+<style id="collectible-cards-css">
+.collectible-section{position:relative;margin-top:16px;padding:16px 14px 14px;background:rgba(35,21,13,.42);border:1px solid rgba(188,139,62,.38);box-shadow:inset 0 0 0 1px rgba(255,220,145,.05)}
+.collectible-section:before{content:"";position:absolute;left:0;right:0;top:5px;height:1px;background:linear-gradient(90deg,transparent,#b78942,transparent)}
+.collectible-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:7px}
+.collectible-kicker{font:700 9px/1 Georgia,serif;letter-spacing:2px;color:#d0a75b}
+.collectible-title{margin:4px 0 0;font:700 21px/1 Georgia,serif;color:#f2d58f}
+.collectible-count{font:700 9px/1 Georgia,serif;letter-spacing:1px;color:#c79a4d;white-space:nowrap}
+.collectible-sub{margin:0 0 11px;font:11px/1.35 Georgia,serif;color:#b99a6b}
+.collectible-shelf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.collectible-card{min-width:0;position:relative;padding:5px;border:1px solid #9a6c2e;background:linear-gradient(145deg,#dfc184,#b78843);box-shadow:inset 0 0 0 2px rgba(255,237,183,.32),0 5px 12px rgba(0,0,0,.2);cursor:pointer;transition:transform .16s ease,filter .16s ease}
+.collectible-card:hover{transform:translateY(-3px);filter:brightness(1.06)}
+.collectible-card img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border:1px solid rgba(76,43,18,.65);background:#6b4828}
+.collectible-card .cc-number{margin-top:5px;font:700 7px/1 Georgia,serif;letter-spacing:1px;color:#5d381c}
+.collectible-card .cc-name{margin-top:3px;font:700 10px/1.1 Georgia,serif;color:#402616;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.collectible-card .cc-team{margin-top:3px;font:8px/1 Georgia,serif;color:#67431f}
+.collectible-card.locked{cursor:default;background:linear-gradient(145deg,#493020,#2c1a12);border-color:#664523}
+.collectible-card.locked:hover{transform:none;filter:none}
+.collectible-card.locked img{filter:grayscale(1) brightness(.28);opacity:.55}
+.collectible-card.locked .cc-number,.collectible-card.locked .cc-name,.collectible-card.locked .cc-team{color:#8d704b}
+.collectible-card.locked .cc-name{text-align:center;font-size:14px;letter-spacing:2px}
+.collectible-empty{grid-column:1/-1;padding:16px;text-align:center;border:1px dashed rgba(184,137,67,.4);color:#a9875b;font:11px/1.4 Georgia,serif}
+.collectible-view{width:100%;margin-top:10px;padding:9px;border:1px solid #8e632d;background:transparent;color:#d9b66d;font:700 9px Georgia,serif;letter-spacing:1px;cursor:pointer}
+.collectible-view:hover{background:rgba(184,137,67,.1)}
+.collectible-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(20,12,8,.78);backdrop-filter:blur(3px)}
+.collectible-overlay.open{display:flex}
+.collectible-panel{width:min(850px,96vw);max-height:90vh;overflow:auto;padding:20px;background:linear-gradient(145deg,#2e1b11,#17100c);border:1px solid #a77836;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.collectible-panel-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(190,145,69,.28);padding-bottom:11px}
+.collectible-panel-kicker{font:700 9px Georgia,serif;letter-spacing:2px;color:#c89b50}
+.collectible-panel h2{margin:5px 0;font:700 27px Georgia,serif;color:#f0d28d}
+.collectible-close{border:0;background:transparent;font-size:27px;color:#d4ad68;cursor:pointer}
+.collectible-full-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:14px}
+.collectible-detail{display:none;margin-top:15px;padding:14px;border:1px solid rgba(180,132,55,.38);background:rgba(255,226,158,.06)}
+.collectible-detail.open{display:grid;grid-template-columns:120px 1fr;gap:15px}
+.collectible-detail img{width:120px;aspect-ratio:3/4;object-fit:cover;border:1px solid #a77836}
+.collectible-detail h3{margin:0;color:#f1d18a;font:700 22px Georgia,serif}
+.collectible-detail p{margin:6px 0;color:#bda274;font:11px/1.5 Georgia,serif}
+@media(max-width:600px){.collectible-full-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.collectible-detail.open{grid-template-columns:90px 1fr}.collectible-detail img{width:90px}}
+</style>
+
+<style id="collectible-funfact-sync-css">
+.collectible-detail-fact{
+  margin-top:10px;padding:9px 10px;
+  border-left:2px solid #b88942;
+  background:rgba(222,182,103,.08);
+}
+.collectible-detail-fact span{
+  display:block;font:700 8px Georgia,serif;letter-spacing:1.6px;color:#c79a4d;
+}
+.collectible-detail-fact strong{
+  display:block;margin-top:4px;font:11px/1.45 Georgia,serif;color:#e3c891;
 }
 </style>
 
@@ -3216,29 +3296,20 @@ button,input{font:inherit}
                     <div class="quest-meta"><span>FIRST CHRONICLE</span><span>1 / 8</span></div>
                 </div>
 
-                <div class="keeper-note">
-                    <div class="note-mark">❦</div>
-                    
-<div class="daily-mystery-card" id="daily-mystery-card">
-  <div class="dm-kicker">🕵 THE DAILY MYSTERY</div>
-  <div class="dm-title">A Memory Has Been Lost.</div>
-  <p class="dm-sub">One case. Limited clues. One identity to recover.</p>
-  <div class="dm-case">
-    <strong id="dm-home-case">CASE FILE · LOADING</strong>
-    <span id="dm-home-teaser">The archive has lost a name.</span>
+                
+<section class="collectible-section" id="collectible-section">
+  <div class="collectible-head">
+    <div>
+      <div class="collectible-kicker">THE PAMONG COLLECTION</div>
+      <div class="collectible-title">Collectible Cards</div>
+    </div>
+    <div class="collectible-count" id="collectible-count">0 / 39 COLLECTED</div>
   </div>
-  <div class="dm-meta">
-    <span id="dm-home-progress">5 EVIDENCE</span>
-    <span id="dm-home-reward">+500 SCORE</span>
-  </div>
-  <button class="dm-open" type="button" id="dm-open-btn">OPEN CASE FILE →</button>
-</div>
+  <p class="collectible-sub">The faces you've come to know.</p>
+  <div class="collectible-shelf" id="collectible-shelf"></div>
+  <button class="collectible-view" id="collectible-view" type="button">VIEW COLLECTION →</button>
+</section>
 
-<div>
-                        <strong>THE DAILY MYSTERY</strong>
-                        <p>“A name is remembered. Context is understood.”</p>
-                    </div>
-                </div>
 
             </aside>
         </div>
@@ -9460,7 +9531,7 @@ async function loadPeople(){
  if(people.length)return people;
  try{
   if(typeof SUPABASE_REST_URL!=="undefined"&&typeof SUPABASE_PUBLIC_KEY!=="undefined"){
-   const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan&order=id.asc`;
+   const endpoint=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan,fun_fact&order=id.asc`;
    const r=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLIC_KEY}});if(r.ok){const d=await r.json();if(Array.isArray(d))people=d}
   }
  }catch(e){console.warn("M8 data load failed",e)}
@@ -9570,7 +9641,7 @@ async function complete(){
 }
 async function start(){
  $('m8-complete').style.display="none";$('m8-content').style.display="block";$('m8-actions').style.display="flex";$('m8-feedback').style.display="";$('m8-content').innerHTML='<div style="padding:60px">GATHERING THE MEMORIES OF SANAPATI…</div>';
- await loadPeople();if(people.length<4){$('m8-content').innerHTML='<div style="padding:60px">Not enough identity data is available for the Revival.</div>';return}renderWager();
+ await loadPeople();if(people.length<4){$('m8-content').innerHTML='';return}renderWager();
 }
 function close(){root.classList.remove("active");root.setAttribute("aria-hidden","true");document.body.style.overflow=""}
 async function open(){root.classList.add("active");root.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";await start()}
@@ -9977,218 +10048,296 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 })();
 </script>
 
-<script id="daily-mystery-click-bridge">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="collectible-cards-js">
 (function(){
-  function openMystery(){
-    var overlay=document.getElementById("dm-overlay");
-    if(!overlay) return;
-    overlay.classList.add("open");
-    overlay.setAttribute("aria-hidden","false");
-    document.body.style.overflow="hidden";
-    if(window.NPCDailyMystery && typeof window.NPCDailyMystery.open==="function"){
-      window.NPCDailyMystery.open();
-    } else {
-      // Fallback: dispatch a click on the original button if the module has loaded
-      var original=document.getElementById("dm-open-btn");
-      if(original) original.click();
+"use strict";
+let allPeople=[];
+let discovered=new Set();
+
+function $(id){return document.getElementById(id)}
+function esc(v){return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]))}
+function player(){
+  try{return typeof getPlayerData==="function"?(getPlayerData()||{}):JSON.parse(localStorage.getItem("npcPlayer")||"{}")}
+  catch(e){return{}}
+}
+function refreshDiscovered(){
+  const p=player();
+  const a=Array.isArray(p.codexPamongs)?p.codexPamongs:[];
+  discovered=new Set(a.map(String));
+}
+function photoUrl(p){
+  const raw=String(p?.foto||"").trim();
+  if(!raw)return "";
+  if(/^https?:\/\//i.test(raw))return raw;
+  try{if(typeof getPamongPhotoUrl==="function")return getPamongPhotoUrl(raw)}catch(e){}
+  return raw;
+}
+function name(p){return String(p?.nama||p?.panggilan||"Pamong")}
+function nickname(p){return String(p?.panggilan||"").trim()}
+
+/* Fun Fact belongs to the collectible card.
+   The card supports the common field names fun_fact, funFact, or fact. */
+function cardFact(p){
+  return String(p?.fun_fact ?? p?.funFact ?? p?.fact ?? "").trim();
+}
+
+async function load(){
+  refreshDiscovered();
+  if(allPeople.length)return allPeople;
+  try{
+    if(typeof SUPABASE_REST_URL!=="undefined" && typeof SUPABASE_PUBLIC_KEY!=="undefined"){
+      const url=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan,fun_fact&order=id.asc`;
+      const r=await fetch(url,{headers:{apikey:SUPABASE_PUBLIC_KEY},cache:"no-store"});
+      if(r.ok){
+        const d=await r.json();
+        if(Array.isArray(d))allPeople=d;
+      }
     }
+  }catch(e){console.warn("Collectible Cards data load failed",e)}
+  return allPeople;
+}
+
+function card(p,index,locked){
+  const b=document.createElement("button");
+  b.type="button";
+  b.className="collectible-card"+(locked?" locked":"");
+  b.dataset.id=String(p?.id??"");
+  b.dataset.funFact=cardFact(p);
+
+  const img=document.createElement("img");
+  img.alt=locked?"Locked Pamong":"Pamong portrait";
+  const src=photoUrl(p);
+  if(src)img.src=src;
+  b.appendChild(img);
+
+  const n=document.createElement("div");
+  n.className="cc-number";
+  n.textContent="PAMONG #"+String(index+1).padStart(2,"0");
+  b.appendChild(n);
+
+  const nm=document.createElement("div");
+  nm.className="cc-name";
+  nm.textContent=locked?"???":name(p);
+  b.appendChild(nm);
+
+  const tm=document.createElement("div");
+  tm.className="cc-team";
+  tm.textContent=locked?"LOCKED":"TEAM "+String(p?.tim||"—");
+  b.appendChild(tm);
+
+  if(!locked)b.addEventListener("click",()=>showDetail(p));
+  return b;
+}
+
+/* FUN FACT progress is calculated from the collectible cards themselves:
+   discovered cards that contain a Fun Fact count as discovered Fun Facts. */
+function updateFunFactCodex(){
+  const discoveredCards=allPeople.filter(p=>discovered.has(String(p.id)));
+  const factFound=discoveredCards.filter(p=>cardFact(p)).length;
+  const factTotal=allPeople.filter(p=>cardFact(p)).length;
+
+  const count=$("codex-fact-count");
+  const bar=$("codex-fact-bar");
+  if(count)count.textContent=`${factFound} / ${factTotal}`;
+  if(bar)bar.style.width=(factTotal ? Math.min(100,factFound/factTotal*100) : 0)+"%";
+}
+
+function renderShelf(){
+  refreshDiscovered();
+  const shelf=$("collectible-shelf");
+  if(!shelf)return;
+
+  const total=allPeople.length;
+  const found=allPeople.filter(p=>discovered.has(String(p.id)));
+  $("collectible-count").textContent=`${found.length} / ${total} COLLECTED`;
+
+  const visible=found.slice(-4);
+  shelf.innerHTML="";
+  if(!visible.length){
+    shelf.innerHTML=`<div class="collectible-empty">No cards collected yet.<br>Complete encounters to add your first Pamong card.</div>`;
+  }else{
+    visible.forEach(p=>shelf.appendChild(card(p,allPeople.indexOf(p),false)));
+    for(let i=visible.length;i<4;i++)shelf.appendChild(card({id:"locked-"+i},i,true));
   }
+  updateFunFactCodex();
+}
 
-  function bind(){
-    var floating=document.getElementById("dm-floating-open");
-    var original=document.getElementById("dm-open-btn");
+function renderFull(){
+  refreshDiscovered();
+  const grid=$("collectible-full-grid");
+  if(!grid)return;
+  grid.innerHTML="";
+  allPeople.forEach((p,i)=>grid.appendChild(card(p,i,!discovered.has(String(p.id)))));
+  updateFunFactCodex();
+}
 
-    if(floating && !floating.dataset.bound){
-      floating.dataset.bound="1";
-      floating.addEventListener("click",function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        openMystery();
-      });
-    }
+function showDetail(p){
+  const d=$("collectible-detail");
+  const img=$("collectible-detail-img");
+  const nm=$("collectible-detail-name");
+  const info=$("collectible-detail-info");
+  if(!d)return;
 
-    // Rebind the visible card button directly, even if its original listener
-    // was affected by DOM placement.
-    if(original && !original.dataset.boundFix){
-      original.dataset.boundFix="1";
-      original.addEventListener("click",function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        openMystery();
-      }, true);
-    }
+  img.src=photoUrl(p)||"";
+  nm.textContent=name(p);
+
+  const bits=[];
+  if(nickname(p))bits.push("Known as "+nickname(p));
+  if(p.angkatan)bits.push("Generation "+p.angkatan);
+  if(p.tim)bits.push("Team "+p.tim);
+  if(p.penempatan)bits.push(p.penempatan);
+  if(p.jabatan)bits.push(p.jabatan);
+  info.textContent=bits.join(" · ");
+
+  const fact=cardFact(p);
+  let factBox=$("collectible-detail-fact");
+  if(!factBox){
+    factBox=document.createElement("div");
+    factBox.id="collectible-detail-fact";
+    factBox.className="collectible-detail-fact";
+    info.parentElement.appendChild(factBox);
   }
+  factBox.innerHTML=fact
+    ? `<span>✦ FUN FACT</span><strong>${esc(fact)}</strong>`
+    : `<span>✦ FUN FACT</span><strong>Not discovered yet.</strong>`;
 
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",bind);
-  }else bind();
+  d.classList.add("open");
+}
 
-  setTimeout(bind,300);
-  setTimeout(bind,1000);
+function open(){
+  refreshDiscovered();
+  renderFull();
+  $("collectible-overlay").classList.add("open");
+  $("collectible-overlay").setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+}
+function close(){
+  $("collectible-overlay").classList.remove("open");
+  $("collectible-overlay").setAttribute("aria-hidden","true");
+  $("collectible-detail").classList.remove("open");
+  document.body.style.overflow="";
+}
+
+async function init(){
+  await load();
+  renderShelf();
+  $("collectible-view")?.addEventListener("click",open);
+  $("collectible-close")?.addEventListener("click",close);
+  $("collectible-overlay")?.addEventListener("click",e=>{if(e.target.id==="collectible-overlay")close()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+
+  setInterval(()=>{
+    const before=discovered.size;
+    refreshDiscovered();
+    updateFunFactCodex();
+    if(before!==discovered.size)renderShelf();
+  },1500);
+}
+
+window.NPCCollectibleCards={refresh:renderShelf,refreshFunFact:updateFunFactCodex,open,close,getCardFact:cardFact};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
 
 
-<div class="achievement-overlay" id="achievement-overlay" aria-hidden="true">
-  <div class="achievement-panel" role="dialog" aria-modal="true" aria-labelledby="achievement-panel-title">
-    <div class="achievement-panel-head">
-      <div>
-        <div class="achievement-panel-kicker">THE HIDDEN ARCHIVE</div>
-        <h2 id="achievement-panel-title">Hidden Achievements</h2>
-      </div>
-      <button class="achievement-close" id="achievement-close" type="button" aria-label="Close">×</button>
-    </div>
-    <div class="achievement-list" id="achievement-list"></div>
+<div class="collectible-overlay" id="collectible-overlay" aria-hidden="true">
+ <div class="collectible-panel" role="dialog" aria-modal="true">
+  <div class="collectible-panel-head">
+   <div><div class="collectible-panel-kicker">THE PAMONG COLLECTION</div><h2>Collectible Cards</h2></div>
+   <button class="collectible-close" id="collectible-close" type="button">×</button>
   </div>
-</div>
-<div class="achievement-toast" id="achievement-toast" aria-live="polite">
-  <div class="toast-kicker">🔓 ACHIEVEMENT UNLOCKED</div>
-  <strong id="achievement-toast-title">SECRET DEED</strong>
-  <span id="achievement-toast-desc">You discovered something hidden.</span>
+  <div class="collectible-detail" id="collectible-detail">
+   <img id="collectible-detail-img" alt="Pamong portrait">
+   <div><h3 id="collectible-detail-name">Pamong</h3><p id="collectible-detail-info"></p></div>
+  </div>
+  <div class="collectible-full-grid" id="collectible-full-grid"></div>
+ </div>
 </div>
 
-
-<script id="hidden-achievements-js">
+<script id="collectible-cards-js">
 (function(){
 "use strict";
-
-const ACH_KEY="npc_hidden_achievements_v1";
-const ACH=[
- {id:"know-too-much",icon:"🧠",title:"I KNOW TOO MUCH",desc:"Recognized 20 people consecutively.",check:s=>s.recognizeStreak>=20},
- {id:"no-mercy",icon:"⚔️",title:"NO MERCY",desc:"Completed THE ORDEAL.",check:s=>s.ordealComplete},
- {id:"touch-grass",icon:"🌿",title:"TOUCH GRASS",desc:"Played Revival 5 times.",check:s=>s.revivalPlays>=5},
- {id:"first-blood",icon:"🩸",title:"FIRST BLOOD",desc:"Completed your first chapter.",check:s=>s.completedMilestones>=1},
- {id:"halfway-there",icon:"🔥",title:"HALFWAY THERE",desc:"Completed 4 chapters.",check:s=>s.completedMilestones>=4},
- {id:"completionist",icon:"👑",title:"THE CHRONICLER",desc:"Completed all 8 chapters.",check:s=>s.completedMilestones>=8},
- {id:"collector",icon:"📜",title:"I'VE SEEN THIS BEFORE",desc:"Discovered 20 unique Pamongs.",check:s=>s.pamongs>=20},
- {id:"revival-master",icon:"♻️",title:"BACK FROM THE DEAD",desc:"Earned 1,000 Revival points.",check:s=>s.revivalScore>=1000}
-];
-
+let people=[];
+let discovered=new Set();
 function $(id){return document.getElementById(id)}
-function getUnlocked(){
- try{return JSON.parse(localStorage.getItem(ACH_KEY)||"[]")||[]}catch(e){return[]}
+function player(){try{return typeof getPlayerData==="function"?(getPlayerData()||{}):JSON.parse(localStorage.getItem("npcPlayer")||"{}")}catch(e){return{}}}
+function refresh(){const p=player();discovered=new Set((Array.isArray(p.codexPamongs)?p.codexPamongs:[]).map(String))}
+function photo(p){const x=String(p?.foto||"").trim();if(!x)return"";if(/^https?:\/\//i.test(x))return x;try{if(typeof getPamongPhotoUrl==="function")return getPamongPhotoUrl(x)}catch(e){}return x}
+function nm(p){return String(p?.nama||p?.panggilan||"Pamong")}
+function buildCard(p,i,locked){
+ const b=document.createElement("button");b.type="button";b.className="collectible-card"+(locked?" locked":"");
+ const im=document.createElement("img");im.alt=locked?"Locked Pamong":"Pamong portrait";if(photo(p))im.src=photo(p);b.appendChild(im);
+ const no=document.createElement("div");no.className="cc-number";no.textContent="PAMONG #"+String(i+1).padStart(2,"0");b.appendChild(no);
+ const n=document.createElement("div");n.className="cc-name";n.textContent=locked?"???":nm(p);b.appendChild(n);
+ const t=document.createElement("div");t.className="cc-team";t.textContent=locked?"LOCKED":"TEAM "+String(p?.tim||"—");b.appendChild(t);
+ if(!locked)b.onclick=()=>detail(p);
+ return b;
 }
-function saveUnlocked(a){localStorage.setItem(ACH_KEY,JSON.stringify(a))}
-function player(){
- try{return typeof getPlayerData==="function" ? (getPlayerData()||{}) : JSON.parse(localStorage.getItem("npcPlayer")||"{}")}
- catch(e){return{}}
-}
-function countCompleted(p){
- let n=0;
- const ms=p?.milestoneScores||{};
- for(let i=1;i<=8;i++){
-   if(Number(ms[i]||ms[String(i)]||0)>0)n++;
- }
- if(Number(p?.milestone||0)>=8)n=Math.max(n,8);
- return n;
-}
-function state(){
- const p=player();
- let pamongs=0, revivalScore=Number(p.revivalTotal||0), revivalPlays=0, ordealComplete=false;
+async function load(){
+ refresh();
  try{
-   const c=JSON.parse(localStorage.getItem("codexPamongs")||"[]");
-   if(Array.isArray(c))pamongs=new Set(c.map(String)).size;
- }catch(e){}
- try{
-   const r=JSON.parse(localStorage.getItem("npc_milestone8_revival_v1")||"null");
-   if(r){
-     revivalPlays=Number(r.plays||r.playCount||r.timesPlayed||0);
-     revivalScore=Math.max(revivalScore,Number(r.totalScore||r.revivalTotal||0));
-   }
- }catch(e){}
- try{
-   const o=JSON.parse(localStorage.getItem("npc_milestone8_ordeal_v1")||"null");
-   ordealComplete=!!(o?.complete||o?.completed||o?.status==="complete");
- }catch(e){}
- // Generic fallbacks for games that expose a different key.
- try{
-   const r2=JSON.parse(localStorage.getItem("npc_revival_history")||"[]");
-   if(Array.isArray(r2))revivalPlays=Math.max(revivalPlays,r2.length);
- }catch(e){}
- return {
-   completedMilestones:countCompleted(p),
-   pamongs,
-   revivalPlays,
-   revivalScore,
-   ordealComplete:ordealComplete || !!p.ordealComplete,
-   recognizeStreak:Number(p.recognizeStreak||p.recognitionStreak||0)
- };
+  if(typeof SUPABASE_REST_URL!=="undefined"&&typeof SUPABASE_PUBLIC_KEY!=="undefined"){
+   const r=await fetch(`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan,fun_fact&order=id.asc`,{headers:{apikey:SUPABASE_PUBLIC_KEY},cache:"no-store"});
+   if(r.ok){const d=await r.json();if(Array.isArray(d))people=d}
+  }
+ }catch(e){console.warn("Collectible Cards load failed",e)}
+ renderShelf();
 }
-function renderList(){
- const unlocked=getUnlocked();
- $("achievement-list").innerHTML=ACH.map(a=>{
-   const yes=unlocked.includes(a.id);
-   return `<div class="achievement-row ${yes?"unlocked":"locked"}">
-     <div class="achievement-icon">${yes?a.icon:"?"}</div>
-     <div><h3>${a.title}</h3><p>${a.desc}</p></div>
-     <div class="achievement-status">${yes?"UNLOCKED":"HIDDEN"}</div>
-   </div>`;
- }).join("");
- const count=unlocked.length;
- if($("unlocked-count"))$("unlocked-count").textContent=count;
+function renderShelf(){
+ refresh();const shelf=$("collectible-shelf");if(!shelf)return;shelf.innerHTML="";
+ const found=people.filter(p=>discovered.has(String(p.id)));
+ $("collectible-count").textContent=`${found.length} / ${people.length||39} COLLECTED`;
+ const visible=found.slice(-4);
+ if(!visible.length){shelf.innerHTML='<div class="collectible-empty">No cards collected yet.<br>Complete an encounter to add your first Pamong card.</div>';return}
+ visible.forEach(p=>shelf.appendChild(buildCard(p,people.indexOf(p),false)));
+ for(let i=visible.length;i<4;i++)shelf.appendChild(buildCard({id:"locked"+i},i,true));
 }
-function updateCard(){
- const unlocked=getUnlocked(), s=state();
- $("achievement-unlocked-count").textContent=unlocked.length+" UNLOCKED";
- $("achievement-total-count").textContent=ACH.length+" SECRETS";
- const hidden=ACH.filter(a=>!unlocked.includes(a.id));
- const show=hidden.length?hidden[0]:ACH[ACH.length-1];
- $("achievement-feature-title").textContent=unlocked.length===ACH.length ? "ALL SECRETS DISCOVERED" : show.title;
- $("achievement-feature-desc").textContent=unlocked.length===ACH.length
-   ?"You have uncovered every hidden deed."
-   :show.desc;
- $("achievement-feature").querySelector(".achievement-lock").textContent=unlocked.length===ACH.length?"✓":"?";
+function renderFull(){
+ refresh();const g=$("collectible-full-grid");g.innerHTML="";
+ people.forEach((p,i)=>g.appendChild(buildCard(p,i,!discovered.has(String(p.id)))));
 }
-function toast(a){
- const t=$("achievement-toast");
- $("achievement-toast-title").textContent=a.title;
- $("achievement-toast-desc").textContent=a.desc;
- t.classList.add("show");
- setTimeout(()=>t.classList.remove("show"),5000);
+function detail(p){
+ const d=$("collectible-detail");$("collectible-detail-img").src=photo(p)||"";
+ $("collectible-detail-name").textContent=nm(p);
+ const bits=[];if(p.panggilan)bits.push("Known as "+p.panggilan);if(p.angkatan)bits.push("Generation "+p.angkatan);if(p.tim)bits.push("Team "+p.tim);if(p.penempatan)bits.push(p.penempatan);if(p.jabatan)bits.push(p.jabatan);
+ $("collectible-detail-info").textContent=bits.join(" · ");d.classList.add("open");
 }
-function checkAchievements(){
- const unlocked=getUnlocked(), s=state();
- const newly=[];
- ACH.forEach(a=>{
-   if(!unlocked.includes(a.id)){
-     let ok=false;try{ok=!!a.check(s)}catch(e){}
-     if(ok){unlocked.push(a.id);newly.push(a)}
-   }
- });
- if(newly.length){
-   saveUnlocked(unlocked);
-   updateCard();
-   renderList();
-   // Show one toast at a time to keep the surprise readable.
-   let i=0;
-   const next=()=>{if(i<newly.length){toast(newly[i++]);setTimeout(next,5300)}};
-   next();
- }
-}
-function open(){
- renderList();
- $("achievement-overlay").classList.add("open");
- $("achievement-overlay").setAttribute("aria-hidden","false");
- document.body.style.overflow="hidden";
-}
-function close(){
- $("achievement-overlay").classList.remove("open");
- $("achievement-overlay").setAttribute("aria-hidden","true");
- document.body.style.overflow="";
-}
-function bind(){
- $("achievement-open-btn")?.addEventListener("click",open);
- $("achievement-close")?.addEventListener("click",close);
- $("achievement-overlay")?.addEventListener("click",e=>{if(e.target.id==="achievement-overlay")close()});
+function open(){renderFull();$("collectible-overlay").classList.add("open");$("collectible-overlay").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
+function close(){ $("collectible-overlay").classList.remove("open");$("collectible-overlay").setAttribute("aria-hidden","true");$("collectible-detail").classList.remove("open");document.body.style.overflow=""}
+function init(){
+ $("collectible-view")?.addEventListener("click",open);$("collectible-close")?.addEventListener("click",close);
+ $("collectible-overlay")?.addEventListener("click",e=>{if(e.target.id==="collectible-overlay")close()});
  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
- updateCard();
- checkAchievements();
+ load();setInterval(()=>{const n=discovered.size;refresh();if(n!==discovered.size)renderShelf()},1500);
 }
-window.NPCHiddenAchievements={check:checkAchievements,open,close,list:ACH};
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind);else bind();
+window.NPCCollectibleCards={open,close,refresh:renderShelf};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script>
 
-// Recheck after common game actions, without modifying their handlers.
-setInterval(checkAchievements,4000);
+<script id="collectible-funfact-codex-bridge">
+(function(){
+  function sync(){
+    try{
+      if(window.NPCCollectibleCards?.refreshFunFact) window.NPCCollectibleCards.refreshFunFact();
+    }catch(e){}
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(sync,800));
+  else setTimeout(sync,800);
+  setInterval(sync,2000);
 })();
 </script>
 
