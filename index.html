@@ -1430,6 +1430,252 @@ button,input{font:inherit}
   box-shadow:0 2px 4px rgba(0,0,0,.2);
   pointer-events:none;
 }
+
+/* =========================================================
+   PREMIUM MEDIEVAL HOME — VISUAL ONLY
+   Existing game logic/IDs remain intact.
+========================================================= */
+#game-screen{
+    min-height:100vh;
+    padding:18px;
+    color:#3e2817;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(255,248,220,.72),transparent 38%),
+      repeating-linear-gradient(0deg,rgba(88,55,23,.025) 0 1px,transparent 1px 5px),
+      linear-gradient(135deg,#e7d0a0,#f4e4c2 48%,#d8b87b);
+}
+.premium-home{width:min(1440px,97vw);margin:auto}
+.premium-topbar{
+    position:relative;
+    min-height:92px;
+    padding:11px 20px;
+    border:2px solid #765126;
+    background:
+      radial-gradient(circle at 50% 50%,rgba(147,105,43,.2),transparent 42%),
+      linear-gradient(180deg,#2c1c12,#17100c);
+    color:#f7e4b6;
+    box-shadow:0 7px 0 #4b2b13,0 15px 30px rgba(54,31,12,.2),inset 0 0 0 1px #b48a45;
+}
+.premium-topbar:before,.premium-topbar:after{
+    content:"✦";
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    color:#b9914e;
+    font-size:18px;
+}
+.premium-topbar:before{left:47%}.premium-topbar:after{right:47%}
+.premium-player{min-width:230px}
+.avatar-frame{
+    width:62px;height:62px;padding:3px;
+    border:1px solid #b9914e;
+    background:#17100c;
+    box-shadow:0 0 0 2px #4d3017,inset 0 0 0 1px #e0bd70;
+}
+.avatar-frame .player-avatar-img{width:100%;height:100%;border:0}
+.player-identity{line-height:1.05}
+.player-name-label{
+    color:#b9965a;font-size:10px;letter-spacing:2px;font-weight:bold;
+}
+.player-name{
+    color:#fff0c8;
+    font-size:25px;
+    font-weight:bold;
+    text-shadow:1px 2px 0 #100b08;
+}
+.home-brand{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    text-align:center;pointer-events:none;
+}
+.brand-ornament{font-size:12px;color:#c59b53;letter-spacing:8px}
+.brand-title{font-size:43px;line-height:.9;font-weight:bold;letter-spacing:5px;color:#f0cc7b;text-shadow:2px 3px 0 #100b08}
+.brand-subtitle{margin-top:5px;font-size:9px;letter-spacing:2px;color:#d9b875}
+.premium-actions{gap:13px}
+.leaderboard-top-button{
+    border:1px solid #a17a3f!important;
+    background:linear-gradient(#50351f,#2a1a10)!important;
+    color:#f2d38b!important;
+    box-shadow:inset 0 0 0 1px rgba(232,194,116,.18),0 3px 0 #100a07;
+}
+.score-chip{
+    min-width:58px;padding:9px 12px;
+    border:1px solid #9d7740;
+    background:#21150d;
+    color:#f4d38b;
+    font-weight:bold;
+    text-align:center;
+}
+.score-star{color:#e0b763;margin-right:4px}
+.settings-mark{color:#c8a56b;font-size:19px}
+.home-ribbon{
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    margin:14px auto 12px;padding:7px 18px;
+    width:max-content;max-width:100%;
+    border-top:1px solid #a27a40;border-bottom:1px solid #a27a40;
+    color:#65431f;font-size:11px;letter-spacing:2px;font-weight:bold;
+    background:rgba(255,245,216,.48);
+}
+.home-ribbon i{font-size:10px;font-weight:normal;letter-spacing:1px;color:#8b6940}
+.premium-main{grid-template-columns:minmax(0,1.6fr) minmax(330px,.72fr);gap:18px}
+.home-map-column{min-width:0}
+.premium-map-card,.premium-side-card,.premium-journey-card{
+    border:2px solid #86602f;
+    box-shadow:0 8px 0 rgba(91,57,21,.24),0 18px 30px rgba(68,39,12,.13),inset 0 0 0 1px rgba(255,240,193,.55);
+}
+.premium-map-card{
+    padding:13px;
+    background:linear-gradient(145deg,#f9e9c3,#d9b879);
+}
+.map-heading{
+    display:flex;justify-content:space-between;align-items:end;
+    padding:3px 7px 10px;
+}
+.map-kicker,.section-kicker{
+    display:block;font-size:9px;letter-spacing:2.5px;color:#8b6330;font-weight:bold;
+}
+.map-heading h2{margin:2px 0 0;font-size:25px;color:#4a2d17}
+.map-status{
+    padding:6px 9px;border:1px solid #a47b42;background:#efe0b9;
+    color:#76552b;font-size:9px;letter-spacing:1px;font-weight:bold;
+}
+.status-dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    margin-right:5px;background:#698049;box-shadow:0 0 0 2px rgba(105,128,73,.16);
+}
+.premium-map-wrap{
+    position:relative;
+    padding:7px;
+    border:1px solid #75502a;
+    background:#5a3a1d;
+    box-shadow:inset 0 0 0 3px #b78c4e,inset 0 0 22px rgba(20,12,6,.42);
+}
+.premium-map-wrap .sanapati-map-art{
+    border:1px solid #9c7744;
+    background:#bda06b;
+}
+.map-corner{position:absolute;z-index:3;color:#e2bd6e;font-size:16px;text-shadow:1px 1px 0 #3a2411}
+.map-corner-tl{left:12px;top:9px}.map-corner-tr{right:12px;top:9px}.map-corner-bl{left:12px;bottom:9px}.map-corner-br{right:12px;bottom:9px}
+.map-footer{
+    display:flex;align-items:center;justify-content:space-between;gap:15px;padding:11px 5px 1px;
+}
+.map-tip{display:flex;align-items:center;gap:8px;min-width:0}
+.tip-icon{font-size:20px;color:#775021}
+.map-tip strong{display:block;font-size:10px;letter-spacing:1.4px;color:#68451f}
+.map-tip small{display:block;margin-top:2px;font-size:10px;color:#876842}
+.map-expedition{
+    flex:0 0 auto;
+    padding:11px 16px;
+    border:1px solid #b58a45;
+    background:linear-gradient(#684521,#3a2414);
+    color:#f8dfaa;
+    font-weight:bold;
+    font-size:10px;
+    letter-spacing:1px;
+    box-shadow:0 3px 0 #28170d,inset 0 0 0 1px rgba(255,231,165,.16);
+    cursor:pointer;
+}
+.map-expedition:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.premium-journey-card{margin-top:15px;padding:15px 17px;background:linear-gradient(135deg,#f7e7bf,#dfc38d)}
+.section-heading{display:flex;align-items:end;justify-content:space-between;margin-bottom:11px}
+.journey-title{margin:1px 0 0!important;font-size:20px!important;letter-spacing:2px!important}
+.journey-caption{font-size:9px;letter-spacing:1px;color:#8b6a3c}
+.premium-journey{gap:7px!important}
+.premium-journey .journey-node{
+    height:72px!important;
+    border:1px solid #927044!important;
+    background:linear-gradient(#f1dfb7,#d4b67b)!important;
+    color:#67451f!important;
+    box-shadow:inset 0 0 0 1px rgba(255,245,211,.55);
+}
+.premium-journey .journey-node.active{
+    background:linear-gradient(#765026,#4b2e16)!important;
+    color:#ffe4a5!important;
+    border-color:#4c2c14!important;
+    box-shadow:0 0 0 2px #c59b55,0 4px 8px rgba(66,38,13,.25)!important;
+}
+.journey-number{
+    display:grid;place-items:center;width:29px;height:29px;margin:auto;
+    border-radius:50%;border:1px solid currentColor;font-weight:bold;font-size:13px;
+}
+.journey-label{font-size:8px;letter-spacing:1px;font-weight:bold}
+.premium-side-card{
+    position:relative;
+    padding:22px 20px 18px;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(177,137,66,.16),transparent 34%),
+      linear-gradient(180deg,#25170f,#17100c 75%,#21150d);
+    color:#f4dfae;
+    overflow:hidden;
+}
+.premium-side-card:before{
+    content:"";position:absolute;inset:8px;border:1px solid rgba(187,147,75,.35);pointer-events:none;
+}
+.side-crest{
+    position:relative;margin:0 auto 5px;width:34px;height:34px;
+    display:grid;place-items:center;border:1px solid #a77d40;border-radius:50%;
+    color:#e3bb68;background:#1b110b;
+}
+.side-kicker{position:relative;text-align:center;font-size:9px;letter-spacing:3px;color:#bd9858}
+.premium-side-card .side-title{
+    position:relative;margin:5px 0 5px;text-align:center;font-size:22px;color:#f4d797;letter-spacing:1px;
+}
+.side-intro{position:relative;text-align:center;margin:0 auto 14px;max-width:300px;font-size:11px;line-height:1.5;color:#c5a873}
+.codex-list{position:relative;border-top:1px solid rgba(182,141,72,.35)}
+.codex-row{
+    display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:7px;
+    padding:10px 3px;border-bottom:1px solid rgba(182,141,72,.24);
+}
+.codex-icon{font-size:17px;color:#cba45f;text-align:center}
+.codex-copy strong{display:block;font-size:12px;letter-spacing:1px;color:#f1d28e}
+.codex-copy small{display:block;margin-top:2px;font-size:9px;color:#b99a68}
+.codex-state{font-size:17px;text-align:center;color:#755b38}
+.codex-row.complete .codex-state{color:#d5ae5e}
+.current-quest{
+    position:relative;margin-top:15px;padding:13px 14px;
+    border:1px solid #7d5a2d;background:linear-gradient(145deg,#332116,#1b120c);
+    box-shadow:inset 0 0 0 1px rgba(219,179,100,.1);
+}
+.quest-kicker{font-size:8px;letter-spacing:2px;color:#bb9555}
+.quest-title{margin-top:4px;font-size:17px;color:#f0d18d;font-weight:bold}
+.current-quest p{margin:5px 0 10px;font-size:10px;line-height:1.45;color:#c3a36f}
+.quest-progress{height:5px;background:#100b08;border:1px solid #68491f}
+.quest-progress span{display:block;width:12%;height:100%;background:linear-gradient(90deg,#9e7134,#e0bd69)}
+.quest-meta{display:flex;justify-content:space-between;margin-top:5px;font-size:8px;letter-spacing:1px;color:#a8895d}
+.keeper-note{
+    position:relative;display:flex;gap:9px;align-items:flex-start;
+    margin-top:13px;padding:10px 4px 0;border-top:1px solid rgba(182,141,72,.25);
+}
+.note-mark{font-size:23px;color:#b9904d}
+.keeper-note strong{font-size:8px;letter-spacing:1.5px;color:#c39d5c}
+.keeper-note p{margin:3px 0 0;font-size:10px;line-height:1.35;font-style:italic;color:#c6a979}
+.home-footer{
+    display:flex;justify-content:center;align-items:center;gap:13px;
+    margin:13px auto 0;color:#7a5729;font-size:11px;letter-spacing:1px;
+}
+.home-footer span:first-child,.home-footer span:last-child{color:#b18443}
+@media(max-width:1000px){
+    .home-brand{display:none}
+    .premium-main{grid-template-columns:1fr}
+    .premium-side-card{order:2}
+}
+@media(max-width:650px){
+    #game-screen{padding:10px}
+    .premium-topbar{min-height:75px;padding:8px 10px}
+    .avatar-frame{width:48px;height:48px}
+    .player-name{font-size:19px}
+    .premium-actions .leaderboard-top-button span{display:none}
+    .home-ribbon{font-size:8px;letter-spacing:1px;gap:8px}
+    .home-ribbon i{display:none}
+    .map-heading{align-items:start;gap:8px}
+    .map-heading h2{font-size:21px}
+    .map-status{font-size:7px;padding:5px}
+    .map-footer{align-items:stretch;flex-direction:column}
+    .map-expedition{width:100%}
+    .premium-journey{overflow-x:auto;grid-template-columns:repeat(8,72px)!important}
+    .journey-caption{display:none}
+    .premium-side-card{padding:20px 15px}
+}
+
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2599,77 +2845,182 @@ button,input{font:inherit}
 
 
 <!-- =========================================================
-     GAME HOME
+     GAME HOME — PREMIUM MEDIEVAL HUD
 ========================================================= -->
 <section id="game-screen" class="hidden">
-    <div class="game-shell">
+    <div class="game-shell premium-home">
 
-        <header class="game-topbar">
-            <div class="player-info">
-                <img id="player-avatar" class="player-avatar-img" src="avatars/avatar-01.webp" alt="Player portrait" decoding="async">
-                <div>
-                    <div id="player-label" class="player-name">👤 Taruna</div>
-                    <div class="level-badge">Lv.1 PAMONG EXPLORER</div>
+        <header class="game-topbar premium-topbar">
+            <div class="player-info premium-player">
+                <div class="avatar-frame">
+                    <img id="player-avatar" class="player-avatar-img" src="avatars/avatar-01.webp" alt="Player portrait" decoding="async">
+                </div>
+                <div class="player-identity">
+                    <div class="player-name-label">ADVENTURER</div>
+                    <div id="player-label" class="player-name">Taruna</div>
                 </div>
             </div>
 
-            <div class="top-actions">
-                <button id="leaderboard-open" class="leaderboard-top-button" type="button" title="Open Hall of Legends">🏆 <span>HALL OF LEGENDS</span></button>
-                <span id="player-total-score">✦ 0</span>
-                <span>⚙</span>
+            <div class="home-brand">
+                <div class="brand-ornament">✦ ❦ ✦</div>
+                <div class="brand-title">NPC</div>
+                <div class="brand-subtitle">NEED PAMONG CONTEXT</div>
+            </div>
+
+            <div class="top-actions premium-actions">
+                <button id="leaderboard-open" class="leaderboard-top-button" type="button" title="Open Hall of Legends">
+                    🏆 <span>HALL OF LEGENDS</span>
+                </button>
+                <div class="score-chip">
+                    <span class="score-star">✦</span>
+                    <span id="player-total-score">0</span>
+                </div>
+                <span class="settings-mark" aria-hidden="true">⚙</span>
             </div>
         </header>
 
-        <div class="game-main">
+        <div class="home-ribbon">
+            <span>THE CHRONICLE OF SANAPATI LAND</span>
+            <i>Explore · Recognize · Remember · Apply</i>
+        </div>
 
-            <div>
-                <article class="mission-card" style="padding:0;overflow:hidden;">
-                    <div class="sanapati-map-wrap">
+        <div class="game-main premium-main">
+
+            <div class="home-map-column">
+                <article class="mission-card premium-map-card">
+                    <div class="map-heading">
+                        <div>
+                            <span class="map-kicker">YOUR REALM</span>
+                            <h2>Sanapati Land</h2>
+                        </div>
+                        <div class="map-status">
+                            <span class="status-dot"></span>
+                            <span>EXPEDITION READY</span>
+                        </div>
+                    </div>
+
+                    <div class="sanapati-map-wrap premium-map-wrap">
+                        <div class="map-corner map-corner-tl">✦</div>
+                        <div class="map-corner map-corner-tr">✦</div>
+                        <div class="map-corner map-corner-bl">✦</div>
+                        <div class="map-corner map-corner-br">✦</div>
                         <div class="sanapati-map-art">
-                            <img
-                                src="sanapati-map.png"
-                                alt="Sanapati Land"
-                                decoding="async"
-                                fetchpriority="high"
-                            >
-</div>
+                            <img src="sanapati-map.png" alt="Sanapati Land" decoding="async" fetchpriority="high">
+                        </div>
+                    </div>
+
+                    <div class="map-footer">
+                        <div class="map-tip">
+                            <span class="tip-icon">☞</span>
+                            <div>
+                                <strong>THE LAND AWAITS</strong>
+                                <small>Follow the numbered milestones to uncover the Pamong context.</small>
+                            </div>
+                        </div>
+                        <button class="map-expedition" type="button" onclick="document.getElementById('journey-node-1')?.click()">
+                            ⚔ BEGIN EXPEDITION
+                        </button>
                     </div>
                 </article>
 
-                <article class="journey-card">
-                    <h3 class="journey-title">YOUR JOURNEY</h3>
-                    <div class="journey" id="journey-path">
-                        <button data-team="A" id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1">1</button>
-                        <button data-team="B" id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2">2</button>
-                        <button data-team="C" id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3">3</button>
-                        <button data-team="D" id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4">4</button>
-                        <button id="journey-node-5" class="journey-node locked journey-button" type="button"
- aria-label="Open Milestone 5" onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}">5</button>
-                        <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">6</button>
-                        <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">7</button>
-                        <button id="journey-node-8" class="journey-node locked journey-button" type="button"
- aria-label="Open Milestone 8">8</button>
+                <article class="journey-card premium-journey-card">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-kicker">THE CHRONICLE</span>
+                            <h3 class="journey-title">YOUR JOURNEY</h3>
+                        </div>
+                        <span class="journey-caption">8 milestones · 1 realm to master</span>
+                    </div>
+
+                    <div class="journey premium-journey" id="journey-path">
+                        <button data-team="A" id="journey-node-1" class="journey-node active journey-button" type="button" aria-label="Open Milestone 1">
+                            <span class="journey-number">1</span><span class="journey-label">FACE</span>
+                        </button>
+                        <button data-team="B" id="journey-node-2" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 2">
+                            <span class="journey-number">2</span><span class="journey-label">NAME</span>
+                        </button>
+                        <button data-team="C" id="journey-node-3" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 3">
+                            <span class="journey-number">3</span><span class="journey-label">TEAM</span>
+                        </button>
+                        <button data-team="D" id="journey-node-4" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 4">
+                            <span class="journey-number">4</span><span class="journey-label">ROLE</span>
+                        </button>
+                        <button id="journey-node-5" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 5"
+                            onclick="if((Number((typeof getPlayerData==='function'?getPlayerData():{})?.milestone||1)>=5) && typeof window.openGenerationMilestone==='function'){window.openGenerationMilestone();}">
+                            <span class="journey-number">5</span><span class="journey-label">AGES</span>
+                        </button>
+                        <button id="journey-node-6" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 6">
+                            <span class="journey-number">6</span><span class="journey-label">AREA</span>
+                        </button>
+                        <button id="journey-node-7" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 7">
+                            <span class="journey-number">7</span><span class="journey-label">LEADERS</span>
+                        </button>
+                        <button id="journey-node-8" class="journey-node locked journey-button" type="button" aria-label="Open Milestone 8">
+                            <span class="journey-number">8</span><span class="journey-label">REVIVAL</span>
+                        </button>
                     </div>
                 </article>
             </div>
 
-            <aside class="side-card">
+            <aside class="side-card premium-side-card">
+
+                <div class="side-crest">✦</div>
+                <div class="side-kicker">THE PAMONG CODEX</div>
                 <h3 class="side-title">CONTEXT PROGRESS</h3>
-                <ul class="progress-list">
-                    <li><span>FACE</span><span class="check">✓</span></li>
-                    <li><span>NAME</span><span class="check">✓</span></li>
-                    <li><span>TEAM</span><span class="locked">○ ○ ○</span></li>
-                    <li><span>ROLE</span><span class="locked">○ ○ ○</span></li>
-                    <li><span>FUN FACT</span><span class="locked">○ ○ ○</span></li>
-                </ul>
+                <p class="side-intro">Every detail you uncover strengthens your understanding of the realm.</p>
 
-                <div style="text-align:center;margin-top:30px">
-                    <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
-                    <p style="font-style:italic;color:#725636">“Let's find the context, Taruna!”</p>
+                <div class="codex-list">
+                    <div class="codex-row complete">
+                        <span class="codex-icon">◉</span>
+                        <div class="codex-copy"><strong>FACE</strong><small>Recognize the Pamong.</small></div>
+                        <span class="codex-state">✓</span>
+                    </div>
+                    <div class="codex-row complete">
+                        <span class="codex-icon">✒</span>
+                        <div class="codex-copy"><strong>NAME</strong><small>Remember who they are.</small></div>
+                        <span class="codex-state">✓</span>
+                    </div>
+                    <div class="codex-row">
+                        <span class="codex-icon">♟</span>
+                        <div class="codex-copy"><strong>TEAM</strong><small>Discover where they belong.</small></div>
+                        <span class="codex-state">○</span>
+                    </div>
+                    <div class="codex-row">
+                        <span class="codex-icon">⚔</span>
+                        <div class="codex-copy"><strong>ROLE</strong><small>Understand what they do.</small></div>
+                        <span class="codex-state">○</span>
+                    </div>
+                    <div class="codex-row">
+                        <span class="codex-icon">✦</span>
+                        <div class="codex-copy"><strong>FUN FACT</strong><small>Uncover the unexpected.</small></div>
+                        <span class="codex-state">○</span>
+                    </div>
                 </div>
-            </aside>
 
+                <div class="current-quest">
+                    <div class="quest-kicker">CURRENT QUEST</div>
+                    <div class="quest-title">The First Encounter</div>
+                    <p>Begin your expedition and learn the faces of the Pamong who guard Sanapati Land.</p>
+                    <div class="quest-progress"><span></span></div>
+                    <div class="quest-meta"><span>FIRST CHRONICLE</span><span>1 / 8</span></div>
+                </div>
+
+                <div class="keeper-note">
+                    <div class="note-mark">❦</div>
+                    <div>
+                        <strong>KEEPER'S NOTE</strong>
+                        <p>“A name is remembered. Context is understood.”</p>
+                    </div>
+                </div>
+
+            </aside>
         </div>
+
+        <footer class="home-footer">
+            <span>✦</span>
+            <span>Knowledge is the key, context is the power.</span>
+            <span>✦</span>
+        </footer>
     </div>
 </section>
 
@@ -2906,6 +3257,18 @@ function ensurePlayerIdentity(player){
     return p;
 }
 
+
+
+function updatePlayerDashboardIdentity(player){
+    const p=player||getPlayerData&&getPlayerData();
+    const label=document.getElementById("player-label");
+    const avatar=document.getElementById("player-avatar");
+    if(label) label.textContent=(p&&p.username)?p.username:"Adventurer";
+    if(avatar){
+        const chosen=(p&&p.avatar)||"avatar-01.webp";
+        avatar.src=`avatars/${chosen}`;
+    }
+}
 
 function updatePlayerAvatarUI(player){
     const el=document.getElementById("player-avatar");
@@ -3310,7 +3673,8 @@ const loreButton = document.getElementById("lore-button");
 if (loreButton) {
     loreButton.addEventListener("click", function (event) {
         event.preventDefault();
-        updatePlayerAvatarUI(getPlayerData());
+        updatePlayerDashboardIdentity(getPlayerData());
+    updatePlayerAvatarUI(getPlayerData());
     showScreen("game-screen");
         refreshJourney();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -9287,3 +9651,11 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 </script>
 </body>
 </html>
+<script>
+(function(){
+    const p=(typeof getPlayerData==="function")?getPlayerData():null;
+    if(p && typeof updatePlayerDashboardIdentity==="function"){
+        updatePlayerDashboardIdentity(p);
+    }
+})();
+</script>
