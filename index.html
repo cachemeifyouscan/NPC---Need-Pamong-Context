@@ -2805,6 +2805,38 @@ button,input{font:inherit}
 }
 </style>
 
+
+<style id="collectible-drop-css">
+.collectible-drop-overlay{
+  position:fixed;inset:0;z-index:120000;display:flex;align-items:center;justify-content:center;
+  padding:18px;background:rgba(17,9,5,.78);backdrop-filter:blur(5px);
+}
+.collectible-drop-panel{
+  width:min(390px,94vw);padding:24px 22px 20px;text-align:center;
+  background:linear-gradient(145deg,#f3dfae,#d0a75d);
+  border:2px solid #8b5d22;box-shadow:0 24px 70px rgba(0,0,0,.55),inset 0 0 0 3px rgba(255,242,194,.32);
+  color:#3d2515;
+}
+.collectible-drop-ornament{font-size:20px;letter-spacing:6px;color:#8a5c1f}
+.collectible-drop-kicker{margin-top:6px;font:700 9px Georgia,serif;letter-spacing:2.5px;color:#8b5d22}
+.collectible-drop-panel h2{margin:5px 0 3px;font:700 29px Georgia,serif;color:#422817}
+.collectible-drop-sub{margin:0 0 13px;font:italic 11px Georgia,serif;color:#6e4a27}
+.collectible-drop-card{
+  width:170px;margin:0 auto 12px;padding:7px;background:linear-gradient(145deg,#d9b46e,#9a672c);
+  border:1px solid #684016;box-shadow:inset 0 0 0 2px rgba(255,236,180,.3),0 8px 18px rgba(0,0,0,.22);
+}
+.collectible-drop-card img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:#5e3c22;border:1px solid #593719}
+.collectible-drop-number{margin-top:6px;font:700 7px Georgia,serif;letter-spacing:1.3px;color:#4f3018}
+.collectible-drop-name{margin-top:3px;font:700 16px Georgia,serif;color:#3c2415}
+.collectible-drop-team{margin-top:3px;font:8px Georgia,serif;color:#5e3b1d}
+.collectible-drop-fact{min-height:28px;margin:8px 0 14px;padding:7px 9px;border-left:2px solid #8e5e24;background:rgba(255,244,205,.34);font:10px/1.35 Georgia,serif;color:#684521}
+#collectible-drop-close{
+  width:100%;padding:11px 12px;border:1px solid #573416;background:linear-gradient(#77451f,#4b2b17);
+  color:#f7dfaa;font:700 10px Georgia,serif;letter-spacing:1px;cursor:pointer;
+}
+#collectible-drop-close:hover{filter:brightness(1.08)}
+</style>
+
 </head>
 
 <body>
@@ -3305,7 +3337,7 @@ button,input{font:inherit}
     </div>
     <div class="collectible-count" id="collectible-count">0 / 39 COLLECTED</div>
   </div>
-  <p class="collectible-sub">The faces you've come to know.</p>
+  <p class="collectible-sub">The faces you've come to know. Keep playing — a new card may drop.</p>
   <div class="collectible-shelf" id="collectible-shelf"></div>
   <button class="collectible-view" id="collectible-view" type="button">VIEW COLLECTION →</button>
 </section>
@@ -10064,8 +10096,11 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 <script id="collectible-cards-js">
 (function(){
 "use strict";
+
+const CARD_KEY="npc_collectible_cards_v2";
+const ACTIVITY_KEY="npc_collectible_activity_v2";
 let allPeople=[];
-let discovered=new Set();
+let collected=new Set();
 
 function $(id){return document.getElementById(id)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]))}
@@ -10073,10 +10108,17 @@ function player(){
   try{return typeof getPlayerData==="function"?(getPlayerData()||{}):JSON.parse(localStorage.getItem("npcPlayer")||"{}")}
   catch(e){return{}}
 }
-function refreshDiscovered(){
+function refreshCollected(){
   const p=player();
-  const a=Array.isArray(p.codexPamongs)?p.codexPamongs:[];
-  discovered=new Set(a.map(String));
+  const saved=Array.isArray(p.collectibleCards)?p.collectibleCards:[];
+  collected=new Set(saved.map(String));
+}
+function persistCollected(){
+  const p=player();
+  if(!p.username)return;
+  p.collectibleCards=[...collected];
+  if(typeof savePlayerData==="function")savePlayerData(p);
+  else localStorage.setItem("npcPlayer",JSON.stringify(p));
 }
 function photoUrl(p){
   const raw=String(p?.foto||"").trim();
@@ -10087,15 +10129,10 @@ function photoUrl(p){
 }
 function name(p){return String(p?.nama||p?.panggilan||"Pamong")}
 function nickname(p){return String(p?.panggilan||"").trim()}
-
-/* Fun Fact belongs to the collectible card.
-   The card supports the common field names fun_fact, funFact, or fact. */
-function cardFact(p){
-  return String(p?.fun_fact ?? p?.funFact ?? p?.fact ?? "").trim();
-}
+function cardFact(p){return String(p?.fun_fact ?? p?.funFact ?? p?.fact ?? "").trim()}
 
 async function load(){
-  refreshDiscovered();
+  refreshCollected();
   if(allPeople.length)return allPeople;
   try{
     if(typeof SUPABASE_REST_URL!=="undefined" && typeof SUPABASE_PUBLIC_KEY!=="undefined"){
@@ -10115,8 +10152,6 @@ function card(p,index,locked){
   b.type="button";
   b.className="collectible-card"+(locked?" locked":"");
   b.dataset.id=String(p?.id??"");
-  b.dataset.funFact=cardFact(p);
-
   const img=document.createElement("img");
   img.alt=locked?"Locked Pamong":"Pamong portrait";
   const src=photoUrl(p);
@@ -10142,32 +10177,126 @@ function card(p,index,locked){
   return b;
 }
 
-/* FUN FACT progress is calculated from the collectible cards themselves:
-   discovered cards that contain a Fun Fact count as discovered Fun Facts. */
+/* =========================
+   CARD DROP / RNG SYSTEM
+   Every eligible question/completion calls roll().
+   More activity = slightly higher chance, capped so cards remain collectible.
+   Duplicate cards are never awarded.
+========================= */
+function getActivity(){
+  const p=player();
+  return Math.max(0,Number(p.collectibleActivity||0));
+}
+function setActivity(n){
+  const p=player();
+  p.collectibleActivity=Math.max(0,Math.floor(n));
+  if(typeof savePlayerData==="function")savePlayerData(p);
+  else localStorage.setItem("npcPlayer",JSON.stringify(p));
+}
+function chanceFor(kind){
+  const activity=getActivity();
+  const activityBonus=Math.min(12,activity*0.5); // +0.5% per eligible completion, max +12%
+  let base=8;
+  if(kind==="endgame")base=28;
+  if(kind==="revival")base=40;
+  return Math.min(55,base+activityBonus);
+}
+function randomUncollected(){
+  refreshCollected();
+  const pool=allPeople.filter(p=>!collected.has(String(p.id)));
+  if(!pool.length)return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function showDrop(p,chance,kind){
+  const existing=$("collectible-drop-overlay");
+  if(existing)existing.remove();
+
+  const overlay=document.createElement("div");
+  overlay.id="collectible-drop-overlay";
+  overlay.className="collectible-drop-overlay";
+  overlay.innerHTML=`
+    <div class="collectible-drop-panel">
+      <div class="collectible-drop-ornament">✦ ❦ ✦</div>
+      <div class="collectible-drop-kicker">A NEW DISCOVERY</div>
+      <h2>CARD ACQUIRED</h2>
+      <p class="collectible-drop-sub">The archives have yielded a new Pamong card.</p>
+      <div class="collectible-drop-card">
+        <img src="${esc(photoUrl(p))}" alt="New Pamong card">
+        <div class="collectible-drop-number">PAMONG #${String(allPeople.indexOf(p)+1).padStart(2,"0")}</div>
+        <div class="collectible-drop-name">${esc(name(p))}</div>
+        <div class="collectible-drop-team">TEAM ${esc(p.tim||"—")}</div>
+      </div>
+      <div class="collectible-drop-fact">${cardFact(p)?`✦ ${esc(cardFact(p))}`:"A new face has entered your collection."}</div>
+      <button type="button" id="collectible-drop-close">ADD TO COLLECTION →</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close=()=>{
+    overlay.remove();
+    renderShelf();
+    updateFunFactCodex();
+  };
+  $("collectible-drop-close").onclick=close;
+  overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
+}
+
+function roll(kind="question"){
+  if(!allPeople.length)return null;
+  refreshCollected();
+  if(collected.size>=allPeople.length)return null;
+
+  const activity=getActivity()+1;
+  setActivity(activity);
+
+  const chance=chanceFor(kind);
+  const hit=Math.random()*100<chance;
+  if(!hit)return null;
+
+  const p=randomUncollected();
+  if(!p)return null;
+
+  collected.add(String(p.id));
+  persistCollected();
+
+  showDrop(p,chance,kind);
+  return p;
+}
+
+/* Public hook used by the game's existing scoring/completion system. */
+window.NPCCollectibleCards={
+  refresh:renderShelf,
+  refreshFunFact:updateFunFactCodex,
+  open,
+  close,
+  getCardFact:cardFact,
+  roll,
+  award:roll,
+  getChance:chanceFor
+};
+
 function updateFunFactCodex(){
-  const discoveredCards=allPeople.filter(p=>discovered.has(String(p.id)));
+  const discoveredCards=allPeople.filter(p=>collected.has(String(p.id)));
   const factFound=discoveredCards.filter(p=>cardFact(p)).length;
   const factTotal=allPeople.filter(p=>cardFact(p)).length;
-
   const count=$("codex-fact-count");
   const bar=$("codex-fact-bar");
   if(count)count.textContent=`${factFound} / ${factTotal}`;
-  if(bar)bar.style.width=(factTotal ? Math.min(100,factFound/factTotal*100) : 0)+"%";
+  if(bar)bar.style.width=(factTotal?Math.min(100,factFound/factTotal*100):0)+"%";
 }
 
 function renderShelf(){
-  refreshDiscovered();
+  refreshCollected();
   const shelf=$("collectible-shelf");
   if(!shelf)return;
-
-  const total=allPeople.length;
-  const found=allPeople.filter(p=>discovered.has(String(p.id)));
-  $("collectible-count").textContent=`${found.length} / ${total} COLLECTED`;
+  const total=allPeople.length||0;
+  const found=allPeople.filter(p=>collected.has(String(p.id)));
+  const count=$("collectible-count");
+  if(count)count.textContent=`${found.length} / ${total} COLLECTED`;
 
   const visible=found.slice(-4);
   shelf.innerHTML="";
   if(!visible.length){
-    shelf.innerHTML=`<div class="collectible-empty">No cards collected yet.<br>Complete encounters to add your first Pamong card.</div>`;
+    shelf.innerHTML=`<div class="collectible-empty">No cards collected yet.<br>Complete challenges for a chance to discover one.</div>`;
   }else{
     visible.forEach(p=>shelf.appendChild(card(p,allPeople.indexOf(p),false)));
     for(let i=visible.length;i<4;i++)shelf.appendChild(card({id:"locked-"+i},i,true));
@@ -10176,11 +10305,11 @@ function renderShelf(){
 }
 
 function renderFull(){
-  refreshDiscovered();
+  refreshCollected();
   const grid=$("collectible-full-grid");
   if(!grid)return;
   grid.innerHTML="";
-  allPeople.forEach((p,i)=>grid.appendChild(card(p,i,!discovered.has(String(p.id)))));
+  allPeople.forEach((p,i)=>grid.appendChild(card(p,i,!collected.has(String(p.id)))));
   updateFunFactCodex();
 }
 
@@ -10190,10 +10319,8 @@ function showDetail(p){
   const nm=$("collectible-detail-name");
   const info=$("collectible-detail-info");
   if(!d)return;
-
   img.src=photoUrl(p)||"";
   nm.textContent=name(p);
-
   const bits=[];
   if(nickname(p))bits.push("Known as "+nickname(p));
   if(p.angkatan)bits.push("Generation "+p.angkatan);
@@ -10202,7 +10329,6 @@ function showDetail(p){
   if(p.jabatan)bits.push(p.jabatan);
   info.textContent=bits.join(" · ");
 
-  const fact=cardFact(p);
   let factBox=$("collectible-detail-fact");
   if(!factBox){
     factBox=document.createElement("div");
@@ -10210,15 +10336,13 @@ function showDetail(p){
     factBox.className="collectible-detail-fact";
     info.parentElement.appendChild(factBox);
   }
-  factBox.innerHTML=fact
-    ? `<span>✦ FUN FACT</span><strong>${esc(fact)}</strong>`
-    : `<span>✦ FUN FACT</span><strong>Not discovered yet.</strong>`;
-
+  const fact=cardFact(p);
+  factBox.innerHTML=fact?`<span>✦ FUN FACT</span><strong>${esc(fact)}</strong>`:`<span>✦ FUN FACT</span><strong>Not discovered yet.</strong>`;
   d.classList.add("open");
 }
 
 function open(){
-  refreshDiscovered();
+  refreshCollected();
   renderFull();
   $("collectible-overlay").classList.add("open");
   $("collectible-overlay").setAttribute("aria-hidden","false");
@@ -10238,16 +10362,13 @@ async function init(){
   $("collectible-close")?.addEventListener("click",close);
   $("collectible-overlay")?.addEventListener("click",e=>{if(e.target.id==="collectible-overlay")close()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
-
   setInterval(()=>{
-    const before=discovered.size;
-    refreshDiscovered();
+    const before=collected.size;
+    refreshCollected();
     updateFunFactCodex();
-    if(before!==discovered.size)renderShelf();
+    if(before!==collected.size)renderShelf();
   },1500);
 }
-
-window.NPCCollectibleCards={refresh:renderShelf,refreshFunFact:updateFunFactCodex,open,close,getCardFact:cardFact};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
@@ -10338,6 +10459,23 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(sync,800));
   else setTimeout(sync,800);
   setInterval(sync,2000);
+})();
+</script>
+
+
+<script id="collectible-drop-score-hook">
+(function(){
+  const originalSubmit=window.submitMilestoneScore;
+  if(typeof originalSubmit!=="function")return;
+  window.submitMilestoneScore=async function(milestone,score){
+    const result=await originalSubmit.apply(this,arguments);
+    try{
+      const m=String(Number(milestone));
+      const kind=(m==="8")?"revival":(["1","2","3","4"].includes(m)?"endgame":"question");
+      if(window.NPCCollectibleCards?.roll) window.NPCCollectibleCards.roll(kind);
+    }catch(e){console.warn("Collectible card roll failed:",e)}
+    return result;
+  };
 })();
 </script>
 
