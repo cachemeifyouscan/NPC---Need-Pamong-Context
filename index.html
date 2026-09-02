@@ -8,7 +8,7 @@
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Georgia,"Times New Roman",serif;color:#3d2d1c;background:#eee2cc}
-body{overflow-x:hidden}
+body{overflow-x:hidden;overflow-y:auto}
 button,input{font:inherit}
 .hidden{display:none!important}
 
@@ -494,7 +494,7 @@ button,input{font:inherit}
 /* =========================================================
    GAME HOME
 ========================================================= */
-#game-screen{min-height:100vh;padding:24px;background:#e9d6ac;color:#432b18}
+#game-screen{min-height:100vh;padding:24px 18px 40px;background:#e9d6ac;color:#432b18;overflow:visible}
 .game-shell{width:min(1180px,96vw);margin:auto}
 .game-topbar{
     display:flex;align-items:center;justify-content:space-between;gap:20px;
@@ -1461,7 +1461,8 @@ button,input{font:inherit}
 ========================================================= */
 #game-screen{
     min-height:100vh;
-    padding:18px;
+    height:auto;
+    padding:18px 18px 42px;
     color:#3e2817;
     background:
       radial-gradient(circle at 50% 0%,rgba(255,248,220,.72),transparent 38%),
@@ -1859,41 +1860,6 @@ button,input{font:inherit}
   box-sizing:border-box;
   max-height:calc(100dvh - 48px);
 }
-/* =========================================================
-   GAME HOME SCROLL FIX
-   Auth pages stay full-screen; the actual game home must scroll.
-========================================================= */
-html, body{
-  min-height:100%;
-}
-body{
-  overflow-x:hidden;
-  overflow-y:auto;
-}
-#main-game{
-  height:auto !important;
-  min-height:100dvh;
-  overflow:visible !important;
-}
-#main-game > #game-screen{
-  position:relative !important;
-  inset:auto !important;
-  width:100%;
-  height:auto !important;
-  min-height:100dvh !important;
-  max-height:none !important;
-  overflow:visible !important;
-  padding:18px !important;
-}
-#main-game > #game-screen .premium-home{
-  min-height:calc(100dvh - 36px);
-}
-
-@media(max-width:700px){
-  #main-game > #game-screen{padding:10px !important;}
-  #main-game > #game-screen .premium-home{min-height:calc(100dvh - 20px);}
-}
-
 @media(max-width:700px){
   #main-game > .screen,
   #main-game > .gate-screen{padding:14px;}
@@ -3763,9 +3729,6 @@ if (introStartButton) {
    SCREEN SYSTEM
 ========================================================= */
 function showScreen(screenId) {
-    // Every auth step is a new full-screen page — never a scroll transition.
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
     const screens = [
         "login-screen",
         "account-choice-screen",
@@ -3785,6 +3748,19 @@ function showScreen(screenId) {
 
     const target = document.getElementById(screenId);
     if (target) target.classList.remove("hidden");
+
+    // Auth screens are viewport-like; Game Home is a normal scrollable page.
+    if (screenId === "game-screen") {
+        document.documentElement.style.overflowY = "auto";
+        document.body.style.overflowY = "auto";
+        document.documentElement.style.overflowX = "hidden";
+        document.body.style.overflowX = "hidden";
+        window.scrollTo({top:0, behavior:"auto"});
+    } else {
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+        window.scrollTo({top:0, behavior:"auto"});
+    }
 }
 
 /* =========================================================
@@ -3794,17 +3770,6 @@ function savePlayerData(data) {
     const incoming=ensurePlayerIdentity(data);
     let existing={};
     try{existing=JSON.parse(localStorage.getItem("npcPlayer")||"{}");}catch(e){}
-
-    /*
-     * IMPORTANT: localStorage belongs to the current browser, not to the
-     * account system. If the browser previously belonged to another player
-     * (for example missatha), NEVER merge that player's progress into the
-     * newly signed-in/signed-up account.
-     */
-    const existingUsername=String(existing?.username||"").trim().toLowerCase();
-    const incomingUsername=String(incoming?.username||"").trim().toLowerCase();
-    const sameAccount=!!existingUsername && !!incomingUsername && existingUsername===incomingUsername;
-    if(!sameAccount) existing={};
 
     const merged=ensurePlayerIdentity({...existing,...incoming});
     const oldScores=(existing&&typeof existing.milestoneScores==="object")?existing.milestoneScores:{};
@@ -4033,16 +3998,8 @@ async function submitMilestoneScore(milestone,score){
        could never intercept those calls. */
     try{
         const cardKind = m==="8" ? "revival" : (["1","2","3","4"].includes(m) ? "endgame" : "question");
-        const rewardKey = `cardRewardMilestone_${m}`;
-        const latest = ensurePlayerIdentity(getPlayerData()||{});
-        if(window.NPCCollectibleCards?.roll && latest.username && !latest[rewardKey]){
-            void window.NPCCollectibleCards.roll(cardKind, { guaranteed:true }).then(card=>{
-                if(card){
-                    const current=ensurePlayerIdentity(getPlayerData()||{});
-                    current[rewardKey]=true;
-                    savePlayerData(current);
-                }
-            }).catch(e=>console.warn("[NPC Cards] Drop promise failed:",e));
+        if(window.NPCCollectibleCards?.roll){
+            void window.NPCCollectibleCards.roll(cardKind);
         }
     }catch(cardError){
         console.warn("[NPC Cards] Card roll failed:",cardError);
@@ -4107,25 +4064,6 @@ async function renderLeaderboard(){
 }
 
 async function fetchLeaderboard(){
-    // Hall of Legends reads the same cloud chronicle used by accounts.
-    // This avoids the old split-brain situation where account progress lived
-    // in npc_accounts but the Hall depended on a separately populated table.
-    const response=await fetch(`${SUPABASE_REST_URL}/rpc/npc_hall_of_legends`,{
-        method:"POST",cache:"no-store",
-        headers:{"apikey":SUPABASE_PUBLIC_KEY,"Content-Type":"application/json","Cache-Control":"no-cache"},
-        body:"{}"
-    });
-    const raw=await response.text();
-    if(!response.ok){
-        let detail=raw;
-        try{detail=JSON.parse(raw)?.message||JSON.parse(raw)?.details||raw}catch(e){}
-        throw new Error(`npc_hall_of_legends HTTP ${response.status}: ${detail}`);
-    }
-    let body=[];
-    try{body=JSON.parse(raw)}catch(e){throw new Error("Hall response bukan JSON");}
-    return Array.isArray(body)?body:[];
-
-    /* Legacy direct-table implementation retained below for reference. */
     const endpoint=`${SUPABASE_REST_URL}/${LEADERBOARD_TABLE}`+
         `?select=player_id,username,total_score,updated_at`+
         `&order=total_score.desc,updated_at.asc`+
@@ -4164,7 +4102,7 @@ function closeLeaderboard(){
     if(!o)return;
     o.classList.add("hidden");
     o.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
+    document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
 }
 
 function isTeamGamePhase1Complete(teamKey=currentTeamKey) {
@@ -4260,7 +4198,7 @@ const usernameButton = document.getElementById("username-button");
 const usernameError = document.getElementById("username-error");
 
 if (usernameButton) {
-    usernameButton.addEventListener("click", async function () {
+    usernameButton.addEventListener("click", function () {
         const username = usernameInput.value.trim();
 
         if (!username) {
@@ -4273,28 +4211,12 @@ if (usernameButton) {
             return;
         }
 
-        usernameError.textContent = "Checking the chronicles…";
-        usernameButton.disabled = true;
-
-        try {
-            const existing = await npcCloudUsernameExists(username);
-            if (existing?.exists === true) {
-                usernameError.textContent = `Username "${existing.username || username}" sudah terdaftar. Silakan pilih SIGN IN.`;
-                return;
-            }
-
-            usernameError.textContent = "";
-            sessionStorage.setItem("npcUsername", username);
-            selectedAvatar = "";
-            sessionStorage.removeItem("npcAvatar");
-            renderAvatarPicker();
-            showScreen("avatar-screen");
-        } catch (error) {
-            console.error("[NPC Cloud Chronicle] Username check failed:", error);
-            usernameError.textContent = "Tidak dapat mengecek username. Pastikan koneksi database tersedia.";
-        } finally {
-            usernameButton.disabled = false;
-        }
+        usernameError.textContent = "";
+        sessionStorage.setItem("npcUsername", username);
+        selectedAvatar = "";
+        sessionStorage.removeItem("npcAvatar");
+        renderAvatarPicker();
+        showScreen("avatar-screen");
     });
 }
 
@@ -4397,10 +4319,11 @@ if (pinButton) {
         pinButton.disabled = true;
 
         try{
-            /* Final server-side duplicate check before creating the account. */
-            const existing = await npcCloudUsernameExists(username);
-            if(existing?.exists === true){
+            /* Prevent duplicate usernames globally. */
+            const existing = await npcCloudAuthenticate(username,"__DISCOVERY_ONLY__");
+            if(existing && existing.ok !== false){
                 pinError.textContent = "That username already has a chronicle. Choose SIGN IN instead.";
+                pinButton.disabled = false;
                 return;
             }
 
@@ -4414,15 +4337,7 @@ if (pinButton) {
                 totalScore: 0
             };
 
-            const created = await npcCloudCreateAccount(player,pin);
-            if(!created || created.ok !== true){
-                if(created?.reason === "USERNAME_EXISTS") {
-                    pinError.textContent = "That username already has a chronicle. Choose SIGN IN instead.";
-                    return;
-                }
-                throw new Error(`Account creation failed: ${JSON.stringify(created)}`);
-            }
-
+            await npcCloudCreateAccount(player,pin);
             savePlayerData(player);
 
             sessionStorage.removeItem("npcUsername");
@@ -4435,9 +4350,8 @@ if (pinButton) {
             showScreen("welcome-screen");
         }catch(error){
             console.error("[NPC Cloud Chronicle] Sign-up failed:",error);
-            pinError.textContent = error?.message
-                ? `Signup gagal: ${error.message}`
-                : "Signup gagal. Periksa koneksi Supabase.";
+            pinError.textContent =
+                "The chronicle vault is not ready yet. Run the supplied Supabase SQL setup, then try again.";
         }finally{
             pinButton.disabled=false;
         }
@@ -4466,13 +4380,19 @@ async function verifySigninUsername(){
 
     try{
         /*
-         * ALWAYS ask Supabase. localStorage is only a cache and must NEVER
-         * decide whether an account exists. This is what makes login truly
-         * cross-browser and cross-device.
+         * Username discovery is cloud-based. This is what makes a chronicle
+         * findable from another browser/device.
          */
-        const discovered = await npcFindCloudChronicle(typed);
+        const local = getPlayerData();
+        let discovered = null;
 
-        if(!discovered || discovered.ok===false || discovered.exists!==true || !discovered.username){
+        if(local && String(local.username||"").trim().toLowerCase()===typed.toLowerCase()){
+            discovered = {ok:true, username:local.username, player_id:local.playerId, chronicle:local};
+        }else{
+            discovered = await npcCloudAuthenticate(typed,"__DISCOVERY_ONLY__");
+        }
+
+        if(!discovered || discovered.ok===false || !discovered.username){
             signinUsernameError.textContent = "That name was not found in the chronicles.";
             return;
         }
@@ -4488,9 +4408,8 @@ async function verifySigninUsername(){
         if(pinField) setTimeout(()=>pinField.focus(),80);
     }catch(error){
         console.error("[NPC Cloud Chronicle] Discovery failed:",error);
-        signinUsernameError.textContent = error?.message
-            ? `Cloud error: ${error.message}`
-            : "The chronicle vault could not be reached. Check the Supabase setup.";
+        signinUsernameError.textContent =
+            "The chronicle vault could not be reached. Check the Supabase setup.";
     }finally{
         signinUsernameButton.disabled=false;
     }
@@ -4538,24 +4457,24 @@ if (pinLoginButton) {
         try{
             const remote = await npcCloudAuthenticate(username,enteredPin);
 
-            /*
-             * Cloud is authoritative. There is deliberately NO localStorage
-             * PIN fallback here, because that would allow an old browser cache
-             * (such as missatha) to masquerade as another account.
-             */
-            if(!remote || remote.ok!==true || !remote.chronicle){
-                if(remote?.reason === "NOT_FOUND") {
-                    pinLoginError.textContent = "Akun tidak ditemukan di cloud.";
-                }else if(remote?.reason === "BAD_PIN") {
-                    pinLoginError.textContent = "PIN salah. Coba lagi.";
-                }else{
-                    pinLoginError.textContent = "Chronicle akun ini tidak dapat dibuka.";
+            if(!remote || remote.ok===false || !remote.chronicle){
+                /*
+                 * Same-device fallback for legacy profiles that have not yet
+                 * been migrated to the cloud.
+                 */
+                const local=getPlayerData();
+                if(local && String(local.username||"").toLowerCase()===String(username).toLowerCase() && enteredPin===local.pin){
+                    pinLoginError.textContent="";
+                    document.getElementById("welcome-message").textContent =
+                        `Welcome back, ${local.username}! Your adventure awaits.`;
+                    showScreen("welcome-screen");
+                    return;
                 }
+                pinLoginError.textContent = "PIN salah. Coba lagi.";
                 return;
             }
 
-            /* Replace the browser cache with THIS account's cloud chronicle. */
-            const player={...remote.chronicle};
+            const player=remote.chronicle;
             player.username=remote.username||username;
             player.playerId=remote.player_id||player.playerId||npcUuid();
             player.avatar=remote.avatar||player.avatar||"avatar-01.webp";
@@ -4571,9 +4490,8 @@ if (pinLoginButton) {
             showScreen("welcome-screen");
         }catch(error){
             console.error("[NPC Cloud Chronicle] Sign-in failed:",error);
-            pinLoginError.textContent = error?.message
-                ? `Cloud error: ${error.message}`
-                : "The chronicle vault could not be reached. Check the Supabase setup.";
+            pinLoginError.textContent =
+                "The chronicle vault could not be reached. Check the Supabase setup.";
         }finally{
             pinLoginButton.disabled=false;
         }
@@ -4770,7 +4688,7 @@ function openMilestone(teamKey="A"){
     milestoneOverlay.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
 }
-function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+function closeMilestoneOne(){if(!milestoneOverlay)return;milestoneOverlay.classList.add("hidden");milestoneOverlay.setAttribute("aria-hidden","true");document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");}
 if(milestoneClose)milestoneClose.addEventListener("click",closeMilestoneOne);
 
 if(milestoneButton){
@@ -4847,7 +4765,6 @@ const supabaseStorageClient =
 const NPC_CLOUD_ACCOUNT_RPC = "npc_create_account";
 const NPC_CLOUD_SIGNIN_RPC = "npc_authenticate";
 const NPC_CLOUD_SAVE_RPC = "npc_save_chronicle";
-const NPC_CLOUD_USERNAME_EXISTS_RPC = "npc_username_exists";
 let npcCloudSyncTimer = null;
 
 async function npcHashPin(pin){
@@ -4892,18 +4809,12 @@ async function npcCloudCreateAccount(player,pin){
 }
 
 async function npcCloudAuthenticate(username,pin){
-  const isDiscovery = String(pin) === "__DISCOVERY_ONLY__";
-  const pinHash = isDiscovery ? "__DISCOVERY_ONLY__" : await npcHashPin(pin);
-  return await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
+  const pinHash=await npcHashPin(pin);
+  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
     p_username:String(username).trim(),
     p_pin_hash:pinHash
   });
-}
-
-async function npcCloudUsernameExists(username){
-  return await npcCloudRpc(NPC_CLOUD_USERNAME_EXISTS_RPC,{
-    p_username:String(username).trim()
-  });
+  return result;
 }
 
 async function npcCloudSave(player){
@@ -4911,15 +4822,12 @@ async function npcCloudSave(player){
   try{
     const chronicle={...player};
     delete chronicle.pin; /* Never send the raw PIN to Supabase. */
-    const result = await npcCloudRpc(NPC_CLOUD_SAVE_RPC,{
+    await npcCloudRpc(NPC_CLOUD_SAVE_RPC,{
       p_username:String(player.username).trim(),
       p_player_id:String(player.playerId),
       p_avatar:String(player.avatar||"avatar-01.webp"),
       p_chronicle:chronicle
     });
-    if(!result || result.ok !== true){
-      throw new Error(`Chronicle save rejected: ${JSON.stringify(result)}`);
-    }
   }catch(e){
     console.warn("[NPC Cloud Chronicle] Save failed:",e);
   }
@@ -4931,32 +4839,12 @@ function queueNpcCloudSave(player){
   npcCloudSyncTimer=setTimeout(()=>npcCloudSave(player),900);
 }
 
-/* Optional console diagnostics. Does not expose the PIN or chronicle. */
-window.NPCCloudDebug = {
-  async checkUsername(username){
-    try {
-      const result = await npcCloudUsernameExists(username);
-      console.log("[NPC Cloud] username check:", result);
-      return result;
-    } catch (e) {
-      console.error("[NPC Cloud] username check failed:", e);
-      return null;
-    }
-  },
-  async signIn(username, pin){
-    try {
-      const result = await npcCloudAuthenticate(username, pin);
-      console.log("[NPC Cloud] sign-in result:", result);
-      return result;
-    } catch (e) {
-      console.error("[NPC Cloud] sign-in failed:", e);
-      return null;
-    }
-  }
-};
-
 async function npcFindCloudChronicle(username){
-  return await npcCloudUsernameExists(username).catch(()=>null);
+  const result=await npcCloudRpc(NPC_CLOUD_SIGNIN_RPC,{
+    p_username:String(username).trim(),
+    p_pin_hash:"__DISCOVERY_ONLY__"
+  }).catch(()=>null);
+  return result;
 }
 
 function getPamongPhotoUrl(path){
@@ -5260,7 +5148,7 @@ function closeTeamGame(){
     if(!teamGameGame) return;
     teamGameGame.classList.add("hidden");
     teamGameGame.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
+    document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
 }
 
 if(teamGameClose) teamGameClose.addEventListener("click",closeTeamGame);
@@ -7084,7 +6972,7 @@ async function open(){
 function close(){
  root.classList.add("hidden");
  root.setAttribute("aria-hidden","true");
- document.body.style.overflow="";
+ document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
 }
 
 /* -------------------- EVENTS -------------------- */
@@ -9858,7 +9746,7 @@ document.addEventListener("click",function(e){
   function close(){
     overlay.classList.add("hidden");
     overlay.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
+    document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
   }
 
   nextBtn.addEventListener("click",async()=>{
@@ -10954,7 +10842,7 @@ function npcShowDrop(number,chance,kind){
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 }
 
-async function npcRoll(kind="question", options={}){
+async function npcRoll(kind="question"){
   // Wait for the GitHub asset scan. The previous version could roll while
   // the 39-image scan was still running, leaving the pool temporarily empty.
   await npcScanAssets();
@@ -10972,9 +10860,10 @@ async function npcRoll(kind="question", options={}){
   const activity=npcGetActivity()+1;
   npcSetActivity(activity);
 
-  const chance = 100;
-  const roll = 0;
-  console.log(`[NPC Cards] ${kind}: GUARANTEED DROP | pool:`,pool);
+  const chance=npcChanceFor(kind);
+  const roll=Math.random()*100;
+  console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,pool);
+  if(roll>=chance) return null;
 
   const number=pool[Math.floor(Math.random()*pool.length)];
   npcCollectedNumbers.add(number);
@@ -11061,7 +10950,7 @@ function npcCloseCardViewer(){
   viewer.setAttribute("aria-hidden","true");
   const drop=npc$("collectible-drop-overlay");
   const collection=npc$("collectible-overlay");
-  if(!drop && !collection?.classList.contains("open")) document.body.style.overflow="";
+  if(!drop && !collection?.classList.contains("open")) document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
 }
 
 function npcShowDetail(number){
@@ -11112,7 +11001,7 @@ function npcClose(){
   npc$("collectible-overlay")?.classList.remove("open");
   npc$("collectible-overlay")?.setAttribute("aria-hidden","true");
   npc$("collectible-detail")?.classList.remove("open");
-  document.body.style.overflow="";
+  document.body.style.overflow = (document.getElementById("game-screen")?.classList.contains("hidden") ? "" : "auto");
 }
 
 function npcUpdateFunFactCodex(){
@@ -11273,12 +11162,6 @@ if(document.readyState==="loading"){
 
 
 
-<script>
-(function(){
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
-})();
-</script>
 
 
 window.NPCCloudChronicle = {
@@ -11290,137 +11173,10 @@ window.NPCCloudChronicle = {
     return true;
   },
   async find(username){
-    return await npcFindCloudChronicle(String(username));
+    const result=await npcCloudAuthenticate(String(username),"__DISCOVERY_ONLY__");
+    return result;
   }
 };
 
 </body>
 </html>
-<style id="npc-avatar-signup-layout-fix">
-/* =========================================================
-   SIGN-UP AVATAR SCREEN — ROOMY CHARACTER CARDS
-   The screen may scroll naturally. The portrait grid gets
-   enough vertical room for full character cards, while the
-   grid itself can still scroll when all 50 portraits exceed it.
-========================================================= */
-#avatar-screen:not(.hidden){
-  min-height:100dvh;
-  height:auto;
-  max-height:none;
-  box-sizing:border-box;
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding:28px 18px 44px;
-}
-
-#avatar-screen:not(.hidden) .avatar-picker-card{
-  width:min(1080px,96vw);
-  min-height:calc(100dvh - 72px);
-  height:auto;
-  max-height:none;
-  box-sizing:border-box;
-  display:block;
-  overflow:visible;
-  margin:0 auto;
-}
-
-/* Give each portrait a proper character frame.
-   contain prevents tall characters from being chopped. */
-#avatar-screen:not(.hidden) .avatar-picker{
-  margin:22px auto 0;
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:14px;
-  max-height:62vh;
-  min-height:420px;
-  overflow-y:auto;
-  overflow-x:hidden;
-  align-content:start;
-  padding:10px 12px 16px;
-  scrollbar-width:thin;
-}
-
-#avatar-screen:not(.hidden) .avatar-option{
-  min-width:0;
-  padding:7px;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-}
-
-#avatar-screen:not(.hidden) .avatar-option img{
-  width:100%;
-  aspect-ratio:3 / 4;
-  height:auto;
-  object-fit:contain;
-  object-position:center;
-  background:linear-gradient(145deg,#ead8ad,#d8bd82);
-}
-
-#avatar-screen:not(.hidden) .avatar-number{
-  min-height:18px;
-  margin:6px 0 2px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-#avatar-screen:not(.hidden) .avatar-picker-note{
-  margin:10px 0 0;
-}
-
-#avatar-screen:not(.hidden) .avatar-picker-actions{
-  position:sticky;
-  bottom:0;
-  z-index:5;
-  display:flex;
-  justify-content:center;
-  gap:28px;
-  margin:16px auto 0;
-  padding:14px 0 6px;
-  background:linear-gradient(to bottom,rgba(255,248,232,0),rgba(255,248,232,.94) 25%,rgba(255,248,232,1));
-}
-
-#avatar-screen:not(.hidden) #avatar-error{
-  min-height:18px;
-  margin:4px 0 0;
-}
-
-@media(max-width:900px){
-  #avatar-screen:not(.hidden) .avatar-picker{
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    max-height:60vh;
-    min-height:360px;
-  }
-}
-
-@media(max-width:760px){
-  #avatar-screen:not(.hidden){padding:18px 10px 30px}
-  #avatar-screen:not(.hidden) .avatar-picker-card{width:min(720px,96vw);min-height:calc(100dvh - 48px)}
-  #avatar-screen:not(.hidden) .avatar-picker{
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:10px;
-    max-height:58vh;
-    min-height:320px;
-    padding:8px;
-  }
-  #avatar-screen:not(.hidden) .avatar-picker-actions{gap:14px;margin-top:12px;padding-top:12px}
-}
-
-@media(max-width:520px){
-  #avatar-screen:not(.hidden) .avatar-picker{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:9px;
-    max-height:56vh;
-    min-height:280px;
-  }
-  #avatar-screen:not(.hidden) .avatar-picker-actions{flex-direction:column;align-items:center}
-}
-
-@media(max-height:720px){
-  #avatar-screen:not(.hidden) .avatar-picker{max-height:55vh;min-height:300px}
-  #avatar-screen:not(.hidden) .mascot-small{max-height:82px;width:auto}
-  #avatar-screen:not(.hidden) .screen-title{margin-top:6px;margin-bottom:6px}
-  #avatar-screen:not(.hidden) .screen-text{margin-top:5px;margin-bottom:8px}
-}
-</style>
