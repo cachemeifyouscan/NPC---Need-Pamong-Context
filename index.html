@@ -1387,16 +1387,48 @@ button,input{font:inherit}
 @media(max-width:760px){.avatar-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-height:55vh}}
 @media(max-width:520px){.avatar-picker{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.avatar-picker-card{padding:20px 14px}}
 
-#avatar-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 18px}
+#avatar-screen{min-height:100vh;display:block;padding:28px 18px 44px;overflow-y:auto}
 #avatar-screen.hidden{display:none!important}
-.avatar-picker-card{max-height:calc(100vh - 56px);overflow:hidden}
-.avatar-picker{max-height:calc(100vh - 285px)}
+.avatar-picker-card{width:min(1080px,96vw);max-height:none;overflow:visible;margin:0 auto}
+.avatar-picker{
+  max-height:min(52vh,560px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  align-content:start;
+  scrollbar-width:thin;
+  padding:10px 10px 14px;
+}
 .avatar-option{appearance:none;border-radius:3px}
 .avatar-option:focus-visible{outline:3px solid #b88743;outline-offset:2px}
+.avatar-picker-actions{
+  position:relative;
+  z-index:3;
+  padding:12px 0 4px;
+  background:linear-gradient(to bottom,rgba(255,248,232,.96),rgba(255,248,232,1));
+}
 @media(max-width:760px){
-  #avatar-screen{align-items:flex-start;padding:18px 10px}
+  #avatar-screen{padding:18px 10px 32px}
   .avatar-picker-card{max-height:none}
-  .avatar-picker{max-height:55vh}
+  .avatar-picker{max-height:52vh;grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .avatar-picker{max-height:50vh;grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+.avatar-option.selected img{filter:brightness(1.06)}
+.avatar-option.selected::after{
+  content:"SELECTED";
+  position:absolute;
+  left:6px;
+  bottom:25px;
+  padding:3px 5px;
+  font:700 8px/1 Georgia,"Times New Roman",serif;
+  letter-spacing:1px;
+  color:#fff8e6;
+  background:#6d421b;
+  border:1px solid #d4aa63;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+  pointer-events:none;
 }
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
