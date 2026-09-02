@@ -5450,38 +5450,42 @@ function renderEndgameResult(){
         ? `You successfully completed the ${TEAM_CONFIG[currentTeamKey].label} Endgame.`
         : "Retry the Endgame and strengthen your recall.";
 
-    const resultButtonLabel = passed
-        ? `COMPLETE MILESTONE ${TEAM_CONFIG[currentTeamKey].roman}`
-        : "RETRY ENDGAME";
+    if(passed){
+        teamGameContent.innerHTML=`
+            <div class="team-a-reward">
+                <div class="team-a-reward-title">✦ FINAL SCORE ✦</div>
+                <div class="endgame-score">${endgameScore}/10</div>
+                <p style="color:#684d2d;line-height:1.6">${resultMessage}</p>
+                <p style="margin-top:14px;color:#7a572f;font-size:12px;letter-spacing:1px">
+                    ✦ REWARDING YOUR CHRONICLE… ✦
+                </p>
+            </div>`;
+
+        // Completing an Endgame is automatic: no extra button is required.
+        // The next milestone is opened after the card reward modal is dismissed.
+        setTimeout(()=>{
+            const player=getPlayerData?.();
+            if(!player)return;
+            const completedMilestone=teamMilestoneNumber(currentTeamKey);
+            player.milestone=Math.max(Number(player.milestone||1),completedMilestone+1);
+            savePlayerData(player);
+            void submitMilestoneScore(completedMilestone,endgameScore);
+            closeTeamGame();
+            if(typeof refreshJourney==='function')refreshJourney();
+            npcRewardMilestoneOnce(completedMilestone,"endgame");
+        },450);
+        return;
+    }
 
     teamGameContent.innerHTML=`
         <div class="team-a-reward">
             <div class="team-a-reward-title">✦ FINAL SCORE ✦</div>
             <div class="endgame-score">${endgameScore}/10</div>
-            <p style="color:#684d2d;line-height:1.6">
-                ${resultMessage}
-            </p>
+            <p style="color:#684d2d;line-height:1.6">${resultMessage}</p>
         </div>
-        <button id="eg-result-btn" class="team-a-btn" type="button">
-            ${resultButtonLabel}
-        </button>`;
+        <button id="eg-result-btn" class="team-a-btn" type="button">RETRY ENDGAME</button>`;
 
-    document.getElementById("eg-result-btn").onclick=()=>{
-        if(passed){
-            const player=getPlayerData();
-            if(player){
-                const completedMilestone=teamMilestoneNumber(currentTeamKey);
-                player.milestone=Math.min(5,Math.max(Number(player.milestone||1),completedMilestone+1));
-                savePlayerData(player);
-                submitMilestoneScore(completedMilestone,endgameScore);
-                npcRewardMilestoneOnce(completedMilestone,"endgame");
-                // Safety-net: completing an Endgame always gets one reward attempt.
-            }
-            showTeamGameReviewMenu();
-        }else{
-            startTeamGameEndgame();
-        }
-    };
+    document.getElementById("eg-result-btn").onclick=()=>startTeamGameEndgame();
 }
 document.addEventListener("keydown",function(e){
     if(e.key==="Escape"){
@@ -6997,7 +7001,7 @@ function complete(){
  try{
   const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
   submitMilestoneScore(7,state.score||0);
-  p.milestone=Math.max(Number(p.milestone||1),7);
+  p.milestone=Math.max(Number(p.milestone||1),8);
   if(typeof savePlayerData==="function")savePlayerData(p);
   else localStorage.setItem("npcPlayer",JSON.stringify(p));
   npcRewardMilestoneOnce(7,"phase2");
@@ -10468,7 +10472,7 @@ function npcAvailableUncollected(){
   return pool;
 }
 
-function npcShowDrop(number,chance,kind){
+function npcShowDrop(number,chance,kind,onClose){
   const existing=npc$("collectible-drop-overlay");
   if(existing) existing.remove();
 
@@ -10497,6 +10501,7 @@ function npcShowDrop(number,chance,kind){
     overlay.remove();
     npcRenderShelf();
     npcUpdateFunFactCodex();
+    try{ if(typeof onClose==='function') onClose(); }catch(e){ console.warn('[NPC Cards] onClose failed',e); }
   };
 
   npc$("collectible-drop-card-button")?.addEventListener("click",()=>{
@@ -10507,17 +10512,21 @@ function npcShowDrop(number,chance,kind){
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 }
 
-async function npcRoll(kind="question",force=false){
+async function npcRoll(kind="question",force=false,onComplete=null){
   // Wait for the GitHub asset scan. The previous version could roll while
   // the 39-image scan was still running, leaving the pool temporarily empty.
   await npcScanAssets();
   if(!npcAvailableAssets.size) {
     console.warn("[NPC Cards] No card assets found. Expected cards/card-01.webp ... card-39.webp");
+    try{ if(typeof onComplete==='function') onComplete(); }catch(e){}
     return null;
   }
 
   npcRefreshCollected();
-  if(npcCollectedNumbers.size>=NPC_CARD_TOTAL) return null;
+  if(npcCollectedNumbers.size>=NPC_CARD_TOTAL){
+    try{ if(typeof onComplete==='function') onComplete(); }catch(e){}
+    return null;
+  }
 
   /*
      Roll from ALL uploaded cards, not only uncollected cards.
@@ -10533,20 +10542,24 @@ async function npcRoll(kind="question",force=false){
   const chance=force ? 100 : npcChanceFor(kind);
   const roll=force ? 0 : Math.random()*100;
   console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,allPool);
-  if(roll>=chance) return null;
+  if(roll>=chance){
+    try{ if(typeof onComplete==='function') onComplete(); }catch(e){}
+    return null;
+  }
 
   const number=allPool[Math.floor(Math.random()*allPool.length)];
   const isDuplicate=npcCollectedNumbers.has(number);
 
   if(isDuplicate){
     console.log(`[NPC Cards] Duplicate card #${String(number).padStart(2,"0")} — not added to collection.`);
+    try{ if(typeof onComplete==='function') onComplete(); }catch(e){}
     return {number,duplicate:true,meta:npcGetMeta(number)};
   }
 
   npcCollectedNumbers.add(number);
   npcPersistCollected();
 
-  npcShowDrop(number,chance,kind);
+  npcShowDrop(number,chance,kind,onComplete);
   npcRenderShelf();
   npcUpdateFunFactCodex();
   return npcGetMeta(number);
@@ -10659,6 +10672,20 @@ async function npcInit(){
   },30000);
 }
 
+function npcOpenNextMilestone(milestone){
+  const next=Number(milestone)+1;
+  if(next>8)return;
+  try{
+    if(typeof refreshJourney==='function')refreshJourney();
+    setTimeout(()=>{
+      const node=document.getElementById(`journey-node-${next}`);
+      if(node && !node.disabled && !node.classList.contains('locked')){
+        node.click();
+      }
+    },220);
+  }catch(e){ console.warn('[NPC Cards] Could not open next milestone',e); }
+}
+
 function npcRewardMilestoneOnce(milestone,kind="endgame"){
   /*
      Reward is PER MILESTONE COMPLETION, not per question.
@@ -10666,7 +10693,7 @@ function npcRewardMilestoneOnce(milestone,kind="endgame"){
      The card roll itself decides whether the selected artwork is new or a duplicate.
   */
   if(window.NPCCollectibleCards?.awardAfterAnswer){
-    void window.NPCCollectibleCards.awardAfterAnswer(kind);
+    void window.NPCCollectibleCards.awardAfterAnswer(kind,()=>npcOpenNextMilestone(milestone));
   }
   return true;
 }
@@ -10679,14 +10706,14 @@ window.NPCCollectibleCards={
   roll:npcRoll,
   award:npcRoll,
   // Kept as the card-roll primitive; gameplay calls it only from milestone completion.
-  awardAfterAnswer:async(kind="question")=>{
+  awardAfterAnswer:async(kind="question",onComplete=null)=>{
     // If the initial scan found no cards, retry immediately. Otherwise use the
-    // cached pool so an answer reward never waits on another 39-file scan.
+    // cached pool so a phase reward never waits on another 39-file scan.
     if(!npcAvailableAssets.size){
       npcAssetScanDone=false;
       npcAvailableAssets.clear();
     }
-    return npcRoll(kind,true);
+    return npcRoll(kind,true,onComplete);
   },
   getChance:npcChanceFor,
   getCardPath:npcCardPath,
