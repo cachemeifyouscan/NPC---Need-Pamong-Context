@@ -5040,7 +5040,6 @@ function bindEndgameChoice(correctId,feedbackId){
             }else btn.classList.add("wrong");
             const f=document.getElementById(feedbackId);
             if(f)f.textContent=correct?"✦ CORRECT — MEMORY CONFIRMED.":"✕ NOT QUITE.";
-            if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("endgame");
             document.querySelectorAll(".endgame-option").forEach(x=>x.disabled=true);
             setTimeout(()=>{
                 endgameIndex++;
@@ -5150,8 +5149,6 @@ function renderEndgameQuestion(){
             feedback.textContent=correct
                 ? "✦ CORRECT — MEMORY CONFIRMED."
                 : `✕ NOT QUITE. The correct nickname is "${teamGameText(p.nickname)}".`;
-
-            if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("endgame");
             if(submit)submit.disabled=true;
 
             setTimeout(()=>{
@@ -5427,10 +5424,8 @@ function renderEndgameResult(){
                 player.milestone=Math.min(5,Math.max(Number(player.milestone||1),completedMilestone+1));
                 savePlayerData(player);
                 submitMilestoneScore(completedMilestone,endgameScore);
+                npcRewardMilestoneOnce(completedMilestone,"endgame");
                 // Safety-net: completing an Endgame always gets one reward attempt.
-                if(window.NPCCollectibleCards?.awardAfterAnswer){
-                    void window.NPCCollectibleCards.awardAfterAnswer("endgame");
-                }
             }
             showTeamGameReviewMenu();
         }else{
@@ -6508,9 +6503,7 @@ function complete(){
   if(typeof savePlayerData==="function")savePlayerData(p);
   else localStorage.setItem("npcPlayer",JSON.stringify(p));
 
-  if(window.NPCCollectibleCards?.awardAfterAnswer){
-   void window.NPCCollectibleCards.awardAfterAnswer("endgame");
-  }
+  npcRewardMilestoneOnce(6,"phase2");
 
   if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){}
@@ -6943,7 +6936,6 @@ function lock(){
  if([2,6].includes(q.type)){correct=String(state.selected[0])===String(q.correct);details=`Correct Pamong: ${label(people.find(p=>String(p.id)===String(q.correct))||{})}.`;root.querySelectorAll("[data-person-choice]").forEach(b=>{b.disabled=true;if(String(b.dataset.personChoice)===String(q.correct))b.classList.add("correct");if(String(b.dataset.personChoice)===String(state.selected[0])&&!correct)b.classList.add("wrong")})}
  if(q.type===3){correct=q.ids.every(id=>q.assignments[id]===people.find(p=>String(p.id)===String(id))?.penempatan);details=correct?"All four commanders are correctly placed.":"One or more commanders are in the wrong Batalyon.";root.querySelectorAll("[data-sort-person],[data-sort-unit]").forEach(b=>b.disabled=true);q.ids.forEach(id=>{const c=root.querySelector(`[data-sort-person="${id}"]`),p=people.find(x=>String(x.id)===String(id));if(c)c.classList.add(q.assignments[id]===p?.penempatan?"correct":"wrong")})}
  if(correct){state.score+=100;void submitMilestoneScore(7,state.score);}
- if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
  state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
  $("m7-score").textContent=`SCORE ${state.score}`;$("m7-lock").disabled=true;$("m7-next").disabled=false;$("m7-lock").textContent="✓ ANSWER LOCKED";
  $("m7-feedback").innerHTML=`<div class="m7-feedback-note">${correct?"✓ Correct. Your answer is locked and cannot be changed.":"✕ Incorrect. Your answer is locked. No correction is allowed."}<br>${esc(details)}</div>`;
@@ -6958,10 +6950,8 @@ function complete(){
   p.milestone=Math.max(Number(p.milestone||1),7);
   if(typeof savePlayerData==="function")savePlayerData(p);
   else localStorage.setItem("npcPlayer",JSON.stringify(p));
-  if(window.NPCCollectibleCards?.awardAfterAnswer){
-   void window.NPCCollectibleCards.awardAfterAnswer("endgame");
-  }
-  if(typeof refreshJourney==="function")refreshJourney();
+  npcRewardMilestoneOnce(7,"phase2");
+ if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){}
  const correct=state.history.filter(x=>x.correct).length;
  $("m7-content").style.display="none";$("m7-actions").style.display="none";$("m7-complete").style.display="block";
@@ -9075,7 +9065,6 @@ document.addEventListener("click",function(e){
       feedback.innerHTML=`<strong>THE MEMORY FADES.</strong><br>${explanation}`;
     }
     trial.history.push({round:trial.round,type:trial.current.type,correct});
-    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
     trial.round++;
     saveGameState();
 
@@ -9149,7 +9138,6 @@ document.addEventListener("click",function(e){
 
     trial.score += correct ? 100 : 0;
     if(correct)void submitMilestoneScore(5,trial.score);
-    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
     trial.streak = correct ? (trial.streak||0)+1 : 0;
     trial.history.push({round:trial.round,type:q.type,correct});
     trial.round++;
@@ -9222,7 +9210,6 @@ document.addEventListener("click",function(e){
     // IMPORTANT: revealing the correct answer never awards points.
     trial.score += allCorrect ? 100 : 0;
     if(allCorrect)void submitMilestoneScore(5,trial.score);
-    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
     trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
     trial.history.push({
       round:trial.round,type:q.type,correct:allCorrect,
@@ -9327,9 +9314,7 @@ document.addEventListener("click",function(e){
         pd.milestone=6;
         localStorage.setItem("npc_player",JSON.stringify(pd));
       }
-      if(window.NPCCollectibleCards?.awardAfterAnswer){
-        void window.NPCCollectibleCards.awardAfterAnswer("endgame");
-      }
+      npcRewardMilestoneOnce(5,"phase2");
     }catch(e){}
     if(typeof refreshJourney==="function")refreshJourney();
   }
@@ -9798,7 +9783,6 @@ function lock(){
  root.querySelectorAll(".m8-option").forEach(b=>{b.disabled=true;const v=b.dataset.person??b.dataset.choice;if(String(v)===String(q.correct))b.classList.add("correct");if(String(v)===String(state.selected)&&!correct)b.classList.add("wrong")});
  $('m8-score').textContent=`SCORE ${state.score}`;$('m8-lock').disabled=true;$('m8-next').disabled=false;let answer=q.type==="nameFace"||q.type==="combo"?label(personById(q.correct)||q.target):q.correct;
  $('m8-feedback').innerHTML=`${correct?"✓ Correct.":"✕ Incorrect."} <span class="m8-streak">${state.streak>=5?`🔥 ${state.streak} STREAK`:""}</span><br>Correct answer: <b>${esc(answer)}</b>`;
- if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("revival");
 }
 function next(){if(!state||!state.locked)return;if(state.index>=state.questions.length-1){complete();return}state.index++;render()}
 async function complete(){
@@ -9819,9 +9803,7 @@ async function complete(){
   if(Number(p.milestone||1)<8)p.milestone=8;
   if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
   await submitMilestoneScore(8,after);
-  if(window.NPCCollectibleCards?.awardAfterAnswer){
-    await window.NPCCollectibleCards.awardAfterAnswer("revival");
-  }
+  npcRewardMilestoneOnce(8,"revival");
   if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){console.warn("Revival score save failed",e)}
  $('m8-content').style.display="none";$('m8-actions').style.display="none";$('m8-feedback').style.display="none";$('m8-complete').style.display="block";
@@ -10487,18 +10469,30 @@ async function npcRoll(kind="question",force=false){
   npcRefreshCollected();
   if(npcCollectedNumbers.size>=NPC_CARD_TOTAL) return null;
 
-  const pool=npcAvailableUncollected();
-  if(!pool.length) return null;
+  /*
+     Roll from ALL uploaded cards, not only uncollected cards.
+     This means a replay can roll a duplicate. Duplicates are intentionally
+     shown as a discovery attempt but are NOT added to the collection.
+  */
+  const allPool=Array.from(npcAvailableAssets).sort((a,b)=>a-b);
+  if(!allPool.length) return null;
 
   const activity=npcGetActivity()+1;
   npcSetActivity(activity);
 
   const chance=force ? 100 : npcChanceFor(kind);
   const roll=force ? 0 : Math.random()*100;
-  console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,pool);
+  console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,allPool);
   if(roll>=chance) return null;
 
-  const number=pool[Math.floor(Math.random()*pool.length)];
+  const number=allPool[Math.floor(Math.random()*allPool.length)];
+  const isDuplicate=npcCollectedNumbers.has(number);
+
+  if(isDuplicate){
+    console.log(`[NPC Cards] Duplicate card #${String(number).padStart(2,"0")} — not added to collection.`);
+    return {number,duplicate:true,meta:npcGetMeta(number)};
+  }
+
   npcCollectedNumbers.add(number);
   npcPersistCollected();
 
@@ -10615,6 +10609,18 @@ async function npcInit(){
   },30000);
 }
 
+function npcRewardMilestoneOnce(milestone,kind="endgame"){
+  /*
+     Reward is PER MILESTONE COMPLETION, not per question.
+     Replaying the same milestone is intentionally allowed to roll again.
+     The card roll itself decides whether the selected artwork is new or a duplicate.
+  */
+  if(window.NPCCollectibleCards?.awardAfterAnswer){
+    void window.NPCCollectibleCards.awardAfterAnswer(kind);
+  }
+  return true;
+}
+
 window.NPCCollectibleCards={
   open:npcOpen,
   close:npcClose,
@@ -10622,6 +10628,7 @@ window.NPCCollectibleCards={
   refreshFunFact:npcUpdateFunFactCodex,
   roll:npcRoll,
   award:npcRoll,
+  // Kept as the card-roll primitive; gameplay calls it only from milestone completion.
   awardAfterAnswer:async(kind="question")=>{
     // If the initial scan found no cards, retry immediately. Otherwise use the
     // cached pool so an answer reward never waits on another 39-file scan.
