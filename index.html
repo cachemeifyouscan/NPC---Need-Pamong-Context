@@ -3329,7 +3329,7 @@ button,input{font:inherit}
                 </div>
 
                 
-<section class="collectible-section" id="collectible-section">
+<section class="collectible-section" id="collectible-section" data-card-system="github-39-assets">
   <div class="collectible-head">
     <div>
       <div class="collectible-kicker">THE PAMONG COLLECTION</div>
@@ -3740,6 +3740,19 @@ async function submitMilestoneScore(milestone,score){
         .reduce((sum,k)=>sum+Number(p.milestoneScores[k]||0),0)+Number(p.revivalTotal||0);
     savePlayerData(p);
     updatePlayerScoreUI();
+
+    /* COLLECTIBLE CARD DROP — called from the REAL scoring function.
+       The previous version tried to replace window.submitMilestoneScore,
+       but the game calls its lexical function directly, so that wrapper
+       could never intercept those calls. */
+    try{
+        const cardKind = m==="8" ? "revival" : (["1","2","3","4"].includes(m) ? "endgame" : "question");
+        if(window.NPCCollectibleCards?.roll){
+            void window.NPCCollectibleCards.roll(cardKind);
+        }
+    }catch(cardError){
+        console.warn("[NPC Cards] Card roll failed:",cardError);
+    }
 
     try{
         const response=await fetch(`${SUPABASE_REST_URL}/rpc/submit_npc_score`,{
@@ -10093,79 +10106,165 @@ window.openRevivalMilestone=open;window.closeRevivalMilestone=close;
 
 
 
-<script id="collectible-cards-js">
+
+<script id="collectible-cards-system-v3">
 (function(){
 "use strict";
 
-const CARD_KEY="npc_collectible_cards_v2";
-const ACTIVITY_KEY="npc_collectible_activity_v2";
-let allPeople=[];
-let collected=new Set();
+/*
+  NPC — COLLECTIBLE CARDS V3
+  GitHub assets:
+    cards/card-01.webp ... cards/card-39.webp
 
-function $(id){return document.getElementById(id)}
-function esc(v){return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]))}
-function player(){
-  try{return typeof getPlayerData==="function"?(getPlayerData()||{}):JSON.parse(localStorage.getItem("npcPlayer")||"{}")}
-  catch(e){return{}}
-}
-function refreshCollected(){
-  const p=player();
-  const saved=Array.isArray(p.collectibleCards)?p.collectibleCards:[];
-  collected=new Set(saved.map(String));
-}
-function persistCollected(){
-  const p=player();
-  if(!p.username)return;
-  p.collectibleCards=[...collected];
-  if(typeof savePlayerData==="function")savePlayerData(p);
-  else localStorage.setItem("npcPlayer",JSON.stringify(p));
-}
-function photoUrl(p){
-  const raw=String(p?.foto||"").trim();
-  if(!raw)return "";
-  if(/^https?:\/\//i.test(raw))return raw;
-  try{if(typeof getPamongPhotoUrl==="function")return getPamongPhotoUrl(raw)}catch(e){}
-  return raw;
-}
-function name(p){return String(p?.nama||p?.panggilan||"Pamong")}
-function nickname(p){return String(p?.panggilan||"").trim()}
-function cardFact(p){return String(p?.fun_fact ?? p?.funFact ?? p?.fact ?? "").trim()}
+  IMPORTANT:
+  - Card progress is stored by CARD NUMBER, not by Supabase person ID.
+  - This means your artwork can be uploaded independently of the database.
+  - If only card-01.webp exists, only Card #01 is eligible to drop.
+  - As you upload card-02.webp ... card-39.webp, they automatically enter
+    the reward pool. No code change is needed.
+*/
 
-async function load(){
-  refreshCollected();
-  if(allPeople.length)return allPeople;
+const NPC_CARD_TOTAL = 39;
+const NPC_CARD_DIR = "cards";
+const NPC_CARD_PROGRESS_KEY = "collectibleCardNumbers";
+const NPC_ACTIVITY_KEY = "collectibleActivity";
+
+let npcCardPeople = [];
+let npcCollectedNumbers = new Set();
+let npcAvailableAssets = new Set();
+let npcAssetScanDone = false;
+
+function npc$(id){ return document.getElementById(id); }
+function npcPad(n){ return String(n).padStart(2,"0"); }
+function npcCardPath(number){ return `${NPC_CARD_DIR}/card-${npcPad(number)}.webp`; }
+
+function npcEsc(v){
+  return String(v ?? "").replace(/[&<>"']/g,s=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[s]));
+}
+
+function npcPlayer(){
+  try{
+    if(typeof getPlayerData === "function") return getPlayerData() || {};
+    return JSON.parse(localStorage.getItem("npcPlayer") || "{}");
+  }catch(e){ return {}; }
+}
+
+function npcSave(data){
+  try{
+    if(typeof savePlayerData === "function") savePlayerData(data);
+    else localStorage.setItem("npcPlayer",JSON.stringify(data));
+  }catch(e){ console.warn("[NPC Cards] save failed",e); }
+}
+
+function npcRefreshCollected(){
+  const p=npcPlayer();
+  const saved=Array.isArray(p[NPC_CARD_PROGRESS_KEY])
+    ? p[NPC_CARD_PROGRESS_KEY]
+    : [];
+  npcCollectedNumbers=new Set(
+    saved.map(Number).filter(n=>Number.isInteger(n)&&n>=1&&n<=NPC_CARD_TOTAL)
+  );
+}
+
+function npcPersistCollected(){
+  const p=npcPlayer();
+  if(!p || !p.username) return;
+  p[NPC_CARD_PROGRESS_KEY]=Array.from(npcCollectedNumbers).sort((a,b)=>a-b);
+  npcSave(p);
+}
+
+function npcGetActivity(){
+  const p=npcPlayer();
+  return Math.max(0,Number(p[NPC_ACTIVITY_KEY]||0));
+}
+
+function npcSetActivity(n){
+  const p=npcPlayer();
+  if(!p || !p.username) return;
+  p[NPC_ACTIVITY_KEY]=Math.max(0,Math.floor(n));
+  npcSave(p);
+}
+
+function npcName(p){ return String(p?.nama||p?.panggilan||"Pamong"); }
+function npcNickname(p){ return String(p?.panggilan||"").trim(); }
+function npcFact(p){ return String(p?.fun_fact??p?.funFact??p?.fact??"").trim(); }
+
+/* Optional metadata only. The actual collectible is the GitHub card image. */
+async function npcLoadPeople(){
+  if(npcCardPeople.length) return npcCardPeople;
   try{
     if(typeof SUPABASE_REST_URL!=="undefined" && typeof SUPABASE_PUBLIC_KEY!=="undefined"){
       const url=`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan,fun_fact&order=id.asc`;
       const r=await fetch(url,{headers:{apikey:SUPABASE_PUBLIC_KEY},cache:"no-store"});
       if(r.ok){
         const d=await r.json();
-        if(Array.isArray(d))allPeople=d;
+        if(Array.isArray(d)) npcCardPeople=d.slice(0,NPC_CARD_TOTAL);
       }
     }
-  }catch(e){console.warn("Collectible Cards data load failed",e)}
-  return allPeople;
+  }catch(e){ console.warn("[NPC Cards] metadata load failed",e); }
+  return npcCardPeople;
 }
 
-function card(p,index,locked){
+function npcAssetExists(number){
+  return new Promise(resolve=>{
+    const img=new Image();
+    let finished=false;
+    const done=ok=>{
+      if(finished)return;
+      finished=true;
+      resolve(!!ok);
+    };
+    img.onload=()=>done(true);
+    img.onerror=()=>done(false);
+    img.src=npcCardPath(number)+"?v=1";
+    setTimeout(()=>done(false),7000);
+  });
+}
+
+async function npcScanAssets(){
+  if(npcAssetScanDone) return npcAvailableAssets;
+  npcAssetScanDone=true;
+
+  const checks=[];
+  for(let number=1;number<=NPC_CARD_TOTAL;number++){
+    checks.push(npcAssetExists(number).then(ok=>{
+      if(ok) npcAvailableAssets.add(number);
+    }));
+  }
+  await Promise.all(checks);
+
+  console.log(`[NPC Cards] ${npcAvailableAssets.size}/${NPC_CARD_TOTAL} assets available.`);
+  return npcAvailableAssets;
+}
+
+function npcGetMeta(number){ return npcCardPeople[number-1]||{}; }
+
+function npcBuildCard(number,locked){
+  const p=npcGetMeta(number);
   const b=document.createElement("button");
   b.type="button";
   b.className="collectible-card"+(locked?" locked":"");
-  b.dataset.id=String(p?.id??"");
+  b.dataset.cardNumber=String(number);
+
   const img=document.createElement("img");
-  img.alt=locked?"Locked Pamong":"Pamong portrait";
-  const src=photoUrl(p);
-  if(src)img.src=src;
+  img.loading="lazy";
+  img.decoding="async";
+  img.alt=locked
+    ? `Locked collectible card #${npcPad(number)}`
+    : `${npcName(p)} collectible card`;
+  if(!locked) img.src=npcCardPath(number);
   b.appendChild(img);
 
-  const n=document.createElement("div");
-  n.className="cc-number";
-  n.textContent="PAMONG #"+String(index+1).padStart(2,"0");
-  b.appendChild(n);
+  const no=document.createElement("div");
+  no.className="cc-number";
+  no.textContent="CARD #"+npcPad(number);
+  b.appendChild(no);
 
   const nm=document.createElement("div");
   nm.className="cc-name";
-  nm.textContent=locked?"???":name(p);
+  nm.textContent=locked?"???":npcName(p);
   b.appendChild(nm);
 
   const tm=document.createElement("div");
@@ -10173,44 +10272,35 @@ function card(p,index,locked){
   tm.textContent=locked?"LOCKED":"TEAM "+String(p?.tim||"—");
   b.appendChild(tm);
 
-  if(!locked)b.addEventListener("click",()=>showDetail(p));
+  if(!locked) b.addEventListener("click",()=>npcShowDetail(number));
   return b;
 }
 
 /* =========================
-   CARD DROP / RNG SYSTEM
-   Every eligible question/completion calls roll().
-   More activity = slightly higher chance, capped so cards remain collectible.
-   Duplicate cards are never awarded.
+   RNG
 ========================= */
-function getActivity(){
-  const p=player();
-  return Math.max(0,Number(p.collectibleActivity||0));
-}
-function setActivity(n){
-  const p=player();
-  p.collectibleActivity=Math.max(0,Math.floor(n));
-  if(typeof savePlayerData==="function")savePlayerData(p);
-  else localStorage.setItem("npcPlayer",JSON.stringify(p));
-}
-function chanceFor(kind){
-  const activity=getActivity();
-  const activityBonus=Math.min(12,activity*0.5); // +0.5% per eligible completion, max +12%
+function npcChanceFor(kind){
+  const activity=npcGetActivity();
+  const activityBonus=Math.min(12,activity*0.5);
   let base=8;
-  if(kind==="endgame")base=28;
-  if(kind==="revival")base=40;
+  if(kind==="endgame") base=28;
+  if(kind==="revival") base=40;
   return Math.min(55,base+activityBonus);
 }
-function randomUncollected(){
-  refreshCollected();
-  const pool=allPeople.filter(p=>!collected.has(String(p.id)));
-  if(!pool.length)return null;
-  return pool[Math.floor(Math.random()*pool.length)];
+
+function npcAvailableUncollected(){
+  npcRefreshCollected();
+  const pool=[];
+  npcAvailableAssets.forEach(number=>{
+    if(!npcCollectedNumbers.has(number)) pool.push(number);
+  });
+  return pool;
 }
 
-function showDrop(p,chance,kind){
-  const existing=$("collectible-drop-overlay");
-  if(existing)existing.remove();
+function npcShowDrop(number,chance,kind){
+  const p=npcGetMeta(number);
+  const existing=npc$("collectible-drop-overlay");
+  if(existing) existing.remove();
 
   const overlay=document.createElement("div");
   overlay.id="collectible-drop-overlay";
@@ -10222,265 +10312,256 @@ function showDrop(p,chance,kind){
       <h2>CARD ACQUIRED</h2>
       <p class="collectible-drop-sub">The archives have yielded a new Pamong card.</p>
       <div class="collectible-drop-card">
-        <img src="${esc(photoUrl(p))}" alt="New Pamong card">
-        <div class="collectible-drop-number">PAMONG #${String(allPeople.indexOf(p)+1).padStart(2,"0")}</div>
-        <div class="collectible-drop-name">${esc(name(p))}</div>
-        <div class="collectible-drop-team">TEAM ${esc(p.tim||"—")}</div>
+        <img src="${npcEsc(npcCardPath(number))}" alt="Card #${npcPad(number)}">
+        <div class="collectible-drop-number">CARD #${npcPad(number)}</div>
+        <div class="collectible-drop-name">${npcEsc(npcName(p))}</div>
+        <div class="collectible-drop-team">TEAM ${npcEsc(p.tim||"—")}</div>
       </div>
-      <div class="collectible-drop-fact">${cardFact(p)?`✦ ${esc(cardFact(p))}`:"A new face has entered your collection."}</div>
+      <div class="collectible-drop-fact">
+        ${npcFact(p)
+          ? `✦ ${npcEsc(npcFact(p))}`
+          : "The full card artwork has been added to your collection."}
+      </div>
       <button type="button" id="collectible-drop-close">ADD TO COLLECTION →</button>
     </div>`;
+
   document.body.appendChild(overlay);
   const close=()=>{
     overlay.remove();
-    renderShelf();
-    updateFunFactCodex();
+    npcRenderShelf();
+    npcUpdateFunFactCodex();
   };
-  $("collectible-drop-close").onclick=close;
+  npc$("collectible-drop-close")?.addEventListener("click",close);
   overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
 }
 
-function roll(kind="question"){
-  if(!allPeople.length)return null;
-  refreshCollected();
-  if(collected.size>=allPeople.length)return null;
+function npcRoll(kind="question"){
+  if(!npcAvailableAssets.size) return null;
 
-  const activity=getActivity()+1;
-  setActivity(activity);
+  npcRefreshCollected();
+  if(npcCollectedNumbers.size>=NPC_CARD_TOTAL) return null;
 
-  const chance=chanceFor(kind);
-  const hit=Math.random()*100<chance;
-  if(!hit)return null;
+  const pool=npcAvailableUncollected();
+  if(!pool.length) return null;
 
-  const p=randomUncollected();
-  if(!p)return null;
+  const activity=npcGetActivity()+1;
+  npcSetActivity(activity);
 
-  collected.add(String(p.id));
-  persistCollected();
+  const chance=npcChanceFor(kind);
+  if(Math.random()*100>=chance) return null;
 
-  showDrop(p,chance,kind);
-  return p;
+  const number=pool[Math.floor(Math.random()*pool.length)];
+  npcCollectedNumbers.add(number);
+  npcPersistCollected();
+
+  npcShowDrop(number,chance,kind);
+  npcRenderShelf();
+  npcUpdateFunFactCodex();
+  return npcGetMeta(number);
 }
 
-/* Public hook used by the game's existing scoring/completion system. */
-window.NPCCollectibleCards={
-  refresh:renderShelf,
-  refreshFunFact:updateFunFactCodex,
-  open,
-  close,
-  getCardFact:cardFact,
-  roll,
-  award:roll,
-  getChance:chanceFor
-};
-
-function updateFunFactCodex(){
-  const discoveredCards=allPeople.filter(p=>collected.has(String(p.id)));
-  const factFound=discoveredCards.filter(p=>cardFact(p)).length;
-  const factTotal=allPeople.filter(p=>cardFact(p)).length;
-  const count=$("codex-fact-count");
-  const bar=$("codex-fact-bar");
-  if(count)count.textContent=`${factFound} / ${factTotal}`;
-  if(bar)bar.style.width=(factTotal?Math.min(100,factFound/factTotal*100):0)+"%";
-}
-
-function renderShelf(){
-  refreshCollected();
-  const shelf=$("collectible-shelf");
+/* =========================
+   COLLECTION UI
+========================= */
+function npcRenderShelf(){
+  npcRefreshCollected();
+  const shelf=npc$("collectible-shelf");
   if(!shelf)return;
-  const total=allPeople.length||0;
-  const found=allPeople.filter(p=>collected.has(String(p.id)));
-  const count=$("collectible-count");
-  if(count)count.textContent=`${found.length} / ${total} COLLECTED`;
 
-  const visible=found.slice(-4);
+  const count=npc$("collectible-count");
+  if(count) count.textContent=`${npcCollectedNumbers.size} / ${NPC_CARD_TOTAL} COLLECTED`;
+
   shelf.innerHTML="";
+  const visible=Array.from(npcCollectedNumbers).sort((a,b)=>a-b).slice(-4);
+
   if(!visible.length){
     shelf.innerHTML=`<div class="collectible-empty">No cards collected yet.<br>Complete challenges for a chance to discover one.</div>`;
-  }else{
-    visible.forEach(p=>shelf.appendChild(card(p,allPeople.indexOf(p),false)));
-    for(let i=visible.length;i<4;i++)shelf.appendChild(card({id:"locked-"+i},i,true));
+    return;
   }
-  updateFunFactCodex();
+
+  visible.forEach(number=>shelf.appendChild(npcBuildCard(number,false)));
+  for(let i=visible.length;i<4;i++){
+    const lockedNumber=(i+1<=NPC_CARD_TOTAL)?i+1:1;
+    shelf.appendChild(npcBuildCard(lockedNumber,true));
+  }
 }
 
-function renderFull(){
-  refreshCollected();
-  const grid=$("collectible-full-grid");
+function npcRenderFull(){
+  npcRefreshCollected();
+  const grid=npc$("collectible-full-grid");
   if(!grid)return;
   grid.innerHTML="";
-  allPeople.forEach((p,i)=>grid.appendChild(card(p,i,!collected.has(String(p.id)))));
-  updateFunFactCodex();
+
+  for(let number=1;number<=NPC_CARD_TOTAL;number++){
+    grid.appendChild(npcBuildCard(number,!npcCollectedNumbers.has(number)));
+  }
+  npcUpdateFunFactCodex();
 }
 
-function showDetail(p){
-  const d=$("collectible-detail");
-  const img=$("collectible-detail-img");
-  const nm=$("collectible-detail-name");
-  const info=$("collectible-detail-info");
+function npcShowDetail(number){
+  if(!npcCollectedNumbers.has(number)) return;
+  const p=npcGetMeta(number);
+  const d=npc$("collectible-detail");
+  const img=npc$("collectible-detail-img");
+  const nm=npc$("collectible-detail-name");
+  const info=npc$("collectible-detail-info");
   if(!d)return;
-  img.src=photoUrl(p)||"";
-  nm.textContent=name(p);
+
+  img.src=npcCardPath(number);
+  img.alt=`Card #${npcPad(number)} — ${npcName(p)}`;
+  nm.textContent=npcName(p);
+
   const bits=[];
-  if(nickname(p))bits.push("Known as "+nickname(p));
+  if(npcNickname(p))bits.push("Known as "+npcNickname(p));
   if(p.angkatan)bits.push("Generation "+p.angkatan);
   if(p.tim)bits.push("Team "+p.tim);
   if(p.penempatan)bits.push(p.penempatan);
   if(p.jabatan)bits.push(p.jabatan);
   info.textContent=bits.join(" · ");
 
-  let factBox=$("collectible-detail-fact");
+  let factBox=npc$("collectible-detail-fact");
   if(!factBox){
     factBox=document.createElement("div");
     factBox.id="collectible-detail-fact";
     factBox.className="collectible-detail-fact";
     info.parentElement.appendChild(factBox);
   }
-  const fact=cardFact(p);
-  factBox.innerHTML=fact?`<span>✦ FUN FACT</span><strong>${esc(fact)}</strong>`:`<span>✦ FUN FACT</span><strong>Not discovered yet.</strong>`;
+
+  factBox.innerHTML=npcFact(p)
+    ? `<span>✦ FUN FACT</span><strong>${npcEsc(npcFact(p))}</strong>`
+    : `<span>✦ CARD #${npcPad(number)}</span><strong>The full artwork is the collectible.</strong>`;
+
   d.classList.add("open");
 }
 
-function open(){
-  refreshCollected();
-  renderFull();
-  $("collectible-overlay").classList.add("open");
-  $("collectible-overlay").setAttribute("aria-hidden","false");
+function npcOpen(){
+  npcRefreshCollected();
+  npcRenderFull();
+  npc$("collectible-overlay")?.classList.add("open");
+  npc$("collectible-overlay")?.setAttribute("aria-hidden","false");
   document.body.style.overflow="hidden";
 }
-function close(){
-  $("collectible-overlay").classList.remove("open");
-  $("collectible-overlay").setAttribute("aria-hidden","true");
-  $("collectible-detail").classList.remove("open");
+
+function npcClose(){
+  npc$("collectible-overlay")?.classList.remove("open");
+  npc$("collectible-overlay")?.setAttribute("aria-hidden","true");
+  npc$("collectible-detail")?.classList.remove("open");
   document.body.style.overflow="";
 }
 
-async function init(){
-  await load();
-  renderShelf();
-  $("collectible-view")?.addEventListener("click",open);
-  $("collectible-close")?.addEventListener("click",close);
-  $("collectible-overlay")?.addEventListener("click",e=>{if(e.target.id==="collectible-overlay")close()});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+function npcUpdateFunFactCodex(){
+  const count=npc$("codex-fact-count");
+  const bar=npc$("codex-fact-bar");
+  /* Every collected card contains its own Fun Fact artwork. */
+  if(count) count.textContent=`${npcCollectedNumbers.size} / ${NPC_CARD_TOTAL}`;
+  if(bar) bar.style.width=(npcCollectedNumbers.size/NPC_CARD_TOTAL*100)+"%";
+}
+
+async function npcInit(){
+  npcRefreshCollected();
+  npcRenderShelf();
+
+  npc$("collectible-view")?.addEventListener("click",npcOpen);
+  npc$("collectible-close")?.addEventListener("click",npcClose);
+  npc$("collectible-overlay")?.addEventListener("click",e=>{
+    if(e.target.id==="collectible-overlay")npcClose();
+  });
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")npcClose()});
+
+  /* Metadata is optional; card images are the source of truth. */
+  npcLoadPeople().then(()=>{
+    npcRenderShelf();
+    npcUpdateFunFactCodex();
+  });
+
+  /* Detect whichever card assets have been uploaded to GitHub. */
+  npcScanAssets().then(()=>{
+    npcRenderShelf();
+    npcUpdateFunFactCodex();
+  });
+
   setInterval(()=>{
-    const before=collected.size;
-    refreshCollected();
-    updateFunFactCodex();
-    if(before!==collected.size)renderShelf();
+    const before=npcCollectedNumbers.size;
+    npcRefreshCollected();
+    if(before!==npcCollectedNumbers.size){
+      npcRenderShelf();
+      npcUpdateFunFactCodex();
+    }
   },1500);
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+
+window.NPCCollectibleCards={
+  open:npcOpen,
+  close:npcClose,
+  refresh:npcRenderShelf,
+  refreshFunFact:npcUpdateFunFactCodex,
+  roll:npcRoll,
+  award:npcRoll,
+  getChance:npcChanceFor,
+  getCardPath:npcCardPath,
+  getAvailableAssets:()=>Array.from(npcAvailableAssets).sort((a,b)=>a-b),
+  getCollected:()=>Array.from(npcCollectedNumbers).sort((a,b)=>a-b)
+};
+
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",npcInit);
+}else{
+  npcInit();
+}
 })();
 </script>
 
-
+<!-- Collectible Cards modal -->
 <div class="collectible-overlay" id="collectible-overlay" aria-hidden="true">
- <div class="collectible-panel" role="dialog" aria-modal="true">
-  <div class="collectible-panel-head">
-   <div><div class="collectible-panel-kicker">THE PAMONG COLLECTION</div><h2>Collectible Cards</h2></div>
-   <button class="collectible-close" id="collectible-close" type="button">×</button>
+  <div class="collectible-panel" role="dialog" aria-modal="true">
+
+    <div class="collectible-panel-head">
+      <div>
+        <div class="collectible-panel-kicker">THE PAMONG COLLECTION</div>
+        <h2>Collectible Cards</h2>
+      </div>
+
+      <button class="collectible-close" id="collectible-close" type="button">×</button>
+    </div>
+
+    <div class="collectible-detail" id="collectible-detail">
+      <img id="collectible-detail-img" alt="Pamong collectible card">
+      <div>
+        <h3 id="collectible-detail-name">Pamong</h3>
+        <p id="collectible-detail-info"></p>
+      </div>
+    </div>
+
+    <div class="collectible-full-grid" id="collectible-full-grid"></div>
+
   </div>
-  <div class="collectible-detail" id="collectible-detail">
-   <img id="collectible-detail-img" alt="Pamong portrait">
-   <div><h3 id="collectible-detail-name">Pamong</h3><p id="collectible-detail-info"></p></div>
-  </div>
-  <div class="collectible-full-grid" id="collectible-full-grid"></div>
- </div>
 </div>
 
-<script id="collectible-cards-js">
-(function(){
-"use strict";
-let people=[];
-let discovered=new Set();
-function $(id){return document.getElementById(id)}
-function player(){try{return typeof getPlayerData==="function"?(getPlayerData()||{}):JSON.parse(localStorage.getItem("npcPlayer")||"{}")}catch(e){return{}}}
-function refresh(){const p=player();discovered=new Set((Array.isArray(p.codexPamongs)?p.codexPamongs:[]).map(String))}
-function photo(p){const x=String(p?.foto||"").trim();if(!x)return"";if(/^https?:\/\//i.test(x))return x;try{if(typeof getPamongPhotoUrl==="function")return getPamongPhotoUrl(x)}catch(e){}return x}
-function nm(p){return String(p?.nama||p?.panggilan||"Pamong")}
-function buildCard(p,i,locked){
- const b=document.createElement("button");b.type="button";b.className="collectible-card"+(locked?" locked":"");
- const im=document.createElement("img");im.alt=locked?"Locked Pamong":"Pamong portrait";if(photo(p))im.src=photo(p);b.appendChild(im);
- const no=document.createElement("div");no.className="cc-number";no.textContent="PAMONG #"+String(i+1).padStart(2,"0");b.appendChild(no);
- const n=document.createElement("div");n.className="cc-name";n.textContent=locked?"???":nm(p);b.appendChild(n);
- const t=document.createElement("div");t.className="cc-team";t.textContent=locked?"LOCKED":"TEAM "+String(p?.tim||"—");b.appendChild(t);
- if(!locked)b.onclick=()=>detail(p);
- return b;
-}
-async function load(){
- refresh();
- try{
-  if(typeof SUPABASE_REST_URL!=="undefined"&&typeof SUPABASE_PUBLIC_KEY!=="undefined"){
-   const r=await fetch(`${SUPABASE_REST_URL}/Pengasuh?select=id,nama,panggilan,angkatan,tim,foto,penempatan,jabatan,fun_fact&order=id.asc`,{headers:{apikey:SUPABASE_PUBLIC_KEY},cache:"no-store"});
-   if(r.ok){const d=await r.json();if(Array.isArray(d))people=d}
-  }
- }catch(e){console.warn("Collectible Cards load failed",e)}
- renderShelf();
-}
-function renderShelf(){
- refresh();const shelf=$("collectible-shelf");if(!shelf)return;shelf.innerHTML="";
- const found=people.filter(p=>discovered.has(String(p.id)));
- $("collectible-count").textContent=`${found.length} / ${people.length||39} COLLECTED`;
- const visible=found.slice(-4);
- if(!visible.length){shelf.innerHTML='<div class="collectible-empty">No cards collected yet.<br>Complete an encounter to add your first Pamong card.</div>';return}
- visible.forEach(p=>shelf.appendChild(buildCard(p,people.indexOf(p),false)));
- for(let i=visible.length;i<4;i++)shelf.appendChild(buildCard({id:"locked"+i},i,true));
-}
-function renderFull(){
- refresh();const g=$("collectible-full-grid");g.innerHTML="";
- people.forEach((p,i)=>g.appendChild(buildCard(p,i,!discovered.has(String(p.id)))));
-}
-function detail(p){
- const d=$("collectible-detail");$("collectible-detail-img").src=photo(p)||"";
- $("collectible-detail-name").textContent=nm(p);
- const bits=[];if(p.panggilan)bits.push("Known as "+p.panggilan);if(p.angkatan)bits.push("Generation "+p.angkatan);if(p.tim)bits.push("Team "+p.tim);if(p.penempatan)bits.push(p.penempatan);if(p.jabatan)bits.push(p.jabatan);
- $("collectible-detail-info").textContent=bits.join(" · ");d.classList.add("open");
-}
-function open(){renderFull();$("collectible-overlay").classList.add("open");$("collectible-overlay").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
-function close(){ $("collectible-overlay").classList.remove("open");$("collectible-overlay").setAttribute("aria-hidden","true");$("collectible-detail").classList.remove("open");document.body.style.overflow=""}
-function init(){
- $("collectible-view")?.addEventListener("click",open);$("collectible-close")?.addEventListener("click",close);
- $("collectible-overlay")?.addEventListener("click",e=>{if(e.target.id==="collectible-overlay")close()});
- document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
- load();setInterval(()=>{const n=discovered.size;refresh();if(n!==discovered.size)renderShelf()},1500);
-}
-window.NPCCollectibleCards={open,close,refresh:renderShelf};
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
-})();
-</script>
-
+<!-- Fun Fact bridge -->
 <script id="collectible-funfact-codex-bridge">
 (function(){
   function sync(){
     try{
-      if(window.NPCCollectibleCards?.refreshFunFact) window.NPCCollectibleCards.refreshFunFact();
+      if(window.NPCCollectibleCards?.refreshFunFact){
+        window.NPCCollectibleCards.refreshFunFact();
+      }
     }catch(e){}
   }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(sync,800));
-  else setTimeout(sync,800);
-  setInterval(sync,2000);
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", () => setTimeout(sync, 800));
+  }else{
+    setTimeout(sync, 800);
+  }
+
+  setInterval(sync, 2000);
 })();
 </script>
 
+<!-- Existing scoring hook: does not modify the game's score -->
+<!-- Card drops are triggered directly inside submitMilestoneScore above. -->
 
-<script id="collectible-drop-score-hook">
-(function(){
-  const originalSubmit=window.submitMilestoneScore;
-  if(typeof originalSubmit!=="function")return;
-  window.submitMilestoneScore=async function(milestone,score){
-    const result=await originalSubmit.apply(this,arguments);
-    try{
-      const m=String(Number(milestone));
-      const kind=(m==="8")?"revival":(["1","2","3","4"].includes(m)?"endgame":"question");
-      if(window.NPCCollectibleCards?.roll) window.NPCCollectibleCards.roll(kind);
-    }catch(e){console.warn("Collectible card roll failed:",e)}
-    return result;
-  };
-})();
-</script>
 
-</body>
-</html>
 <script>
 (function(){
     const p=(typeof getPlayerData==="function")?getPlayerData():null;
@@ -10499,3 +10580,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   else bootCodex();
 })();
 </script>
+
+</body>
+</html>
