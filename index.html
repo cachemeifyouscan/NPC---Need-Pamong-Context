@@ -11210,3 +11210,71 @@ window.NPCCloudChronicle = {
 
 </body>
 </html>
+<style id="npc-avatar-signup-layout-fix">
+/* =========================================================
+   SIGN-UP AVATAR SCREEN — KEEP ACTIONS VISIBLE
+   The portrait grid scrolls; the BACK / CHOOSE CHARACTER
+   controls stay visible inside the viewport.
+========================================================= */
+#avatar-screen:not(.hidden){
+  height:100dvh;
+  min-height:100dvh;
+  max-height:100dvh;
+  box-sizing:border-box;
+  overflow:hidden;
+  padding:18px 18px 22px;
+}
+
+#avatar-screen:not(.hidden) .avatar-picker-card{
+  height:calc(100dvh - 40px);
+  max-height:calc(100dvh - 40px);
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+#avatar-screen:not(.hidden) .avatar-picker{
+  flex:1 1 auto;
+  min-height:0;
+  max-height:none;
+  overflow-y:auto;
+  overflow-x:hidden;
+  align-content:start;
+}
+
+#avatar-screen:not(.hidden) .avatar-picker-note{
+  flex:0 0 auto;
+}
+
+#avatar-screen:not(.hidden) .avatar-picker-actions{
+  flex:0 0 auto;
+  position:relative;
+  z-index:5;
+  margin-top:10px;
+  padding:10px 0 2px;
+}
+
+#avatar-screen:not(.hidden) #avatar-error{
+  flex:0 0 auto;
+  min-height:18px;
+  margin:4px 0 0;
+}
+
+@media(max-width:760px){
+  #avatar-screen:not(.hidden){padding:10px 10px 14px}
+  #avatar-screen:not(.hidden) .avatar-picker-card{
+    height:calc(100dvh - 24px);
+    max-height:calc(100dvh - 24px);
+  }
+  #avatar-screen:not(.hidden) .avatar-picker-actions{margin-top:8px;padding-top:8px}
+}
+
+@media(max-height:720px){
+  #avatar-screen:not(.hidden) .mascot-small{max-height:72px;width:auto}
+  #avatar-screen:not(.hidden) .screen-title{margin-top:4px;margin-bottom:4px}
+  #avatar-screen:not(.hidden) .screen-text{margin-top:4px;margin-bottom:6px}
+  #avatar-screen:not(.hidden) .avatar-picker{margin-top:8px}
+  #avatar-screen:not(.hidden) .avatar-picker-actions{margin-top:6px;padding-top:6px}
+}
+</style>
