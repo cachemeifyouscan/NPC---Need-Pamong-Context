@@ -10531,52 +10531,56 @@ function npcShowDrop(number,chance,kind,onClose,duplicate=false){
 }
 
 async function npcRoll(kind="question",force=false,onComplete=null){
-  // A phase completion calls this with force=true. Wait for asset discovery.
-  await npcScanAssets();
-
-  // If GitHub scan is empty, Card #01 has an embedded fallback artwork.
-  // It is always eligible, so a completed phase can still receive a card.
-  if(!npcAvailableAssets.size){
-    npcAvailableAssets.add(1);
-    console.warn("[NPC Cards] No hosted card assets detected; using embedded Card #01 fallback.");
-  }
-
+  /*
+   * PHASE REWARD — GUARANTEED.
+   * Never let the 39-file GitHub scan block or cancel a phase reward.
+   * If the background scan has not discovered any hosted artwork yet,
+   * Card #01 is always a valid fallback because its artwork is embedded.
+   */
   npcRefreshCollected();
   if(npcCollectedNumbers.size>=NPC_CARD_TOTAL){
     try{if(typeof onComplete==='function')onComplete();}catch(e){}
     return null;
   }
 
-  const allPool=Array.from(npcAvailableAssets).sort((a,b)=>a-b);
-  if(!allPool.length)return null;
+  let pool=Array.from(npcAvailableAssets)
+    .map(Number)
+    .filter(n=>Number.isInteger(n)&&n>=1&&n<=NPC_CARD_TOTAL);
+
+  // IMPORTANT: a reward must never disappear just because the GitHub
+  // asset scan has not completed yet. Card #01 has an embedded fallback.
+  if(!pool.length) pool=[1];
 
   const activity=npcGetActivity()+1;
   npcSetActivity(activity);
 
-  // Phase/milestone completion is guaranteed to make one roll.
+  // Phase/milestone completion is always one guaranteed roll.
   const chance=force ? 100 : npcChanceFor(kind);
   const roll=force ? 0 : Math.random()*100;
-  console.log(`[NPC Cards] ${kind} roll: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,allPool);
-  if(roll>=chance){
+  console.log(`[NPC Cards] ${kind} reward: ${roll.toFixed(1)} vs ${chance.toFixed(1)}% | pool:`,pool);
+
+  if(!force && roll>=chance){
+    // This branch is only for any future non-forced use. Phase completion
+    // always passes force=true.
     try{if(typeof onComplete==='function')onComplete();}catch(e){}
     return null;
   }
 
-  const number=allPool[Math.floor(Math.random()*allPool.length)];
+  const number=pool[Math.floor(Math.random()*pool.length)];
   const isDuplicate=npcCollectedNumbers.has(number);
 
-  if(isDuplicate){
-    console.log(`[NPC Cards] Duplicate card #${String(number).padStart(2,"0")} — not added to collection.`);
-    await npcShowDrop(number,chance,kind,onComplete,true);
-    return {number,duplicate:true,meta:npcGetMeta(number)};
+  if(!isDuplicate){
+    npcCollectedNumbers.add(number);
+    npcPersistCollected();
+    npcRenderShelf();
+    npcUpdateFunFactCodex();
   }
 
-  npcCollectedNumbers.add(number);
-  npcPersistCollected();
-  npcRenderShelf();
-  npcUpdateFunFactCodex();
-  await npcShowDrop(number,chance,kind,onComplete,false);
-  return npcGetMeta(number);
+  // Always show the reward modal, including duplicates.
+  // Card #01 automatically falls back to embedded artwork if the hosted
+  // GitHub image is unavailable.
+  await npcShowDrop(number,chance,kind,onComplete,isDuplicate);
+  return {number,duplicate:isDuplicate,meta:npcGetMeta(number)};
 }
 
 /* =========================
