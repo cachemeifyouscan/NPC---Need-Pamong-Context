@@ -292,6 +292,30 @@ button,input{font:inherit}
 }
 #start-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
 #start-button:active{transform:translateY(3px);box-shadow:inset 0 2px 0 rgba(255,220,155,.12),0 1px 0 #29170b}
+/* =========================================================
+   ACCOUNT CHOICE — SIGN IN / SIGN UP
+========================================================= */
+.account-choice-card{max-width:720px}
+.account-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:560px;margin:28px auto 8px}
+.account-choice-btn{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:148px;padding:24px 18px;border:1px solid #9a7743;border-radius:4px;
+  background:linear-gradient(180deg,#fff9e9 0%,#ead3a2 100%);
+  color:#4b321b;font-family:"Palatino Linotype",Palatino,Georgia,serif;cursor:pointer;
+  box-shadow:0 4px 0 #8a6637,0 9px 18px rgba(63,38,14,.15),inset 0 1px 0 rgba(255,255,255,.8);
+  transition:transform .15s ease,filter .15s ease,box-shadow .15s ease;
+}
+.account-choice-btn:before{content:"";position:absolute;inset:7px;border:1px solid rgba(126,91,40,.3);pointer-events:none;border-radius:2px}
+.account-choice-btn:hover{transform:translateY(-3px);filter:brightness(1.04);box-shadow:0 7px 0 #8a6637,0 13px 22px rgba(63,38,14,.18),inset 0 1px 0 rgba(255,255,255,.8)}
+.account-choice-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #8a6637,0 5px 12px rgba(63,38,14,.14)}
+.account-choice-icon{font-size:31px;line-height:1;margin-bottom:11px;color:#76511f}
+.account-choice-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.account-choice-sub{margin-top:7px;font-size:12px;letter-spacing:.7px;color:#806746;font-style:italic}
+.account-choice-note{margin:20px auto 0;max-width:510px;color:#8b7354;font-size:13px;line-height:1.6;font-style:italic}
+.account-back{margin:18px auto 0!important;width:150px!important;height:44px!important;font-size:12px!important}
+@media(max-width:620px){.account-choice-grid{grid-template-columns:1fr;max-width:320px}.account-choice-btn{min-height:125px}}
+
+
 .error{min-height:23px;margin:15px 0 0;color:#87392a;font-size:14px;font-style:italic}
 .gate-footer{margin-top:22px;color:#907655;font-size:13px;font-style:italic;letter-spacing:1px}
 
@@ -1788,6 +1812,20 @@ button,input{font:inherit}
 .dm-result h2{font:700 25px Georgia,serif;color:#432716;margin:8px 0}
 .dm-result .dm-submit{margin-top:14px}
 
+/* =========================================================
+   SIGN IN USERNAME STEP
+========================================================= */
+.signin-username-card{max-width:620px}
+.signin-username-card .form-stack{max-width:480px;margin:26px auto 0}
+.signin-username-card .medieval-input{text-align:center}
+.text-back-button{
+    border:0;background:transparent;color:#76512a;cursor:pointer;
+    font:600 12px "Palatino Linotype",Palatino,Georgia,serif;
+    letter-spacing:1px;margin-top:4px;padding:8px 12px;
+}
+.text-back-button:hover{text-decoration:underline}
+
+
 </style>
 <link rel="preload" as="image" href="sanapati-map.png" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2737,6 +2775,27 @@ button,input{font:inherit}
 .collectible-detail img{width:120px;aspect-ratio:3/4;object-fit:cover;border:1px solid #a77836}
 .collectible-detail h3{margin:0;color:#f1d18a;font:700 22px Georgia,serif}
 .collectible-detail p{margin:6px 0;color:#bda274;font:11px/1.5 Georgia,serif}
+.collectible-detail-actions{
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:flex-end;
+  margin-top:4px;
+}
+.collectible-delete{
+  border:1px solid #8d3f2f;
+  background:linear-gradient(#743a2d,#4a2119);
+  color:#f4d8b0;
+  padding:9px 13px;
+  font:700 9px Georgia,serif;
+  letter-spacing:1.2px;
+  cursor:pointer;
+}
+.collectible-delete:hover{filter:brightness(1.12)}
+.collectible-drop-sub{
+  margin:10px 0 0;
+  color:#b99a6b;
+  font:11px/1.4 Georgia,serif;
+}
 @media(max-width:700px){
   .collectible-shelf{grid-template-columns:repeat(4,minmax(0,1fr))}
   .collectible-full-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -3100,6 +3159,57 @@ button,input{font:inherit}
 
         <p id="error-message" class="error"></p>
         <div class="gate-footer">The realm beyond is waiting.</div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     ACCOUNT CHOICE
+========================================================= -->
+<section id="account-choice-screen" class="screen hidden">
+    <div class="manuscript-card account-choice-card">
+        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+        <div class="screen-kicker">THE CHRONICLE GATE</div>
+        <h1 class="screen-title">Choose Your Path</h1>
+        <p class="screen-text">Will you return to an existing chronicle, or begin a new one?</p>
+
+        <div class="account-choice-grid">
+            <button id="sign-in-button" class="account-choice-btn" type="button">
+                <span class="account-choice-icon">⚔</span>
+                <span class="account-choice-title">SIGN IN</span>
+                <span class="account-choice-sub">Continue your saved chronicle</span>
+            </button>
+            <button id="sign-up-button" class="account-choice-btn" type="button">
+                <span class="account-choice-icon">✦</span>
+                <span class="account-choice-title">SIGN UP</span>
+                <span class="account-choice-sub">Begin a new adventure</span>
+            </button>
+        </div>
+
+        <p id="account-choice-error" class="error"></p>
+        <p class="account-choice-note">Your chronicle is stored on this device. Signing up on a device with an existing chronicle will replace that local profile.</p>
+        <button id="account-back-button" class="wood-button account-back" type="button">← BACK</button>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     SIGN IN — USERNAME
+========================================================= -->
+<section id="signin-username-screen" class="screen hidden">
+    <div class="manuscript-card signin-username-card">
+        <img class="mascot-small" src="https://raw.githubusercontent.com/cachemeifyouscan/NPC---Need-Pamong-Context/main/mascot2.png" alt="NPC">
+        <div class="screen-kicker">THE CHRONICLE REMEMBERS</div>
+        <h1 class="screen-title">What Is Your Name?</h1>
+        <p class="screen-text">Enter your name first. The realm will search for your saved chronicle.</p>
+
+        <div class="form-stack">
+            <label class="field-label" for="signin-username-input">YOUR NAME</label>
+            <input id="signin-username-input" class="medieval-input" type="text" autocomplete="username" placeholder="Enter your name..." maxlength="24">
+            <button id="signin-username-button" class="wood-button" type="button">✦ FIND MY CHRONICLE ✦</button>
+            <p id="signin-username-error" class="error"></p>
+            <button id="signin-username-back" class="text-back-button" type="button">← BACK</button>
+        </div>
     </div>
 </section>
 
@@ -3568,6 +3678,8 @@ if (introStartButton) {
 function showScreen(screenId) {
     const screens = [
         "login-screen",
+        "account-choice-screen",
+        "signin-username-screen",
         "username-screen",
         "avatar-screen",
         "pin-setup-screen",
@@ -3585,6 +3697,7 @@ function showScreen(screenId) {
     const target = document.getElementById(screenId);
     if (target) target.classList.remove("hidden");
 }
+
 
 /* =========================================================
    PLAYER STORAGE
@@ -3950,19 +4063,83 @@ if (startButton) {
 
         accessError.textContent = "";
 
-        const player = getPlayerData();
-
-        if (player) {
-            document.getElementById("pin-login-message").textContent =
-                `Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
-
-            showScreen("pin-login-screen");
-            return;
-        }
-
-        showScreen("username-screen");
+        // After unlocking the gate, let the player explicitly choose SIGN IN or SIGN UP.
+        showScreen("account-choice-screen");
     });
 }
+
+/* =========================================================
+   ACCOUNT CHOICE — SIGN IN / SIGN UP
+========================================================= */
+const signInButton = document.getElementById("sign-in-button");
+const signUpButton = document.getElementById("sign-up-button");
+const accountBackButton = document.getElementById("account-back-button");
+
+if(signInButton){
+  signInButton.addEventListener("click",function(){
+    const input=document.getElementById("signin-username-input");
+    const err=document.getElementById("signin-username-error");
+    if(input) input.value="";
+    if(err) err.textContent="";
+    showScreen("signin-username-screen");
+    setTimeout(()=>input?.focus(),80);
+  });
+}
+if(signUpButton){
+  signUpButton.addEventListener("click",function(){
+    showScreen("username-screen");
+    setTimeout(()=>document.getElementById("username")?.focus(),80);
+  });
+}
+if(accountBackButton){
+  accountBackButton.addEventListener("click",function(){
+    showScreen("login-screen");
+    setTimeout(()=>accessInput?.focus(),80);
+  });
+}
+
+/* =========================================================
+   SIGN IN — USERNAME VERIFICATION
+========================================================= */
+const signinUsernameInput=document.getElementById("signin-username-input");
+const signinUsernameButton=document.getElementById("signin-username-button");
+const signinUsernameError=document.getElementById("signin-username-error");
+const signinUsernameBack=document.getElementById("signin-username-back");
+
+function verifySigninUsername(){
+  const typed=(signinUsernameInput?.value||"").trim();
+  const player=getPlayerData();
+  if(!typed){
+    if(signinUsernameError) signinUsernameError.textContent="Please enter your name first.";
+    signinUsernameInput?.focus();
+    return;
+  }
+  if(!player){
+    if(signinUsernameError) signinUsernameError.textContent="No chronicle was found on this device. Choose SIGN UP to begin.";
+    return;
+  }
+  if(String(player.username||"").trim().toLowerCase()!==typed.toLowerCase()){
+    if(signinUsernameError) signinUsernameError.textContent="That name was not found. Check the spelling and try again.";
+    signinUsernameInput?.select();
+    signinUsernameInput?.focus();
+    return;
+  }
+  if(signinUsernameError) signinUsernameError.textContent="";
+  const msg=document.getElementById("pin-login-message");
+  if(msg) msg.textContent=`Welcome back, ${player.username}. Masukkan PIN untuk melanjutkan progressmu.`;
+  const pin=document.getElementById("login-pin-input");
+  if(pin) pin.value="";
+  const pinErr=document.getElementById("pin-login-error");
+  if(pinErr) pinErr.textContent="";
+  showScreen("pin-login-screen");
+  setTimeout(()=>pin?.focus(),80);
+}
+if(signinUsernameButton) signinUsernameButton.addEventListener("click",verifySigninUsername);
+if(signinUsernameInput) signinUsernameInput.addEventListener("keydown",e=>{if(e.key==="Enter")verifySigninUsername();});
+if(signinUsernameBack) signinUsernameBack.addEventListener("click",function(){
+  if(signinUsernameError) signinUsernameError.textContent="";
+  showScreen("account-choice-screen");
+});
 
 /* =========================================================
    USERNAME
@@ -5040,8 +5217,7 @@ function bindEndgameChoice(correctId,feedbackId){
             }else btn.classList.add("wrong");
             const f=document.getElementById(feedbackId);
             if(f)f.textContent=correct?"✦ CORRECT — MEMORY CONFIRMED.":"✕ NOT QUITE.";
-            if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("endgame");
-            document.querySelectorAll(".endgame-option").forEach(x=>x.disabled=true);
+document.querySelectorAll(".endgame-option").forEach(x=>x.disabled=true);
             setTimeout(()=>{
                 endgameIndex++;
                 endgameLocked=false;
@@ -5150,9 +5326,7 @@ function renderEndgameQuestion(){
             feedback.textContent=correct
                 ? "✦ CORRECT — MEMORY CONFIRMED."
                 : `✕ NOT QUITE. The correct nickname is "${teamGameText(p.nickname)}".`;
-
-            if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("endgame");
-            if(submit)submit.disabled=true;
+if(submit)submit.disabled=true;
 
             setTimeout(()=>{
                 endgameIndex++;
@@ -5427,11 +5601,11 @@ function renderEndgameResult(){
                 player.milestone=Math.min(5,Math.max(Number(player.milestone||1),completedMilestone+1));
                 savePlayerData(player);
                 submitMilestoneScore(completedMilestone,endgameScore);
-                // Safety-net: completing an Endgame always gets one reward attempt.
+                // ONE CARD PER COMPLETED ENDGAME. Replay the milestone to roll again.
                 if(window.NPCCollectibleCards?.awardAfterAnswer){
                     void window.NPCCollectibleCards.awardAfterAnswer("endgame");
                 }
-            }
+}
             showTeamGameReviewMenu();
         }else{
             startTeamGameEndgame();
@@ -6507,12 +6681,11 @@ function complete(){
 
   if(typeof savePlayerData==="function")savePlayerData(p);
   else localStorage.setItem("npcPlayer",JSON.stringify(p));
-
+  // ONE CARD PER COMPLETED MILESTONE VI. Replay = another roll.
   if(window.NPCCollectibleCards?.awardAfterAnswer){
    void window.NPCCollectibleCards.awardAfterAnswer("endgame");
   }
-
-  if(typeof refreshJourney==="function")refreshJourney();
+if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){}
 
  const correct=state.history.filter(x=>x.correct).length;
@@ -6943,8 +7116,7 @@ function lock(){
  if([2,6].includes(q.type)){correct=String(state.selected[0])===String(q.correct);details=`Correct Pamong: ${label(people.find(p=>String(p.id)===String(q.correct))||{})}.`;root.querySelectorAll("[data-person-choice]").forEach(b=>{b.disabled=true;if(String(b.dataset.personChoice)===String(q.correct))b.classList.add("correct");if(String(b.dataset.personChoice)===String(state.selected[0])&&!correct)b.classList.add("wrong")})}
  if(q.type===3){correct=q.ids.every(id=>q.assignments[id]===people.find(p=>String(p.id)===String(id))?.penempatan);details=correct?"All four commanders are correctly placed.":"One or more commanders are in the wrong Batalyon.";root.querySelectorAll("[data-sort-person],[data-sort-unit]").forEach(b=>b.disabled=true);q.ids.forEach(id=>{const c=root.querySelector(`[data-sort-person="${id}"]`),p=people.find(x=>String(x.id)===String(id));if(c)c.classList.add(q.assignments[id]===p?.penempatan?"correct":"wrong")})}
  if(correct){state.score+=100;void submitMilestoneScore(7,state.score);}
- if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
- state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
+state.history.push({round:state.round+1,correct,scoreAwarded:correct?100:0,locked:true});save();
  $("m7-score").textContent=`SCORE ${state.score}`;$("m7-lock").disabled=true;$("m7-next").disabled=false;$("m7-lock").textContent="✓ ANSWER LOCKED";
  $("m7-feedback").innerHTML=`<div class="m7-feedback-note">${correct?"✓ Correct. Your answer is locked and cannot be changed.":"✕ Incorrect. Your answer is locked. No correction is allowed."}<br>${esc(details)}</div>`;
 }
@@ -6955,13 +7127,13 @@ function complete(){
  try{
   const p=typeof getPlayerData==="function"?(getPlayerData()||{}):{};
   submitMilestoneScore(7,state.score||0);
-  p.milestone=Math.max(Number(p.milestone||1),7);
+  p.milestone=Math.max(Number(p.milestone||1),8);
   if(typeof savePlayerData==="function")savePlayerData(p);
   else localStorage.setItem("npcPlayer",JSON.stringify(p));
   if(window.NPCCollectibleCards?.awardAfterAnswer){
    void window.NPCCollectibleCards.awardAfterAnswer("endgame");
   }
-  if(typeof refreshJourney==="function")refreshJourney();
+if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){}
  const correct=state.history.filter(x=>x.correct).length;
  $("m7-content").style.display="none";$("m7-actions").style.display="none";$("m7-complete").style.display="block";
@@ -9075,8 +9247,7 @@ document.addEventListener("click",function(e){
       feedback.innerHTML=`<strong>THE MEMORY FADES.</strong><br>${explanation}`;
     }
     trial.history.push({round:trial.round,type:trial.current.type,correct});
-    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
-    trial.round++;
+trial.round++;
     saveGameState();
 
     if(trial.round>TRIAL_ROUNDS.length){
@@ -9149,8 +9320,7 @@ document.addEventListener("click",function(e){
 
     trial.score += correct ? 100 : 0;
     if(correct)void submitMilestoneScore(5,trial.score);
-    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
-    trial.streak = correct ? (trial.streak||0)+1 : 0;
+trial.streak = correct ? (trial.streak||0)+1 : 0;
     trial.history.push({round:trial.round,type:q.type,correct});
     trial.round++;
     saveGameState();
@@ -9222,8 +9392,7 @@ document.addEventListener("click",function(e){
     // IMPORTANT: revealing the correct answer never awards points.
     trial.score += allCorrect ? 100 : 0;
     if(allCorrect)void submitMilestoneScore(5,trial.score);
-    if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("question");
-    trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
+trial.streak = allCorrect ? (trial.streak||0)+1 : 0;
     trial.history.push({
       round:trial.round,type:q.type,correct:allCorrect,
       scoreAwarded:allCorrect?100:0,locked:true,details:results
@@ -9327,10 +9496,11 @@ document.addEventListener("click",function(e){
         pd.milestone=6;
         localStorage.setItem("npc_player",JSON.stringify(pd));
       }
+      // ONE CARD PER COMPLETED MILESTONE V. Replay = another roll.
       if(window.NPCCollectibleCards?.awardAfterAnswer){
         void window.NPCCollectibleCards.awardAfterAnswer("endgame");
       }
-    }catch(e){}
+}catch(e){}
     if(typeof refreshJourney==="function")refreshJourney();
   }
 
@@ -9798,7 +9968,6 @@ function lock(){
  root.querySelectorAll(".m8-option").forEach(b=>{b.disabled=true;const v=b.dataset.person??b.dataset.choice;if(String(v)===String(q.correct))b.classList.add("correct");if(String(v)===String(state.selected)&&!correct)b.classList.add("wrong")});
  $('m8-score').textContent=`SCORE ${state.score}`;$('m8-lock').disabled=true;$('m8-next').disabled=false;let answer=q.type==="nameFace"||q.type==="combo"?label(personById(q.correct)||q.target):q.correct;
  $('m8-feedback').innerHTML=`${correct?"✓ Correct.":"✕ Incorrect."} <span class="m8-streak">${state.streak>=5?`🔥 ${state.streak} STREAK`:""}</span><br>Correct answer: <b>${esc(answer)}</b>`;
- if(window.NPCCollectibleCards?.awardAfterAnswer) void window.NPCCollectibleCards.awardAfterAnswer("revival");
 }
 function next(){if(!state||!state.locked)return;if(state.index>=state.questions.length-1){complete();return}state.index++;render()}
 async function complete(){
@@ -9819,10 +9988,11 @@ async function complete(){
   if(Number(p.milestone||1)<8)p.milestone=8;
   if(typeof savePlayerData==="function")savePlayerData(p);else localStorage.setItem("npcPlayer",JSON.stringify(p));
   await submitMilestoneScore(8,after);
+  // ONE CARD PER COMPLETED REVIVAL. Replay = another roll.
   if(window.NPCCollectibleCards?.awardAfterAnswer){
-    await window.NPCCollectibleCards.awardAfterAnswer("revival");
+   void window.NPCCollectibleCards.awardAfterAnswer("revival");
   }
-  if(typeof refreshJourney==="function")refreshJourney();
+if(typeof refreshJourney==="function")refreshJourney();
  }catch(e){console.warn("Revival score save failed",e)}
  $('m8-content').style.display="none";$('m8-actions').style.display="none";$('m8-feedback').style.display="none";$('m8-complete').style.display="block";
  $('m8-complete').innerHTML=`<div class="m8-new-record">✦ +${earned.toLocaleString("en-US")} ADDED TO YOUR REVIVAL SCORE ✦</div><h2>THE REVIVAL COMPLETE</h2><p>${state.correct} / ${state.total} memories recovered · <b>${earned.toLocaleString("en-US")} points earned</b>.<br>Best streak: ${state.bestStreak}.<br><strong>Revival total: ${after.toLocaleString("en-US")} points</strong></p><div class="m8-actions"><button id="m8-replay" class="m8-btn" type="button">CHOOSE A GREATER RISK</button><button id="m8-return" class="m8-btn secondary" type="button">RETURN TO JOURNEY</button></div>`;
@@ -10388,6 +10558,13 @@ async function npcScanAssets(){
   }
   await Promise.all(checks);
 
+  // GUARANTEED FALLBACK: if GitHub/CDN blocks asset probing, card-01 remains
+  // the canonical reward artwork instead of silently producing no card.
+  if(!npcAvailableAssets.size){
+    npcAvailableAssets.add(1);
+    console.warn("[NPC Cards] Asset scan returned 0; falling back to card-01.webp");
+  }
+
   console.log(`[NPC Cards] ${npcAvailableAssets.size}/${NPC_CARD_TOTAL} assets available.`);
   return npcAvailableAssets;
 }
@@ -10436,7 +10613,7 @@ function npcAvailableUncollected(){
   return pool;
 }
 
-function npcShowDrop(number,chance,kind){
+function npcShowDrop(number,chance,kind,duplicate=false){
   const existing=npc$("collectible-drop-overlay");
   if(existing) existing.remove();
 
@@ -10446,8 +10623,8 @@ function npcShowDrop(number,chance,kind){
   overlay.innerHTML=`
     <div class="collectible-drop-panel">
       <div class="collectible-drop-ornament">✦ ❦ ✦</div>
-      <div class="collectible-drop-kicker">A NEW DISCOVERY</div>
-      <h2>CARD ACQUIRED</h2>
+      <div class="collectible-drop-kicker">${duplicate ? "A FAMILIAR DISCOVERY" : "A NEW DISCOVERY"}</div>
+      <h2>${duplicate ? "DUPLICATE CARD" : "CARD ACQUIRED"}</h2>
 
       <button type="button"
               class="collectible-drop-card"
@@ -10456,7 +10633,8 @@ function npcShowDrop(number,chance,kind){
         <img src="${npcEsc(npcCardPath(number))}?v=${Date.now()}" alt="New collectible card">
       </button>
 
-      <button type="button" id="collectible-drop-close">ADD TO COLLECTION →</button>
+      <p class="collectible-drop-sub">${duplicate ? "You already own this card. It will not be added twice." : "The card has been added to your collection."}</p>
+      <button type="button" id="collectible-drop-close">${duplicate ? "CONTINUE →" : "ADD TO COLLECTION →"}</button>
     </div>`;
 
   document.body.appendChild(overlay);
@@ -10480,6 +10658,19 @@ async function npcRoll(kind="question",force=false){
   // the 39-image scan was still running, leaving the pool temporarily empty.
   await npcScanAssets();
   if(!npcAvailableAssets.size) {
+    // Hard fallback: GitHub Pages/CDN may reject HEAD/parallel probes.
+    // Try the primary artwork directly so a valid card-01.webp can still reward.
+    try{
+      const fallbackOk = await new Promise(resolve=>{
+        const im = new Image();
+        im.onload = ()=>resolve(true);
+        im.onerror = ()=>resolve(false);
+        im.src = npcCardPath(1) + "?reward_probe=" + Date.now();
+      });
+      if(fallbackOk) npcAvailableAssets.add(1);
+    }catch(e){}
+  }
+  if(!npcAvailableAssets.size) {
     console.warn("[NPC Cards] No card assets found. Expected cards/card-01.webp ... card-39.webp");
     return null;
   }
@@ -10487,7 +10678,9 @@ async function npcRoll(kind="question",force=false){
   npcRefreshCollected();
   if(npcCollectedNumbers.size>=NPC_CARD_TOTAL) return null;
 
-  const pool=npcAvailableUncollected();
+  // A completed milestone always rolls from ALL available card artwork.
+  // This means a replay can legitimately draw the same card again.
+  const pool=Array.from(npcAvailableAssets).sort((a,b)=>a-b);
   if(!pool.length) return null;
 
   const activity=npcGetActivity()+1;
@@ -10499,13 +10692,17 @@ async function npcRoll(kind="question",force=false){
   if(roll>=chance) return null;
 
   const number=pool[Math.floor(Math.random()*pool.length)];
-  npcCollectedNumbers.add(number);
-  npcPersistCollected();
+  const duplicate=npcCollectedNumbers.has(number);
 
-  npcShowDrop(number,chance,kind);
-  npcRenderShelf();
-  npcUpdateFunFactCodex();
-  return npcGetMeta(number);
+  if(!duplicate){
+    npcCollectedNumbers.add(number);
+    npcPersistCollected();
+    npcRenderShelf();
+    npcUpdateFunFactCodex();
+  }
+
+  npcShowDrop(number,chance,kind,duplicate);
+  return {number,duplicate,meta:npcGetMeta(number)};
 }
 
 /* =========================
@@ -10550,10 +10747,24 @@ function npcShowDetail(number){
   if(!npcCollectedNumbers.has(number)) return;
   const d=npc$("collectible-detail");
   const img=npc$("collectible-detail-img");
+  const del=npc$("collectible-delete-card");
   if(!d || !img)return;
 
   img.src=npcCardPath(number)+"?v="+Date.now();
   img.alt=`Collectible card #${npcPad(number)}`;
+  if(del){
+    del.onclick=()=>{
+      if(!npcCollectedNumbers.has(number)) return;
+      const ok=window.confirm("Remove this card from your collection?");
+      if(!ok)return;
+      npcCollectedNumbers.delete(number);
+      npcPersistCollected();
+      d.classList.remove("open");
+      npcRenderShelf();
+      npcRenderFull();
+      npcUpdateFunFactCodex();
+    };
+  }
   d.classList.add("open");
 }
 
@@ -10623,8 +10834,8 @@ window.NPCCollectibleCards={
   roll:npcRoll,
   award:npcRoll,
   awardAfterAnswer:async(kind="question")=>{
-    // If the initial scan found no cards, retry immediately. Otherwise use the
-    // cached pool so an answer reward never waits on another 39-file scan.
+    // This function is called ONCE by each milestone completion.
+    // force=true makes the phase reward guaranteed.
     if(!npcAvailableAssets.size){
       npcAssetScanDone=false;
       npcAvailableAssets.clear();
@@ -10660,6 +10871,9 @@ if(document.readyState==="loading"){
 
     <div class="collectible-detail" id="collectible-detail">
       <img id="collectible-detail-img" alt="Collectible card">
+      <div class="collectible-detail-actions">
+        <button type="button" class="collectible-delete" id="collectible-delete-card">DELETE CARD</button>
+      </div>
     </div>
 
     <div class="collectible-full-grid" id="collectible-full-grid"></div>
@@ -10688,7 +10902,7 @@ if(document.readyState==="loading"){
 })();
 </script>
 
-<!-- Card rewards are triggered after an answer is locked, independently of score. -->
+<!-- Card rewards are triggered once after a milestone/phase is completed. Replaying a milestone allows another roll. -->
 
 
 <script>
